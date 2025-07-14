@@ -1,0 +1,185 @@
+<div class="text-center">
+    <img src="http://proyasis.com/images/Proyasis_Logo.png" style="width: auto; height: 94px;" />
+    <h4 style="margin: 5px 0px;"></h4>
+    <p>Dear <strong>{{StudentName}}</strong></p>
+    <p>Your Fees Add Successfully</p>
+    <p>We have attached your invoice(s) should you need them in the future.</p>
+    <p>Regards,</p>
+</div>
+<div id="dvPrintReciept" class="PrintReciept" style="border: double 8px; border-color: #ad3a3a; border-radius: 5px;">
+    <div class="rows">
+        <div class="Companydetails" style="text-align: center; font-size: 16px;">
+            <h3 class="CompanyName" style="font-weight: bold; color: black; margin-bottom: 5px; text-transform: uppercase;">{{{CompanyName}}}</h3>
+            <p class="CompanyAddress" style="margin: 0px 0px 0px; font-weight: bold;">{{{AddressLine1}}}, {{{AddressLine2}}}, {{{AddressLine3}}}</p>
+            <p class="CompanyAddress" style="margin: 0px 0px 0px; font-weight: bold;">{{CityName}} {{PostalCode}}</p>
+            <h5 class="RecieptHead" style="color: orange; font-weight: bold; margin: 7px 0px; font-size: 18px;">Fee Receipt</h5>
+        </div>
+    </div>
+    <div class="rows Content">
+        <div class="Content-left" style="width: 72%; font-size: 15px; margin-left: 19px;">Recipt no: {{ReceiptNo}}</div>
+        <div class="Content-left" style="width: 72%; font-size: 15px; margin-left: 19px;">Admission No : {{AdmissionNo}}</div>
+        <div class="Content-left" style="width: 72%; font-size: 15px; margin-left: 19px;">Name : {{StudentName}}</div>
+        <div class="Content-left" style="width: 72%; font-size: 15px; margin-left: 19px;"></div>
+        <div class="Content-left" style="width: 72%; font-size: 15px; margin-left: 19px;">
+            {{#PaymentDetailList}}
+             {{#if  IsTax}}
+            <table style="height: 100px; width: 100%; border-width: 2px; border-color: #000000; border-style: solid;" frame="border" rules="all">
+                <tbody>
+                    <tr>
+                        <td style="width: 100px;">Fee Description</td>
+                        <td>Amount</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <ul>
+                                <li style="list-style: none;">{{FeeTypeName}}</li>
+                                
+                            </ul>
+                        </td>
+                        <td>
+                         
+                            <table style="width: 100%; border-width: 2px; border-color: #000000; border-style: solid;" frame="border" rules="rows">
+                                <tbody>
+                                    <tr>
+                                        <td>HSN/SAC</td>
+                                        <td>Taxable Value</td>
+                                        <td>
+                                            Central Tax
+                                            <table style="width: 100%; border-width: 2px; border-color: #000000; border-style: solid;" frame="border" rules="all">
+                                                <tbody>
+                                                    <tr>
+                                                        <td>Rate</td>
+                                                        <td>Amt</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                        <td>
+                                            State Tax
+                                            <table border="0" style="width: 100%;">
+                                                <tbody>
+                                                    <tr>
+                                                        <td>Rate</td>
+                                                        <td>Amt</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                        <td>
+                                            KFC
+                                            <table border="0" style="width: 100%;">
+                                                <tbody>
+                                                    <tr>
+                                                        <td>Rate</td>
+                                                        <td>Amt</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                        <td>Total Amt</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{HSNCode}}</td>
+                                        <td>{{TaxableAmount}}</td>
+                                        <td>
+                                            <table style="width: 100%; border-width: 2px; border-color: #000000; border-style: solid;" frame="border" rules="cols">
+                                                <tbody>
+                                                    <tr>
+                                                        <td>{{CGSTRate}}</td>
+                                                        <td>{{CGSTAmount}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                        <td>
+                                            <table border="0" style="width: 100%;">
+                                                <tbody>
+                                                    <tr>
+                                                        <td>{{SGSTRate}}</td>
+                                                        <td>{{SGSTAmount}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                        <td>
+                                            <table border="0" style="width: 100%;">
+                                                <tbody>
+                                                    <tr>
+                                                        <td>{{CessRate}}</td>
+                                                        <td>{{CessAmount}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                        <td>
+                                            
+                                        {{TotalAmount}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                          
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            {{else}}
+            <table style="height: 100px; width: 100%; border-width: 2px; border-color: #000000; border-style: solid;" frame="border" rules="all">
+                <tbody>
+                    <tr>
+                        <td style="width: 100px;" rowspan="2">Fee Description</td>
+                        <td colspan="2">Amount</td>
+                    </tr>
+                    <tr>
+                        <td>Rs.</td>
+                        <td>Ps.</td>
+                    </tr>
+                    {{#PaymentDetailList}}
+                    <tr>
+                        <td>
+                            <ul>                               
+                                <li style="list-style: none;">{{FeeTypeName}}</li>                              
+                            </ul>
+                        </td>
+                        <td>                         
+                            <ul>
+                                <li style="list-style: none;">{{FeeAmount}}</li>
+                            </ul>                           
+                        </td>
+                        <td></td>
+                    </tr>
+                    {{/PaymentDetailList}}
+                    <tr>
+                        <td>
+                            <ul>Total</ul>
+                        </td>
+                        <td>
+                            {{TotalAmount}}
+                        </td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+            {{/if}} 
+            {{/PaymentDetailList}}
+        </div>
+        <div class="Content-left" style="width: 72%; font-size: 15px; margin-left: 19px;"></div>
+        <div class="Content-left" style="width: 72%; font-size: 15px; margin-left: 19px;"></div>
+        <div class="Content-left" style="width: 72%; font-size: 15px; margin-left: 19px;"></div>
+    </div>
+</div>
+<script type="text/javascript">
+// <![CDATA[
+    $(document).ready(function () {
+        $("#amountWords").html(AppCommon.AmounToWords($("#totalAmount").html()))
+
+
+    });
+
+
+    //function printDiv(div) {
+    //    var mode = 'iframe'; //popup
+    //    var close = mode == "popup";
+    //    var options = { mode: mode, popClose: close };
+    //    $(div).printArea(options);
+    //}
+    // ]]></script>

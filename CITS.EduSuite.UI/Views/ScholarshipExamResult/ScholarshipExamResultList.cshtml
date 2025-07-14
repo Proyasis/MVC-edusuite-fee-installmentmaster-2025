@@ -1,0 +1,350 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.ScholarshipExamScheduleViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+@using System.Web.Mvc
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Scripts/ScholarshipExamResult")
+    @Scripts.Render("~/bundles/CitsValidation")
+    @Scripts.Render("~/Content/Select2JS")
+    @Scripts.Render("~/Content/JqueryRepeater")
+    @Scripts.Render("~/Content/ExcelSheetJS")
+}
+
+<input type="hidden" id="hdnGetScholarshipExamResult" value="@Url.Action("GetScholarshipExamResult", "ScholarshipExamResult")" />
+<input type="hidden" id="hdnAddEditScholarshipExamResult" value="@Url.Action("AddEditScholarshipExamResult", "ScholarshipExamResult")" />
+<input type="hidden" id="hdnGetSerchBranchByDistrict" value="@Url.Action("GetSerchBranchByDistrict", "ScholarshipExamResult")" />
+<input type="hidden" id="hdnAddBulkScholarshipExamResult" value="@Url.Action("AddBulkScholarshipExamResult", "ScholarshipExamResult")" />
+
+
+<header class="section-header">
+    <div class="row  px-1">
+        <div class="col-sm-6 col-12">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.ScholarshipExamResult</h3>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-6 text-right">
+            <a class="btn btn-info btn-sm " id="lnkAddExamResult">
+                <i class="fa fa-plus"></i>@EduSuiteUIResources.Add @EduSuiteUIResources.BlankSpace   @EduSuiteUIResources.ScholarshipExamResult
+            </a>
+            <a id="addEditScholarship" data-href="@Url.Action("AddEditScholarship", "Scholarship")" class="btn btn-success btn-sm d-none"><i class="fa fa-plus-square-o"></i> <span>@EduSuiteUIResources.New @EduSuiteUIResources.BlankSpace @EduSuiteUIResources.Scholarship</span></a>
+        </div>
+    </div>
+</header>
+
+<section class="section-content mx-sm-3 mx-0">
+    <div class="GridBody">
+
+        <div class="grid-nav-bar">
+            <form id="frmScholarshipExamResult">
+                <div class=" form-row">
+
+                    <div class="col-lg-2 col-sm-4 col-6">
+                        <fieldset class="form-group">
+                            @Html.TextBoxFor(m => m.SearchName, new { @class = "form-control input-control", @placeholder = EduSuiteUIResources.Name })
+                            @*@Html.TextBoxFor(m => m.SearchName, new
+                                {
+                                    @class = "form-control input-control",
+                                    @placeholder = EduSuiteUIResources.Name,
+                                    @onkeyup = "Enquiry.GetEnquiryByText(this)",
+                                    @onclick = "Enquiry.GetEnquiryByText(this)",
+                                    @autocomplete = "off"
+                                })*@
+                        </fieldset>
+                    </div>
+                    <div class="col-lg-2 col-sm-4 col-6">
+                        <fieldset class="form-group">
+                            @Html.TextBoxFor(m => m.SearchPhone, new { @class = "form-control input-control", @placeholder = EduSuiteUIResources.Phone })
+                        </fieldset>
+                    </div>
+                    <div class="col-lg-2 col-sm-4 col-6 d-none">
+                        <fieldset class="form-group">
+                            @Html.TextBoxFor(m => m.SearchFromDate, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_input_type = "date", @data_inputmask = "'alias': 'dd/mm/yyyy'", @placeholder = EduSuiteUIResources.CreatedDateFrom })
+                        </fieldset>
+                    </div>
+                    <div class="col-lg-2 col-sm-4 col-6 d-none">
+                        <fieldset class="form-group">
+                            @Html.TextBoxFor(m => m.SearchToDate, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_input_type = "date", @data_inputmask = "'alias': 'dd/mm/yyyy'", @placeholder = EduSuiteUIResources.CreatedDateTo })
+                        </fieldset>
+                    </div>
+                   @if (DbConstants.Role.AdminUserTypes.Contains(DbConstants.User.RoleKey))
+                    {
+                        <div class="col-lg-2 col-sm-4 col-6">
+                            <fieldset class="form-group">
+                                @Html.DropDownListFor(m => m.SearchDistrictKey, new SelectList(Model.Districts, "RowKey", "Text"), EduSuiteUIResources.BlankSpace + EduSuiteUIResources.District, new { @class = "form-control input-control selectpicker", @data_live_search = "true" })
+                            </fieldset>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-lg-2 col-sm-4 col-6">
+                            <fieldset class="form-group">
+                                @Html.DropDownListFor(m => m.SearchDistrictKey, new SelectList(Model.Districts, "RowKey", "Text"), new { @class = "form-control input-control selectpicker", @data_live_search = "true" })
+                            </fieldset>
+                        </div>
+                    }
+                   @if (DbConstants.Role.AdminUserTypes.Contains(DbConstants.User.RoleKey))
+                    {
+                        <div class="col-lg-2 col-sm-4 col-6">
+                            <fieldset class="form-group">
+                                @Html.DropDownListFor(m => m.SearchBranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.center, new { @class = "form-control input-control selectpicker", @data_live_search = "true" })
+                            </fieldset>
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.SearchBranchKey)
+                            </span>
+                        </div>
+
+
+                    }
+                    else
+                    {
+                        <div class="col-lg-2 col-sm-4 col-6">
+                            <fieldset class="form-group">
+                                @Html.DropDownListFor(m => m.SearchBranchKey, new SelectList(Model.Branches, "RowKey", "Text"), new { @class = "form-control input-control selectpicker", @data_live_search = "true" })
+                            </fieldset>
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.SearchBranchKey)
+                            </span>
+                        </div>
+                    }
+                    <div class="col-lg-2 col-sm-4 col-6 ">
+                        <fieldset class="form-group">
+                            @Html.DropDownListFor(m => m.SubBranchKey, new SelectList(Model.ExamSubCenters, "RowKey", "Text"), EduSuiteUIResources.BlankSpace + EduSuiteUIResources.SubCenter, new { @class = "form-control input-control selectpicker", @data_live_search = "true" })
+                        </fieldset>
+                    </div>
+
+
+                    @if (Model.ScholarshipTypes.Count > 1)
+                    {
+                        <div class="col-lg-2 col-sm-4 col-6">
+                            <fieldset class="form-group">
+                                @Html.DropDownListFor(m => m.SearchScholarshipTypeKey, new SelectList(Model.ScholarshipTypes, "RowKey", "Text"), EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Scholarship + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Type, new { @class = "form-control input-control" })
+                            </fieldset>
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.SearchScholarshipTypeKey)
+                            </span>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-lg-2 col-sm-4 col-6">
+                            <fieldset class="form-group">
+                                @Html.DropDownListFor(m => m.SearchScholarshipTypeKey, new SelectList(Model.ScholarshipTypes, "RowKey", "Text"), new { @class = "form-control input-control" })
+                            </fieldset>
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.SearchScholarshipTypeKey)
+                            </span>
+                        </div>
+                    }
+                   
+
+
+
+                </div>
+                <div class="form-row">
+                    <div class="col-sm-4 col-6">
+                        <fieldset class="form-group">
+                            @Html.Label(EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.ExcelSheet, htmlAttributes: new { @id = "lblExcelFile", @class = "form-label" })
+                            <div class="custom-file">
+                                @Html.TextBox("ExcelFile", "", new { @type = "file", @class = "custom-file-input" })
+                                <label class="custom-file-label" for="ExcelFile">Choose file</label>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div id="divUploadExcel" class="col-sm-6 col-12 " data-hidden>
+                        <fieldset class="form-group">
+                            <label class="form-label"></label>
+                            <br />
+                            <a class="btn btn-info btn-sm" onclick='ScholarshipExamResult.FileUploadChange()'>
+                                <i class="fa fa-refresh"></i>   @EduSuiteUIResources.UpdateSelected
+                            </a>
+                        </fieldset>
+                    </div>
+                    <div class="col-lg-2 col-sm-3 col-4 pull-right">
+                        <fieldset class="form-group">
+                            <label class="form-label"></label>
+                            <br />
+                            <div class="button-group float-right">
+                                <button id="btnPrint" type="button" onclick="ScholarshipExamResult.PrintExamResult()" class="btn btn-primary btn-sm"><i class="fa fa-download" aria-hidden="true"></i>@EduSuiteUIResources.Download@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.ExcelSheet</button>
+                            </div>
+                        </fieldset>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+        <div class="table-wrapper">
+
+            <div class="jqGrid_wrapper overflow-auto">
+                <table id="grid"></table>
+                <div id="pager"></div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+<script>
+    var jsonData=@(Html.Raw(Json.Encode(Model)));
+    $(document).ready(function () {
+        AppCommon.AutoHideDropdown();
+        AppCommon.FormatDateInput();
+        AppCommon.FormatInputCase();
+        AppCommon.FormatTimeInput();
+        $("form").removeData("validator");
+        $("form").removeData("unobtrusiveValidation");
+        $.validator.unobtrusive.parse("form");
+
+        $("#divUploadExcel").hide();
+
+        $("#SearchName,#SearchPhone").on("input", function () {
+            ScholarshipExamResult.GetScholarshipExamResult();
+        });
+
+        $("#iconSpan").click(function () {
+            $('#txtsearch').val('');
+            ScholarshipExamResult.GetScholarshipExamResult();
+        });
+        $("#SearchFromDate,#SearchToDate").on("changeDate", function () {
+
+
+            ScholarshipExamResult.GetScholarshipExamResult();
+        });
+
+        $("#SearchBranchKey,#SearchDistrictKey,#SearchScholarshipTypeKey,#SearchName,#SearchPhone,#SearchFromDate,#SearchToDate,#SubBranchKey").on("change", function () {
+
+            ScholarshipExamResult.GetScholarshipExamResult();
+        })
+        ScholarshipExamResult.GetScholarshipExamResult();
+
+        $("#SearchDistrictKey").on("change",function(){
+            var obj = {};
+            obj.id = $(this).val() != "" ? $(this).val() : 0;
+            AppCommon.BindDropDownbyId(obj, $("#hdnGetSerchBranchByDistrict").val(), $("#SearchBranchKey"),  Resources.center, "Branches");
+
+        });
+        $("#SearchBranchKey").on("change",function(){
+            var obj = {};
+            obj.id = $(this).val() != "" ? $(this).val() : 0;
+            AppCommon.BindDropDownbyId(obj, $("#hdnGetSubBranchByBranch").val(), $("#SubBranchKey"),  Resources.SubCenter, "ExamSubCenters");
+
+        });
+
+
+      
+
+        //$('#ExcelFile').on("change",function (e) {
+        //    ScholarshipExamResult.FileUploadChange(e)
+        //    $('#btnBulkDelete').show();
+        //})
+        $('#ExcelFile').on("change",function (e) {
+            
+            var files = e.target.files;           
+            if (files.length > 0) {
+                $("#divUploadExcel").show();
+            }
+            else
+            {
+                $("#divUploadExcel").hide();
+            }
+
+        })
+
+        $("#lnkAddExamResult").on("click",function(){
+            
+            var valid = true;
+            var validator = $("form").validate();
+            valid = valid && validator.element('#SearchBranchKey');
+            valid = valid && validator.element('#SearchScholarshipTypeKey');
+
+            if (valid) {
+                var myGrid = $('#grid');
+                var ids = $("#grid").jqGrid('getDataIDs');
+                var selRowIds = myGrid.jqGrid("getGridParam", "selarrrow"), n, rowData;
+                var cbs = $("tr.jqgrow > td > input.cbox:disabled", "selarrrow"), n, rowData;
+                //var cbs = $("tr.jqgrow > td > input.cbox:disabled", grid[0]);
+
+                var TotalRecords = myGrid.getGridParam("reccount")
+
+
+                
+                if (TotalRecords > 0) {
+                    var URL = $("#hdnAddEditScholarshipExamResult").val();
+                    if (selRowIds && selRowIds.length > 0) {
+                        URL = URL + "?keys=" + selRowIds;
+                        $.customPopupform.CustomPopup({
+                            modalsize: "modal-lg",
+                            load: function () {
+                                setTimeout(function ()
+                                {
+                                    ScholarshipExamResultPopupLoad();
+                                },500)
+
+                            },
+                            rebind: function (result) {
+                                if (typeof result == "string") {
+                                    $("[data-valmsg-for=error_msg]").html(response);
+                                }
+                                else if (result.IsSuccessful) {
+                                    toastr.success(Resources.Success, result.Message);
+                                    $("#frmAddEditScholarshipExamResult").closest(".modal").modal("hide")
+                                    $("#grid").jqGrid("setGridParam", { datatype: 'json' }).trigger("reloadGrid");
+                                }
+                            }
+                        }, URL);
+                    }
+                    else {
+                        URL = URL + "?keys=" + ids;
+                        $.customPopupform.CustomPopup({
+                            modalsize: "modal-lg",
+                            load: function () {
+                                setTimeout(function ()
+                                {
+                                    ScholarshipExamResultPopupLoad();
+                                },500)
+                            },
+                            rebind: function (result) {
+                                if (typeof result == "string") {
+                                    $("[data-valmsg-for=error_msg]").html(response);
+                                }
+                                else if (result.IsSuccessful) {
+                                    toastr.success(Resources.Success, result.Message);
+                                    $("#frmAddEditScholarshipExamResult").closest(".modal").modal("hide")
+                                    $("#grid").jqGrid("setGridParam", { datatype: 'json' }).trigger("reloadGrid");
+                                }
+                            }
+                        }, URL);
+                    }
+                }
+                //if (selRowIds && selRowIds.length > 0)
+                //{
+                //    URL = URL + "?keys=" + selRowIds;
+                //    var model=selRowIds;
+                //    var result = EduSuite.Confirm2({
+                //        title: Resources.Confirmation,
+                //        content:" Are you sure you want to Move this "+ selRowIds.length+" Scholarship details to Enquiry?",
+                //        actionUrl: $("#hdnMoveToEnquiry").val(),
+                //        parameters: model,
+                //        dataRefresh: function () { $("#grid").jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid'); }
+                //    });
+
+                //}
+
+            }
+        })
+
+    });
+
+
+
+</script>

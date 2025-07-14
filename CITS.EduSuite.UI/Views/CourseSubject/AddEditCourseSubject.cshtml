@@ -1,0 +1,190 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.CourseSubjectMasterViewModel
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Content/JqueryRepeater")
+    @Scripts.Render("~/Scripts/Common")
+    @Scripts.Render("~/Scripts/CourseSubject")
+    @Scripts.Render("~/bundles/jqueryui")
+}
+
+
+<input type="hidden" id="hdnFillCourse" value="@Url.Action("FillCourse", "CourseSubject")" />
+<input type="hidden" id="hdnFillUniversity" value="@Url.Action("FillUniversity", "CourseSubject")" />
+<input type="hidden" id="hdnFillCourseYear" value="@Url.Action("FillCourseYear", "CourseSubject")" />
+<input type="hidden" id="hdnDeleteCourseSubjectItem" value="@Url.Action("DeleteCourseSubject", "CourseSubject")" />
+<input type="hidden" id="hdnCourseSubjectList" value="@Url.Action("CourseSubjectList", "CourseSubject")" />
+<input type="hidden" id="hdnUrl" value="@Url.Action("GetCourseSubjectDetails", "CourseSubject", new { id = "" })" />
+<input type="hidden" id="hdnGetStudyMaterials" value="@Url.Action("GetStudyMaterials", "CourseSubject")" />
+<input type="hidden" id="hdnAddEditStudyMaterialsDetails" value="@Url.Action("AddEditStudyMaterialsDetails", "CourseSubject")" />
+<input type="hidden" id="hdnDeleteStudyMaterialAll" value="@Url.Action("DeleteStudyMaterialAll", "CourseSubject")" />
+<input type="hidden" id="hdnDeleteStudyMaterial" value="@Url.Action("DeleteStudyMaterial", "CourseSubject")" />
+
+
+
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-12">
+            <div class="tbl">
+                <div class="tbl-row  px-1">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.Add@EduSuiteUIResources.Hyphen@EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.CourseSubject</h3>
+                        <ol class="breadcrumb breadcrumb-simple mb-2 float-sm-right">
+                            <li><a href="#" onclick="location.href='@Url.Action("CourseSubjectList", "CourseSubject")' ">@EduSuiteUIResources.CourseSubject</a></li>
+                            <li class="active">@EduSuiteUIResources.Add@EduSuiteUIResources.Hyphen@EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.CourseSubject</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="section-content mx-sm-3 mx-0" id="DivSectionContent">
+
+    <div class="form-master">
+
+        @using (Html.BeginForm("AddEditCourseSubject", "CourseSubject", FormMethod.Post, new { @id = "frmCourseSubject" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            @Html.HiddenFor(m => m.RowKey)
+
+            <div class="form-row">
+
+
+                @if ((bool)ViewBag.ShowAcademicTerm)
+                {
+                    <div class="col-lg-2 col-sm-3 col-6">
+                        <div class="form-group ">
+                            @Html.Label(EduSuiteUIResources.AcademicTerm, htmlAttributes: new { @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                            @Html.DropDownListFor(m => m.AcademicTermKey, new SelectList(Model.AcademicTerms, "RowKey", "Text"), new { @class = "form-control border-radius input-control autoselect-select" })<span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.AcademicTermKey)
+                            </span>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    {
+                        Model.AcademicTermKey = (byte)Model.AcademicTerms.Select(row => row.RowKey).FirstOrDefault();
+                    }
+                    @Html.HiddenFor(m => m.AcademicTermKey)
+                }
+                <div class="col-lg-2 col-sm-3 col-6 ">
+                    <div class="form-group ">
+                        @Html.Label(EduSuiteUIResources.CourseType, htmlAttributes: new { @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                        @Html.DropDownListFor(m => m.CourseTypeKey, new SelectList(Model.CourseTypes, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.CourseType, new { @class = "form-control border-radius input-control autoselect-select" })<span class="form-control-error-text">
+
+                            @Html.ValidationMessageFor(m => m.CourseTypeKey)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-sm-3 col-6">
+                    <div class="form-group ">
+                        @Html.Label(EduSuiteUIResources.Course, htmlAttributes: new { @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                        @Html.DropDownListFor(m => m.CourseKey, new SelectList(Model.Courses, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Course, new { @class = "form-control border-radius input-control autoselect-select", @data_live_search = "true" })<span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.CourseKey)
+                        </span>
+                    </div>
+
+                </div>
+                @if ((bool)ViewBag.ShowUniversity)
+                {
+                    <div class="col-lg-2 col-sm-3 col-6">
+                        <div class="form-group ">
+                            @Html.Label(EduSuiteUIResources.University, htmlAttributes: new { @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                            @Html.DropDownListFor(m => m.UniversityMasterKey, new SelectList(Model.Universities, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.University, new { @class = "form-control border-radius input-control autoselect-select" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.UniversityMasterKey)
+                            </span>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    {
+                        Model.UniversityMasterKey = (short)Model.Universities.Select(row => row.RowKey).FirstOrDefault();
+                    }
+                    @Html.HiddenFor(m => m.UniversityMasterKey)
+                }
+
+
+                @*<div class="col-lg-2 col-sm-3 col-6 ">
+                    <div class="form-group ">
+                        @Html.Label(EduSuiteUIResources.Year, htmlAttributes: new { @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                        @Html.DropDownListFor(m => m.CourseYearKey, new SelectList(Model.CourseYear, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Year, new { @class = "form-control border-radius input-control autoselect-select" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.CourseYearKey)
+                        </span>
+                    </div>
+                </div>*@
+            </div>
+            
+            <div id="dvCourseYear">
+
+            </div>
+            <div id="dvCourseSubjectDetails"></div>
+
+
+
+            <div class="row mt-2">
+                <div class="form-group">
+                    <div class="col-12">
+                        <fieldset class="form-group">
+                            <input type="button" value="@EduSuiteUIResources.Save" id="btnSave" class="btn btn-sm btn-success mx-1" />
+                            <input type="button" value="@EduSuiteUIResources.Cancel" onclick="location.href='@Url.Action("CourseSubjectList", "CourseSubject")' " class="btn btn-sm btn-danger mx-1" />
+                        </fieldset>
+                        <div class="col-12 paddingNone">
+                            <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</section>
+<script>
+    var jsonData=@(Html.Raw(Json.Encode(Model)));
+
+    $(document).ready(function () {
+        AppCommon.FormatInputCase()
+
+        CourseSubject.GetCourseYear();
+     
+        $("#btnSave").on("click",function()
+        {
+            
+            CourseSubject.FormSubmit(jsonData);
+        });
+
+        AppCommon.CustomRepeaterRemoteMethod();
+
+        $("#CourseTypeKey").on("change", function () {
+            var obj={};
+            obj.key=$(this).val()!=""?$(this).val():0;
+            AppCommon.BindDropDownbyId(obj, $("#hdnFillCourse").val(), $("#CourseKey"), Resources.Course);
+        });
+
+        $("#AcademicTermKey,#CourseKey").on("change", function () {
+            var obj={};
+            obj.key=$("#CourseKey").val()!=""?$("#CourseKey").val():0;
+            obj.AcademicTermKey=$("#AcademicTermKey").val()!=""?$("#AcademicTermKey").val():0;
+            AppCommon.BindDropDownbyId(obj, $("#hdnFillUniversity").val(), $("#UniversityMasterKey"), Resources.University);
+            //AppCommon.BindDropDownbyId(obj, $("#hdnFillCourseYear").val(), $("#CourseYearKey"), Resources.Year);
+            CourseSubject.GetCourseYear();
+
+        });
+        
+        $("#UniversityMasterKey,#CourseYearKey").on("change", function () {
+            
+            CourseSubject.GetCourseYear();
+        });
+
+    });
+
+
+
+
+</script>

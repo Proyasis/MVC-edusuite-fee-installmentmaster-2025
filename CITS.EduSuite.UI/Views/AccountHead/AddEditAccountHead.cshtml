@@ -1,0 +1,168 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.AccountHeadViewModel
+
+
+<div class="modal-header">
+    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+    <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.Add @EduSuiteUIResources.Sla @EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace @EduSuiteUIResources.AccountHead</h4>
+</div>
+@using (Html.BeginForm("AddEditAccountHead", "AccountHead", FormMethod.Post, new { @id = "frmAccountHead" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.RowKey)
+    @Html.HiddenFor(m => m.IsSystemAccount)
+    @Html.ValidationSummary(true)
+    <input type="hidden" id="hdnFillAccountHeadType" value="@Url.Action("FillAccountHeadType", "AccountHead")" />
+
+    <div class="modal-body">
+        <div class="form-master">
+            <div class="form-row">
+                <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+            </div>
+
+            <div class="form-row">
+                <div class="col-6 col-lg-4">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.Account + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Group, htmlAttributes: new { @id = "lblAccountHeadType", @class = "form-label" })
+                        <div class="required-icon"><div class="text">*</div></div>
+                        @Html.DropDownListFor(m => m.AccountGroupKey, new SelectList(Model.AccountGroup, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Account + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Group, new { @class = "form-control input-control" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.AccountGroupKey)
+                        </span>
+                    </div>
+                </div>
+
+
+                @if (Model.AccountHeadType.Count == 1)
+                {
+
+                    {
+                        Model.AccountHeadTypeKey = Model.AccountHeadTypeKey == 0 ? (byte)Model.AccountHeadType.Select(x => x.RowKey).FirstOrDefault() : Model.AccountHeadTypeKey;
+                    }
+                    @Html.HiddenFor(m => m.AccountHeadTypeKey)
+
+                }
+                else
+                {
+                    <div class="col-6 col-lg-4 d-none">
+                        <div class="form-group">
+                            @Html.Label(EduSuiteUIResources.AccountHeadType, htmlAttributes: new { @id = "lblAccountHeadType", @class = "form-label" })
+                            <div class="required-icon"><div class="text">*</div></div>
+                            @Html.DropDownListFor(m => m.AccountHeadTypeKey, new SelectList(Model.AccountHeadType, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.AccountHeadType, new { @class = "form-control input-control", @InputFor = "lblAccountHeadType" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.AccountHeadTypeKey)
+                            </span>
+                        </div>
+                    </div>
+                }
+
+                <div class="col-6 col-lg-4">
+                    <div class="form-group ">
+                        @Html.Label(EduSuiteUIResources.AccountHeadName, htmlAttributes: new { @id = "lblAccountHeadName", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                        @Html.TextBoxFor(m => m.AccountHeadName, new { @class = "form-control input-control", @InputFor = "lblAccountHeadName" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.AccountHeadName)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-6 col-lg-4 d-none">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.Hide + EduSuiteUIResources.In + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.FutureTransactions, new { @class = "form-label" })
+
+                        <div class="switch-check my-2">
+                            @Html.CheckBoxFor(m => m.HideFuture, new { @class = "switch-input" })
+                            <div class="switch-label redgreen" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                            <div class="switch-handle"></div>
+                        </div>
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.HideFuture)
+                        </span>
+                    </fieldset>
+
+                </div>
+                <div class="col-6 col-lg-4 d-none">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.Hide + EduSuiteUIResources.In + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.DailyTransaction, new { @class = "form-label" })
+
+                        <div class="switch-check my-2">
+                            @Html.CheckBoxFor(m => m.HideDaily, new { @class = "switch-input" })
+                            <div class="switch-label redgreen" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                            <div class="switch-handle"></div>
+                        </div>
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.HideDaily)
+                        </span>
+                    </fieldset>
+
+                </div>
+                <div class="col-6 col-lg-5" id="dvPaymentReciept">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.Show + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.In + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.DailyTransaction, htmlAttributes: new { @class = "form-label" })
+
+                        @Html.DropDownListFor(m => m.PaymentConfigTypeKey, new SelectList(Model.PaymentConfigs, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.PaymentOrReciept, new { @class = "form-control input-control" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.PaymentConfigTypeKey)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-6 col-lg-4">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.IsActive, new { @class = "form-label" })
+
+                        <div class="switch-check my-2">
+                            @Html.CheckBoxFor(m => m.IsActive, new { @class = "switch-input" })
+                            <div class="switch-label redgreen" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                            <div class="switch-handle"></div>
+                        </div>
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.IsActive)
+                        </span>
+                    </fieldset>
+
+                </div>
+
+                <div id="AccountHeadDiv" class="col-6 col-lg-6 d-none">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.AccountHead, htmlAttributes: new { @class = "form-label" })
+                        <div class="required-icon"><div class="text">*</div></div>
+                        <div class="form-group">
+                            @Html.ListBoxFor(m => Model.FutureAccountHeadKeys, new SelectList(Model.AccountHeads, "RowKey", "Text"), new { @class = "form-control border-radius input-control  selectpicker", @multiple = "multiple", @InputFor = "lblDepartment", @data_placeholder = EduSuiteUIResources.AccountHead })
+
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.FutureAccountHeadKeys)
+                            </span>
+
+
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer justify-content-start">
+        <div class="form-group">
+            <input type="submit" value="@EduSuiteUIResources.Submit" id="btnSave" class="btn btn-sm btn-success mx-1" />
+            <button type="button" data-dismiss="modal" class="btn btn-sm btn-danger mx-1">@EduSuiteUIResources.Cancel</button>
+
+        </div>
+    </div>
+}
+
+<style>
+    .datepicker {
+        z-index: 9999 !important;
+    }
+</style>
+
+<script>
+    $(document).ready(function () {
+        AppCommon.FormatDateInput();
+        AppCommon.FormatInputCase()
+        AppCommon.FormatMultiSelect();
+
+             
+    });
+</script>
+

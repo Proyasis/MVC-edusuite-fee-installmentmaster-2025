@@ -1,0 +1,109 @@
+﻿
+@model CITS.EduSuite.Business.Models.ViewModels.AssetPurchaseMasterViewModel
+@using System.Web.Mvc
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Content/TimePickerJS")
+    @Scripts.Render("~/Scripts/AssetPurchase")
+    @Scripts.Render("~/Scripts/AssetPurchasePayment")
+}
+@{
+    ViewBag.Title = EduSuiteUIResources.Asset+EduSuiteUIResources.BlankSpace+EduSuiteUIResources.Purchase;
+}
+
+<input type="hidden" id="hdnAssetPurchaseList" value="@Url.Action("GetAssetPurchase", "AssetPurchase")" />
+<input type="hidden" id="hdnDeleteAssetPurchase" value="@Url.Action("DeleteAssetPurchase", "AssetPurchase")" />
+<input type="hidden" id="hdnAddEditSalesOrderPayment" value="@Url.Action("AddEditAssetPurchasePayment", "AssetPurchase", new { id = "" })" />
+
+<input type="hidden" id="hdnViewPurchase" value="@Url.Action("ViewAssetPurchase", "AssetPurchase")" />
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-sm-6 col-12">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.Asset@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Purchase</h3>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 text-right">
+            <a id="addEditParty" href="@Url.Action("AddEditAssetPurchase", "AssetPurchase")" class="btn btn-success btn-sm ">
+                <i class="fa fa-plus" aria-hidden="true"></i>  @EduSuiteUIResources.New @EduSuiteUIResources.Asset@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Purchase
+            </a>
+        </div>
+    </div>
+</header>
+<section class="section-content mx-sm-3 mx-0">
+    <div class="GridBody">
+        @if (Model.Branches.Count > 1)
+        {
+            <div class="col-sm-3 col-6">
+                <div class="form-group">
+                    @Html.Label(EduSuiteUIResources.Branch, htmlAttributes: new { @class = "lblControlHead" })
+                    @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Branch, new { @class = "form-control SearchDropDown" })
+
+                    <span class="red">
+                        @Html.ValidationMessageFor(m => m.BranchKey)
+                    </span>
+                </div>
+            </div>
+        }
+        else
+        {
+            @Html.HiddenFor(m => m.BranchKey)
+
+        }
+        <div class="grid-nav-bar form-row justify-content-between">
+            <div class="col-lg-3 col-6">
+                <input id="txtsearch" type="text" name="focus" class="form-control" placeholder="@EduSuiteUIResources.Search@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Asset@EduSuiteUIResources.BlankSpace @EduSuiteUIResources.Purchase" /> @* Change Search TextBox Placeholder*@
+                <span id="iconSpan" class="iconSpan"><i class="fa fa-times-circle" aria-hidden="true"></i></span>
+
+            </div>
+
+            <div class="col-6">
+                <a class="btn btn-info btn-sm float-right" onclick='AssetPurchase.GetAssetPurchase()'>
+                    <i class="fa fa-refresh"></i>   Refresh
+                </a>
+            </div>
+
+        </div>
+
+        <div class="table-wrapper">
+            <div class="jqGrid_wrapper overflow-auto">
+                <table id="grid"></table>
+                <div id="pager"></div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+
+<script>
+    $(document).ready(function () {
+        $("#txtsearch").on("input", function () {
+            AssetPurchase.GetAssetPurchase();
+        });
+
+        $("#iconSpan").click(function () {
+            $('#txtsearch').val('');
+            AssetPurchase.GetAssetPurchase();
+        });
+        $("#BranchKey").on("change", function () {
+            AssetPurchase.GetAssetPurchase();
+        });
+        AssetPurchase.GetAssetPurchase();
+
+        $(window).on("resize", function () {
+            var $grid = $("#grid"),
+            newWidth = $grid.closest(".ui-jqgrid").parent().width();
+            $grid.jqGrid("setGridWidth", newWidth, true);
+        });
+    });
+</script>
+

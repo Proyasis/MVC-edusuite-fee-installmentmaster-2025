@@ -1,0 +1,96 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.WorkScheduleViewModel
+
+@using System.Web.Mvc
+@using CITS.EduSuite.Business.Models.ViewModels
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/Scripts/UnitTestSchedule")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Content/MultiselectJs")
+
+
+}
+<input type="hidden" id="hdnGetUnitTestSchedule" value="@Url.Action("GetUnitTestSchedule", "UnitTest")" />
+<input type="hidden" id="hdnDeleteUnitTest" value="@Url.Action("DeleteUnitTest", "UnitTest")" />
+<input type="hidden" id="hdnAddEditUnitTestSchedule" value="@Url.Action("AddEditUnitTestSchedule", "UnitTest")" />
+<input type="hidden" id="hdnFillSearchClassDetails" value="@Url.Action("FillSearchClassDetails", "UnitTest")" />
+
+
+
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-sm-6 col-12">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.WorkSchedule</h3>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 text-right">
+            <a href="@Url.Action("AddEditWorkSchedule", "WorkSchedule")" class="btn btn-success btn-sm "><i class="fa fa-plus-square-o"></i> <span>@EduSuiteUIResources.New @EduSuiteUIResources.BlankSpace @EduSuiteUIResources.WorkSchedule</span></a>
+        </div>
+    </div>
+</header>
+<section class="section-content mx-sm-3 mx-0">
+    <div class="GridBody">
+
+        
+
+        <div class="table-wrapper">
+
+            <div class="jqGrid_wrapper overflow-auto">
+                <table id="grid"></table>
+                <div id="pager"></div>
+            </div>
+        </div>
+
+
+    </div>
+</section>
+
+<script>
+    $(document).ready(function () {
+
+        AppCommon.FormatDateInput();
+        //$("#txtsearchDate").datepicker("setDate", new Date());
+
+        //$("#txtsearch").on("input", function () {
+        //    UnitTestSchedule.GetUnitTestSchedule();
+        //});
+
+        //$("#txtsearchDate").on("changeDate", function () {
+        //    UnitTestSchedule.GetUnitTestSchedule();
+        //})
+        //$("#BranchKey").change(function () {
+        //    var obj = {};
+        //    obj.key = $(this).val() != "" ? $(this).val() : 0;
+        //    AppCommon.BindDropDownbyId(obj, $("#hdnFillSearchClassDetails").val(), $("#ClassDetailsKey"), Resources.ClassCode);
+        //    UnitTestSchedule.GetUnitTestSchedule();
+        //});
+        //$("#ClassDetailsKey").change(function () {
+        //    UnitTestSchedule.GetUnitTestSchedule();
+        //});
+        //$("#BatchKey").change(function () {
+        //    UnitTestSchedule.GetUnitTestSchedule();
+        //});
+
+        //$("#iconSpan").click(function () {
+        //    $('#txtsearch').val('');
+        //    //$('#txtsearchDate').val('');
+
+        //    UnitTestSchedule.GetUnitTestSchedule();
+        //});
+        //UnitTestSchedule.GetUnitTestSchedule();
+        ////AppCommon.EditGridPopup($("#addEditStudentsPromotion"))
+
+
+
+
+    });
+</script>

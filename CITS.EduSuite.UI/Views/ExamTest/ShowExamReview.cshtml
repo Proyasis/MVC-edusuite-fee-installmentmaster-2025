@@ -1,0 +1,506 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.ExamTestViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Content/JqueryRepeater")
+    @Scripts.Render("~/bundles/CitsValidation")
+    @Scripts.Render("~/Scripts/ExamTest")
+}
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-12">
+            <div class="tbl">
+                <div class="tbl-row  px-1">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.ExamResults</h3>
+
+                        @if (DbConstants.User.RoleKey != DbConstants.Role.Students)
+                        {
+                            <ol class="breadcrumb breadcrumb-simple mb-2 float-sm-right">
+                                <li><a href="#" onclick="location.href='@Url.Action("ExamResultList", "ExamTest")' ">@EduSuiteUIResources.ExamResults</a></li>
+                                <li class="active">@EduSuiteUIResources.ShowResult</li>
+                            </ol>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="" id="examPersonDetails">
+    <div class="form-row">
+        <div class="col-lg-5 col-12">
+            <table class="table table-striped table-bordered table-sm">
+                <thead class="thead-light">
+                    <tr>
+                        <th class="p-1 h-25 text-center" style="width:150px">
+                            
+                        </th>
+                        <th colspan="2" class="p-1 h-25"><h3 class="m-0">@Model.ApplicantName</h3></th>
+                    </tr>
+
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="p-1 h-25" rowspan="5">
+                            @if (Path.GetExtension(Model.StudentProfilePhoto) != "")
+                            {
+                                <img class="img-thumbnail" src="@Url.Content(Model.StudentProfilePhoto)" alt="User profile picture">
+                            }
+                            else
+                            {
+                                <img class="img-thumbnail" src="~/images/no-photo.png" alt="User profile picture">
+
+                            }
+                        </td>
+                        <td class="p-1 h-25 d-none"></td>
+                        <td class="p-1 h-25 d-none" ></td>
+                    </tr>
+
+                    <tr>
+                        <td class="p-1 h-25 font-weight-bold">Test Paper</td>
+                        <td class="p-1 h-25">@Model.SubjectName @Model.TestPaperName</td>
+                    </tr>
+
+
+                    <tr>
+                        <td class="p-1 h-25 font-weight-bold">No Questions</td>
+                        <td class="p-1 h-25">@Model.TestSections.Count()</td>
+                    </tr>
+
+                    <tr>
+                        <td class="p-1 h-25 font-weight-bold">Total Score</td>
+                        <td class="p-1 h-25">@Model.MaximumScore</td>
+                    </tr>
+                    <tr>
+                        <td class="p-1 h-25 font-weight-bold">@EduSuiteUIResources.ClassCode</td>
+                        <td class="p-1 h-25"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="d-none">
+            <div class="ProfilePhoto">
+                @if (Path.GetExtension(Model.StudentProfilePhoto) != "")
+                {
+                    <img style="width:100%;height:100%" src="@Url.Content(Model.StudentProfilePhoto)" />
+                }
+                else
+                {
+                    <img class="img-thumbnail" src="~/images/no-photo.png" alt="User profile picture" style="width:100%;height:100%">
+                }
+            </div>
+        </div>
+
+        <div style="position: absolute;  margin-left: 99px;" class="col col-md-10 col-sm-12 d-none">
+            <div class="form-row examPersonDetails">
+                <div class="col-lg-2 col-md-2  col-sm-6   col-4 col-xs-6">Student Name</div>
+                <div class="col-lg-3 col-md-3  col-sm-6  col-4 col-xs-6" id="SpnApplicantName">:@Model.ApplicantName</div>
+            </div>
+            <div class="form-row examPersonDetails">
+                <div class="col-lg-2  col-md-2 col-sm-6  col-4 col-xs-6">Test Paper</div>
+                <div class="col-lg-3  col-md-3 col-sm-6  col-4 col-xs-6" id="SpnTestPaperName">:@Model.SubjectName @Model.TestPaperName</div>
+            </div>
+            <div class="form-row examPersonDetails">
+                <div class="col-lg-2  col-md-2 col-sm-6  col-4 col-xs-6">No Questions</div>
+                <div class="col-lg-3  col-md-3 col-sm-6  col-4 col-xs-6" id="SpnTestPaperName">:@Model.TestSections.Count()</div>
+            </div>
+            <div class="form-row examPersonDetails">
+                <div class="col-lg-2  col-md-2 col-sm-6  col-4 col-xs-6">Total Score</div>
+                <div class="col-lg-3  col-md-3 col-sm-6  col-4 col-xs-6" id="SpnTestPaperName">:@Model.MaximumScore</div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="ExamResultDetails" class="ExamReview col-sm-12">
+    <div class="dvAnswerCount">
+        <table>
+            <tr>
+                <th>Total Questions</th>
+                <th>Total Attempted </th>
+                <th> Correct Answers <i style="    color: #0c9e0c;" class="fa fa-check"></i> </th>
+                <th> Incorrect Answers <i class="fa  fa-times-circle text-danger"></i> </th>
+                @*<th>Total Score</th>*@
+                <th> Your Mark</th>
+                <th>Your Negative Marks</th>
+
+            </tr>
+            <tr>
+                <td><span id="SpnTotalQuestions">@Model.TotalQuestions</span></td>
+                <td><span id="SpnTotalAttempted" style="background: #7f134f;">@Model.TotalAttept</span></td>
+                <td><span id="SpnCorrectAnsweres" style="background:#4da26b">@Model.TotalCorrectAnswers</span></td>
+                <td><span id="SpnIncorrectAnswers" style="background:#c30d0d">@Model.TotalInCorrectAnswers</span></td>
+                @*<td><span id="spnNegativeMarks">@Model.MaximumScore</span></td>*@
+                <td><span id="spnScore" style="background: #0ca80c;">@Model.TotalScore</span></td>
+                <td><span id="spnNegativeMarks" style="background:#cf9617">@Model.TotalNegativeMarks</span></td>
+
+            </tr>
+        </table>
+    </div>
+    @if (Model.AnswerKeyStatus == true)
+    {
+        <div style="margin-top: 12px;" id="divMessage" class="col-12">
+            @*<div class="alert alert-danger" role="alert">
+
+                </div>*@
+            <div class="alert alert-success" role="alert">
+                @EduSuiteUIResources.ExamSubmited,@EduSuiteUIResources.ResultsNotUpdated
+            </div>
+        </div>
+    }
+
+
+
+    @for (int i = 0; i < Model.TestSections.Count(); i++)
+    {
+        <div class="col col-sm-12 QuestionItem text-left">
+
+            @for (int j = 0; j < Model.TestSections[i].QuestionDetails.Count(); j++)
+            {
+                <h2 class="m-0">
+                    QUESTION @Model.TestSections[i].QuestionDetails[j].QuestionNumber
+                    @if (Model.TestSections[i].QuestionDetails[j].IsCorrect && Model.TestSections[i].QuestionDetails[j].AnswerKey != null)
+                    {
+                        <span class="correctAnswer">(Correct Answer)</span>
+                    }
+
+                    @if (!Model.TestSections[i].QuestionDetails[j].IsCorrect && Model.TestSections[i].QuestionDetails[j].Mark != null && Model.TestSections[i].QuestionDetails[j].AnswerKey != null)
+                    {
+                        <span class="IncorrectAnswer">(Incorrect Answer)</span>
+                    }
+                    else if (Model.TestSections[i].QuestionDetails[j].Mark == null && Model.TestSections[i].QuestionDetails[j].AnswerKey != null)
+                    {
+                        <span class="NotAttended">(Not Attended)</span>
+                    }
+                    else if (Model.TestSections[i].QuestionDetails[j].AnswerKey == null)
+                    {
+                        <span class="NotUpdated">Result not updated</span>
+                    }
+
+
+
+                    @if (Model.TestSections[i].QuestionDetails[j].Mark != null)
+                    {
+                        <span class="float-right mark">
+                            @if (Model.TestSections[i].QuestionDetails[j].Mark < 0)
+                            {
+                                <span style="color:red">  @Model.TestSections[i].QuestionDetails[j].Mark  </span>
+                            }
+                            else
+                            {
+                                <span style="color:forestgreen">  +@Model.TestSections[i].QuestionDetails[j].Mark  </span>
+                            }
+
+
+                        </span>
+                    }
+                </h2>
+
+
+
+                <hr class="m-0">
+                <div>
+                    @Html.Raw(Model.TestSections[i].TestSectionFileName)
+                </div>
+
+
+                <div>
+                    <ul>
+                        @for (int k = 0; k < Model.TestSections[i].QuestionDetails[j].QuestionOptions.Count(); k++)
+                        {
+                            <li>
+
+                                <span>
+                                    @Model.TestSections[i].QuestionDetails[j].QuestionOptions[k].OptionValue
+
+                                    @if (Model.TestSections[i].QuestionDetails[j].QuestionOptions[k].OptionText != null && Model.TestSections[i].QuestionDetails[j].QuestionOptions[k].OptionText != "")
+                                    {
+                                        <span> - @Model.TestSections[i].QuestionDetails[j].QuestionOptions[k].OptionText </span>
+                                    }
+                                </span>
+
+                                @if (Model.TestSections[i].QuestionDetails[j].QuestionStatusKey != DbConstants.QuestionStatus.Markedforreview)
+                                {
+                                    if (Model.TestSections[i].QuestionDetails[j].QuestionOptions[k].OptionValue == Model.TestSections[i].QuestionDetails[j].AnswerText)
+                                    {
+                                        if (Model.TestSections[i].QuestionDetails[j].QuestionOptions[k].OptionValue == Model.TestSections[i].QuestionDetails[j].AnswerKey)
+                                        {
+
+                                            <i style="color: #0c9e0c;" class="fa fa-check"></i>
+                                        }
+                                        else if (Model.TestSections[i].QuestionDetails[j].AnswerKey != null)
+                                        {
+                                            if (Model.TestSections[i].QuestionDetails[j].Mark != null)
+                                            {
+                                                <i class="fa  fa-times-circle text-danger"></i>
+                                            }
+                                        }
+                                    }
+                                    else if (Model.TestSections[i].QuestionDetails[j].QuestionOptions[k].OptionValue == Model.TestSections[i].QuestionDetails[j].AnswerKey)
+                                    {
+
+                                        <i style="    color: #0c9e0c;" class="fa fa-check"></i>
+                                    }
+
+
+
+                                }
+                                else
+                                {
+                                    if (Model.TestSections[i].QuestionDetails[j].QuestionOptions[k].OptionValue == Model.TestSections[i].QuestionDetails[j].AnswerKey)
+                                    {
+
+                                        <i style="color: #0c9e0c;" class="fa fa-check"></i>
+                                    }
+                                }
+
+
+                            </li>
+                        }
+                    </ul>
+
+                </div>
+            }
+        </div>
+    }
+
+</div>
+
+
+
+
+
+<style>
+    [data-questionstatus="1"], #NtVisitedCount {
+        background-color: #8c8fb1eb !important;
+        /* color: black !important; */
+        border-top-right-radius: 14px !important;
+        border-bottom-left-radius: 14px !important;
+    }
+
+    [data-questionstatus="2"], #NtAnsweredCount {
+        background: #253152 !important;
+        color: white !important;
+        border-top-right-radius: 14px !important;
+        border-bottom-left-radius: 14px !important;
+    }
+
+    [data-questionstatus="3"], #AnsweredCount {
+        background: #09992e !important;
+        border-radius: 0px;
+        color: white !important;
+    }
+
+    [data-questionstatus="4"], #MarkedForReviewCount {
+        background: #0457ab !important;
+        color: white !important;
+        border-top-right-radius: 14px !important;
+        border-bottom-left-radius: 14px !important;
+    }
+
+
+    [data-questionstatus="5"], #AnsweredMarkedForReviewCount {
+        background: #0e7d7d !important;
+        color: white !important;
+    }
+
+
+
+    #dvQuestionNumber button {
+        color: #344495;
+        font-weight: bold;
+        border: 0px;
+        margin-right: 6px;
+        width: 32px;
+        height: 42px;
+        border: 0px !important;
+        border-radius: initial;
+        border: solid #d3dfe4 0px !important;
+        border-radius: 0px;
+        box-shadow: none;
+    }
+
+        #dvQuestionNumber button.CurrentPage {
+            background: #bf0707 !important;
+            /*opacity: 0.6;*/
+        }
+
+    .ExamReview {
+        float: left;
+        /* height: 90px; */
+        border: solid #dee1e6 1.1px;
+        padding-top: 17px;
+        background: white;
+        border-radius: 0px;
+        text-align: center;
+        padding-bottom: 25px;
+        overflow: auto;
+    }
+
+        .ExamReview table tr td, .ExamReview table tr th {
+            width: 15.2%;
+            font-size: 12px;
+            font-weight: bold;
+            font-weight: 600;
+            /* text-transform: uppercase; */
+            font-size: 11.6px;
+            color: black;
+        }
+
+        .ExamReview table {
+            width: 100%;
+        }
+
+            .ExamReview table span {
+                min-width: 56px;
+                display: inline-block;
+                text-align: center;
+                font-size: 20px;
+                height: 56px;
+                color: #ffffff;
+                padding-top: 11px;
+                border-radius: 50%;
+                border: solid #cbd2ec 0px;
+                background: #09508e;
+                /* color: white; */
+                /* border-top-right-radius: 14px !important; */
+                /* border-right: solid #f4b237 6px; */
+                /* box-shadow: 2px 3px 3px #716464; */
+            }
+
+        .ExamReview tr td, .ExamReview tr th {
+            /*border: solid #bad1dc 1px;*/
+            padding: 12px 4px;
+        }
+
+        .ExamReview .fa {
+            font-size: 18px;
+        }
+
+    div#ExamReview span {
+        color: black;
+    }
+
+    .exam-paper {
+        background: white;
+        box-shadow: none;
+    }
+
+    .examPersonDetails {
+        text-transform: uppercase;
+        font-weight: bold;
+        font-size: 12px;
+        line-height: 24px;
+    }
+
+        .examPersonDetails .col:first-child {
+            font-weight: 500;
+            line-height: 27px;
+            text-transform: UPPERCASE;
+            font-size: 12px;
+        }
+
+    #ExamReview a {
+        font-size: 10px !important;
+    }
+
+    .QuestionItem {
+        min-height: 50px;
+        margin-bottom: 3px;
+        margin-top: 11px;
+        padding-bottom: 16px;
+        border-bottom: solid #f3f2d9 4px;
+        padding-top: 14px;
+        word-break: break-all;
+    }
+
+        .QuestionItem h2 {
+            color: #2876c3;
+            font-size: 12px;
+            font-weight: 500;
+            padding-bottom: 9px;
+            font-weight: bold;
+        }
+
+        .QuestionItem hr {
+            border-top: 1px solid #d0e2f3;
+        }
+
+        .QuestionItem ul li {
+            list-style-type: none;
+            display: inline;
+            margin-right: 29px;
+            font-weight: bold;
+            font-family: sans-serif;
+            font-size: 14px;
+        }
+
+        .QuestionItem ul li {
+            list-style-type: none;
+            display: block;
+            margin-right: 29px;
+            font-family: sans-serif;
+            font-size: 14px;
+            /* background: #e8e8e8; */
+            margin-right: 2px !important;
+            padding: 3px 1px;
+            font-weight: normal;
+            margin-top: 6px;
+        }
+
+    p {
+        margin: 0px;
+    }
+
+    .correctAnswer {
+        color: #176d17;
+        text-transform: capitalize;
+        background: #e7ffe9;
+        padding: 1px 3px;
+    }
+
+    .IncorrectAnswer {
+        color: #dc0909;
+        text-transform: capitalize;
+        background: #f9dede;
+        padding: 2px 4px;
+        border-radius: 2px;
+    }
+
+    .NotAttended {
+        color: #2c5a82;
+        text-transform: capitalize;
+        background: #cedbe9;
+        padding: 2px 4px;
+        border-radius: 2px;
+    }
+
+    .NotUpdated {
+        color: #d81414;
+        text-transform: capitalize;
+        background: #e6e8ff;
+        padding: 2px 4px;
+        border-radius: 2px;
+    }
+
+    .mark {
+        color: #221e1e;
+        background: #e2e6f3;
+        padding: 2px 4px;
+        border-radius: 2px;
+        font-weight: bold;
+        text-transform: capitalize;
+    }
+</style>
+
+
+<script type="text/javascript">
+
+    function preventBack() { window.history.forward(); }
+    setTimeout("preventBack()", 0);
+    window.onunload = function () { null };
+</script> 

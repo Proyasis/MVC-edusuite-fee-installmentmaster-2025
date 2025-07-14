@@ -1,0 +1,121 @@
+﻿@model List<CITS.EduSuite.Business.Models.ViewModels.ReportViewModel>
+@using CITS.EduSuite.Business.Models.ViewModels
+@using CITS.EduSuite.UI
+
+
+
+
+<section class="card">
+    <header class="card-header w3-indigo">
+        @EduSuiteUIResources.Payment @EduSuiteUIResources.BlankSpace @EduSuiteUIResources.Details
+    </header>
+    <div class="card-body p-2 overflow-auto" id="dynamicRepeater">
+        <table class="table table-bordered table-sm">
+            <thead>
+                <tr>
+                    <th>
+                        @EduSuiteUIResources.Date
+                    </th>
+                    <th>
+                        @EduSuiteUIResources.SlNo
+                    </th>
+                    <th>
+                        @EduSuiteUIResources.StudentName
+                    </th>
+                    <th class="d-none">
+                        @EduSuiteUIResources.RollNo
+                    </th>
+                    <th>
+                        @EduSuiteUIResources.VoucherNumber
+                    </th>
+                    <th class="d-none">
+                        @EduSuiteUIResources.Date
+                    </th>
+                    <th>
+                        @EduSuiteUIResources.FeeType
+                    </th>
+                    <th class="">
+                        @EduSuiteUIResources.PaymentMode
+                    </th>
+                    <th>
+                        @EduSuiteUIResources.Amount
+                    </th>
+
+                    <th class="d-none">
+                        @EduSuiteUIResources.Remarks
+                    </th>
+                    <th>
+                        @EduSuiteUIResources.Action
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (var i = 0; i < Model.Count; i++)
+                {
+                   
+                <tr>
+                    @if (i == 0 || (i != 0 && Convert.ToDateTime(Model[i].FeeDate).Date != Convert.ToDateTime(Model[i - 1].FeeDate).Date))
+                    {
+                        <td rowspan="@(Model.Count(row=>Convert.ToDateTime(row.FeeDate).Date==Convert.ToDateTime(Model[i].FeeDate).Date))">
+                            <strong>  @(string.Format("{0:dd/MM/yyyy}", Model[i].FeeDate))</strong>
+                        </td>
+                    }
+                    <td>
+                        @(i + 1)
+                    </td>
+                    <td>
+                        @Model[i].Name
+                    </td>
+                    <td class="d-none">
+                        @Model[i].RollNoCode
+                    </td>
+                    <td>
+                        @Model[i].ReceiptNo
+                    </td>
+                    <td class="d-none">
+                        @string.Format("{0:dd/MM/yyyy}", Model[i].FeeDate)
+                    </td>
+                    <td>
+                        @Model[i].FeeTypeName
+                    </td>
+                    <td class="">
+                        @Model[i].PaymentModeName
+
+                    </td>
+                    <td>
+                        @string.Format("{0:G29}", Model[i].FeeAmount)
+                    </td>
+                    <td class="d-none">
+                        @Model[i].FeeDescreption
+
+                    </td>
+                    <td>
+                        <div class="btn-group">
+                            @if (Model[i].IsCancel == false)
+                            {
+                                <button type="button" class="btn btn-primary btn-sm mx-1 btnfeeEdit" onclick="javascript:UniversityPaymentCancelation.EditPopup('','@Model[i].RowKey','@Model[i].UniversityPaymentDetailsKey');"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+                            }
+                            else
+                            {
+                                <span class="label label-danger">Canceled</span>
+                                    }
+
+
+                            </div>
+                    </td>
+                </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td></td>
+                    <td colspan="5"><strong> @EduSuiteUIResources.Total</strong></td>
+                    <td><strong>@string.Format("{0:G29}", Model.Sum(x => x.FeeAmount)) </strong></td>
+                </tr>
+            </tfoot>
+        </table>
+
+
+    </div>
+</section>
+s

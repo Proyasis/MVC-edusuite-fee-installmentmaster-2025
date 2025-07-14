@@ -1,0 +1,206 @@
+﻿@using CITS.EduSuite.UI.Resources
+@model CITS.EduSuite.Business.Models.ViewModels.PartyViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+@using System.Web.Mvc
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Content/TimePickerJS")
+    @Scripts.Render("~/Scripts/PartyWiseOrderDetails")
+    @Scripts.Render("~/Scripts/Party")
+}
+@{
+    ViewBag.Title = CITSEduSuiteUIResource.Party;
+}
+<input type="hidden" id="hdnGetPartyList" value="@Url.Action("GetParty", "Party")" />
+<input type="hidden" id="hdnViewPartyOrders" value="@Url.Action("ViewPartyOrders", "Party")" />
+@Html.HiddenFor(m => m.PartyTypeKey)
+
+<div class="col-sm-12 Page_Head_Master">
+    <div class="col-sm-6 Text_Left">
+        @if (Model.PartyTypeKey == DbConstants.PartyType.Supplier)
+        {
+            <label class="Page_Heading  ">@CITSEduSuiteUIResource.Supplier</label>
+        }
+        else if (Model.PartyTypeKey == DbConstants.PartyType.Customer)
+        {
+            <label class="Page_Heading  ">@CITSEduSuiteUIResource.Customer</label>
+        }
+        else if (Model.PartyTypeKey == DbConstants.PartyType.Agent)
+        {
+            <label class="Page_Heading  ">@CITSEduSuiteUIResource.Agent</label>
+        }
+        else if (Model.PartyTypeKey == DbConstants.PartyType.OutSource)
+        {
+            <label class="Page_Heading  ">@CITSEduSuiteUIResource.OutSource@CITSEduSuiteUIResource.BlankSpace@CITSEduSuiteUIResource.Party</label>
+        }
+    </div>
+
+    <div class="col-sm-6 Text_Right">
+        <a class="btn btn-info btn-sm F_Right btn_Refresh" onclick='window.location.reload()'>
+            <i class="fa fa-refresh"></i>   Refresh
+        </a>
+    </div>
+
+
+</div>
+
+<div class="ledgerTable">
+    <form>
+        <div class="grid-nav-bar col-sm-12">
+            @if (Model.Branches.Count > 1)
+            {
+                <div class="col-sm-2 form-col">
+                    <div class="form-group">
+                        @Html.Label(CITSEduSuiteUIResource.Branch, htmlAttributes: new { @class = "lblControlHead" })<span class="spnStar">*</span>
+
+                        @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), CITSEduSuiteUIResource.Select + CITSEduSuiteUIResource.BlankSpace + CITSEduSuiteUIResource.Branch, new { @class = "form-control SearchDropDown" })
+
+                        <span class="red">
+                            @Html.ValidationMessageFor(m => m.BranchKey)
+                        </span>
+                    </div>
+                </div>
+            }
+            else
+            {
+                @Html.HiddenFor(m => m.BranchKey)
+
+            }
+            <div class="col-sm-2 form-col">
+                <div class="form-group">
+                    @Html.Label(CITSEduSuiteUIResource.Party, htmlAttributes: new { @class = "lblControlHead" })
+                    <input id="txtsearchPartyName" type="text" name="focus" class="form-control gridSearchTextBox" placeholder="@CITSEduSuiteUIResource.Search@CITSEduSuiteUIResource.BlankSpace @CITSEduSuiteUIResource.Party" />
+                </div>
+            </div>
+            <div class="col-sm-1 form-col">
+                <div class="form-group text-center">
+                    @Html.Label(CITSEduSuiteUIResource.Balance + CITSEduSuiteUIResource.BlankSpace + CITSEduSuiteUIResource.Due, htmlAttributes: new { @class = "lblControlHead",@style="margin-bottom: 7px;margin-top: 6px;" })
+
+                    <br />@Html.CheckBox("isBalanceDue", false, new { @class = "flex-checkbox" })
+                </div>
+            </div>
+            <div class="pull-right">
+                <button id="btnExport" type="button" class="btn btn-success btn-sm" title="Export" data-type="E"><i class="fa fa-file-excel-o"></i></button>
+                <button id="btnPrint" type="button" class="btn btn-primary btn-sm" title="Print" data-type="P"><i class="fa fa-print"></i></button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="GridBody">
+    <br />
+    <div class="portlet-body" id="portletBody">
+        <div class='table-scrollable'>
+            <table id="grid"></table>
+            <div id="pager"></div>
+        </div>
+    </div>
+
+
+
+</div>
+<div id='myModal' class='modal fade in'>
+    <div class="modal-dialog  ">
+        <div class="modal-content">
+            <div id='myModalContent'></div>
+        </div>
+    </div>
+</div>
+
+<div id='myModal1' class='modal fade in'>
+    <div class="modal-dialog ViewPartyOrder">
+        <div class="modal-content">
+            <div id='myModalContent1'></div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+
+        $("#txtsearchPartyName").on("input", function () {
+            PartyWiseOrderDetails.GetParty();
+        });
+
+        $("[id*=BranchKey],[id*=isBalanceDue]").on("change", function () {
+            PartyWiseOrderDetails.GetParty();
+        });
+
+
+        PartyWiseOrderDetails.GetParty();
+
+        $(window).on("resize", function () {
+            var $grid = $("#grid"),
+            newWidth = $grid.closest(".ui-jqgrid").parent().width();
+            $grid.jqGrid("setGridWidth", newWidth, true);
+        });
+
+        //Export To Excel
+        //Export To Excel
+        var obj = { ContainerId: $("#grid") };
+        $("#btnExport,#btnPrint").on("click", function () {
+            SetExportData(obj)
+            AppCommon.ExportPrintAjax(obj, $(this).data("type"));
+        });
+    });
+    function SetExportData(obj)
+    {
+        obj.JSONData = $.extend([], true, $("#grid").jqGrid('getRowData'));
+        var columnModel = $.extend([], true, $("#grid").jqGrid('getGridParam', 'colModel'));
+        var columnNames = $.extend([], true, $("#grid").jqGrid('getGridParam', 'colNames'));
+        var remove = 0;
+        for (var i = columnModel.length - 1; i >= 0; i--) {
+            if (columnModel[i].hidden) {
+                columnModel.splice(i, 1);
+            }
+            else {
+                columnModel[i]["headertext"] = columnNames[i];
+            }
+        }
+        columnModel.splice(columnModel.length - 1, 1);
+        var str = JSON.stringify(columnModel);
+        str = str.replace(/\"name\":/g, "\"datafield\":");
+        obj.ColumnNames = JSON.parse(str)
+        var PartyKey=@Model.PartyTypeKey
+        if ( PartyKey== @DbConstants.PartyType.Supplier){
+            obj.Title = '@CITSEduSuiteUIResource.Supplier';
+        }
+    else if (PartyKey== @DbConstants.PartyType.Customer)
+        {
+            obj.Title = '@CITSEduSuiteUIResource.Customer';
+        }
+    else if (PartyKey== @DbConstants.PartyType.Agent)
+        {
+            obj.Title = '@CITSEduSuiteUIResource.Agent';
+        }
+    else if (PartyKey == @DbConstants.PartyType.OutSource)
+        {
+            obj.Title = '@CITSEduSuiteUIResource.OutSource@CITSEduSuiteUIResource.BlankSpace@CITSEduSuiteUIResource.Party';
+        }
+
+        obj.FileName = (obj.Title).replace(/-/g, '_');
+        obj.ajaxUrl = $("#hdnGetPartyList").val();
+        obj.ajaxType = "Get";
+        obj.ajaxData = {
+            searchText: $('#txtsearchPartyName').val(),
+            PartyTypeKey: $('#PartyTypeKey').val(),
+            branchKey: $('#BranchKey').val(),
+            isBalanceDue: $("input[type=checkbox][name*=isBalanceDue]").prop("checked"),
+            sidx: 'RowKey',
+            sord: 'desc',
+            page: 0,
+            rows: 0
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    $(function () {
+        $.ajaxSetup({ cache: false });
+
+        $("a[data-modal]").on("click", function (e) {
+            e.preventDefault();
+            Party.EditPopup($(this));
+        });
+    });
+</script>

@@ -1,0 +1,185 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.VideoViewModel
+
+
+
+@section scripts{
+
+
+    @Scripts.Render("~/Scripts/Videos")
+
+
+}
+<input type="hidden" id="hdnGetVideoCategory" value="@Url.Action("GetVideoCategory", "Videos")" />
+<input type="hidden" id="hdnGetVideos" value="@Url.Action("GetVideos", "Videos")" />
+<input type="hidden" id="hdnGetVideosDetails" value="@Url.Action("GetVideosDetails", "Videos")" />
+
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-sm-6 col-12">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.Videos</h3>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</header>
+
+<div class="form-row">
+
+
+
+    <div class="col-12 col-sm-3 col-lg-3">
+        <div id="VideosCategoryList">
+
+        </div>
+    </div>
+
+    <div class="col-12 col-sm-9 col-lg-9">
+        @*<div class="col-12 col-sm-12 col-lg-12">
+                <h6>
+                    Total Records  <span id="TotalRecords" class="badge badge-info">0</span>
+
+                </h6>
+            </div>*@
+
+        <div id="VideosDetailsList">
+
+        </div>
+
+
+        <div style="min-height: 300px;" id="VideossList">
+
+        </div>
+
+
+
+
+    </div>
+</div>
+
+<script>
+    var jsonData =@(Html.Raw(Json.Encode(Model)));
+
+    $(document).ready(function () {
+        ViewVideoUpload.GetVideosCategory(jsonData);
+    });
+
+
+    $(document).ready(function () {
+        $("#VideoCategories li").click(function () {
+            $("#VideoCategories li").removeClass("active");
+            $(this).addClass("active");
+
+        });
+
+
+
+        $(".selector").click(function () {
+            $(".selector").removeClass("active");
+            $(this).addClass("active");
+            alert("HI");
+
+        });
+
+    });
+
+</script>
+
+<style>
+    body {
+        overflow-y: scroll;
+    }
+
+    li.list-group-item.VideosList {
+        background: white;
+        border: 0px;
+        margin-bottom: 1px;
+        border-radius: 0px;
+        cursor: pointer;
+        border-bottom: dotted #689055 1px;
+    }
+
+        li.list-group-item.VideosList a {
+            font-weight: bold;
+            font-size: 21px;
+            color: #107db5;
+        }
+
+    .videoLabel {
+        background: white;
+        padding: 5px 1px;
+        line-height: 25px;
+    }
+
+    .videoTitle {
+        font-weight: bold;
+        font-size: 12px;
+    }
+
+    .VideoItem {
+        margin-bottom: 14px;
+        cursor: pointer;
+        border: solid 2px;
+        margin-right: 18px;
+        border-radius: 8px;
+    }
+
+    span.PlayIcon {
+        font-size: 52px;
+        position: absolute;
+        top: 68px;
+        left: 0px;
+        right: 0px;
+        bottom: 0px;
+        margin: auto;
+        width: 40px;
+        color: #00000082;
+    }
+
+
+    .form-row.largeVideo {
+        width: 84%;
+        margin-top: 7px;
+        margin-bottom: 12px;
+        margin-left: 2px;
+    }
+
+    span.watchVideo {
+        background: black;
+        width: 100%;
+        display: block;
+        text-align: center;
+        color: white;
+        padding: 16px 1px;
+        position: absolute;
+        margin-top: -74px;
+        opacity: 0;
+        transition: 0.5s;
+    }
+
+    .VideoItem:hover .watchVideo {
+        opacity: 1;
+        position: absolute;
+        margin-top: -113px;
+        width: 97%;
+        background: #000000b8;
+    }
+
+    .btnDownload {
+        font-size: 11px;
+        font-weight: bold;
+        margin-left: 8px;
+    }
+
+    .iframe-container iframe {
+        max-height: 195px;
+        max-width: 439px;
+    }
+</style>

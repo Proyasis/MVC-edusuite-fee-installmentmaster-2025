@@ -1,0 +1,242 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.AttendanceConfigurationViewModel
+
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+
+    @Scripts.Render("~/Scripts/AttendanceConfiguration")
+}
+<div class="modal-header">
+    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+    <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.Add @EduSuiteUIResources.Sla @EduSuiteUIResources.Edit @EduSuiteUIResources.AttendanceConfiguration</h4>
+</div>
+@using (Html.BeginForm("AddEditAttendanceConfiguration", "AttendanceConfiguration", FormMethod.Post, new { @id = "frmAttendanceConfiguration" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.RowKey)
+    @Html.ValidationSummary(true)
+    <div class="modal-body">
+        <div class="form-master">
+            <div class="form-row">
+                <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+            </div>
+
+            <div class="form-row">
+
+                @if (Model.Branches.Count == 1)
+                {
+                    {
+                        Model.BranchKey = (Model.BranchKey == 0 || Model.BranchKey == null) ? (short)Model.Branches.Select(x => x.RowKey).FirstOrDefault() : Model.BranchKey;
+                    }
+                    @Html.HiddenFor(m => m.BranchKey)
+                }
+                else
+                {
+                    <div class="col-12 col-sm-3 col-lg-4">
+                        <fieldset class="form-group">
+                            @Html.Label(EduSuiteUIResources.Branch, htmlAttributes: new { @id = "lblBranch", @class = "form-label" })
+                            <div class="required-icon"><div class="text">*</div></div>
+                            @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Branch, new { @class = "form-control input-control", @InputFor = "lblBranch", @data_live_search = "true" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.BranchKey)
+                            </span>
+                        </fieldset>
+                    </div>
+                }
+
+                <div class="col-sm-4 col-6">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.ConfigurationType, htmlAttributes: new { @id = "lblConfigurationType", @class = "form-label" })
+                        <div class="required-icon"><div class="text">*</div></div>
+                        @Html.DropDownListFor(m => m.AttendanceConfigTypeKey, new SelectList(Model.AttendanceConfigTypes, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.ConfigurationType, new { @class = "input-control form-control form-control-sm", @data_plugin_type = "select2", @InputFor = "lblAttendanceConfigType" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.AttendanceConfigTypeKey)
+                        </span>
+                    </div>
+                </div>
+
+                @*<div class="col-4">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.Shift + EduSuiteUIResources.AllocationType, htmlAttributes: new { @class = "form-label" })
+                        <div class="required-icon"><div class="text">*</div></div>
+                        @Html.DropDownListFor(m => m.ShiftAllocationTypeKey, new SelectList(Model.ShiftApplocationTypes, "RowKey", "Text"), new { @class = "input-control form-control form-control-sm" })
+                         <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.ShiftAllocationTypeKey)
+                        </span>
+                    </div>
+                </div>
+
+            <div class="row bottomLine">
+                    <div class="col-4">
+                        <div class="form-group">
+                            @Html.Label(EduSuiteUIResources.BeginTime, htmlAttributes: new { @id = "lblInTime", @class = "form-label" })
+                            <div class="required-icon"><div class="text">*</div></div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            <div class="input-group">
+                                @Html.TextBoxFor(m => m.BeginTime, new { @class = "input-control form-control form-control-sm form-control-sm", @data_input_type = "time", @data_inputmask = "'alias':'hh:mm t','hourFormat': '12','removeMaskOnSubmit':true", @InputFor = "lblInTime" })
+                            </div>
+                             <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.BeginTime)
+                            </span>
+
+                        </div>
+                    </div>
+
+                    <div class="col-4">
+                        <div class="form-group">
+                            @Html.Label(EduSuiteUIResources.EndTime, htmlAttributes: new { @id = "lblOutTime", @class = "form-label" })
+                            <div class="required-icon"><div class="text">*</div></div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            <div class="input-group">
+                                @Html.TextBoxFor(m => m.EndTime, new { @class = "input-control form-control form-control-sm", @data_input_type = "time", @data_inputmask = "'alias':'hh:mm t','hourFormat': '12','removeMaskOnSubmit':true", @InputFor = "lblOutTime" })
+
+                            </div>
+                             <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.EndTime)
+                            </span>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="row bottomLine">
+                    <div class="col-4">
+                        <div class="form-group">
+                            @Html.Label("Punch Begin Duration", htmlAttributes: new { @class = "form-label" })
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            <div class="input-group">
+                                @Html.TextBoxFor(m => m.PunchBeginDuration, new { @class = "input-control form-control form-control-sm form-control-sm" })
+
+                            </div>
+                             <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.PunchBeginDuration)
+                            </span>
+
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            @Html.Label(EduSuiteUIResources.TotalWorkingHours, htmlAttributes: new { @class = "form-label" })
+                            <div class="required-icon"><div class="text">*</div></div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+
+                            @Html.TextBoxFor(m => m.TotalWorkingHours, new { @class = "input-control form-control form-control-sm", @InputFor = "lblTotalWorkingHours" })
+                             <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.TotalWorkingHours)
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    @Html.TextBoxFor(m => m.MinimmDifferencePunch, new { @class = "input-control form-control form-control-sm" })
+                                </div>
+                                 <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => m.MinimmDifferencePunch)
+                                </span>
+                            </div>
+                        </div>
+                </div>*@
+                <div class="col-sm-4 col-6">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.TotalWorkingHours, htmlAttributes: new { @class = "form-label" })
+                        <div class="required-icon"><div class="text">*</div></div>
+                        @Html.TextBoxFor(m => m.TotalWorkingHours, "{0:G29}", new { @class = "input-control form-control form-control-sm", @InputFor = "lblTotalWorkingHours" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.TotalWorkingHours)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-6">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.TotalWorkingDays, htmlAttributes: new { @class = "form-label" })
+                        <div class="required-icon"><div class="text">*</div></div>
+                        @Html.TextBoxFor(m => m.BaseDaysPerMonth, "{0:G29}", new { @class = "input-control form-control form-control-sm", @InputFor = "lblTotalWorkingHours" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.BaseDaysPerMonth)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-sm-8 col-6">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.OvertimeAdditionAmount, htmlAttributes: new { @id = "lblOvertimeAdditionAmount", @class = "form-label" })
+                        <div class="input-group">
+                            @Html.TextBoxFor(m => m.OvertimeAdditionAmount, "{0:G29}", new { @class = "input-control form-control form-control-sm", @InputFor = "lblOvertimeAdditionAmount" })
+
+                            <div class="input-group-append">
+                                @Html.DropDownListFor(m => m.UnitTypeKey, new SelectList(Model.UnitTypes, "RowKey", "Text"), new { @class = "input-control form-control form-control-sm", @data_plugin_type = "select2" })
+                            </div>
+                        </div>
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.OvertimeAdditionAmount)
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-6">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.AutoApproval, htmlAttributes: new { @id = "lblAutoApproval", @class = "form-label" })
+                        <br />
+                        <div class="switch-check">
+                            @Html.CheckBoxFor(m => m.AutoApproval, new { @InputFor = "lblAutoApproval", @class = "switch-input" })
+                            <div class="switch-label" data-on="@EduSuiteUIResources.On" data-off="@EduSuiteUIResources.Off"></div>
+                            <div class="switch-handle"></div>
+                        </div>
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.AutoApproval)
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer justify-content-start">
+        <div class="form-group">
+            <button type="submit" id="btnSave" class="btn btn-sm btn-success mx-1"><i class="fa fa-save"></i> @EduSuiteUIResources.Save</button>
+            <button type="button" data-dismiss="modal" class="btn btn-sm btn-danger mx-1">@EduSuiteUIResources.Cancel</button>
+
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $("[data-input-type =time]").each(function () {
+                if ($(this).val() != "") {
+                    $(this).val(moment($(this).val(), ["HH:mm:ss"]).format("hh:mm A"));
+                }
+            })
+
+            $("#btnSave").on("click", function () {
+                $("[data-input-type=time]").each(function () {
+                    this.inputmask.remove();
+                    if ($(this).val() != "") {
+                        $(this).val(moment($(this).val(), ["hh:mm A"]).format("HH:mm:ss"));
+                    }
+                })
+
+            })
+
+
+            AppCommon.FormatDateInput();
+            AppCommon.FormatInputCase();
+            AppCommon.FormatTimeInput();
+            AppCommon.AutoHideDropdown();
+        });
+
+    </script>
+}
+
+

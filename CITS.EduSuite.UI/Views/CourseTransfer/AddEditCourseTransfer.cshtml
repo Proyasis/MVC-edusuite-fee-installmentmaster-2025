@@ -1,0 +1,167 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.CourseTransferViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+@using CITS.EduSuite.UI
+<div class="modal-header">
+    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+    <h4 class="modal-title" id="myModalLabel"> @EduSuiteUIResources.CourseTransfer</h4>
+</div>
+
+
+<input type="hidden" id="hdnFetchTCDetails" value="@Url.Action("FetchTCDetails","CourseTransfer")" />
+<input type="hidden" id="hdnCourseTransferPath" value=@Url.Content("~/Templates/NotificationTemplate/CourseTransfer.html") />
+
+
+
+@using (Html.BeginForm("AddEditCourseTransfer", "CourseTransfer", FormMethod.Post, new { @id = "frmAddEditCourseTransfer" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(m => m.RowKey)
+    @Html.HiddenFor(m => m.ApplicationKey)
+    @Html.HiddenFor(m => m.TemplateKey)
+    @Html.HiddenFor(m => m.StudentEmail)
+    @Html.HiddenFor(m => m.StudentMobile)
+    @Html.HiddenFor(m => m.FromAcademicTermKey)
+    @Html.HiddenFor(m => m.FromCourseKey)
+    @Html.HiddenFor(m => m.FromUniverisityKey)
+    <div class="modal-body">
+        @if ((Model.ApplicationKey != 0) || !String.IsNullOrEmpty(Model.AdmissionNo))
+        {
+            @Html.Action("StudentDetail", "Shared", new { id = (Model.ApplicationKey ?? 0), AdmissionNo = Model.AdmissionNo })
+        }
+
+        <div class="form-master">
+
+            <div class="form-row">
+                @if ((bool)ViewBag.ShowAcademicTerm)
+                {
+                    <div class="col-12 col-sm-3 col-lg-3 ">
+                        <div class="form-group">
+                            @Html.Label(EduSuiteUIResources.AcademicTerm, htmlAttributes: new { @id = "lblAcademicTerm", @class = "form-label" })
+                            <div class="required-icon"><div class="text">*</div></div>
+                            @Html.DropDownListFor(m => m.ToAcademicTermKey, new SelectList(Model.AcademicTerms, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.AcademicTerm, new { @data_toggle = "dropdown", @class = "form-control input-control", @InputFor = "lblAcademicTerm" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.ToAcademicTermKey)
+                            </span>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    {
+                        Model.ToAcademicTermKey = (byte)Model.AcademicTerms.Select(row => row.RowKey).FirstOrDefault();
+
+                    }
+                    @Html.HiddenFor(m => m.ToAcademicTermKey)
+                }
+                <div class="col-12 col-sm-3 col-lg-4">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.CourseType, htmlAttributes: new { @id = "lblProgramType", @class = "form-label" })
+                        <div class="required-icon"><div class="text">*</div></div>
+                        @Html.DropDownListFor(m => m.CourseTypeKey, new SelectList(Model.CourseTypes, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.CourseType, new { @class = "form-control input-control select2", @InputFor = "lblProgramType", @data_live_search = "true" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.CourseTypeKey)
+                        </span>
+                    </fieldset>
+                </div>
+                <div class="col-12 col-sm-3 col-lg-4">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.Course, htmlAttributes: new { @id = "lblProgram", @class = "form-label" })
+                        <div class="required-icon"><div class="text">*</div></div>
+                        @Html.DropDownListFor(m => m.ToCourseKey, new SelectList(Model.Courses, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Course, new { @class = "form-control input-control", @data_live_search = "true" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.ToCourseKey)
+                        </span>
+                    </fieldset>
+                </div>
+
+                @if ((bool)ViewBag.ShowUniversity)
+                {
+                    <div id="dvUniversity" class="col-12 col-sm-3 col-lg-3 ">
+                        <fieldset class="form-group">
+                            @Html.Label(EduSuiteUIResources.AffiliationsTieUps, htmlAttributes: new { @id = "lblUniversity", @class = "form-label" })
+                            <div class="required-icon"><div class="text">*</div></div>
+                            @Html.DropDownListFor(m => m.ToUniverisityKey, new SelectList(Model.Universities, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.AffiliationsTieUps, new { @class = "form-control input-control", @InputFor = "lblUniversity" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.ToUniverisityKey)
+                            </span>
+
+                        </fieldset>
+                    </div>
+                }
+                else
+                {
+                    {
+                        Model.ToUniverisityKey = (short)Model.Universities.Select(row => row.RowKey).FirstOrDefault();
+                    }
+                    @Html.HiddenFor(m => m.ToUniverisityKey)
+                }
+
+                @if ((bool)Model.IsChangeAdmissionNo)
+                {
+
+                    <div class="checkbox-bird green inline-block mr-5">
+                        <br />
+                        @Html.CheckBoxFor(m => m.IsChangeAdmissionNo, new { @InputFor = "lblConsession", @class = "switch-input" })
+                        <label for="IsChangeAdmissionNo">Change Admission No</label>
+                    </div>
+                }
+                else
+                {
+                    {
+                        Model.IsChangeAdmissionNo = false;
+                    }
+                    @Html.HiddenFor(m => m.IsChangeAdmissionNo)
+                }
+                <div class="col-12">
+                    <fieldset class="form-group ">
+                        @Html.Label(EduSuiteUIResources.Remarks, htmlAttributes: new { @id = "lblRemarks", @class = "form-label" })<span class="spnStar"></span>
+                        @Html.TextAreaFor(m => m.Remarks, new { @class = "form-control input-control", @InputFor = "lblRemarks" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.Remarks)
+                        </span>
+                    </fieldset>
+                </div>
+            </div>                     
+
+            <div class="form-row">
+                <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal-footer justify-content-start">
+        <div class="form-group">
+            <input type="button" value="@EduSuiteUIResources.Save" id="btnSave" onclick="CourseTransfer.FormSubmit()" class="btn btn-sm btn-success mx-1" />
+            <button type="button" data-dismiss="modal" class="btn btn-sm btn-danger mx-1">@EduSuiteUIResources.Cancel</button>
+
+        </div>
+    </div>
+}
+<script>
+
+    var jsonData=@(Html.Raw(Json.Encode(Model)));
+
+    $(document).ready(function () {
+
+
+
+        AppCommon.FormatInputCase()
+
+
+        CourseTransfer.GetCourseTypeByAcademicTerm();
+        $("#ToAcademicTermKey,#ToCourseKey").on("change", function () {
+            CourseTransfer.GetUniversityByCourse();
+        });
+
+        $("#CourseTypeKey,#ToAcademicTermKey").change("change", function () {
+            CourseTransfer.GetCourseByCourseType();
+        });
+        $("#ToAcademicTermKey").change("change", function () {
+            CourseTransfer.GetCourseTypeByAcademicTerm();
+        });
+    });
+
+</script>
+

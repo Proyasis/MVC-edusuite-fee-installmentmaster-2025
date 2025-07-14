@@ -1,0 +1,109 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.ProvinceViewModel
+
+
+<div class="modal-header">
+    <i data-dismiss="modal" class="fa fa-remove close"></i>
+    <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.Add @EduSuiteUIResources.Sla @EduSuiteUIResources.Edit @EduSuiteUIResources.Province</h4>
+</div>
+@using (Html.BeginForm("AddEditProvince", "Province", FormMethod.Post, htmlAttributes: new { @id = "frmProvince" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.RowKey, new { @class = "hidProvinceKey" })
+    @Html.ValidationSummary(true)
+    <div class="modal-body">
+        <div class="topMarginSpace  form-master fnone">
+          
+            <div class="formMaster paddingNone bottomLine">
+                <div class="row">
+                    <div class="col-sm-12 mandatoryHead ">
+                        <span>@EduSuiteUIResources.FieldsMarkedAs<span class="mandatoryStar"> * </span>@EduSuiteUIResources.AreMandatory</span>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4 form-col">
+                        <div class="form-group">
+                            @Html.Label(EduSuiteUIResources.Province + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Name, htmlAttributes: new { @id = "lblProvinceName", @class = "form-label" })
+                            <div class="required-icon"><div class="text">*</div></div>
+                            @Html.TextBoxFor(m => m.Provincename, new { @class = "input-control form-control form-control-sm", @InputFor = "lblProvinceName" })
+                             <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.Provincename)
+                        </div>
+                    </div>
+                    <div class="col-sm-4 form-col">
+                        <div class="form-group">
+                            @Html.Label(EduSuiteUIResources.Province + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Local + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Name, htmlAttributes: new { @id = "lblProvinceNameLocal", @class = "form-label" })
+                            <div class="required-icon"><div class="text">*</div></div>
+                            @Html.TextBoxFor(m => m.ProvincenameLocal, new { @class = "input-control form-control form-control-sm", @InputFor = "lblProvinceNameLocal" })
+                             <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.ProvincenameLocal)
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 form-col">
+                        <div class="form-group">
+                            @Html.Label(EduSuiteUIResources.Country , htmlAttributes: new { @id = "lblCountry", @class = "form-label" })
+                            <div class="required-icon"><div class="text">*</div></div>
+                            @Html.DropDownListFor(m => m.CountryKey, new SelectList(Model.CountryNames, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Country, new { @class = "input-control form-control form-control-sm", @InputFor = "lblCountry" })
+                             <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.CountryKey)
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4 form-col">
+                        <div class="form-group">
+                            @Html.Label(EduSuiteUIResources.Language, htmlAttributes: new { @id = "lblLanguage", @class = "form-label" })
+                            <div class="required-icon"><div class="text">*</div></div>
+                            @Html.DropDownListFor(m => m.LanguageKey, new SelectList(Model.LanguageNames, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Language, new { @class = "input-control form-control form-control-sm", @InputFor = "lblLanguage" })
+                             <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.LanguageKey)
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3 form-col">
+                        <div class="form-group">
+                            @Html.Label(EduSuiteUIResources.IsActive, new { @class = "form-label" })
+                            <div class="toggle-radio">
+                                @Html.RadioButtonFor(m => m.IsActive, true, new { @id = "rblYes" })
+                                @Html.RadioButtonFor(m => m.IsActive, false, new { @id = "rblNo" })
+                                <div class="switch">
+                                    <label for="rblYes">@EduSuiteUIResources.Yes</label>
+                                    <label for="rblNo">@EduSuiteUIResources.No</label>
+                                    <span></span>
+                                </div>
+                            </div>
+
+                             <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.IsActive)
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6 form-col">
+                        <div class="form-group col-sm-12 paddingNone">
+                            <input type="submit" value="@EduSuiteUIResources.Save" id="btnSave" class="btnForm btnSubmit btn btn-sm btn-default " />
+                            <button type="button" data-dismiss="modal" class="btnForm btnCancel btn btn-sm btn-default ">@EduSuiteUIResources.Cancel</button>
+                        </div>
+                        <div class="col-sm-12">
+                            <span class="ValidateDataMsg"> @Html.ValidationMessage("error_msg")  </span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+   
+}
+
+
+
+
+
+

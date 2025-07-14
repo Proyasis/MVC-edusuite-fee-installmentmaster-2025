@@ -1,0 +1,619 @@
+﻿<div id="dvGstFilingList" class="col-sm-12 form-col paddingNone">
+
+    <div id="tab-componets" class=" tabs-section-nav">
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#b2b" aria-expanded="true"><span class="nav-link-in">B2B</span></a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#b2cs" aria-expanded="true"><span class="nav-link-in">B2C Small</span></a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#b2cl" aria-expanded="true"><span class="nav-link-in">B2C Large</span> </a></li>
+            <!--<li><a data-toggle="tab" href="#cdnr" aria-expanded="true">Credit/Debit Note</a></li>-->
+            <!--<li><a data-toggle="tab" href="#cdnur" aria-expanded="true">cdnur</a></li>-->
+            <!--<li><a data-toggle="tab" href="#exp" aria-expanded="true">exp</a></li>
+            <li><a data-toggle="tab" href="#at" aria-expanded="true">at</a></li>
+            <li><a data-toggle="tab" href="#atadj" aria-expanded="true">atadj</a></li>
+            <li><a data-toggle="tab" href="#exemp" aria-expanded="true">exemp</a></li>-->
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#hsn" aria-expanded="true"><span class="nav-link-in">HSN Summary</span></a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#docs" aria-expanded="true"><span class="nav-link-in">Docs</span></a></li>
+        </ul>
+        <div id="gstrTable" class="tab-content">
+            <div id="b2b" class="tab-pane fade in active">
+                <table>
+
+                    <thead>
+                        <tr>
+                            <td>
+                                Summary
+                                For B2B(4)
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>GSTIN/UIN of Recipient</td>
+                            <td>Receiver Name </td>
+                            <td>Invoice Number</td>
+                            <td>Invoice date</td>
+                            <td>Invoice Value</td>
+                            <td>Place Of Supply</td>
+                            <td>Reverse Charge</td>
+                            <td>Applicable % of Tax Rate</td>
+                            <td>Invoice Type</td>
+                            <td>E-Commerce GSTIN</td>
+                            <td>Rate</td>
+                            <td>Taxable Value</td>
+                            <td>Cess Amount</td>
+                        </tr>
+
+                    </thead>
+                    <tbody>
+
+                        {{#b2b}}
+
+                        <tr>
+                            <td>{{GSTINNumber}}</td>
+                            <td>{{{PartyName}}}</td>
+                            <td>{{InvoiceNumber}}</td>
+                            <td data-style="Date">{{dateformat InvoiceDate 'DD-MMM-YYYY'}}</td>
+                            <td data-style="Number">{{InvoiceValue}}</td>
+
+                            <td>{{StateName}}</td>
+                            <td>
+                                N
+                            </td>
+                            <td></td>
+                            <td>
+                                Regular
+                            </td>
+                            <td></td>
+                            <td data-style="Number">
+                                {{GSTPer}}
+
+                            </td>
+
+                            <td data-style="Number">
+                                {{TaxableValue}}
+
+                            </td>
+                            <td></td>
+
+                        </tr>
+
+                        {{/b2b}}
+
+
+
+                    </tbody>
+                </table>
+
+            </div>
+            <div id="b2cl" class="tab-pane">
+                <table>
+
+                    <thead>
+                        <tr>
+                            <td>
+                                Summary
+                                For B2CL(5)
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Invoice Number</td>
+                            <td>Invoice date</td>
+                            <td>Invoice Value</td>
+                            <td>Place Of Supply</td>
+                            <td>Applicable % of Tax Rate</td>
+                            <td>Rate</td>
+                            <td>Taxable Value</td>
+                            <td>Cess Amount</td>
+                            <td>E-Commerce GSTIN</td>
+                            <td>Sale from Bonded WH</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {{#b2cl}}
+
+                        <tr>
+                            <td>
+                                {{InvoiceNumber}}
+                            </td>
+
+                            <td data-style="Date">
+                                {{dateformat InvoiceDate 'DD-MMM-YYYY'}}
+                            </td>
+                            <td data-style="Number">
+                                {{InvoiceValue}}
+                            </td>
+                            <td>
+                                {{StateName}}
+                            </td>
+                            <td></td>
+                            <td data-style="Number">
+                                {{GSTPer}}
+                            </td>
+
+                            <td data-style="Number">
+                                {{TaxableValue}}
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+
+                        {{/b2cl}}
+
+
+
+                    </tbody>
+                </table>
+
+            </div>
+            <div id="b2cs" class="tab-pane">
+                <table>
+
+                    <thead>
+                        <tr>
+                            <td>
+                                Summary
+                                For B2CS(7)
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Type</td>
+                            <td>Place Of Supply</td>
+                            <td>Applicable % of Tax Rate</td>
+                            <td>Rate</td>
+                            <td>Taxable Value</td>
+                            <td>Cess Amount</td>
+                            <td>E-Commerce GSTIN</td>
+                        </tr>
+
+                    </thead>
+                    <tbody>
+
+                        {{#b2cs}}
+
+                        <tr>
+                            <td>
+                                OE
+                            </td>
+
+                            <td>
+                                {{StateName}}
+                            </td>
+                            <td></td>
+                            <td data-style="Number">
+                                {{GSTPer}}
+                            </td>
+
+                            <td data-style="Number">
+                                {{TaxableValue}}
+                            </td>
+                            <td></td>
+                            <td></td>
+
+                        </tr>
+
+                        {{/b2cs}}
+
+
+
+                    </tbody>
+                </table>
+
+
+            </div>
+            <!--<div id="cdnr" class="tab-pane">
+                <table >
+
+                    <thead>
+                        <tr>
+                            <td>
+                                Summary
+                                For CDNR(9B)
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>GSTIN/UIN of Recipient</td>
+                            <td>Invoice/Advance Receipt Number</td>
+                            <td>Invoice/Advance Receipt date</td>
+                            <td>Note/Refund Voucher Number</td>
+                            <td>Note/Refund Voucher date</td>
+                            <td>Document Type</td>
+                            <td>Place Of Supply</td>
+                            <td>Note/Refund Voucher Value</td>
+                            <td>Applicable % of Tax Rate</td>
+                            <td>Rate</td>
+                            <td>Taxable Value</td>
+                            <td>Cess Amount</td>
+                            <td>Pre GST</td>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>-->
+            <!--<div id="cdnur" class="tab-pane">
+                <table >
+
+                    <thead>
+                        <tr>
+                            <td>
+                                Summary
+                                For CDNUR(9B)
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>UR Type</td>
+                            <td>Note/Refund Voucher Number</td>
+                            <td>Note/Refund Voucher date</td>
+                            <td>Document Type</td>
+                            <td>Invoice/Advance Receipt Number</td>
+                            <td>Invoice/Advance Receipt date</td>
+                            <td>Place Of Supply</td>
+                            <td>Note/Refund Voucher Value</td>
+                            <td>Applicable % of Tax Rate</td>
+                            <td>Rate</td>
+                            <td>Taxable Value</td>
+                            <td>Cess Amount</td>
+                            <td>Pre GST</td>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>-->
+            <!--<div id="exp" class="tab-pane">
+            </div>
+            <div id="at" class="tab-pane">
+            </div>
+            <div id="atadj" class="tab-pane">
+            </div>
+            <div id="exemp" class="tab-pane">
+            </div>-->
+            <div id="hsn" class="tab-pane">
+                <table>
+
+                    <thead>
+                        <tr>
+                            <td>
+                                Summary
+                                For HSN(12)
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>HSN</td>
+                            <td>Description</td>
+                            <td>UQC</td>
+                            <td>Total Quantity</td>
+                            <td>Total Value</td>
+                            <td>Taxable Value</td>
+                            <td>Integrated Tax Amount</td>
+                            <td>Central Tax Amount</td>
+                            <td>State/UT Tax Amount</td>
+                            <td>Cess Amount</td>
+                        </tr>
+
+                    </thead>
+                    <tbody>
+                        {{#hsn}}
+                        <tr>
+                            <td>{{HSNCode}}</td>
+                            <td>{{{HSNCodeName}}}</td>
+                            <td>{{UOMName}}</td>
+                            <td data-style="Number">{{Quantity}}</td>
+                            <td data-style="Number">{{TotalValue}}</td>
+                            <td data-style="Number">{{TaxableValue}}</td>
+                            <td data-style="Number">{{IGSTAmt}}</td>
+                            <td data-style="Number">{{CGSTAmt}}</td>
+                            <td data-style="Number">{{SGSTAmt}}</td>
+                            <td></td>
+
+                        </tr>
+                        {{/hsn}}
+                    </tbody>
+                </table>
+            </div>
+            <div id="docs" class="tab-pane">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <td>
+                                Summary
+                                of documents issued during the tax period (13)
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Nature of Document</td>
+                            <td>Sr. No. From</td>
+                            <td>Sr. No. To</td>
+                            <td>Total Number</td>
+                            <td>Cancelled</td>
+                        </tr>
+
+                    </thead>
+                    <tbody>
+                        {{#docs}}
+                        <tr>
+                            <td>Invoices for outward supply</td>
+                            <td>{{InvoiceNumberMin}}</td>
+                            <td>{{InvoiceNumberMax}}</td>
+                            <td>{{TotalInvoices}}</td>
+                            <td>{{math TotalDifference '-' TotalInvoices}}</td>
+
+                        </tr>
+                        {{/docs}}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+    <style>
+        #dvGstFilingList table {
+            margin-top: 10px;
+        }
+
+            #dvGstFilingList table thead tr:not(:first-child):not(:last-child) td, #dvGstFilingList table thead tr:first-child td:first-child {
+                color: white;
+                font-weight: 700;
+                font-family: "Times New Roman", serif;
+                text-align: center;
+                vertical-align: top;
+                background: #0070C0;
+                border: inset 1px #c7c0c0;
+            }
+
+
+            #dvGstFilingList table tbody td {
+                border: inset 1px #c7c0c0;
+                background: #fff;
+                padding: 0px 2px;
+                padding: 3px 2px;
+            }
+
+            #dvGstFilingList table thead tr:last-child td {
+                color: windowtext;
+                font-family: "Times New Roman", serif;
+                text-align: center;
+                background: #F8CBAC;
+                border: inset 1px #c7c0c0;
+                padding: 3px;
+            }
+
+            #dvGstFilingList table td[data-style=Date] {
+                width: 80px;
+            }
+    </style>
+</div>

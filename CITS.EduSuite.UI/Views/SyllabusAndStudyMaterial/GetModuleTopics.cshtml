@@ -1,0 +1,23 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.SubjectModulesModel
+
+
+<a onclick="SyllabusAndStudyMaterial.ModuleTopicCustomPopup(@Json.Encode(Model),this,'@ViewBag.Index');" href="#" data-index="@ViewBag.Index">
+    @for (int i = 0; i < Model.ModulesTopicModel.Count(); i++)
+    {
+        @Html.HiddenFor(m => m.ModulesTopicModel[i].RowKey)
+        @Html.HiddenFor(m => m.ModulesTopicModel[i].SubjectModuleKey)
+        @Html.HiddenFor(m => m.ModulesTopicModel[i].TopicName)
+        <label class="label label-primary mb-1">@Model.ModulesTopicModel[i].TopicName</label>
+    }
+
+</a>
+<script>
+
+    $("input", $("[data-index=@ViewBag.Index]")).each(function ()
+    {
+        var name = $(this).attr("name")
+        name = "SubjectModulesModel[" +@ViewBag.Index +"]." + name;
+        $(this).attr("name", name)
+        $(this).attr("id", name)
+    })
+</script>

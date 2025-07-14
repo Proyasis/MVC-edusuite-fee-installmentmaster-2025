@@ -1,0 +1,66 @@
+﻿
+@using System.Web.Mvc
+
+@section scripts{
+    @Scripts.Render("~/Scripts/TransactionType")
+}
+<input type="hidden" id="hdnGetTransactionTypeList" value="@Url.Action("GetTransactionTypes", "TransactionType")" />
+<input type="hidden" id="hdnDeleteTransactionType" value="@Url.Action("DeleteTransactionType", "TransactionType")" />
+
+<div class="col-12 PageHeading paddingNone">
+    <div class="col-xs-6">
+        <h5 class="TopHead"> <i class="fa fa-user" aria-hidden="true"></i> @EduSuiteUIResources.TransactionType</h5> @*Change Page heading Here *@
+    </div>
+    <div class="col-xs-6 paddingNone text-right">
+        <a id="addEditProductLocation" href="@Url.Action("AddEditTransactionType", "TransactionType")" class="btn btnAddNew btnAdd fRight">
+            <i class="fa fa-plus" aria-hidden="true"></i> @EduSuiteUIResources.AddNewTransactionType  @*Change Add new button Here *@
+        </a>
+    </div>
+</div>
+
+<div class="col-12  searchForm">
+    @*Search Bar*@
+    <div class="col-xs-3  paddingNone divSearch">
+        <div class="col-12 paddingNone">
+            <input id="txtsearch" type="text" name="focus" class="search-box" placeholder="@EduSuiteUIResources.SearchTransactionType" /> @* Change Search TextBox Placeholder*@
+            <span id="iconSpan" class="iconSpan"><i class="fa fa-times-circle" aria-hidden="true"></i></span>
+        </div>
+    </div>
+    <div class="col-8 count">
+    </div>
+    <div class="col-xs-1 fRight btnRefreshDiv  paddingNone">
+        <button type="button" onclick='TransactionType.GetTransactionType()' class="btn fRight  btn-default btn-sm btnRefresh">
+            @*Change Javascript function here*@
+            <span class="glyphicon glyphicon-refresh"></span> Refresh
+        </button>
+    </div>
+</div>
+
+<div class="gridBody col-sm-12">
+    <div class="x_content" id="myTableData">
+        <table id="grid"></table>
+        <div id="pager"></div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#txtsearch").keydown(function () {
+            TransactionType.GetTransactionTypes();
+        });
+        $("#txtsearch").keyup(function () {
+            TransactionType.GetTransactionTypes();
+        });
+
+        $("#iconSpan").click(function () {
+            $('#txtsearch').val('');
+            TransactionType.GetTransactionTypes();
+        });
+        TransactionType.GetTransactionTypes();
+
+      
+    });
+</script>
+
+
+

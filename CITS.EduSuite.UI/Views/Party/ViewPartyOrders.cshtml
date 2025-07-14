@@ -1,0 +1,474 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.PartyViewModel
+@using CITS.EduSuite.UI.Resources
+@using CITS.EduSuite.Business.Models.ViewModels
+
+
+@section scripts{
+    @Scripts.Render("~/Content/JqueryRepeater")
+    @Scripts.Render("~/Scripts/Party")
+}
+
+<input type="hidden" id="hdnViewPartyOrdersId" value="@Url.Action("ViewPartyOrdersId", "Party")" />
+
+@Html.AntiForgeryToken()
+@Html.HiddenFor(m => m.RowKey)
+
+<div class="modal-header">
+    <i data-dismiss="modal" class="fa fa-remove close"></i>
+    <h4 class="modal-title" id="myModalLabel">@CITSEduSuiteUIResource.View@CITSEduSuiteUIResource.BlankSpace @CITSEduSuiteUIResource.Party@CITSEduSuiteUIResource.BlankSpace @CITSEduSuiteUIResource.Order</h4>
+</div>
+
+<fieldset style="  border: solid 1px white;" class="salesOrderView">
+    <div class="topMarginSpace  form-master fnone">
+        <div class="row">
+            <div class="col-sm-2 form-col">
+                <div class="form-group">
+                    @Html.Label(CITSEduSuiteUIResource.Branch, htmlAttributes: new { @class = "lblControlHead" })
+                    @Html.TextBox("CompanyBranchName", @Model.CompanyBranchName, new { @class = "form-control input-control", @readOnly = "true" })
+                </div>
+            </div>
+            <div class="col-sm-2 form-col">
+                <div class="form-group">
+                    @Html.Label(CITSEduSuiteUIResource.Location, htmlAttributes: new { @class = "lblControlHead" })
+                    <div class="form-group">
+                        @Html.TextBox("LocationName", @Model.LocationName, new { @class = "form-control input-control", @readOnly = "true" })
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-2 form-col">
+                <div class="form-group ">
+                    @Html.Label(CITSEduSuiteUIResource.Party + @CITSEduSuiteUIResource.BlankSpace + CITSEduSuiteUIResource.Name, htmlAttributes: new { @id = "lblPartyName", @class = "lblControlHead" })
+                    @Html.TextBoxFor(m => m.PartyName, new { @class = "form-control input-control", @readOnly = "true" })
+
+                </div>
+            </div>
+
+            <div class="col-sm-6 form-col">
+                <div class="col-sm-6 form-col">
+                    <div class="form-group ">
+                        @Html.Label(CITSEduSuiteUIResource.MobileNumber1, htmlAttributes: new { @id = "lblMobileNumber1", @class = "lblControlHead" })
+                        @Html.TextBox("MobileNumber1", @Model.MobileNumber1, new { @class = "form-control input-control", @readOnly = "true" })
+
+                    </div>
+                </div>
+                <div class="col-sm-6 form-col">
+                    <div class="form-group ">
+                        @Html.Label(CITSEduSuiteUIResource.MobileNumber2, htmlAttributes: new { @id = "lblMobileNumber2", @class = "lblControlHead" })
+                        @Html.TextBox("MobileNumber2", @Model.MobileNumber2, new { @class = "form-control input-control", @readOnly = "true" })
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3 form-col">
+                <div class="form-group ">
+                    @Html.Label(CITSEduSuiteUIResource.Address1, htmlAttributes: new { @id = "lblAddress1", @class = "lblControlHead" })
+                    <br />
+
+                    <div class="textareaDisplay">
+                        @Html.Raw(Html.Display("Address", @Model.Address, new { @class = "form-control input-control" }).ToString().Replace(Environment.NewLine, "<br/>"))
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3 form-col">
+                <div class="form-group ">
+                    @Html.Label(CITSEduSuiteUIResource.Contact + CITSEduSuiteUIResource.BlankSpace + CITSEduSuiteUIResource.Person, htmlAttributes: new { @class = "lblControlHead" })
+                    @Html.TextBox("ContactPerson", @Model.ContactPerson, new { @class = "form-control input-control", @readOnly = "true" })
+
+                </div>
+            </div>
+            <div class="col-sm-3 form-col">
+                <div class="form-group ">
+                    @Html.Label(CITSEduSuiteUIResource.Person + CITSEduSuiteUIResource.BlankSpace + CITSEduSuiteUIResource.Designation, htmlAttributes: new { @class = "lblControlHead" })
+                    @Html.TextBox("Designation", @Model.Designation, new { @class = "form-control input-control", @readOnly = "true" })
+
+                </div>
+            </div>
+            <div class="col-sm-3 form-col">
+                <div class="form-group">
+                    @Html.Label(CITSEduSuiteUIResource.Email, htmlAttributes: new { @class = "lblControlHead" })
+
+                    @Html.TextBox("EmailId", @Model.EmailId, new { @class = "form-control input-control", @readOnly = "true" })
+
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3 form-col">
+                <div class="form-group ">
+                    @Html.Label(CITSEduSuiteUIResource.States, htmlAttributes: new { @id = "lblAddress1", @class = "lblControlHead" })
+
+                    @Html.TextBox("StateName", @Model.StateName, new { @class = "form-control input-control", @readOnly = "true" })
+
+                </div>
+            </div>
+            <div class="col-sm-2 form-col">
+                <div class="form-group ">
+                    @Html.Label(CITSEduSuiteUIResource.GST + CITSEduSuiteUIResource.No, htmlAttributes: new { @class = "lblControlHead" })
+                    @Html.TextBox("GSTINNumber", @Model.GSTINNumber, new { @class = "form-control input-control", @readOnly = "true" })
+
+                </div>
+            </div>
+            <div class="col-sm-2 form-col">
+                <div class="form-group ">
+                    @Html.Label(CITSEduSuiteUIResource.OpeningBalance, htmlAttributes: new { @class = "lblControlHead" })
+                    @Html.TextBox("CreditBalance", @Model.CreditBalance, new { @class = "form-control input-control text-right-decimal", @readOnly = "true" })
+
+                </div>
+            </div>
+            <div class="col-sm-2 form-col">
+                <div class="form-group">
+                    @Html.Label(CITSEduSuiteUIResource.CashFlowType, htmlAttributes: new { @class = "lblControlHead" })
+
+                    @Html.TextBox("CashFlowTypeName", @Model.CashFlowTypeName, new { @class = "form-control input-control", @readOnly = "true" })
+
+                </div>
+            </div>
+            <div class="col-sm-2 form-col">
+                <div class="form-group">
+                    @Html.Label(CITSEduSuiteUIResource.BalanceAmount, htmlAttributes: new { @class = "lblControlHead" })
+
+                    @Html.TextBox("BalanceAmount", @Model.BalanceAmount, new { @class = "form-control input-control", @readOnly = "true" })
+
+                </div>
+            </div>
+        </div>
+    </div>
+</fieldset>
+@* SalesOrder *@
+@if (Model.SaleOrders != null && Model.SaleOrders.Count() > 0)
+{
+    <div class="col-sm-12  btn-primary   text-center">
+        <span>@CITSEduSuiteUIResource.CustomerOrder</span>
+    </div>
+    <fieldset style="  border: solid 1px white;" class="salesOrderView">
+        <div class="col-sm-12 bottomLine tableHead gridHead  paddingNone ">
+            <div class="form-group row bottomLine">
+
+                <div class="col-sm-6 form-col text-center">
+                    <div class="col-sm-4 form-col ">
+                        @Html.Label(CITSEduSuiteUIResource.Order + CITSEduSuiteUIResource.BlankSpace + CITSEduSuiteUIResource.Number, htmlAttributes: new { @class = "lblControlHead" })
+
+
+                    </div>
+                    <div class="col-sm-4 form-col">
+                        @Html.Label(CITSEduSuiteUIResource.Bill + CITSEduSuiteUIResource.BlankSpace + CITSEduSuiteUIResource.Date, htmlAttributes: new { @class = "lblControlHead" })
+                    </div>
+                    <div class="col-sm-4 form-col text-center">
+                        @Html.Label(CITSEduSuiteUIResource.NoOfItems, htmlAttributes: new { @class = "lblControlHead" })
+
+                    </div>
+                </div>
+                <div class="col-sm-6 form-col text-right">
+
+                    <div class="col-sm-3 form-col text-right ">
+                        @Html.Label(CITSEduSuiteUIResource.TotalAmount, htmlAttributes: new { @class = "lblControlHead" })
+
+
+                    </div>
+                    <div class="col-sm-3 form-col text-right">
+                        @Html.Label(CITSEduSuiteUIResource.AmountPaid, htmlAttributes: new { @class = "lblControlHead" })
+
+
+                    </div>
+                    <div class="col-sm-3 form-col text-right">
+                        @Html.Label(CITSEduSuiteUIResource.BalanceAmount, htmlAttributes: new { @class = "lblControlHead" })
+
+
+                    </div>
+                    <div class="col-sm-3 form-col text-center">
+                        @Html.Label(CITSEduSuiteUIResource.View + CITSEduSuiteUIResource.BlankSpace + CITSEduSuiteUIResource.Details, htmlAttributes: new { @class = "lblControlHead" })
+
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="col-sm-12  ">
+            @for (int i = 0; i < Model.SaleOrders.Count(); i++)
+            {
+                <div class="row  form-col   bottomLine " style=@((Model.SaleOrders[i].IsOrderCancel == true) ? "background-color:red;color:white;border-radius: 5px;" : "")>
+                    <div class="col-sm-6 form-col   text-center">
+                        <div class="col-sm-4 form-col ">
+                            @Model.SaleOrders[i].OrderNumber
+
+                            @if ((Model.SaleOrders[i].IsOrderCancel ?? false))
+                            {
+                                @CITSEduSuiteUIResource.BlankSpace  @CITSEduSuiteUIResource.BracketOpen @CITSEduSuiteUIResource.Cancel @CITSEduSuiteUIResource.BracketClose
+                            }
+
+                        </div>
+
+                        <div class="col-sm-4 form-col ">
+
+                            @string.Format("{0:dd/MM/yyyy}", Model.SaleOrders[i].OrderDate)
+
+                        </div>
+
+                        <div class="col-sm-4 form-col   text-center">
+                            @string.Format("{0:G29}", Model.SaleOrders[i].TotalItems)
+                        </div>
+
+                    </div>
+                    <div class="col-sm-6 form-col   text-center">
+                        <div class="col-sm-3 form-col  text-right">
+                            @string.Format("{0:G29}", Model.SaleOrders[i].TotalAmount)
+
+                        </div>
+                        <div class="col-sm-3 form-col  text-right">
+                            @string.Format("{0:G29}", Model.SaleOrders[i].AdvanceAmount)
+
+                        </div>
+                        <div class="col-sm-3 form-col text-right ">
+                            @string.Format("{0:G29}", Model.SaleOrders[i].BalanceAmount)
+
+                        </div>
+                        @if (Model.SaleOrders[i].OrderProcessTypeKey == DbConstants.TransactionType.Sales)
+                        {
+                            <div class="col-sm-3 form-col pull-right">
+                                <a class="btn btn-primary btn-xs" onclick="PartyWiseOrderDetails.ViewOrderPopup(this)" data-href="../../SalesOrder/ViewSalesOrder/@Model.SaleOrders[i].RowKey"><i class="fa fa-pencil" aria-hidden="true"></i>@CITSEduSuiteUIResource.View </a>
+
+                            </div>
+                        }
+                        else
+                        {   
+                            <div class="col-sm-3 form-col pull-right">
+                                <a class="btn btn-primary btn-xs" onclick="PartyWiseOrderDetails.ViewOrderPopup(this)" data-href="../../RawMaterialSales/ViewRawMaterialSales/@Model.SaleOrders[i].RowKey"><i class="fa fa-pencil" aria-hidden="true"></i>@CITSEduSuiteUIResource.View </a>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+
+    </fieldset>
+}
+
+    @* PurchaseORder *@
+    @if (Model.PurchaseOrder != null && Model.PurchaseOrder.Count() > 0)
+    {
+        <div class="col-sm-12  btn-primary   text-center">
+            <span>@CITSEduSuiteUIResource.Purchase</span>
+        </div>
+        <fieldset style="  border: solid 1px white;" class="salesOrderView">
+            <div class="col-sm-12 bottomLine tableHead gridHead  paddingNone ">
+                <div class="form-group row bottomLine">
+
+                    <div class="col-sm-6 form-col text-center">
+                        <div class="col-sm-4 form-col ">
+                            @Html.Label(CITSEduSuiteUIResource.Order + CITSEduSuiteUIResource.BlankSpace + CITSEduSuiteUIResource.Number, htmlAttributes: new { @class = "lblControlHead" })
+
+
+                        </div>
+                        <div class="col-sm-4 form-col">
+                            @Html.Label(CITSEduSuiteUIResource.Bill + CITSEduSuiteUIResource.BlankSpace + CITSEduSuiteUIResource.Date, htmlAttributes: new { @class = "lblControlHead" })
+                        </div>
+                        <div class="col-sm-4 form-col text-center">
+                            @Html.Label(CITSEduSuiteUIResource.NoOfItems, htmlAttributes: new { @class = "lblControlHead" })
+
+
+                        </div>
+                    </div>
+                    <div class="col-sm-6 form-col text-right">
+
+                        <div class="col-sm-3 form-col text-right ">
+                            @Html.Label(CITSEduSuiteUIResource.TotalAmount, htmlAttributes: new { @class = "lblControlHead" })
+
+
+                        </div>
+                        <div class="col-sm-3 form-col text-right">
+                            @Html.Label(CITSEduSuiteUIResource.AmountPaid, htmlAttributes: new { @class = "lblControlHead" })
+
+
+                        </div>
+                        <div class="col-sm-3 form-col text-right">
+                            @Html.Label(CITSEduSuiteUIResource.BalanceAmount, htmlAttributes: new { @class = "lblControlHead" })
+
+
+                        </div>
+                        <div class="col-sm-3 form-col text-center">
+                            @Html.Label(CITSEduSuiteUIResource.View + CITSEduSuiteUIResource.BlankSpace + CITSEduSuiteUIResource.Details, htmlAttributes: new { @class = "lblControlHead" })
+
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-sm-12  ">
+                @for (int i = 0; i < Model.PurchaseOrder.Count(); i++)
+                {
+                    <div class="row  form-col   bottomLine ">
+                        <div class="col-sm-6 form-col   text-center">
+                            <div class="col-sm-4 form-col ">
+                                @Model.PurchaseOrder[i].OrderNumber
+
+                            </div>
+
+                            <div class="col-sm-4 form-col ">
+
+                                @string.Format("{0:dd/MM/yyyy}", Model.PurchaseOrder[i].BillDate)
+
+                            </div>
+
+                            <div class="col-sm-4 form-col   text-center">
+                                @string.Format("{0:G29}", Model.PurchaseOrder[i].TotalItems)
+                            </div>
+
+                        </div>
+                        <div class="col-sm-6 form-col   text-center">
+                            <div class="col-sm-3 form-col  text-right">
+                                @string.Format("{0:G29}", Model.PurchaseOrder[i].TotalAmount)
+
+                            </div>
+                            <div class="col-sm-3 form-col  text-right">
+                                @string.Format("{0:G29}", Model.PurchaseOrder[i].AmountPaid)
+
+                            </div>
+                            <div class="col-sm-3 form-col text-right ">
+                                @string.Format("{0:G29}", Model.PurchaseOrder[i].BalanceAmount)
+
+                            </div>
+                            <div class="col-sm-3 form-col pull-right">
+                                <a class="btn btn-primary btn-xs" onclick="PartyWiseOrderDetails.ViewOrderPopup(this)" data-href="../../PurchaseOrder/ViewPurchase/@Model.PurchaseOrder[i].RowKey"><i class="fa fa-pencil" aria-hidden="true"></i>@CITSEduSuiteUIResource.View </a>
+
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </fieldset>
+    }
+
+    @* OutSourceOrders *@
+    @if (Model.OutSourceOrders != null && Model.OutSourceOrders.Count() > 0)
+    {
+        <div class="col-sm-12  btn-primary   text-center">
+            <span>@CITSEduSuiteUIResource.OutSource</span>
+        </div>
+        <fieldset style="  border: solid 1px white;" class="salesOrderView">
+            <div class="col-sm-12 bottomLine tableHead gridHead  paddingNone ">
+                <div class="form-group row bottomLine">
+
+                    <div class="col-sm-8 form-col text-center">
+                        <div class="col-sm-2 form-col ">
+                            @Html.Label(CITSEduSuiteUIResource.JobCard + CITSEduSuiteUIResource.BlankSpace + CITSEduSuiteUIResource.Number, htmlAttributes: new { @class = "lblControlHead" })
+
+
+                        </div>
+                        <div class="col-sm-3 form-col ">
+                            @Html.Label(CITSEduSuiteUIResource.Product, htmlAttributes: new { @class = "lblControlHead" })
+
+
+                        </div>
+                        <div class="col-sm-3 form-col text-center">
+                            @Html.Label(CITSEduSuiteUIResource.WorkType, htmlAttributes: new { @class = "lblControlHead" })
+
+
+                        </div>
+                        <div class="col-sm-2 form-col ">
+                            @Html.Label(CITSEduSuiteUIResource.Order + CITSEduSuiteUIResource.BlankSpace + CITSEduSuiteUIResource.Number, htmlAttributes: new { @class = "lblControlHead" })
+
+
+                        </div>
+                        <div class="col-sm-2 form-col">
+                            @Html.Label(CITSEduSuiteUIResource.Bill + CITSEduSuiteUIResource.BlankSpace + CITSEduSuiteUIResource.Date, htmlAttributes: new { @class = "lblControlHead" })
+                        </div>
+                    </div>
+                    <div class="col-sm-4 form-col text-right">
+
+                        <div class="col-sm-3 form-col text-right ">
+                            @Html.Label(CITSEduSuiteUIResource.TotalAmount, htmlAttributes: new { @class = "lblControlHead" })
+
+
+                        </div>
+                        <div class="col-sm-3 form-col text-right">
+                            @Html.Label(CITSEduSuiteUIResource.AmountPaid, htmlAttributes: new { @class = "lblControlHead" })
+
+
+                        </div>
+                        <div class="col-sm-3 form-col text-right">
+                            @Html.Label(CITSEduSuiteUIResource.Balance, htmlAttributes: new { @class = "lblControlHead" })
+
+
+                        </div>
+                        <div class="col-sm-3 form-col text-center">
+                            @Html.Label(CITSEduSuiteUIResource.View + CITSEduSuiteUIResource.BlankSpace + CITSEduSuiteUIResource.Details, htmlAttributes: new { @class = "lblControlHead" })
+
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-sm-12  ">
+                @for (int i = 0; i < Model.OutSourceOrders.Count(); i++)
+                {
+                    <div class="row  form-col   bottomLine ">
+                        <div class="col-sm-8 form-col   text-center">
+                            <div class="col-sm-2 form-col ">
+                                @Model.OutSourceOrders[i].JobOrderNumber
+
+                            </div>
+                            <div class="col-sm-3 form-col ">
+                                @Model.OutSourceOrders[i].MaterialProduct
+
+                            </div>
+                            <div class="col-sm-3 form-col   text-center">
+                                @if (Model.OutSourceOrders[i].ProductionTypeKey == DbConstants.OutSourceStatus.Printing)
+                                {
+                                    @CITSEduSuiteUIResource.Printing
+
+                                }
+                                @if (Model.OutSourceOrders[i].ProductionTypeKey == DbConstants.OutSourceStatus.Finishing)
+                                {
+                                    @CITSEduSuiteUIResource.Finishing
+                                }
+                                @if (Model.OutSourceOrders[i].ProductionTypeKey == DbConstants.OutSourceStatus.Both)
+                                {
+
+                                    @CITSEduSuiteUIResource.Printing@CITSEduSuiteUIResource.BlankSpace@CITSEduSuiteUIResource.And@CITSEduSuiteUIResource.BlankSpace@CITSEduSuiteUIResource.Finishing
+
+                                }
+                            </div>
+
+                            <div class="col-sm-2 form-col ">
+                                @Model.OutSourceOrders[i].OrderNumber
+
+                            </div>
+
+                            <div class="col-sm-2 form-col ">
+                                @string.Format("{0:dd/MM/yyyy}", Model.OutSourceOrders[i].BillDate)
+                            </div>
+
+                        </div>
+                        <div class="col-sm-4 form-col   text-center">
+                            <div class="col-sm-3 form-col  text-right">
+                                @string.Format("{0:G29}", Model.OutSourceOrders[i].TotalAmount)
+
+                            </div>
+                            <div class="col-sm-3 form-col  text-right">
+                                @string.Format("{0:G29}", Model.OutSourceOrders[i].AmountPaid)
+
+                            </div>
+                            <div class="col-sm-3 form-col text-right ">
+                                @string.Format("{0:G29}", Model.OutSourceOrders[i].BalanceAmount)
+
+                            </div>
+                            <div class="col-sm-3 form-col pull-right">
+                                <a class="btn btn-primary btn-xs" onclick="PartyWiseOrderDetails.ViewOrderPopup(this)" data-href='@Url.Action("ViewSalesOrderOutSourceByParty", "OutSource", new { Id = Model.OutSourceOrders[i].SalesOrderDetailsKey, PartyKey = Model.OutSourceOrders[i].PartyKey })'  ><i class=" fa fa-pencil" aria-hidden="true"></i>@CITSEduSuiteUIResource.View </a>
+
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </fieldset>
+    }

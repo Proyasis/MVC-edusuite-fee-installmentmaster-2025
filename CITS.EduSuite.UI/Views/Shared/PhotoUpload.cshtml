@@ -1,0 +1,32 @@
+﻿
+<div class="custom-file w-50">
+    <input type="file" id="FileUpload1" class="custom-file-input" />
+    <label class="custom-file-label" for="FileUpload1">Choose file</label>
+</div>
+
+
+<br />
+<br />
+<div class="form-row">
+    <div class="col">
+        <canvas id="viewport"></canvas>
+    </div>
+    <div class="col">
+        <canvas id="canvas"></canvas>
+    </div>
+</div>
+
+
+<input type="hidden" name="imgX1" id="imgX1" />
+<input type="hidden" name="imgY1" id="imgY1" />
+<input type="hidden" name="imgWidth" id="imgWidth" />
+<input type="hidden" name="imgHeight" id="imgHeight" />
+
+
+<script type="text/javascript">
+    $(function () {
+        $('#FileUpload1').change(function () {
+            PhotoUpload.FileUploadChange($(this));
+        });
+    });
+</script>

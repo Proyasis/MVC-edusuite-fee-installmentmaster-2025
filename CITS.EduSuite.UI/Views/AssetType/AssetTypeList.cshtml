@@ -1,0 +1,99 @@
+﻿
+@using System.Web.Mvc
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/Scripts/AssetType")
+    @Scripts.Render("~/Content/Select2JS")
+}@{
+    ViewBag.Title = EduSuiteUIResources.AssetType;
+}
+<input type="hidden" id="hdnGetAssetType" value="@Url.Action("GetAssetType", "AssetType")" />
+<input type="hidden" id="hdnAddEditAssetType" value="@Url.Action("AddEditAssetType", "AssetType")" />
+<input type="hidden" id="hdnDeleteAssetType" value="@Url.Action("DeleteAssetType", "AssetType")" />
+<input type="hidden" id="hdnGetHSNCodeDetails" value="@Url.Action("GetHSNCodeDetails", "AssetType")" />
+
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-sm-6 col-12">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.AssetType</h3>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 text-right">
+            <a data-modal="" data-href="@Url.Action("AddEditAssetType", "AssetType")" class="btn btn-success btn-sm ">
+                <i class="fa fa-plus" aria-hidden="true"></i> @EduSuiteUIResources.AddNew@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.AssetType
+            </a>
+        </div>
+    </div>
+</header>
+<section class="section-content mx-sm-3 mx-0">
+    <div class="GridBody">
+
+        <div class="grid-nav-bar form-row justify-content-between">
+            <div class="col-lg-3 col-6">
+                <input id="txtsearch" type="text" name="focus" class="form-control" placeholder="@EduSuiteUIResources.Search@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.AssetType" /> @* Change Search TextBox Placeholder*@
+                <span id="iconSpan" class="iconSpan"><i class="fa fa-times-circle" aria-hidden="true"></i></span>
+            </div>
+            <div class="col-6">
+                <a class="btn btn-info btn-sm float-right" onclick='AssetType.GetAssetType();'>
+                    <i class="fa fa-refresh"></i>   Refresh
+                </a>
+            </div>
+        </div>
+
+        <div class="table-wrapper">
+            <div class="jqGrid_wrapper overflow-auto">
+                <table id="grid"></table>
+                <div id="pager"></div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<div id='myModal' class='modal fade in'>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id='myModalContent'></div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $("#txtsearch").on("input", function () {
+            AssetType.GetAssetType();
+        });
+
+        $("#iconSpan").click(function () {
+            $('#txtsearch').val('');
+            AssetType.GetAssetType();
+        });
+        AssetType.GetAssetType();
+
+        $(window).on("resize", function () {
+            var $grid = $("#grid"),
+            newWidth = $grid.closest(".ui-jqgrid").parent().width();
+            $grid.jqGrid("setGridWidth", newWidth, true);
+        });
+    });
+</script>
+<script type="text/javascript">
+    $(function () {
+        $.ajaxSetup({ cache: false });
+
+        $("a[data-modal]").on("click", function (e) {
+            e.preventDefault();
+            AssetType.EditPopup($(this));
+        });
+
+    });
+</script>

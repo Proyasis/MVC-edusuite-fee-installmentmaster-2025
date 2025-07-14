@@ -1,0 +1,92 @@
+﻿<table id="tblAttendance" class="table table-stripped table-bordered table-attendance">
+    <thead class="thead-dark">
+        <tr>
+            <th>
+                Employee
+            </th>
+            <th>Total Days</th>
+            <th>Present</th>
+            <th>Absent</th>
+            <th>Leave</th>
+            <th>Half Day</th>
+            <th>Off Day</th>
+            <th>Weekly Off Day</th>
+            <th>Holyday</th>
+            {{#AttendanceHeads}}
+            <th>
+                {{MonthName}}
+                <br />
+                {{DayNumber}}
+                <br />
+                {{DayName}}
+            </th>
+            {{/AttendanceHeads}}
+        </tr>
+    </thead>
+    <tbody data-repeater-list>
+        {{#Employee}}
+
+        <tr data-repeater-item>
+
+            <td class="py-0">
+                <div class="media">
+                    <!--<div class="img-fluid img-thumbnail rounded-circle mr-2 overflow-hidden">
+                {{#if Photo}}
+                <img height="20" width="20" src="{{../EmployeeUrl}}/{{EmployeeKey}}/{{Photo}}" alt="">
+                {{else}}
+                <img height="20" width="20" src="{{../FullPath}}/images/no-photo.png" alt="">
+                {{/if}}
+            </div>-->
+                    <div class="media-body">
+                        <h5 class="m-1 w3-text-deep-purple">
+                            <strong>{{EmployeeName}}</strong>
+                            <span class="badge badge-pill badge-success float-right">{{EmployeeCode}}</span>
+                        </h5>
+                    </div>
+                </div>
+
+
+            </td>
+            <td class="p-0 text-center">
+                {{TotalDays}}
+            </td>
+            <td class="p-0 text-center">
+                {{PresentDays}}
+            </td>
+            <td class="p-0 text-center">
+                {{AbsentDays}}
+            </td>
+            <td class="p-0 text-center">
+                {{LeaveDays}}
+            </td>
+            <td class="p-0 text-center">
+                {{HalfDays}}
+            </td>
+            <td class="p-0 text-center">
+                {{OffDays}}
+            </td>
+            <td class="p-0 text-center">
+                {{WeeklyOffDays}}
+            </td>
+            <td class="p-0 text-center">
+                {{Holydays}}
+            </td>
+
+            {{#AttendanceDetails}}
+
+            <td class="p-0">
+                <div class="btn-group btn-group-toggle " data-toggle="buttons">
+
+                    <label class="btn btn-attendance" style="background-color:{{AttendanceStatusColor}}">
+                        {{AttendanceStatusCode}}
+                    </label>
+
+
+                </div>
+            </td>
+            {{/AttendanceDetails}}
+
+        </tr>
+        {{/Employee}}
+    </tbody>
+</table>

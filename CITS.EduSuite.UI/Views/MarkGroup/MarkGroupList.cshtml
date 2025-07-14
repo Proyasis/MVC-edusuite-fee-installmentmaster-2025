@@ -1,0 +1,71 @@
+﻿
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/Scripts/MarkGroup")
+}
+<input type="hidden" id="hdnGetMarkGroup" value="@Url.Action("GetMarkGroup", "MarkGroup")" />
+<input type="hidden" id="hdnDeleteMarkGroup" value="@Url.Action("DeleteMarkGroup", "MarkGroup")" />
+<input type="hidden" id="hdnAddEditMarkGroup" value="@Url.Action("AddEditMarkGroup", "MarkGroup")" />
+
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-sm-6 col-12">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.MarkGroup</h3>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 text-right">
+            <a id="addEditMarkGroup" data-href="@Url.Action("AddEditMarkGroup", "MarkGroup")" class="btn btn-success btn-sm "><i class="fa fa-plus-square-o"></i> <span>@EduSuiteUIResources.New @EduSuiteUIResources.BlankSpace @EduSuiteUIResources.MarkGroup</span></a>
+        </div>
+    </div>
+</header>
+<section class="section-content mx-sm-3 mx-0">
+    <div class="GridBody">
+
+        <div class="grid-nav-bar form-row justify-content-between">
+            <div class="col-lg-3 col-6">
+                <input id="txtsearch" type="text" name="focus" class="form-control gridSearchTextBox" placeholder="@EduSuiteUIResources.Search @EduSuiteUIResources.MarkGroup" /> @* Change Search TextBox Placeholder*@
+                <span id="iconSpan" class="iconSpan"><i class="fa fa-times-circle" aria-hidden="true"></i></span>
+            </div>
+
+            <div class="col-6">
+                <a class="btn btn-info btn-sm float-right " onclick='window.location.reload()'>
+                    <i class="fa fa-refresh"></i>   @EduSuiteUIResources.Refresh
+                </a>
+            </div>
+
+        </div>
+        <div class="table-wrapper">
+
+            <div class="jqGrid_wrapper overflow-auto">
+                <table id="grid"></table>
+                <div id="pager"></div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<script>
+    $(document).ready(function () {
+        $("#txtsearch").on("input", function () {
+            MarkGroup.GetMarkGroup();
+        });
+
+        $("#iconSpan").click(function () {
+            $('#txtsearch').val('');
+            MarkGroup.GetMarkGroup();
+        });
+        MarkGroup.GetMarkGroup();
+        AppCommon.EditGridPopup($("#addEditMarkGroup"))
+
+    });
+</script>
+

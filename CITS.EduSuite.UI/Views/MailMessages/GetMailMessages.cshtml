@@ -1,0 +1,115 @@
+﻿@model List<CITS.EduSuite.Business.Models.ViewModels.MailMessagesViewModel>
+@using CITS.EduSuite.Business.Models.ViewModels
+
+
+<div class="panel">
+
+
+
+    <input type="hidden" id="hdnInbox" value="@ViewBag.InboxCount" />
+    <input type="hidden" id="hdnInboxNew" value="@ViewBag.InboxNewCount" />
+    <input type="hidden" id="hdnOutboxCount" value="@ViewBag.OutBoxCount" />
+    <input type="hidden" id="hdnDraftCount" value="@ViewBag.DraftCount" />
+    <input type="hidden" id="hdnTrashCount" value="@ViewBag.TrashCount" />
+    <input type="hidden" id="hdnStaredCount" value="@ViewBag.StaredCount" />
+    <input type="hidden" id="hdnActiveTabMailCount" value="@ViewBag.TotalRecords" />
+
+
+
+    <div id="mailbox-email-list" class="panel-body">
+        <h1 class="page-header text-overflow pad-btm"><span id="ActiveTabName"></span> (<span id="ActiveTabMailCount"></span>)</h1>
+
+        <!-- Mail List Starts Here-->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel with-nav-tabs panel-default" style="border: 1px solid #ffffff !important;">
+
+                    <div class="panel-body">
+                        <div class="tab-content">
+                            <div class="tab-pane fade in active" id="tab1default">
+                                <!--Mail list group-->
+                                <!--Mail list item-->
+                                @for (var i = 0; i < Model.Count; i++)
+                                {
+                                    string ReadUnreadClass = Model[i].IsRead.ToString();
+
+                                    <div class="col-sm-12 MessageDivList @ReadUnreadClass">
+
+                                        <div class="MessageClick col-sm-9" onclick="MailMessage.GetMessagesContent(@Model[i].TabKey,@Model[i].RowKey)">
+
+                                            <div class="col-sm-3 MailUserName">
+
+                                                @if (Model[i].ActiveTabKey != DbConstants.MailMessage.Sent && Model[i].ActiveTabKey != DbConstants.MailMessage.Draft && Model[i].MailFromUserName != null)
+                                                {
+                                                @Model[i].DirectionName <i class="fa fa-user"></i> @Model[i].MailFromUserName
+                                                }
+
+                                                else if (Model[i].MailToUserName != null)
+                                                {
+                                                @Model[i].DirectionName  <i class="fa fa-user"></i> @Model[i].MailToUserName
+                                                }
+
+
+                                            </div>
+
+                                            <div class="col-sm-6 MessageSubject">
+                                                @Model[i].MessageSubject
+                                            </div>
+
+
+
+                                            <div class="col-sm-3 pull-right MessageDate">
+                                                @(string.Format("{0:dd/MM/yyyy}", Model[i].CreatedOn))   @(string.Format("{0:  hh:mm:ss tt}", Model[i].CreatedOn))
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-sm-3">
+                                            @if (Model[i].ActiveTabKey == DbConstants.MailMessage.InBox)
+                                            {
+                                                <i onclick="MailMessage.UpdateStar(@Model[i].RowKey,@Model[i].TabKey,@Model[i].ActiveTabKey)" id="Star_@Model[i].RowKey" class="fa fa-star star"></i>
+                                            }
+                                            @if (Model[i].ActiveTabKey == DbConstants.MailMessage.Trash)
+                                            {
+
+                                                <i onclick="MailMessage.DeleteTrash(@Model[i].RowKey,@Model[i].TabKey,@Model[i].ActiveTabKey)" id="trash_@Model[i].RowKey" class="fa fa-trash trash"> </i>
+                                            }
+                                            else
+                                            {
+
+                                                <i onclick="MailMessage.UpdateTrash(@Model[i].RowKey,@Model[i].TabKey,@Model[i].ActiveTabKey)" id="trash_@Model[i].RowKey" class="fa fa-trash trash "> </i>
+                                            }
+
+                                            <i data-modal="" data-url="@Url.Action("ComposeMail", "MailMessages", new { RowKey = Model[i].RowKey, TabKey = Model[i].TabKey })" id="forward_@Model[i].RowKey" class="fa fa-mail-forward"> </i>
+                                        </div>
+
+
+
+                                    </div>
+
+                                }
+
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Mail List Ends Here -->
+
+
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function ()
+    {
+        $("i[data-modal]").off("click").on("click", function () {
+            MailMessage.EditComposePopUp($(this))
+        }); })
+
+</script>
+

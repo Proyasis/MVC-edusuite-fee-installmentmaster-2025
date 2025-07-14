@@ -1,0 +1,212 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.AssetViewModel
+
+
+<style>
+    .modal-header {
+        background-color: transparent;
+        border: none;
+    }
+
+    .modal-content {
+        box-shadow: 0px 0px 0px 0px;
+        background-color: transparent;
+        border: none;
+    }
+
+    #rigtSlideBtn {
+        font-size: 40px;
+        position: absolute;
+        top: 140px;
+        right: -34px;
+        color: azure;
+    }
+
+        #rigtSlideBtn:hover {
+            cursor: pointer;
+        }
+
+    #leftSlideBtn {
+        font-size: 40px;
+        position: absolute;
+        top: 140px;
+        left: -34px;
+        color: azure;
+    }
+
+        #leftSlideBtn:hover {
+            cursor: pointer;
+        }
+
+    i.fa.fa-remove.close {
+        top: 4px;
+    }
+</style>
+@{
+    ViewBag.Title = EduSuiteUIResources.Asset+EduSuiteUIResources.BlankSpace +EduSuiteUIResources.Details;
+}
+<div class="modal-header">
+    <i data-dismiss="modal" class="fa fa-remove close"></i>
+    <div class="col-sm-3 form-col">
+        <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.Asset@EduSuiteUIResources.BlankSpace @EduSuiteUIResources.Details</h4>
+    </div>
+    <div class="col-sm-3 form-col pull-right">
+        @EduSuiteUIResources.AccountHead:
+        @Model.AccountHeadName
+    </div>
+</div>
+
+@Html.AntiForgeryToken()
+@Html.HiddenFor(m => m.MasterKey)
+@Html.ValidationSummary(true)
+
+<div class="modal-body bottomLine">
+</div>
+
+<div class="col-sm-12">
+    <div>
+        <div class="row">
+            <div class="paddingNone">
+                <span class="ValidateDataMsg"> @Html.ValidationMessage("error_msg")  </span>
+            </div>
+        </div>
+
+        <fieldset style="padding-top: 15px;">
+            <div id="dynamicRepeater" class="repeater col-sm-12">
+                <a id="leftSlideBtn"><i class="fa fa-arrow-circle-left"></i></a>
+                <div data-repeater-list>
+                    @for (int i = 0; i < Model.AssetDetailList.Count(); i++)
+                    {
+                        <div data-repeater-item>
+                            <div class="col-sm-4 Asset-Detail paddingNone">
+                                <div class="form-group">
+                                    <div class="col-sm-12 bottomLine paddingNone">
+                                        <div class="form-group ">
+                                            <div class="col-sm-12 text-center Asset-Detail-Header">
+                                                @Model.AssetDetailList[i].AssetDetailName
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 bottomLine LightgreyBack">
+                                        <div class="form-group ">
+                                            <div class="col-sm-6 paddingNone">
+                                                @Html.Label(EduSuiteUIResources.Code, htmlAttributes: new { @class = "lblControlHead" })
+                                            </div>
+                                            <div class="col-sm-6">
+                                                @Model.AssetDetailList[i].AssetDetailCode
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 bottomLine darkgreyBack">
+                                        <div class="form-group">
+                                            <div class="col-sm-6 paddingNone">
+                                                @Html.Label(EduSuiteUIResources.Period + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Type, htmlAttributes: new { @class = "lblControlHead" })
+                                            </div>
+                                            <div class="col-sm-6">
+                                                @Model.AssetDetailList[i].PeriodTypeName
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 bottomLine LightgreyBack">
+                                        <div class="form-group ">
+                                            <div class="col-sm-6 paddingNone">
+                                                @Html.Label(EduSuiteUIResources.Life + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Period, htmlAttributes: new { @class = "lblControlHead" })
+                                            </div>
+                                            <div class="col-sm-6">
+                                                @Model.AssetDetailList[i].LifePeriod
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 bottomLine darkgreyBack">
+                                        <div class="form-group ">
+                                            <div class="col-sm-6 paddingNone">
+                                                @Html.Label(EduSuiteUIResources.Purchase + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Date, htmlAttributes: new { @class = "lblControlHead" })
+                                            </div>
+                                            <div class="col-sm-6">
+                                                @(string.Format("{0:dd/MM/yyyy}", Model.AssetDetailList[i].PurchasingDate))
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12 bottomLine LightgreyBack">
+                                        <div class="form-group ">
+                                            <div class="col-sm-6 paddingNone">
+                                                @Html.Label(EduSuiteUIResources.Amount, htmlAttributes: new { @class = "lblControlHead" })
+                                            </div>
+                                            <div class="col-sm-6">
+                                                @Model.AssetDetailList[i].Amount
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12 bottomLine darkgreyBack">
+                                        <div class="form-group ">
+                                            <div class="col-sm-6 paddingNone">
+                                                @Html.Label(EduSuiteUIResources.AccumulateDepreciation, htmlAttributes: new { @class = "lblControlHead" })
+                                            </div>
+                                            <div class="col-sm-6">
+                                                @(string.Format("{0:0.00}", Model.AssetDetailList[i].AccumulateDepreciation))
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 bottomLine LightgreyBack">
+                                        <div class="form-group ">
+                                            <div class="col-sm-6 paddingNone">
+                                                @Html.Label(EduSuiteUIResources.BookValue, htmlAttributes: new { @class = "lblControlHead" })
+                                            </div>
+                                            <div class="col-sm-6">
+                                                @(string.Format("{0:0.00}", Model.AssetDetailList[i].BookValue))
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <a id="rigtSlideBtn"><i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+        </fieldset>
+
+    </div>
+</div>
+
+<div class="modal-footer">
+</div>
+
+<style>
+    .datepicker {
+        z-index: 9999 !important;
+    }
+</style>
+
+<script>
+    $(document).ready(function () {
+        AppCommon.FormatDateInput();
+        AppCommon.FormatInputCase()
+
+        var repeaterItem = 0;
+        $("[data-repeater-item]").each(function () {
+            repeaterItem = repeaterItem + 1;
+            if (repeaterItem <= 3)
+                $(this).show();
+            else
+                $(this).hide();
+        });
+
+        $("#rigtSlideBtn").on("click", function () {
+            Asset.CkickRight();
+        });
+        $("#leftSlideBtn").on("click", function () {
+            Asset.CkickLeft();
+        });
+        //$("div").click(function () {
+        //    $(this).show("slide", { direction: "left" }, 1000);
+        //});
+
+
+    });
+</script>
+
+

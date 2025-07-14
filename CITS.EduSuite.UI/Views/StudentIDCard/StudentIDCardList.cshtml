@@ -1,0 +1,245 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.StudentIDCardViewModels
+@using CITS.EduSuite.Business.Models.ViewModels
+
+@using System.Web.Mvc
+
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Content/JqueryRepeater")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Scripts/Common")
+    @Scripts.Render("~/Scripts/StudentIDCard")
+    @Scripts.Render("~/bundles/CitsValidation")
+    @Scripts.Render("~/Scripts/QRCode")
+}
+
+<style>
+    .btnForm {
+        padding: 5px 13px;
+    }
+</style>
+
+<input type="hidden" id="hdnGetStudentIDCardsList" value="@Url.Action("GetStudentIDCardsList", "StudentIDCard")" />
+<input type="hidden" id="hdnGetCourseType" value="@Url.Action("GetCourseType", "StudentIDCard")" />
+<input type="hidden" id="hdnGetCourseByCourseType" value="@Url.Action("GetCourseByCourseType", "StudentIDCard")" />
+<input type="hidden" id="hdnUniversityByCourse" value="@Url.Action("GetUniversityByCourse", "StudentIDCard")" />
+<input type="hidden" id="hdnResetStudentIDCard" value="@Url.Action("ResetStudentIDCard", "StudentIDCard")" />
+
+
+
+<header class="section-header">
+    <div class="tbl">
+        <div class="tbl-row">
+            <div class="tbl-cell">
+                <h3>@EduSuiteUIResources.StudentIdCard</h3>
+            </div>
+        </div>
+    </div>
+
+</header>
+
+<section class="section-content mx-sm-3 mx-0">
+    <div class="form-master">
+        @Html.HiddenFor(m => m.PageIndex)
+        @Html.HiddenFor(m => m.PageSize)
+
+        @using (Html.BeginForm("StudentIDCardList", "StudentIDCard", FormMethod.Post, new { @id = "frmStudentIDCard" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+
+            <div class="form-row">
+                <div class="col-lg-2 col-4">
+                    <fieldset class="form-group">
+                        @Html.TextBoxFor(m => m.SearchAdmissionNo, new { @class = "form-control input-control", @placeholder = EduSuiteUIResources.AdmissionNo })
+                    </fieldset>
+                </div>
+                <div class="col-lg-2 col-4">
+                    <fieldset class="form-group">
+                        @Html.TextBoxFor(m => m.SearchName, new { @class = "form-control input-control", @placeholder = EduSuiteUIResources.Name })
+                    </fieldset>
+                </div>
+
+                @if (Model.Branches.Count == 1)
+                {
+                    {
+                        Model.SearchBranchKey = (Model.SearchBranchKey == 0 || Model.SearchBranchKey == null) ? (short)Model.Branches.Select(x => x.RowKey).FirstOrDefault() : Model.SearchBranchKey;
+                    }
+                    @Html.HiddenFor(m => m.SearchBranchKey)
+                }
+                else
+                {
+                    <div class="col-lg-2 col-sm-4 col-6">
+                        <fieldset class="form-group">
+                            @Html.DropDownListFor(m => m.SearchBranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.Branch, new { @class = "form-control input-control ", @data_live_search = "true" })
+                        </fieldset>
+                    </div>
+                }
+                <div class="col-lg-2 col-4">
+                    <fieldset class="form-group">
+                        @Html.DropDownListFor(m => m.SearchCourseTypeKey, new SelectList(Model.CourseTypes, "RowKey", "Text"), EduSuiteUIResources.CourseType, new { @class = "form-control input-control " })
+                    </fieldset>
+                </div>
+                <div class="col-lg-2 col-4">
+                    <fieldset class="form-group">
+                        @Html.DropDownListFor(m => m.SearchCourseKey, new SelectList(Model.Courses, "RowKey", "Text"), EduSuiteUIResources.Course, new { @class = "form-control input-control " })
+                    </fieldset>
+                </div>
+                @if ((bool)ViewBag.ShowUniversity)
+                {
+                    <div class="col-lg-2 col-4">
+                        <fieldset class="form-group">
+                            @Html.DropDownListFor(m => m.SearchUniversityKey, new SelectList(Model.Universities, "RowKey", "Text"), EduSuiteUIResources.University, new { @class = "form-control input-control " })
+                        </fieldset>
+                    </div>
+                }
+                else
+                {
+                    {
+                        Model.SearchUniversityKey = (short)Model.Universities.Select(row => row.RowKey).FirstOrDefault();
+                    }
+                    @Html.HiddenFor(m => m.SearchUniversityKey)
+                }
+                <div class="col-lg-2 col-4">
+                    <fieldset class="form-group">
+                        @Html.DropDownListFor(m => m.SearchBatchKey, new SelectList(Model.Batches, "RowKey", "Text"), EduSuiteUIResources.Batch, new { @class = "form-control input-control " })
+                    </fieldset>
+                </div>
+                <div class="col-lg-1 col-3">
+                    <fieldset class="form-group">
+                        <button type="button" id="btnSearch" class="btnForm btnSubmit btn btn-sm btn-success">@EduSuiteUIResources.Search</button>
+                    </fieldset>
+                </div>
+            </div>
+            <div id="dvScheduleContainer" class="form-row">
+
+                <div class="col-lg-2 col-6">
+                    <fieldset class="form-group">
+                        @if (Model.UpdateDate == null)
+                        {
+                            Model.UpdateDate = DateTimeUTC.Now;
+                        }
+                        @Html.Label(EduSuiteUIResources.Received + EduSuiteUIResources.Sla + EduSuiteUIResources.Issued + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Date, htmlAttributes: new { @id = "lblMobileNumber", @class = "form-label" })
+                        <div class="required-icon"><div class="text">*</div></div>
+                        @Html.TextBoxFor(m => m.UpdateDate, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_input_type = "date", @data_inputmask = "'alias': 'dd/mm/yyyy'" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.UpdateDate)
+                        </span>
+                    </fieldset>
+                </div>
+
+
+                <div class="col-lg-2 col-6 d-none">
+                    <fieldset class="form-group">
+                        <br />
+                        <div class="checkbox-bird green inline-block ">
+                            @Html.CheckBoxFor(m => m.IsSendSms, new { @InputFor = "lblConsession", @class = "switch-input" })
+                            <label for="IsSendSms">@EduSuiteUIResources.SendSms</label>
+
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="col-sm-6 text-left">
+                    <br />
+                    <br />
+                    @Html.HiddenFor(m => m.TemplateKey)
+                    @if (ApplicationSettingModel.SMSEnabled)
+                    {
+                        if (!(Model.AutoSMS ?? true))
+                        {
+                            <div class="checkbox-bird green inline-block">
+                                @Html.CheckBox("AutoSMS", (Model.AutoSMS ?? false))
+                                <label for="AutoSMS">@EduSuiteUIResources.SendSms</label>
+                            </div>
+                        }
+                        else
+                        {
+                            @Html.Hidden("AutoSMS", (Model.AutoSMS ?? false), new { @class = "pull-left" })
+                        }
+                    }
+
+                    @if (ApplicationSettingModel.EmailEnabled)
+                    {
+
+                        if (!(Model.AutoEmail ?? true))
+                        {
+                            <div class="checkbox-bird green inline-block">
+                                @Html.CheckBox("AutoEmail", (Model.AutoEmail ?? false), new { @class = "pull-left" })
+                                <label for="AutoEmail">@EduSuiteUIResources.SendEmail</label>
+                            </div>
+                        }
+                        else
+                        {
+                            @Html.Hidden("AutoEmail", (Model.AutoEmail ?? false))
+                        }
+                    }
+
+                </div>
+            </div>
+
+
+            <div class="form-row">
+                <div class="col-md-5">
+                    <h6>
+                        @EduSuiteUIResources.TotalRecords  <span id="TotalRecords" class="label label-info"></span>
+
+                    </h6>
+                </div>
+                <div class="col-md-7 float-right">
+                    <div id="page-selection-up" class="float-right m-0"></div>
+                </div>
+            </div>
+
+            <div id="dvRepeaterList">
+            </div>
+
+
+        }
+
+    </div>
+</section>
+<script type="text/javascript">
+    var jsonData=@(Html.Raw(Json.Encode(Model)));
+</script>
+
+<script>
+    $(document).ready(function ()
+    {
+        AppCommon.FormatDateInput();
+
+        $('#UpdateDate').datepicker('setStartDate', '');
+        $('#UpdateDate').datepicker('setEndDate', new Date());
+
+        var IsSuccessFul="@Model.IsSuccessful";
+        if(IsSuccessFul=="True")
+        {
+            StudentIDCards.GetStudentIDCards(jsonData, 1, true);
+        }
+
+        
+        $("#SearchCourseTypeKey").on("change", function () {
+            var obj={};
+            obj.CourseTypeKey=$(this).val()!=""?$(this).val():0;
+            AppCommon.BindDropDownbyId(obj, $("#hdnGetCourseByCourseType").val(), $("#SearchCourseKey"), Resources.Course);
+        });
+
+       
+        $("#SearchCourseKey").on("change", function () {
+            var obj={};
+            obj.CourseKey=$(this).val()!=""?$(this).val():0;
+            AppCommon.BindDropDownbyId(obj, $("#hdnUniversityByCourse").val(), $("#SearchUniversityKey"), Resources.AffiliationsTieUps);
+        });
+
+        $("#SearchAdmissionNo,#SearchName,#SearchUniversityKey,#SearchBatchKey").on("change",function()
+        {
+            //StudentIDCards.GetStudentIDCards(jsonData);
+        })
+
+        $("#btnSearch").on("click",function()
+        {
+            StudentIDCards.GetStudentIDCards(jsonData,1,true);
+        })
+
+    });
+</script>

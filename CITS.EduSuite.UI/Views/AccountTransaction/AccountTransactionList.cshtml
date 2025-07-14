@@ -1,0 +1,104 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.AccountTransactionViewModel
+
+@using System.Web.Mvc
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Scripts/AccountTransaction")
+    @Scripts.Render("~/Scripts/PaymentWindow")
+    @Scripts.Render("~/bundles/CitsValidation")
+}
+
+<input type="hidden" id="hdnGetAccountTransactions" value="@Url.Action("GetAccountTransactions", "AccountTransaction")" />
+<input type="hidden" id="hdnDeleteAccountTransaction" value="@Url.Action("DeleteAccountTransaction", "AccountTransaction")" />
+<input type="hidden" id="hdnAddEditAccountTransaction" value="@Url.Action("AddEditAccountTransaction", "AccountTransaction")" />
+<input type="hidden" id="hdnAddEditAccountTransactionPayment" value="@Url.Action("AddEditAccountTransactionPayment", "AccountTransaction", new { id = "" })" />
+
+<div class="col-sm-12 Page_Head_Master">
+    <div class="col-sm-6 Text_Left">
+        <label class="Page_Heading  ">@EduSuiteUIResources.FutureTransactions</label>
+
+    </div>
+
+    <div class="col-sm-6 Text_Right">
+
+        <a id="addEditAccountTransaction" data-modal="" data-href="@Url.Action("AddEditAccountTransaction", "AccountTransaction", new { id = Model.RowKey })" class="btn btn-sm btnBack">
+            <i class="fa fa-plus" aria-hidden="true"></i>  @EduSuiteUIResources.AddNewTransaction
+
+        </a>
+
+    </div>
+</div>
+
+<div class="clearfix"></div>
+<div class="GridBody">
+
+    <div class="grid-nav-bar col-sm-12">
+        <div class="col-sm-3">
+            @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Branch, new { @class = "input-control form-control form-control-sm form-control-sm", @InputFor = "lblBranch", @id = "ddlBranch" })
+        </div>
+
+        <div class="col-sm-9 F_Right">
+            <a class="btn btn-info btn-sm F_Right btn_Refresh" onclick='AccountTransaction.GetAccountTransactions()'>
+                <i class="fa fa-refresh"></i>   Refresh
+            </a>
+        </div>
+
+    </div>
+
+    <br /><br />
+
+    <div class="portlet-body" id="portletBody">
+        <div class='table-scrollable'>
+            <table id="grid"></table>
+            <div id="pager"></div>
+        </div>
+    </div>
+
+
+
+</div>
+
+
+
+
+<script>
+    $(document).ready(function () {
+        setURL();
+        $("#txtsearch").keydown(function () {
+            AccountTransaction.GetAccountTransactions();
+        });
+        $("#txtsearch").keyup(function () {
+            AccountTransaction.GetAccountTransactions();
+        });
+
+        $("#iconSpan").click(function () {
+            $('#txtsearch').val('');
+            AccountTransaction.GetAccountTransactions();
+        });
+        $("#ddlBranch").on("change", function () {
+            AccountTransaction.GetAccountTransactions();
+            setURL();
+        });
+        AccountTransaction.GetAccountTransactions();
+        AppCommon.EditGridPopup($("#addEditAccountTransaction"));
+
+   
+        $(window).on("resize", function () {
+            var $grid = $("#grid"),
+                newWidth = $grid.closest(".ui-jqgrid").parent().width();
+            $grid.jqGrid("setGridWidth", newWidth, true);
+        });
+        AppCommon.FormatDateInput();
+    });
+    function setURL() {
+        var obj = {};
+        obj.BranchKey = $("#ddlBranch").val();
+        AccountTransaction.SetUrlParam($("#addEditAccountTransaction"), obj);
+    }
+</script>
+
+
+

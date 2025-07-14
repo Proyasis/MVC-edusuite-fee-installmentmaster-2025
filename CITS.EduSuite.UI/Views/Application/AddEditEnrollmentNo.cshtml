@@ -1,0 +1,177 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.ApplicationEnRollmentNoViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+
+
+<div class="modal-header">
+    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+    <h4 class="modal-title" id="myModalLabel">@ViewBag.Title</h4>
+</div>
+
+<input type="hidden" id="hdnGetStudentDetailsByStudentKey" value="@Url.Action("GetStudentDetailsByStudentKey", "Application")" />
+
+@using (Html.BeginForm("AddEditEnrollmentNo", "Application", FormMethod.Post, new { @id = "frmAddEditEnrollmentNo" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(m => Model.IsClass)
+    <div class="modal-body">
+        <div class="form-master">
+            <div class="form-row">
+                <div class="paddingNone">
+                    <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+                </div>
+            </div>
+
+
+            <div id="dynamicRepeater" class="repeater">
+                <table class="table table-responsive table-stripped">
+                    <thead class="form-group">
+                        <tr>
+                            @*<th></th>*@
+                            <th>
+                                @Html.Label(EduSuiteUIResources.ApplicantName, htmlAttributes: new { @class = "form-label" })
+                            </th>
+
+                            <th>
+                                @Html.Label(EduSuiteUIResources.AdmissionNo, htmlAttributes: new { @class = "form-label" })
+                            </th>
+                            @if (Model.IsClass == false)
+                            {
+                                <th>
+                                    @Html.Label(EduSuiteUIResources.EnrollmentNo, htmlAttributes: new { @class = "form-label" })
+                                </th>
+                                <th>
+                                    @Html.Label(EduSuiteUIResources.ExamRegisterNumber, htmlAttributes: new { @class = "form-label" })
+                                </th>
+                                <th>
+                                    @Html.Label(EduSuiteUIResources.Status, htmlAttributes: new { @class = "form-label" })
+                                </th>
+                                //if (DbConstants.EducationType.DistanceEducation == DbConstants.GeneralConfiguration.EducationTypeKey)
+                                //{
+                                    <th>
+                                        @Html.Label(EduSuiteUIResources.CurrentYear, htmlAttributes: new { @class = "form-label" })
+                                    </th>
+                                //}
+                            }
+                            else
+                            {
+                                <th>
+                                    @Html.Label(EduSuiteUIResources.ClassCode, htmlAttributes: new { @class = "form-label" })
+                                </th>
+                                <th>
+                                    @Html.Label(EduSuiteUIResources.Remarks, htmlAttributes: new { @class = "form-label" })
+                                </th>
+                            }
+                        </tr>
+                    </thead>
+                    <tbody data-repeater-list>
+                        @for (int i = 0; i < Model.EnRollmentNoDetailsViewModel.Count(); i++)
+                        {
+                            <tr data-repeater-item>
+
+                                <td class="px-1">
+                                    @Html.TextBoxFor(m => Model.EnRollmentNoDetailsViewModel[i].ApplicantName, new { @class = "form-control input-control", @readonly = "readonly" })
+                                    @Html.HiddenFor(m => Model.EnRollmentNoDetailsViewModel[i].ApplicationKey)
+                                    @Html.HiddenFor(m => Model.EnRollmentNoDetailsViewModel[i].IsClass)
+
+                                </td>
+                                <td class="px-1">
+                                    @Html.TextBoxFor(m => Model.EnRollmentNoDetailsViewModel[i].AdmissionNo, new { @class = "form-control input-control", @readonly = "readonly" })
+                                </td>
+                                @if (Model.IsClass == false)
+                                {
+                                    <td class="px-1 text-center">
+                                        @Html.TextBoxFor(m => Model.EnRollmentNoDetailsViewModel[i].StudentEnrollmentNo, new { @class = "form-control input-control", })
+                                        <span class="form-control-error-text">
+                                            @Html.ValidationMessageFor(m => m.EnRollmentNoDetailsViewModel[i].StudentEnrollmentNo)
+                                        </span>
+                                    </td>
+                                    <td class="px-1 text-center">
+                                        @Html.TextBoxFor(m => Model.EnRollmentNoDetailsViewModel[i].ExamRegisterNo, new { @class = "form-control input-control" })
+                                        <span class="form-control-error-text">
+                                            @Html.ValidationMessageFor(m => m.EnRollmentNoDetailsViewModel[i].ExamRegisterNo)
+                                        </span>
+                                    </td>
+                                    <td class="px-1 text-center">
+                                        @Html.DropDownListFor(m => Model.EnRollmentNoDetailsViewModel[i].ApplicationStatusKey, new SelectList(Model.ApplicationStatus, "RowKey", "Text"), new { @class = "form-control input-control", @InputFor = "lblStatus" })
+                                        <span class="form-control-error-text">
+                                            @Html.ValidationMessageFor(m => Model.EnRollmentNoDetailsViewModel[i].ApplicationStatusKey)
+                                        </span>
+                                    </td>
+                                    //if (DbConstants.EducationType.DistanceEducation == DbConstants.GeneralConfiguration.EducationTypeKey)
+                                    //{
+                                        <td class="px-1 text-center">
+                                            @Html.DropDownListFor(m => Model.EnRollmentNoDetailsViewModel[i].CurrentYear, new SelectList(Model.EnRollmentNoDetailsViewModel[i].CurrentYears, "RowKey", "Text", Model.EnRollmentNoDetailsViewModel[i].CurrentYear), new { @class = "form-control input-control" })
+                                            <span class="form-control-error-text">
+                                                @Html.ValidationMessageFor(m => Model.EnRollmentNoDetailsViewModel[i].CurrentYear)
+                                            </span>
+                                        </td>
+                                    //}
+                                }
+                                else
+                                {
+                                    <td class="px-1 text-center">
+                                        @Html.DropDownListFor(m => Model.EnRollmentNoDetailsViewModel[i].ClassDetailsKey, new SelectList(Model.EnRollmentNoDetailsViewModel[i].ClassDetails, "RowKey", "Text", Model.EnRollmentNoDetailsViewModel[i].ClassDetailsKey), new { @class = "form-control input-control" })
+                                        <span class="form-control-error-text">
+                                            @Html.ValidationMessageFor(m => Model.EnRollmentNoDetailsViewModel[i].ClassDetailsKey)
+                                        </span>
+                                        @Html.HiddenFor(m => Model.EnRollmentNoDetailsViewModel[i].RollNumber)
+                                        @Html.HiddenFor(m => Model.EnRollmentNoDetailsViewModel[i].RollNoCode)
+                                    </td>
+                                    <td class="px-1 text-center">
+                                        @Html.TextBoxFor(m => Model.EnRollmentNoDetailsViewModel[i].ClassRemarks, new { @class = "form-control input-control" })
+                                        <span class="form-control-error-text">
+                                            @Html.ValidationMessageFor(m => m.EnRollmentNoDetailsViewModel[i].ClassRemarks)
+                                        </span>
+                                    </td>
+                                }
+                            </tr>
+                        }
+
+                    </tbody>
+                    @*<tfoot>
+                            <tr>
+                                <th class="px-1" colspan="4">
+                                    <span data-repeater-create class="btn btn-info btn-sm">
+                                        <span class="fa fa-plus"></span>
+                                    </span>
+                                </th>
+                            </tr>
+                        </tfoot>*@
+                </table>
+            </div>
+
+
+        </div>
+    </div>
+
+
+    <div class="modal-footer justify-content-start">
+        <div class="form-group">
+            <input type="button" value="@EduSuiteUIResources.Save" id="btnSave" class="btn btn-sm btn-success mx-1" />
+            <button type="button" data-dismiss="modal" class="btn btn-sm btn-danger mx-1">@EduSuiteUIResources.Cancel</button>
+
+        </div>
+    </div>
+}
+<script>
+
+    var jsonData=@(Html.Raw(Json.Encode(Model)));
+
+    $(document).ready(function () {
+        AppCommon.FormatInputCase()
+        AppCommon.FormatDateInput();
+        AppCommon.CustomRepeaterRemoteMethod();
+        Application.GetEnrollmentDetails(jsonData);
+
+        //$('[data-repeater-item]').each(function ()
+        //{
+
+        //    Application.ItemLoad($(this));
+
+        //});
+    });
+
+</script>
+

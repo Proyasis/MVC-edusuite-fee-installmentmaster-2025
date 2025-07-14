@@ -1,0 +1,489 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.AttendanceCategoryViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/Scripts/AttendanceCategory")
+}
+<div class="modal-header">
+    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+    <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.Add @EduSuiteUIResources.Sla @EduSuiteUIResources.Edit @EduSuiteUIResources.AttendanceCategory</h4>
+</div>
+
+@using (Html.BeginForm("AddEditAttendanceCategory", "AttendanceCategory", FormMethod.Post, new { @id = "frmAttendanceCategory" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.MasterRowKey)
+    @Html.ValidationSummary(true)
+
+    <div class="modal-body">
+        <div class="form-master">
+            <div class="form-row">
+                <div class="col-12">
+                    <span class="ValidateDataMsg"> @Html.ValidationMessage("error_msg")  </span>
+                </div>
+            </div>
+
+            <div class="form-row">
+
+                <div class="col-sm-6 col-12">
+                    <div class="form-group ">
+                        @Html.Label(EduSuiteUIResources.AttendanceCategory + @EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Code, htmlAttributes: new { @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                        @Html.TextBoxFor(m => m.AttendanceCategoryCode, new { @class = "input-control form-control form-control-sm", @data_convert = "uppercase" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.AttendanceCategoryCode)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-12">
+                    <div class="form-group ">
+                        @Html.Label(EduSuiteUIResources.AttendanceCategory + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Name, htmlAttributes: new { @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                        @Html.TextBoxFor(m => m.AttendanceCategoryName, new { @class = "input-control form-control form-control-sm" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.AttendanceCategoryName)
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-sm-4 col-12">
+                    <div class="form-group ">
+                        @Html.Label(EduSuiteUIResources.OverTimeFormula, htmlAttributes: new { @class = "form-label" })
+                        @Html.DropDownListFor(m => m.OverTimeFormulaKey, new SelectList(Model.OverTimeFormulaType, "RowKey", "Text"), new { @class = "input-control form-control form-control-sm", @onchange = "AttendanceCategory.CheckCheckBox(this)" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.OverTimeFormulaKey)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-6">
+                    <div class="form-group ">
+                        @Html.Label(EduSuiteUIResources.MinOvertime, htmlAttributes: new { @class = "form-label" })
+
+                        <div class="input-group-transparent">
+                            @Html.TextBoxFor(m => m.MinOvertime, new { @class = "input-control form-control form-control-sm form-control-smtext-right" })
+                            <span class="input-group-addon-end">Min</span>
+
+                        </div>
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.MinOvertime)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-6">
+                    <div class="form-group ">
+                        @Html.Label(EduSuiteUIResources.MaxOvertime, htmlAttributes: new { @class = "form-label" })
+
+                        <div class="input-group-transparent">
+
+                            @Html.TextBoxFor(m => m.MaxOvertime, new { @class = "input-control form-control form-control-sm form-control-smtext-right" })
+
+                            <span class="input-group-addon-end">Min</span>
+                        </div>
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.MaxOvertime)
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-12">
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            @Html.CheckBoxFor(m => m.ConsiderFirstLastPunch, new { @class = "custom-control-input" })
+                            <label class="custom-control-label" for="ConsiderFirstLastPunch">Consider Only First & Last Punch in Attendance Calculation </label>
+
+                        </div>
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.ConsiderFirstLastPunch)
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="col-sm-6 col-12">
+                    <div class="form-group ">
+                        @Html.Label("Grace Time For Early Going", htmlAttributes: new { @class = "form-label" })
+                        <div class="input-group-transparent">
+                            @Html.TextBoxFor(m => m.EarlyGoingGraceTime, new { @class = "input-control form-control form-control-sm form-control-smtext-right" })
+                            <span class="input-group-addon-end">Min</span>
+                        </div>
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.EarlyGoingGraceTime)
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-sm-6 col-12">
+                    <div class="form-group ">
+                        @Html.Label("Grace Time For Late Coming", htmlAttributes: new { @class = "form-label" })
+                        <div class="input-group-transparent">
+                            @Html.TextBoxFor(m => m.LateComingGraceTime, new { @class = "input-control form-control form-control-sm form-control-smtext-right" })
+                            <span class="input-group-addon-end">Min</span>
+                        </div>
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.LateComingGraceTime)
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+            @*<div class="form-row">
+            <div class="col-sm-6 col-12">
+                <div class="form-group ">
+                    @Html.Label("Weekly off 1 ", htmlAttributes: new { @class = "form-label" })
+                    @Html.DropDownListFor(m => m.WeekOffDay1Key, new SelectList(Model.WeekDays, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.WeekDays, new { @class = "input-control form-control form-control-sm" })
+                    <span class="form-control-error-text">
+                        @Html.ValidationMessageFor(m => m.WeekOffDay1Key)
+                    </span>
+                </div>
+            </div>
+            <div class="col-sm-6 col-12">
+                <div class="form-group ">
+                    @Html.Label("Weekly off 2 ", htmlAttributes: new { @class = "form-label" })
+                    @Html.DropDownListFor(m => m.WeekOffDay2Key, new SelectList(Model.WeekDays, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.WeekDays, new { @class = "input-control form-control form-control-sm" })
+                    <span class="form-control-error-text">
+                        @Html.ValidationMessageFor(m => m.WeekOffDay2Key)
+                    </span>
+                </div>
+            </div>
+        </div>*@
+
+            <div id="dvWeekOffRepeater" class="repeater">
+                <div data-repeater-list>
+                    @for (int i = 0; i < Model.AttendanceCategoryWeekOffs.Count(); i++)
+                    {
+                        <div data-repeater-item class="mb-2">
+                            <div class="form-row">
+
+                                <div class="col-5">
+                                    <div class="form-group">
+                                        @Html.Label(EduSuiteUIResources.WeekDays, new { @id = "lblWeekDays", @class = "form-label" })
+                                        <div class="required-icon"><div class="text">*</div></div>
+                                        @Html.DropDownListFor(m => m.AttendanceCategoryWeekOffs[i].WeekOffDayKey, new SelectList(Model.WeekDays, "RowKey", "Text", Model.AttendanceCategoryWeekOffs[i].WeekOffDayKey), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.WeekDays, new { @class = "input-control form-control form-control-sm", @InputFor = "lblWeekDays" })
+                                        <span class="form-control-error-text">
+                                            @Html.ValidationMessageFor(m => m.AttendanceCategoryWeekOffs[i].WeekOffDayKey)
+                                        </span>
+                                        @Html.HiddenFor(m => m.AttendanceCategoryWeekOffs[i].RowKey)
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <fieldset class="form-group">
+                                        @Html.Label(EduSuiteUIResources.Weeks, htmlAttributes: new { @id = "lblWeek", @class = "form-label" })
+                                        @Html.ListBoxFor(m => m.AttendanceCategoryWeekOffs[i].WeekOffDayWeekKeys, new MultiSelectList(Model.AttendanceCategoryWeekOffs[i].Weeks, "RowKey", "Text", Model.AttendanceCategoryWeekOffs[i].WeekOffDayWeekKeys), new { @multiple = "multiple", @title = @EduSuiteUIResources.All + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Weeks, @class = "input-control form-control form-control-sm", @InputFor = "lblWeek" })
+                                        <span class="form-control-error-text">
+                                            @Html.ValidationMessageFor(m => m.AttendanceCategoryWeekOffs[i].WeekOffDayWeekKeys)
+                                        </span>
+                                    </fieldset>
+                                </div>
+                                <div class="col-1">
+                                    <fieldset class="form-group">
+                                        <span data-repeater-delete="" class="btn btn-danger btn-sm mt-4">
+                                            <span class="fa fa-remove "></span>
+                                        </span>
+                                    </fieldset>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    }
+                </div>
+                <div class="form-row">
+                    <div class="col-12">
+                        <fieldset class="form-group">
+                            <span data-repeater-create class="btn btn-info btn-sm float-right">
+                                <span class="fa fa-plus"></span>
+                            </span>
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-row">
+
+                <div class="col-sm-6 col-12">
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            @Html.CheckBoxFor(m => m.ConsiderEarlyPunch, new { @class = "custom-control-input" })
+                            <label class="custom-control-label" for="ConsiderEarlyPunch">Consider Early Coming Punch </label>
+
+                        </div>
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.ConsiderEarlyPunch)
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-sm-6 col-12">
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            @Html.CheckBoxFor(m => m.ConsiderLatePunch, new { @class = "custom-control-input" })
+                            <label class="custom-control-label" for="ConsiderLatePunch">Consider Late Going Punch </label>
+
+                        </div>
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.ConsiderLatePunch)
+                        </span>
+                    </div>
+                </div>
+
+
+
+            </div>
+            <div class="form-row">
+                <div class="col-12">
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            @Html.CheckBoxFor(m => m.DeductBrakeHours, new { @class = "custom-control-input" })
+                            <label class="custom-control-label" for="DeductBrakeHours">Deduct Break Hours From Work Duration</label>
+
+                        </div>
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.DeductBrakeHours)
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="row d-none">
+                <div class="col-sm-6 form-col">
+                    <div class="form-group ">
+                        @Html.CheckBoxFor(m => m.CalcuteHalfDay, new { @class = "flex-checkbox", @onchange = "AttendanceCategory.CheckCheckBox(this)" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.CalcuteHalfDay)
+                        </span>
+                        @Html.Label("Calculate HalfDay If Work Duration is less Than", htmlAttributes: new { @class = "form-label" })
+                    </div>
+                </div>
+                <div class="col-sm-2 form-col">
+                    <div class="form-group ">
+                        @Html.TextBoxFor(m => m.HalfDayMins, new { @class = "input-control form-control form-control-sm" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.HalfDayMins)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-sm-2 form-col">
+                    <div class="form-group ">
+                        @Html.Label("Min", htmlAttributes: new { @class = "form-label" })
+                    </div>
+                </div>
+            </div>
+            <div class="row d-none">
+                <div class="col-sm-6 form-col">
+                    <div class="form-group ">
+                        @Html.CheckBoxFor(m => m.CalculateAbsent, new { @class = "flex-checkbox", @onchange = "AttendanceCategory.CheckCheckBox(this)" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.CalculateAbsent)
+                        </span>
+                        @Html.Label("Calculate Absent If Work Duration is less Than", htmlAttributes: new { @class = "form-label" })
+                    </div>
+                </div>
+                <div class="col-sm-2 form-col">
+                    <div class="form-group ">
+                        @Html.TextBoxFor(m => m.AbsentMins, new { @class = "input-control form-control form-control-sm" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.AbsentMins)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-sm-2 form-col">
+                    <div class="form-group ">
+                        @Html.Label("Min", htmlAttributes: new { @class = "form-label" })
+                    </div>
+                </div>
+            </div>
+            <div class="row d-none">
+                <div class="col-sm-8 form-col">
+                    <div class="form-group ">
+                        @Html.CheckBoxFor(m => m.PartCalculateHalfDay, new { @class = "flex-checkbox", @onchange = "AttendanceCategory.CheckCheckBox(this)" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.PartCalculateHalfDay)
+                        </span>
+                        @Html.Label("On Partial Day Calculate HalfDay If Work Duration is less Than", htmlAttributes: new { @class = "form-label" })
+                    </div>
+                </div>
+                <div class="col-sm-2 form-col">
+                    <div class="form-group ">
+                        @Html.TextBoxFor(m => m.PartHalfDayMins, new { @class = "input-control form-control form-control-sm" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.PartHalfDayMins)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-sm-2 form-col">
+                    <div class="form-group ">
+                        @Html.Label("Min", htmlAttributes: new { @class = "form-label" })
+                    </div>
+                </div>
+            </div>
+            <div class="row d-none">
+                <div class="col-sm-8 form-col">
+                    <div class="form-group ">
+                        @Html.CheckBoxFor(m => m.PartCalculateAbsent, new { @class = "flex-checkbox", @onchange = "AttendanceCategory.CheckCheckBox(this)" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.PartCalculateAbsent)
+                        </span>
+                        @Html.Label("On Partial Day Calculate Absent If Work Duration is less Than", htmlAttributes: new { @class = "form-label" })
+                    </div>
+                </div>
+                <div class="col-sm-2 form-col">
+                    <div class="form-group ">
+                        @Html.TextBoxFor(m => m.PartAbsentMins, new { @class = "input-control form-control form-control-sm" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.PartAbsentMins)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-sm-2 form-col">
+                    <div class="form-group ">
+                        @Html.Label("Min", htmlAttributes: new { @class = "form-label" })
+                    </div>
+                </div>
+            </div>
+            <div class="row d-none">
+                <div class="col-sm-8 form-col">
+                    <div class="form-group ">
+                        @Html.CheckBoxFor(m => m.WOandHAsPreDayAbsent, new { @class = "flex-checkbox" })
+                        @Html.Label("Mark weekly Off and Holiday as Absent if Prefix Day is Absent", htmlAttributes: new { @class = "form-label" })
+
+                    </div>
+                </div>
+            </div>
+            <div class="row d-none">
+                <div class="col-sm-8 form-col">
+                    <div class="form-group ">
+                        @Html.CheckBoxFor(m => m.WOandHAsSufDayAbsent, new { @class = "flex-checkbox" })
+                        @Html.Label("Mark weekly Off and Holiday as Absent if Sufix Day is Absent", htmlAttributes: new { @class = "form-label" })
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="row d-none">
+                <div class="col-sm-10 form-col">
+                    <div class="form-group ">
+                        @Html.CheckBoxFor(m => m.WOandHAsBothDayAbsent, new { @class = "flex-checkbox" })
+                        @Html.Label("Mark weekly Off and Holiday as Absent if Both Prefix and Sufix Day is Absent", htmlAttributes: new { @class = "form-label" })
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-2">
+                    <div class="form-group ">
+                        <div class="custom-control custom-checkbox">
+                            @Html.CheckBoxFor(m => m.MarkAsAbsentForLate, new { @class = "custom-control-input", @onchange = "AttendanceCategory.CheckCheckBox(this)" })
+                            <label class="custom-control-label" for="MarkAsAbsentForLate">Mark </label>
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group ">
+                        @Html.DropDownListFor(m => m.AbsentDayType, new SelectList(Model.AbsenseDayTypes, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.AbsentType, new { @class = "input-control form-control form-control-sm" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.AbsentDayType)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="form-group ">
+                        @Html.Label("Absent when late  For", htmlAttributes: new { @class = "form-label" })
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group ">
+                        <div class="input-group-transparent">
+                            @Html.TextBoxFor(m => m.ContiousLateDay, new { @class = "input-control form-control form-control-sm form-control-smtext-right" })
+                            <span class="input-group-addon-end">Days</span>
+                        </div>
+
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.ContiousLateDay)
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+            <div class="form-row">
+                <div class="col-9">
+                    <div class="form-group ">
+                        <div class="custom-control custom-checkbox">
+                            @Html.CheckBoxFor(m => m.MarkHalfdayForLaterGoing, new { @class = "custom-control-input", @onchange = "AttendanceCategory.CheckCheckBox(this)" })
+                            <label class="custom-control-label" for="MarkHalfdayForLaterGoing">Mark Halfday If Late By </label>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group ">
+                        <div class="input-group-transparent">
+                            @Html.TextBoxFor(m => m.HalfDayLateByMins, new { @class = "input-control form-control form-control-sm form-control-smtext-right" })
+                            <span class="input-group-addon-end">Min</span>
+                        </div>
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.HalfDayLateByMins)
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+            <div class="form-row">
+                <div class="col-9">
+                    <div class="form-group ">
+                        <div class="custom-control custom-checkbox">
+                            @Html.CheckBoxFor(m => m.MarkHalfdayForEarlyGoing, new { @class = "custom-control-input", @onchange = "AttendanceCategory.CheckCheckBox(this)" })
+                            <label class="custom-control-label" for="MarkHalfdayForEarlyGoing">Mark Halfday If Early Going By </label>
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group ">
+                        <div class="input-group-transparent">
+                            @Html.TextBoxFor(m => m.HalfDayEarlyByMins, new { @class = "input-control form-control form-control-sm form-control-smtext-right" })
+                            <span class="input-group-addon-end">Min</span>
+                        </div>
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.HalfDayEarlyByMins)
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+            <div class="form-row">
+                <div class="col-sm-4  col-6">
+                    <div class="form-group ">
+                        @Html.Label(EduSuiteUIResources.IsActive, htmlAttributes: new { @class = "form-label" })<br />
+                        <div class="switch-check">
+                            @{ 
+                                Model.IsActive = Model.MasterRowKey == 0 ? true : Model.IsActive;
+                            }
+                            @Html.CheckBoxFor(m => m.IsActive, new { @class = "switch-input" })
+                            <div class="switch-label redgreen" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                            <div class="switch-handle"></div>
+                        </div>
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.IsActive)
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer justify-content-start">
+        <div class="form-group">
+            <button type="submit" id="btnSave" class="btn btn-sm btn-success mx-1"><i class="fa fa-save"></i> @EduSuiteUIResources.Save</button>
+            <button type="button" data-dismiss="modal" class="btn btn-sm btn-danger mx-1">@EduSuiteUIResources.Cancel</button>
+
+        </div>
+    </div>
+}
+
+
+

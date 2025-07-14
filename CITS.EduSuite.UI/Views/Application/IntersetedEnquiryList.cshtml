@@ -1,0 +1,53 @@
+﻿
+
+<div class="modal-header">
+    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+    <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.InterstedEnquiries</h4>
+</div>
+<div class="modal-body">
+    <div class="form-row">
+        <div class="col-12">
+            <div class="GridBody paddingNone">
+
+                <div class="grid-nav-bar form-row justify-content-between">
+                    <div class="col">
+                        <input id="txtSearchInterestedName" type="text" name="focus" class="form-control gridSearchTextBox" placeholder="@EduSuiteUIResources.Search@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Name@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Phone" /> @* Change Search TextBox Placeholder*@
+                        <span id="iconInterestedSpan" class="iconSpan"><i class="fa fa-times-circle" aria-hidden="true"></i></span>
+                    </div>
+
+                    <div class="col-6 float-right">
+                        <a class="btn btn-info btn-sm float-right " onclick='Application.GetInterestedEnquiry()'>
+                            <i class="fa fa-refresh"></i>   @EduSuiteUIResources.Refresh
+                        </a>
+                    </div>
+
+                </div>
+
+                <br /><br />
+
+                <div class="portlet-body" id="portletBody">
+                    <div class='table-scrollable'>
+                        <table id="gridInterested"></table>
+                        <div id="pagerInterested"></div>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).each(function () {
+        Application.GetInterestedEnquiry();
+        $("#txtSearchInterestedName").on("input", function () {
+            Application.GetInterestedEnquiry();
+        });
+
+        $("#iconInterestedSpan").click(function () {
+            $('#txtSearchInterestedName').val('');
+            Application.GetInterestedEnquiry();
+        });
+    })
+</script>

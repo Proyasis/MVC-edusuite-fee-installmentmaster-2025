@@ -1,0 +1,1719 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.ApplicationViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+@using CITS.EduSuite.UI
+
+<input type="hidden" id="hdnAttendanceAcademicPerfomance" value="@Url.Action("AttendanceAcademicPerfomance", "Application", new { id = Model.RowKey })" />
+<input type="hidden" id="hdnTotalFeeDetails" value="@Url.Action("TotalFeeDetails", "ApplicationFeePayment", new { id = Model.RowKey })" />
+<input type="hidden" id="hdnInstallmentFeeDetails" value="@Url.Action("InstallmentFeeDetails", "ApplicationFeePayment", new { id = Model.RowKey })" />
+
+@Html.HiddenFor(m => m.RowKey)
+@Html.HiddenFor(m => m.IsTax)
+@Html.HiddenFor(m => m.PersonalDetails.HasInstallment)
+<div class="card">
+
+    <div class="card-body">
+        <div class="form-row mb-1">
+            <div class="col-lg-9 col-12">
+                <table class="table table-striped table-bordered table-sm">
+                    <thead class="thead-light">
+                        <tr>
+                            <th class="p-1 h-25 text-center" style="width:150px">
+                                @Model.PersonalDetails.ApplicationNo
+                            </th>
+                            <th colspan="2" class="p-1 h-25"><h3 class="m-0">@Model.PersonalDetails.ApplicantName</h3></th>
+                        </tr>
+
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="p-1 h-25" rowspan="5">
+                                @if (Model.PersonalDetails.StudentPhotoPath != null)
+                                {
+                                    <a href=@Url.Action("DownloadFilePhoto", "Application", new { filename = Model.PersonalDetails.ApplicantPhoto,Studentname=Model.PersonalDetails.ApplicantName,AdmissionNo=Model.PersonalDetails.AdmissionNo})>
+                                        <img class="img-thumbnail" src="@Url.Content(Model.PersonalDetails.ApplicantPhoto)" alt="User profile picture">
+                                    </a>
+                                }
+                                else
+                                {
+                                    <img class="img-thumbnail" src="~/images/no-photo.png" alt="User profile picture">
+
+                                }
+                            </td>
+                            <td class="p-1 h-25 d-none">@EduSuiteUIResources.AcademicTerm</td>
+                            <td class="p-1 h-25 d-none" ">@Model.PersonalDetails.AcademicTermName</td>
+                        </tr>
+
+                        <tr>
+                            <td class="p-1 h-25 font-weight-bold">@EduSuiteUIResources.Course</td>
+                            <td class="p-1 h-25">@Model.PersonalDetails.CourseName</td>
+                        </tr>
+
+
+                        <tr>
+                            <td class="p-1 h-25 font-weight-bold">@EduSuiteUIResources.University</td>
+                            <td class="p-1 h-25">@Model.PersonalDetails.UniversityName</td>
+                        </tr>
+
+                        <tr>
+                            <td class="p-1 h-25 font-weight-bold">@EduSuiteUIResources.Batch</td>
+                            <td class="p-1 h-25">@Model.PersonalDetails.BatchName</td>
+                        </tr>
+                        <tr>
+                            <td class="p-1 h-25 font-weight-bold">@EduSuiteUIResources.CurrentYear</td>
+                            <td class="p-1 h-25">@Model.PersonalDetails.CurrentYearText @Model.PersonalDetails.ClassDetailsName</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-lg-3 col-12">
+                <div class="form-row">
+                    <div class="col-lg-12 col-4">
+                        <div class="card text-center mb-lg-2 mt-lg-0 mt-2 mb-0">
+                            <div class="card-header  p-1">
+                                @EduSuiteUIResources.Admission
+                            </div>
+                            <div class="card-body p-1">
+                                <h5 class="m-0"><span class="label label-success">@Model.PersonalDetails.AdmissionNo</span></h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-4">
+                        <div class="card text-center my-lg-1 mt-lg-0 my-0 mt-2">
+                            <div class="card-header  p-1">
+                                @EduSuiteUIResources.EnrollmentNo
+                            </div>
+                            <div class="card-body p-1">
+                                <h5 class="m-0"><span class="label label-primary">@Model.PersonalDetails.StudentEnrollmentNo</span></h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-4">
+
+                        <div class="card text-center mb-0 mt-2">
+                            <div class="card-header  p-1">
+                                @EduSuiteUIResources.ApplicationStatus
+                            </div>
+                            <div class="card-body  p-1">
+                                <h5 class="m-0"><span id="spnApplicationStatus" class="label label-danger">@Model.PersonalDetails.ApplicationStatusName</span></h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-row mb-1">
+            <div class="col-12">
+                <table class="table table-striped table-bordered table-sm">
+                    <tbody>
+                        <tr>
+                            @*
+                                <td style="width: 10px" class="text-center"><i class="fa fa-birthday-cake"></i></td>*@
+                            <td class="p-1 h-25 w-25 font-weight-bold"> @EduSuiteUIResources.DateOfBirth</td>
+
+                            <td class="p-1 h-25 w-25">@string.Format("{0:dd MMM yyyy}", Model.PersonalDetails.DateOfBirth)</td>
+                            @*
+                                </tr>
+                                <tr>
+                            *@
+                            @*
+                                <td style="width: 10px" class="text-center"><i class="fa fa-genderless"></i></td>*@
+                            <td class="p-1 h-25 w-25 font-weight-bold">@EduSuiteUIResources.Gender</td>
+                            <td class="p-1 h-25 w-25">@(Model.PersonalDetails.Gender == 1 ? EduSuiteUIResources.Male : EduSuiteUIResources.Female)</td>
+                        </tr>
+                        <tr>
+                            @*
+                                <td style="width: 10px" class="text-center"><i class="fa fa-envelope-o"></i></td>*@
+                            <td class="p-1 h-25 font-weight-bold">@EduSuiteUIResources.Email</td>
+                            <td class="p-1 h-25">@Model.PersonalDetails.StudentEmail</td>
+                            @*
+                                </tr>
+                                <tr>
+                            *@
+                            @*
+                                <td style="width: 10px" class="text-center"><i class="fa fa-phone"></i></td>*@
+                            <td class="p-1 h-25 font-weight-bold">@EduSuiteUIResources.PhoneNumber</td>
+                            <td class="p-1 h-25">@Model.PersonalDetails.StudentPhone</td>
+                        </tr>
+                        <tr>
+                            @*
+                                <td style="width: 10px" class="text-center"><i class="fa fa-mobile-phone"></i></td>*@
+                            <td class="p-1 h-25 font-weight-bold">@EduSuiteUIResources.MobileNumber</td>
+                            <td class="p-1 h-25">@Model.PersonalDetails.MobileNumber</td>
+                            <td class="p-1 h-25"></td>
+                            <td class="p-1 h-25"></td>
+                            @*
+                                <td style="width: 10px" class="text-center"><i class="fa fa-mobile-phone"></i></td>*@
+                            @*
+                                <td class="p-1 h-25">@EduSuiteUIResources.MobileNumberOptional</td>
+                                <td class="p-1 h-25">@Model.PersonalDetails.MobileNumberOptional</td>*@
+                        </tr>
+                        <tr>
+                            @*
+                                <td style="width: 10px" class="text-center"><i class="fa fa-map-marker"></i></td>*@
+                            <td class="p-1 h-25 font-weight-bold">@EduSuiteUIResources.PresentAddress</td>
+                            <td class="p-1 h-25">@Model.PersonalDetails.PresentAddress</td>
+                            @*
+                                </tr>
+                                <tr>
+                            *@
+                            @*
+                                <td style="width: 10px" class="text-center"><i class="fa fa-map-marker"></i></td>*@
+                            <td class="p-1 h-25 font-weight-bold">@EduSuiteUIResources.PermenantAddress</td>
+                            <td class="p-1 h-25">@Model.PersonalDetails.PermenantAddress</td>
+                        </tr>
+                        <tr>
+
+                            @*
+                                </tr>
+                                <tr>
+                            *@
+                            @*
+                                <td style="width: 10px" class="text-center"><i class="fa fa-map-marker"></i></td>*@
+                            <td class="p-1 h-25 font-weight-bold">@EduSuiteUIResources.NameOfGuardian</td>
+                            <td class="p-1 h-25">@Model.PersonalDetails.ApplicantGuardianName</td>
+                            @*
+                                <td style="width: 10px" class="text-center"><i class="fa fa-map-marker"></i></td>*@
+                            <td class="p-1 h-25 font-weight-bold">@EduSuiteUIResources.NameOfMother</td>
+                            <td class="p-1 h-25">@Model.PersonalDetails.ApplicantMotherName</td>
+                        </tr>
+                        <tr>
+                            @*
+                                <td style="width: 10px" class="text-center"><i class="fa fa-plane"></i></td>*@
+                            @*
+                                <td class="p-1 h-25font-weight-bold">@EduSuiteUIResources.PassportNumber</td>
+                                <td class="p-1 h-25">@Model.PersonalDetails.PassportNumber</td>*@
+                            @*
+                                </tr>
+                                <tr>
+                            *@
+                            @*
+                                <td style="width: 10px" class="text-center"><i class="fa fa-link"></i></td>*@
+                            <td class="p-1 h-25 font-weight-bold"> @EduSuiteUIResources.Religion </td>
+                            <td class="p-1 h-25">@Model.PersonalDetails.ReligionName</td>
+                            <td class="p-1 h-25 font-weight-bold"> @EduSuiteUIResources.Caste </td>
+                            <td class="p-1 h-25">@Model.PersonalDetails.CasteName</td>
+                        </tr>
+                        <tr>
+                            @*
+                                <td style="width: 10px" class="text-center"><i class="fa fa-key"></i></td>*@
+                            <td class="p-1 h-25 font-weight-bold">Mode</td>
+                            <td class="p-1 h-25">@Model.PersonalDetails.ModeName</td>
+                            @*
+                                </tr>
+                                <tr>
+                            *@
+                            @*
+                                <td class="text-center"><i class="fa fa-usb"></i></td>*@
+                            <td class="p-1 h-25 font-weight-bold">Branch</td>
+                            <td class="p-1 h-25">@Model.PersonalDetails.BranchName</td>
+                        </tr>
+                        <tr>
+                            @*
+                                <td class="text-center"><i class="fa fa-universal-access"></i></td>*@
+                            <td class="p-1 h-25 font-weight-bold">Agent</td>
+                            <td class="p-1 h-25">@Model.PersonalDetails.AgentName</td>
+                            @*
+                                </tr>
+                                <tr>
+                            *@
+                            @*
+                                <td class="text-center"><i class="fa fa-cubes"></i></td>*@
+                            <td class="p-1 h-25 font-weight-bold">Nature of Enquiry</td>
+                            <td class="p-1 h-25">@Model.PersonalDetails.NatureOfEnquiryName</td>
+                        </tr>
+                        <tr>
+                            @*
+                                <td class="text-center"><i class="fa fa-calendar-check-o"></i></td>*@
+                            <td class="p-1 h-25 font-weight-bold">Date of Admission</td>
+                            <td class="p-1 h-25">@string.Format("{0:dd MMM yyyy}", Model.PersonalDetails.DateOfApplication)</td>
+                            @*
+                                </tr>
+                                <tr>
+                            *@
+                            @*
+                                <td class="text-center"><i class="fa fa-indent"></i></td>*@
+                            <td class="p-1 h-25 font-weight-bold">Remarks</td>
+                            <td class="p-1 h-25">@Model.PersonalDetails.Remarks</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+        <div id="cpApplication" class="accordion">
+            <div class="card mb-1">
+                <div class="card-header" data-toggle="collapse" href="#EducationDetails" data-parent="#cpApplication">
+                    <i class="fa fa-graduation-cap"></i> @EduSuiteUIResources.EducationDetails
+
+                </div>
+                <div class="card-body collapse overflow-auto" id="EducationDetails" data-parent="#cpApplication">
+                    @if (Model.StudentsCertificateReturnDetail.Count > 0)
+                    {
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>@EduSuiteUIResources.SlNo</th>
+                                    <th>@EduSuiteUIResources.Course</th>
+                                    <th>@EduSuiteUIResources.University</th>
+                                    <th>@EduSuiteUIResources.CompletedYear</th>
+                                    <th>@EduSuiteUIResources.CertificateType</th>
+                                    <th>@EduSuiteUIResources.Mark@EduSuiteUIResources.OpenBracket@EduSuiteUIResources.InPercentage@EduSuiteUIResources.CloseBracket</th>
+                                    <th>@EduSuiteUIResources.FileType</th>
+                                    <th>@EduSuiteUIResources.Current@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Status</th>
+                                    <th>@EduSuiteUIResources.Status@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Flow</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (var i = 0; i < Model.StudentsCertificateReturnDetail.Count; i++)
+                                {
+
+                                    <tr>
+                                        <td>@(i + 1)</td>
+                                        <td>
+                                            @Model.StudentsCertificateReturnDetail[i].EducationQualificationName
+                                        </td>
+                                        <td>
+                                            @Model.StudentsCertificateReturnDetail[i].EducationQualificationUniversity
+                                        </td>
+
+                                        <td>
+                                            @Model.StudentsCertificateReturnDetail[i].EducationQualificationYear
+                                        </td>
+                                        <td>
+                                            @Model.StudentsCertificateReturnDetail[i].EducationQualificationCertificateType
+                                        </td>
+                                        <td>
+                                            @Model.StudentsCertificateReturnDetail[i].EducationQualificationPercentage @EduSuiteUIResources.PercentageSymbol
+                                        </td>
+                                        <td>
+                                            <div class="form-row">
+                                                @if (Model.StudentsCertificateReturnDetail[i].EducationQualificationCertificatePath != null)
+                                                {
+                                                    <div class="col-12">
+                                                        <fieldset class="form-group">
+                                                            <div class="card" id="divCard">
+
+                                                                <div class="col-sm-12 paddingNone text-center">
+                                                                    <img class="img-responsive" src="@Url.Content(Model.StudentsCertificateReturnDetail[i].EducationQualificationCertificatePath)" alt=" " style="height: 85px; width:85px;margin: auto;margin-bottom: 3px;" />
+                                                                </div>
+
+                                                                <a class="btn btn-primary col-xs-12 card-title" target="_blank" style="position:relative" href="@Url.Content(Model.StudentsCertificateReturnDetail[i].EducationQualificationCertificatePath)" data-lightbox="example-set" data-title="@Model.StudentsCertificateReturnDetail[i].EducationQualificationName">@Model.StudentsCertificateReturnDetail[i].EducationQualificationName</a>
+                                                            </div>
+                                                        </fieldset>
+                                                    </div>
+
+                                                }
+                                            </div>
+                                        </td>
+                                        <td>
+
+                                            @Model.StudentsCertificateReturnDetail[i].CertificateStatusName
+                                            <span>By</span>  @Model.StudentsCertificateReturnDetail[i].CertificateStatusBy
+                                            <span>On</span> <span class="label label-danger"> @String.Format("{0:dd/MM/yyyy}", Model.StudentsCertificateReturnDetail[i].IssuedDate)</span>
+                                        </td>
+
+                                        <td>
+                                            <ul class="timeline">
+                                                @foreach (var item in Model.StudentsCertificateReturnDetail[i].ReturnCertificateDetails)
+                                                {
+                                                    <li>
+                                                        <div>
+                                                            <time datetime="@item.CertificatestatusDate">@item.CertificateStatusName</time>
+                                                            <p> <span>By</span> @item.CertificateStatusBy</p>
+                                                            <p> <span>On</span> @string.Format("{0:dd/MM/yyyy}", item.CertificatestatusDate)</p>
+                                                        </div>
+                                                    </li>
+                                                }
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+
+                    }
+                </div>
+            </div>
+            <div class="card mb-1">
+                <div class="card-header" data-toggle="collapse" href="#FeeDetails" data-parent="#cpApplication">
+                    <i class="fa fa-money"></i>  @EduSuiteUIResources.FeeDetails
+
+                </div>
+                <div class="card-body collapse overflow-auto" id="FeeDetails" data-parent="#cpApplication">
+
+                    <div class="col-12">
+                        <section class="tabs-section">
+                            <div class="tabs-section-nav">
+                                <ul id="tab-feedetails" class="nav" role="tablist">
+                                    <li class="nav-item">
+                                        <a aria-controls="discover" role="tab" class="nav-link active" data-toggle="tab" href="#dvTotalFeeDetails">
+                                            <span class="nav-link-in">
+                                                @EduSuiteUIResources.FeeDetails
+                                            </span>
+
+                                        </a>
+                                    </li>
+
+                                    <li class="nav-item" id="dvInstallement">
+                                        <a aria-controls="discover" role="tab" class="nav-link" data-toggle="tab" href="#dvInstallmentFeeDetails">
+                                            <span class="nav-link-in">
+                                                @EduSuiteUIResources.Installment@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Details
+                                            </span>
+
+                                        </a>
+                                    </li>
+
+                                </ul>
+                            </div>
+                            <div class="tab-content p-0">
+                                <div class="tab-pane active" id="dvTotalFeeDetails"></div>
+                                <div class="tab-pane fade" id="dvInstallmentFeeDetails">
+                                </div>
+
+                            </div>
+
+                        </section>
+
+
+                    </div>
+                    @if (Model.FeePyamentDetails.Count > 0)
+                    {
+
+                        <table class="table table-bordered mt-4">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>
+                                        @EduSuiteUIResources.SlNo
+                                    </th>
+                                    <th>
+                                        @EduSuiteUIResources.Receipt
+                                    </th>
+                                    <th>
+                                        @EduSuiteUIResources.Date
+                                    </th>
+                                    <th>
+                                        @EduSuiteUIResources.FeeType
+                                    </th>
+                                    <th>
+                                        @EduSuiteUIResources.PaymentMode
+                                    </th>
+                                    <th>
+                                        @EduSuiteUIResources.Paid
+                                    </th>
+                                    @*<th>
+                                            @EduSuiteUIResources.Balance
+                                        </th>*@
+                                    <th>
+                                        @EduSuiteUIResources.Remarks
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            @for (var i = 0; i < Model.FeePyamentDetails.Count; i++)
+                            {
+                                <tr>
+                                    <td>
+                                        @(i + 1)
+                                    </td>
+                                    <td>
+                                        @Model.FeePyamentDetails[i].RecieptNo
+                                    </td>
+                                    <td>
+                                        @string.Format("{0:dd/MM/yyyy}", Model.FeePyamentDetails[i].FeeDate)
+                                    </td>
+                                    <td>
+                                        <ul class="list-unstyled">
+                                            @foreach (var item in Model.FeePyamentDetails[i].ApplicationFeePaymentDetails)
+                                            {
+
+                                                <li class="col-md-9">
+                                                    <em>@item.FeeTypeName</em>
+                                                    @if (item.FeeYear != null)
+                                                    {
+                                                        <em>( @item.FeeYearText  )</em>
+                                                    }
+                                                </li>
+
+                                            }
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        <ul class="list-unstyled">
+                                            <li>Paid By : <span class="text-red"> @Model.FeePyamentDetails[i].PaymentModeName</span></li>
+
+                                            @if (Model.FeePyamentDetails[i].PaymentModeKey == DbConstants.PaymentMode.Cheque)
+                                            {
+                                                <li>@EduSuiteUIResources.ChequeOrDDNumber: <span> @Model.FeePyamentDetails[i].ChequeOrDDNumber</span></li>
+
+                                                <li>@EduSuiteUIResources.ChequeOrDDDate: <span> @string.Format("{0:dd/MM/yyyy}", Model.FeePyamentDetails[i].ChequeClearanceDate)</span></li>
+                                            }
+                                            @*else if (Model.FeePyamentDetails[i].PaymentModeKey == DbConstants.PaymentModeSub.Card)
+                                                {
+                                                    <li>@EduSuiteUIResources.CardNumber: <span> @Model.FeePyamentDetails[i].CardNumber</span></li>
+                                                }*@
+                                            else if (Model.FeePyamentDetails[i].PaymentModeKey == DbConstants.PaymentMode.Bank)
+                                            {
+                                                <li>@EduSuiteUIResources.BankAccount: <span> @Model.FeePyamentDetails[i].BankAccountName</span></li>
+                                            }
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        @string.Format("{0:G29}", Model.FeePyamentDetails[i].ApplicationFeePaymentDetails.Select(AF => AF.FeeAmount).DefaultIfEmpty().Sum())
+                                    </td>
+                                    @*<td>
+                                            @string.Format("{0:G29}", (Model.PersonalDetails.TotalFeeAmount - (Model.FeePyamentDetails[i].ApplicationFeePaymentDetails.Select(AF => AF.CashFlowTypeKey == DbConstants.CashFlowType.In ? AF.FeeAmount : -AF.FeeAmount).DefaultIfEmpty().Sum() + Model.FeePyamentDetails[i].BalanceFee)))
+
+                                        </td>*@
+                                    <td>
+                                        @Model.FeePyamentDetails[i].FeeDescription
+                                        <br />
+                                        @if (Model.FeePyamentDetails[i].ChequeStatusKey != null)
+                                        {
+                                            if (Model.FeePyamentDetails[i].ChequeStatusKey == DbConstants.ProcessStatus.Approved)
+                                            {
+                                                <span style="color:green"> Cheque @Model.FeePyamentDetails[i].ChequeAction </span> <span> On @string.Format("{0:dd/MM/yyyy}", @Model.FeePyamentDetails[i].ChequeApprovedRejectedDate)</span>
+                                            }
+                                            else
+                                            {
+                                                <span style="color:red"> Cheque @Model.FeePyamentDetails[i].ChequeAction </span> <span> On @string.Format("{0:dd/MM/yyyy}", @Model.FeePyamentDetails[i].ChequeApprovedRejectedDate)</span>
+                                            }
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (Model.FeePyamentDetails[i].IsRefunded == true)
+                                        {
+                                            <span class="label label-danger" style="padding: 10px;">Refunded</span>
+                                        }
+
+                                    </td>
+                                </tr>
+                            }
+                        </table>
+
+
+                    }
+                </div>
+            </div>
+            <div class="card mb-1">
+                <div class="card-header" data-toggle="collapse" href="#DocumentDetails" data-parent="#cpApplication">
+                    <i class="fa fa-file"></i> @EduSuiteUIResources.Documents@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Details
+
+                </div>
+                <div class="card-body collapse overflow-auto" id="DocumentDetails" data-parent="#cpApplication">
+                    <div class="form-row">
+                        @foreach (var item in Model.DocumentDetails)
+                        {
+                            if (item.DocumentTypeName != null)
+                            {
+                                <div class="col-lg-2">
+                                    <fieldset class="form-group">
+                                        <div class="card" id="divCard">
+                                            @if (item.StudentDocumentName != null)
+                                            {
+                                                <div class="col-sm-12 paddingNone text-center">
+                                                    <img class="img-responsive" src="@Url.Content(item.StudentDocumentPath)" alt=" " style="height: 125px; width: 102px;margin: auto;margin-bottom: 3px;" />
+                                                </div>
+                                                <a class="btn btn-primary col-xs-12 card-title" target="_blank" style="position:relative" href="@Url.Content(item.StudentDocumentPath)" data-lightbox="example-set" data-title="@item.DocumentTypeName">@item.DocumentTypeName</a>
+                                            }
+                                            else
+                                            {
+                                                <div class="col-sm-12 paddingNone text-center">
+                                                    <img class="img-responsive" src="~/Images/Not_available.jpg" alt=" " style="height: 125px; width: 102px;margin: auto;margin-bottom: 3px;" />
+                                                </div>
+                                                <a class="btn btn-primary col-xs-12 card-title" style="position:relative" data-lightbox="example-set" data-title="@item.DocumentTypeName">@item.DocumentTypeName</a>
+
+                                            }
+                                        </div>
+                                    </fieldset>
+                                </div>
+
+                            }
+                        }
+                    </div>
+
+
+                </div>
+            </div>
+            @if ((bool)ViewBag.ShowStudyMaterialt)
+            {
+                <div class="card mb-1">
+                    <div class="card-header" data-toggle="collapse" href="#StudyMaterial" data-parent="#cpApplication">
+                        <i class="fa fa-book"></i> @EduSuiteUIResources.StudyMaterial@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Details
+
+                    </div>
+                    <div class="card-body collapse overflow-auto" id="StudyMaterial" data-parent="#cpApplication">
+                        @if (Model.StudyMaterials.Count > 0)
+                        {
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>@EduSuiteUIResources.AcademicTerm</th>
+                                        <th>@EduSuiteUIResources.StudyMaterial@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Name</th>
+                                        <th>@EduSuiteUIResources.StudyMaterial@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Code</th>
+                                        <th>@EduSuiteUIResources.StudyMaterial@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Type</th>
+                                        <th>@EduSuiteUIResources.Available</th>
+                                        <th>@EduSuiteUIResources.Issued</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @*@foreach (var item in Model.StudyMaterials)
+                                        {*@
+                                    @for (var i = 0; i < Model.StudyMaterials.Count; i++)
+                                    {
+                                        <tr>
+                                            @if (i == 0 || (i != 0 && Model.StudyMaterials[i].SubjectYear != Model.StudyMaterials[i - 1].SubjectYear))
+                                            {
+                                                <td rowspan="@(Model.StudyMaterials.Count(row=> row.SubjectYear== Model.StudyMaterials[i].SubjectYear))">
+                                                    <strong>   @Model.StudyMaterials[i].SubjectYearText</strong>
+                                                </td>
+                                            }
+                                            <td>
+                                                @Model.StudyMaterials[i].StudyMaterialName
+                                            </td>
+                                            <td>
+                                                @Model.StudyMaterials[i].StudyMaterialCode
+                                            </td>
+                                            <td>
+                                                @Model.StudyMaterials[i].SubjectType
+                                            </td>
+
+                                            <td>
+                                                @if (Model.StudyMaterials[i].IsAvailable == true)
+                                                {
+                                                    <span><i class="fa fa-check" aria-hidden="true"></i></span>
+                                                    <span>Added By</span> @Model.StudyMaterials[i].AvailableByText
+                                                    <span>On</span> <span class="label label-danger"> @String.Format("{0:dd/MM/yyyy}", Model.StudyMaterials[i].AvailableDate)</span>
+                                                }
+                                                else
+                                                {
+                                                    <i class="fa fa-times" aria-hidden="true"></i>
+                                                }
+
+                                            </td>
+                                            <td>
+                                                @if (Model.StudyMaterials[i].IsIssued == true)
+                                                {
+                                                    <span><i class="fa fa-check" aria-hidden="true"></i></span>
+                                                    <span>Issued By</span> @Model.StudyMaterials[i].IssuedByText
+                                                    <span>On</span> <span class="label label-danger"> @String.Format("{0:dd/MM/yyyy}", Model.StudyMaterials[i].IssuedDate)</span>
+                                                }
+                                                else
+                                                {
+                                                    <i class="fa fa-times" aria-hidden="true"></i>
+                                                }
+
+                                            </td>
+
+
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+                        }
+                    </div>
+                </div>
+            }
+
+            @if ((bool)ViewBag.ShowUniversityPayment)
+            {
+                <div class="card mb-1">
+                    <div class="card-header" data-toggle="collapse" href="#UniversotyFeeDetails" data-parent="#cpApplication">
+                        <i class="fa fa-money"></i>  @EduSuiteUIResources.AffiliationsTieUpsPayment
+
+                    </div>
+                    <div class="card-body collapse overflow-auto" id="UniversotyFeeDetails" data-parent="#cpApplication">
+                        @if (Model.UniversityPyamentDetails.Count > 0)
+                        {
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            @EduSuiteUIResources.SlNo
+                                        </th>
+                                        <th>
+                                            @EduSuiteUIResources.Receipt
+                                        </th>
+                                        <th>
+                                            @EduSuiteUIResources.Date
+                                        </th>
+                                        <th>
+                                            @EduSuiteUIResources.FeeType
+                                        </th>
+                                        <th>
+                                            @EduSuiteUIResources.PaymentMode
+                                        </th>
+                                        <th>
+                                            @EduSuiteUIResources.Paid
+                                        </th>
+                                        @*<th>
+                                                @EduSuiteUIResources.Balance
+                                            </th>*@
+                                        <th>
+                                            @EduSuiteUIResources.Remarks
+                                        </th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                @for (var i = 0; i < Model.UniversityPyamentDetails.Count; i++)
+                                {
+                                    <tr>
+                                        <td>
+                                            @(i + 1)
+                                        </td>
+                                        <td>
+                                            @Model.UniversityPyamentDetails[i].VoucherNo
+                                        </td>
+                                        <td>
+                                            @string.Format("{0:dd/MM/yyyy}", Model.UniversityPyamentDetails[i].UniversityPaymentDate)
+                                        </td>
+                                        <td>
+                                            <ul class="list-unstyled">
+                                                @foreach (var item in Model.UniversityPyamentDetails[i].UniversityFeePaymentDetails)
+                                                {
+
+                                                    <li class="col-md-9">
+                                                        <em>@item.FeeTypeName</em>
+                                                        @if (item.UniversityPaymentYear != null)
+                                                        {
+                                                            <em>( @item.FeeYearText  )</em>
+                                                        }
+                                                    </li>
+
+                                                }
+                                            </ul>
+                                        </td>
+                                        <td>
+                                            <ul class="list-unstyled">
+                                                <li>Paid By : <span class="text-red"> @Model.UniversityPyamentDetails[i].PaymentModeName</span></li>
+
+                                                @if (Model.UniversityPyamentDetails[i].PaymentModeKey == DbConstants.PaymentMode.Cheque)
+                                                {
+                                                    <li>@EduSuiteUIResources.ChequeOrDDNumber: <span> @Model.UniversityPyamentDetails[i].ChequeOrDDNumber</span></li>
+
+                                                    <li>@EduSuiteUIResources.ChequeOrDDDate: <span> @string.Format("{0:dd/MM/yyyy}", Model.UniversityPyamentDetails[i].ChequeClearanceDate)</span></li>
+                                                }
+                                                @*else if (Model.UniversityPyamentDetails[i].PaymentModeKey == DbConstants.PaymentMode.Card)
+                                                    {
+                                                        <li>@EduSuiteUIResources.CardNumber: <span> @Model.UniversityPyamentDetails[i].CardNumber</span></li>
+                                                    }*@
+                                                else if (Model.UniversityPyamentDetails[i].PaymentModeKey == DbConstants.PaymentMode.Bank)
+                                                {
+                                                    <li>@EduSuiteUIResources.BankAccount: <span> @Model.UniversityPyamentDetails[i].BankAccountName</span></li>
+                                                }
+                                            </ul>
+                                        </td>
+                                        <td>
+                                            @string.Format("{0:G29}", Model.UniversityPyamentDetails[i].UniversityFeePaymentDetails.Select(AF => AF.UniversityPaymentAmount).DefaultIfEmpty().Sum())
+                                        </td>
+                                        @*<td>
+                                                @string.Format("{0:G29}", (Model.PersonalDetails.TotalFeeAmount - (Model.UniversityPyamentDetails[i].UniversityFeePaymentDetails.Select(AF => AF.CashFlowTypeKey == DbConstants.CashFlowType.In ? AF.UniversityPaymentAmount : -AF.UniversityPaymentAmount).DefaultIfEmpty().Sum() + Model.FeePyamentDetails[i].BalanceFee)))
+
+                                            </td>*@
+                                        <td>
+                                            @Model.UniversityPyamentDetails[i].FeeDescription
+                                            <br />
+                                            @if (Model.UniversityPyamentDetails[i].ChequeStatusKey != null)
+                                            {
+                                                if (Model.UniversityPyamentDetails[i].ChequeStatusKey == DbConstants.ProcessStatus.Approved)
+                                                {
+                                                    <span style="color:green"> Cheque @Model.UniversityPyamentDetails[i].ChequeAction </span> <span> On @string.Format("{0:dd/MM/yyyy}", @Model.UniversityPyamentDetails[i].ChequeApprovedRejectedDate)</span>
+                                                }
+                                                else
+                                                {
+                                                    <span style="color:red"> Cheque @Model.UniversityPyamentDetails[i].ChequeAction </span> <span> On @string.Format("{0:dd/MM/yyyy}", @Model.UniversityPyamentDetails[i].ChequeApprovedRejectedDate)</span>
+                                                }
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (Model.UniversityPyamentDetails[i].IsCancel == true)
+                                            {
+                                                <span class="label label-danger" style="padding: 10px;">Canceled</span>
+                                            }
+
+                                        </td>
+                                    </tr>
+                                }
+                            </table>
+                        }
+                    </div>
+                </div>
+            }
+            @if ((bool)ViewBag.ShowStudentIDCard)
+            {
+                <div class="card mb-1">
+                    <div class="card-header" data-toggle="collapse" href="#StudentIdCard" data-parent="#cpApplication">
+                        <i class="fa fa-credit-card-alt"></i> @EduSuiteUIResources.StudentIdCard@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Details
+
+                    </div>
+                    <div class="card-body collapse overflow-auto" id="StudentIdCard" data-parent="#cpApplication">
+                        @if (Model.StudentIDCardDetails.Count > 0)
+                        {
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>@EduSuiteUIResources.EnrollmentNo</th>
+                                        <th>@EduSuiteUIResources.Received</th>
+                                        <th>@EduSuiteUIResources.Issued</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.StudentIDCardDetails)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @item.StudentEnrollmentNo
+                                            </td>
+
+
+                                            <td>
+                                                @if (item.IsReceived == true)
+                                                {
+                                                    <span><i class="fa fa-check" aria-hidden="true"></i></span>
+                                                    <span>Received By</span> @item.ReceivedBy
+                                                    <span>On</span> <span class="label label-danger"> @String.Format("{0:dd/MM/yyyy}", item.ReceivedDate)</span>
+                                                }
+                                                else
+                                                {
+                                                    <i class="fa fa-times" aria-hidden="true"></i>
+                                                }
+
+                                            </td>
+                                            <td>
+                                                @if (item.IsIssued == true)
+                                                {
+                                                    <span><i class="fa fa-check" aria-hidden="true"></i></span>
+                                                    <span>Issued By</span> @item.IssuedBy
+                                                    <span>On</span> <span class="label label-danger"> @String.Format("{0:dd/MM/yyyy}", item.IssuedDate)</span>
+                                                }
+                                                else
+                                                {
+                                                    <i class="fa fa-times" aria-hidden="true"></i>
+                                                }
+
+                                            </td>
+
+
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+                        }
+                    </div>
+                </div>
+            }
+            @if ((bool)ViewBag.ShowUniversityCertificate)
+            {
+                <div class="card mb-1">
+                    <div class="card-header" data-toggle="collapse" href="#AffiliationsTieUpsCertificate" data-parent="#cpApplication">
+                        <i class="fa fa-certificate"></i> @EduSuiteUIResources.AffiliationsTieUps@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.CertificateDetails
+
+                    </div>
+                    <div class="card-body collapse overflow-auto" id="AffiliationsTieUpsCertificate" data-parent="#cpApplication">
+                        @if (Model.UniversityCertificateDetails.Count > 0)
+                        {
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>@EduSuiteUIResources.Certificate</th>
+                                        <th>@EduSuiteUIResources.Descreption</th>
+                                        <th>@EduSuiteUIResources.Received</th>
+                                        <th>@EduSuiteUIResources.Issued</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.UniversityCertificateDetails)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @item.CertificateTypeName
+                                            </td>
+                                            <td>
+                                                @item.UniversityCertificateDescription
+                                            </td>
+
+                                            <td>
+                                                @if (item.IsReceived == true)
+                                                {
+                                                    <span><i class="fa fa-check" aria-hidden="true"></i></span>
+                                                    <span>Received By</span> @item.ReceivedByName
+                                                    <span>On</span> <span class="label label-danger"> @String.Format("{0:dd/MM/yyyy}", item.ReceivedDate)</span>
+                                                }
+                                                else
+                                                {
+                                                    <i class="fa fa-times" aria-hidden="true"></i>
+                                                }
+
+                                            </td>
+                                            <td>
+                                                @if (item.IsIssued == true)
+                                                {
+                                                    <span><i class="fa fa-check" aria-hidden="true"></i></span>
+                                                    <span>Issued By</span> @item.IssuedByName
+                                                    <span>On</span> <span class="label label-danger"> @String.Format("{0:dd/MM/yyyy}", item.IssuedDate)</span>
+                                                }
+                                                else
+                                                {
+                                                    <i class="fa fa-times" aria-hidden="true"></i>
+                                                }
+
+                                            </td>
+                                            <td>
+                                                <div class="form-row">
+                                                    @if (item.CertificatePathText != null)
+                                                    {
+                                                        <div class="col-12">
+                                                            <fieldset class="form-group">
+                                                                <div class="card" id="divCard">
+
+                                                                    <div class="col-sm-12 paddingNone text-center">
+                                                                        <img class="img-responsive" src="@Url.Content(item.CertificatePath)" alt=" " style="height: 85px; width:85px;margin: auto;margin-bottom: 3px;" />
+                                                                    </div>
+
+                                                                    <a class="btn btn-primary col-xs-12 card-title" target="_blank" style="position:relative" href="@Url.Content(item.CertificatePath)" data-lightbox="example-set" data-title="@item.CertificateTypeName">@item.CertificateTypeName</a>
+                                                                </div>
+                                                            </fieldset>
+                                                        </div>
+
+                                                    }
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+                        }
+                    </div>
+                </div>
+            }
+
+            @if ((bool)ViewBag.ShowAttendance)
+            {
+                <div class="card mb-1">
+                    <div class="card-header" data-toggle="collapse" href="#AttendanceAcademicperfomance" data-parent="#cpApplication">
+                        <i class="fa fa-tachometer"></i> @EduSuiteUIResources.Attendance@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.And@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Academic
+
+                    </div>
+                    <div class="card-body collapse overflow-auto" id="AttendanceAcademicperfomance" data-parent="#cpApplication">
+
+                        @for (int i = 0; i < Model.CourseYears.Count; i++)
+                        {
+                            <div class="card">
+                                <div class="card-header w3-deep-purple" data-toggle="collapse" data-target="#cpAttendance[@i]">
+                                    <div>
+                                        @Model.CourseYears[i].Text
+
+                                    </div>
+                                </div>
+
+                                <div class="card-body form-row" data-performanceyear="@Model.CourseYears[i].RowKey" id="cpAttendancePerm[@i]" data-parent="#AttendanceAcademicperfomance">
+                                    <div id="dvAttendance" class="col-5">
+                                        <h4>Attendance Details</h4>
+                                        <canvas height='300' width='350' />
+                                    </div>
+                                    <div id="dvExamResult" class="col-7">
+                                        <h4>Internal Exam Details</h4>
+                                        <table id="tableExamResult"></table>
+                                    </div>
+                                </div>
+                            </div>
+
+                        }
+
+                    </div>
+
+
+                </div>
+            }
+            @if ((bool)ViewBag.ShowExamSchedule && (bool)ViewBag.ShowExamResult)
+            {
+                <div class="card mb-1">
+                    <div class="card-header" data-toggle="collapse" href="#ExamScheduleResult" data-parent="#cpApplication">
+                        <i class="fa fa-certificate"></i> @EduSuiteUIResources.ExamSchedule@EduSuiteUIResources.AndSymbol@EduSuiteUIResources.Result@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Details
+
+                    </div>
+                    <div class="card-body collapse overflow-auto" id="ExamScheduleResult" data-parent="#cpApplication">
+                        @if (Model.ExamScheduleSummary.Count > 0)
+                        {
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>@EduSuiteUIResources.Year</th>
+                                        <th>@EduSuiteUIResources.Subject</th>
+                                        <th>@EduSuiteUIResources.ExamTerm</th>
+                                        <th>@EduSuiteUIResources.ExamDate</th>
+                                        <th>@EduSuiteUIResources.Mark</th>
+                                        <th>@EduSuiteUIResources.Result@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Status</th>
+                                        <th>@EduSuiteUIResources.AppearanceCount</th>
+                                        <th>@EduSuiteUIResources.Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @*@foreach (var item in Model.ExamScheduleSummary)
+                                        {*@
+                                    @for (var i = 0; i < Model.ExamScheduleSummary.Count; i++)
+                                    {
+                                        <tr khaleefa>
+
+                                            @if (i == 0 || (i != 0 && Model.ExamScheduleSummary[i].SubjectYear != Model.ExamScheduleSummary[i - 1].SubjectYear))
+                                            {
+                                                <td rowspan="@(Model.ExamScheduleSummary.Count(row => row.SubjectYear == Model.ExamScheduleSummary[i].SubjectYear))">
+                                                    <strong>   @Model.ExamScheduleSummary[i].SubjectYearName</strong>
+                                                </td>
+                                            }
+                                            <td>
+                                                @Model.ExamScheduleSummary[i].SubjectName
+                                            </td>
+
+                                            <td>
+                                                @Model.ExamScheduleSummary[i].ExamTermName
+                                            </td>
+                                            <td>
+                                                @String.Format("{0:dd/MM/yyyy}", Model.ExamScheduleSummary[i].ExamDate)
+
+                                            </td>
+                                            <td>
+                                                @Model.ExamScheduleSummary[i].Mark
+
+                                            </td>
+                                            <td>
+                                                @Model.ExamScheduleSummary[i].ResultStatus
+
+                                            </td>
+                                            <td>
+                                                @Model.ExamScheduleSummary[i].AppearenceCount
+
+                                            </td>
+                                            @*<td>
+                                                    @item.AppliedStatus
+                                                    @if (item.AppliedStatus == "A")
+                                                    {
+                                                        <span style="color:green">Applied</span>
+                                                    }
+                                                    else if (item.AppliedStatus == "NA")
+                                                    {
+                                                        <span style="color:red">Not Applied</span>
+                                                    }
+                                                    else if (item.AppliedStatus == "C")
+                                                    {
+                                                        <span style="color:orange">Complete</span>
+                                                    }
+                                                    else if (item.AppliedStatus == null)
+                                                    {
+                                                        <span style="color:blue">N/A</span>
+                                                    }
+
+                                                </td>*@
+                                            <td Appliedstatus="@Model.ExamScheduleSummary[i].AppliedStatus"></td>
+
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+                        }
+                    </div>
+                </div>
+            }
+            @if ((bool)ViewBag.ShowStudentLeave)
+            {
+                <div class="card mb-1 ">
+                    <div class="card-header" data-toggle="collapse" href="#StudentLeaveDetails" data-parent="#cpApplication">
+                        <i class="fa fa-graduation-cap"></i> @EduSuiteUIResources.StudentLeave@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Details
+
+                    </div>
+                    <div class="card-body collapse overflow-auto" id="StudentLeaveDetails" data-parent="#cpApplication">
+                        @if (Model.StudentLeaveDetail.Count > 0)
+                        {
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>@EduSuiteUIResources.SlNo</th>
+                                        <th>@EduSuiteUIResources.StudentLeave@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.FromDate</th>
+                                        <th>@EduSuiteUIResources.StudentLeave@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.ToDate</th>
+                                        <th>@EduSuiteUIResources.Remarks</th>
+                                        <th>@EduSuiteUIResources.Attachment</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (var i = 0; i < Model.StudentLeaveDetail.Count; i++)
+                                    {
+
+                                        <tr>
+                                            <td>@(i + 1)</td>
+                                            <td>
+                                                @string.Format("{0:dd/MM/yyyy}", Model.StudentLeaveDetail[i].LeaveDateFrom)
+                                            </td>
+                                            <td>
+                                                @string.Format("{0:dd/MM/yyyy}", Model.StudentLeaveDetail[i].LeaveDateTo)
+                                            </td>
+                                            <td>
+                                                @Model.StudentLeaveDetail[i].Remarks
+                                            </td>
+
+                                            <td>
+                                                <div class="form-row">
+                                                    @if (Model.StudentLeaveDetail[i].AttachmentPath != null)
+                                                    {
+                                                        <div class="col-12">
+                                                            <fieldset class="form-group">
+                                                                <div class="card" id="divCard">
+
+                                                                    <div class="col-sm-12 paddingNone text-center">
+                                                                        <img class="img-responsive" src="@Url.Content(Model.StudentLeaveDetail[i].AttachmentPath)" alt=" " style="height: 125px; width: 102px;margin: auto;margin-bottom: 3px;" />
+                                                                    </div>
+
+                                                                    <a class="btn btn-primary col-xs-12 card-title" target="_blank" style="position:relative" href="@Url.Content(Model.StudentLeaveDetail[i].AttachmentPath)" data-lightbox="example-set" data-title="@Model.StudentLeaveDetail[i].Remarks">@Model.StudentLeaveDetail[i].Remarks</a>
+                                                                </div>
+                                                            </fieldset>
+                                                        </div>
+
+                                                    }
+                                                </div>
+                                            </td>
+
+
+
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+
+                        }
+                    </div>
+                </div>
+            }
+            @if ((bool)ViewBag.ShowStudentAbsconders)
+            {
+                <div class="card mb-1">
+                    <div class="card-header" data-toggle="collapse" href="#StudentsAbscondersDetails" data-parent="#cpApplication">
+                        <i class="fa fa-file"></i> @EduSuiteUIResources.StudentsAbsconders@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Details
+
+                    </div>
+                    <div class="card-body collapse overflow-auto" id="StudentsAbscondersDetails" data-parent="#cpApplication">
+                        @if (Model.StudentAbscondersDetails.Count > 0)
+                        {
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>@EduSuiteUIResources.SlNo</th>
+                                        <th>@EduSuiteUIResources.StudentsAbsconders@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Date</th>
+                                        <th>Pardon it</th>
+                                        <th>@EduSuiteUIResources.Remarks</th>
+                                        <th>@EduSuiteUIResources.Attachment</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    @for (var i = 0; i < Model.StudentAbscondersDetails.Count; i++)
+                                    {
+                                        <tr>
+                                            <td>@(i + 1)</td>
+                                            <td>
+                                                @string.Format("{0:dd/MM/yyyy}", Model.StudentAbscondersDetails[i].AbscondersDate)
+                                            </td>
+                                            <td>
+                                                @Model.StudentAbscondersDetails[i].IsAbscondersText
+                                            </td>
+                                            <td>
+                                                @Model.StudentAbscondersDetails[i].Remarks
+                                            </td>
+                                            <td>
+                                                <div class="form-row">
+                                                    @if (Model.StudentAbscondersDetails[i].AttachmentPath != null)
+                                                    {
+                                                        <div class="col-12">
+                                                            <fieldset class="form-group">
+                                                                <div class="card" id="divCard">
+
+                                                                    <div class="col-sm-12 paddingNone text-center">
+                                                                        <img class="img-responsive" src="@Url.Content(Model.StudentAbscondersDetails[i].AttachmentPath)" alt=" " style="height: 125px; width: 102px;margin: auto;margin-bottom: 3px;" />
+                                                                    </div>
+
+                                                                    <a class="btn btn-primary col-xs-12 card-title" target="_blank" style="position:relative" href="@Url.Content(Model.StudentAbscondersDetails[i].AttachmentPath)" data-lightbox="example-set" data-title="@Model.StudentAbscondersDetails[i].Remarks">@Model.StudentAbscondersDetails[i].Remarks</a>
+                                                                </div>
+                                                            </fieldset>
+                                                        </div>
+
+                                                    }
+                                                </div>
+                                            </td>
+
+
+
+
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+                        }
+
+
+                    </div>
+                </div>
+            }
+            @if ((bool)ViewBag.ShowStudentLate)
+            {
+                <div class="card mb-1">
+                    <div class="card-header" data-toggle="collapse" href="#StudentLateDetails" data-parent="#cpApplication">
+                        <i class="fa fa-file"></i> @EduSuiteUIResources.StudentLate@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Details
+
+                    </div>
+                    <div class="card-body collapse overflow-auto" id="StudentLateDetails" data-parent="#cpApplication">
+                        @if (Model.StudentLateDetails.Count > 0)
+                        {
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>@EduSuiteUIResources.SlNo</th>
+                                        <th>@EduSuiteUIResources.StudentLate@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Date</th>
+                                        <th>@EduSuiteUIResources.StudentLate@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Minutes</th>
+                                        <th>@EduSuiteUIResources.Remarks</th>
+                                        <th>@EduSuiteUIResources.Attachment</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    @for (var i = 0; i < Model.StudentLateDetails.Count; i++)
+                                    {
+                                        <tr>
+                                            <td>@(i + 1)</td>
+                                            <td>
+                                                @string.Format("{0:dd/MM/yyyy}", Model.StudentLateDetails[i].LateDate)
+                                            </td>
+                                            <td>
+                                                @Model.StudentLateDetails[i].LateMinutes
+                                            </td>
+                                            <td>
+                                                @Model.StudentLateDetails[i].Remarks
+                                            </td>
+                                            <td>
+                                                <div class="form-row">
+                                                    @if (Model.StudentLateDetails[i].AttachmentPath != null)
+                                                    {
+                                                        <div class="col-12">
+                                                            <fieldset class="form-group">
+                                                                <div class="card" id="divCard">
+
+                                                                    <div class="col-sm-12 paddingNone text-center">
+                                                                        <img class="img-responsive" src="@Url.Content(Model.StudentLateDetails[i].AttachmentPath)" alt=" " style="height: 125px; width: 102px;margin: auto;margin-bottom: 3px;" />
+                                                                    </div>
+
+                                                                    <a class="btn btn-primary col-xs-12 card-title" target="_blank" style="position:relative" href="@Url.Content(Model.StudentLateDetails[i].AttachmentPath)" data-lightbox="example-set" data-title="@Model.StudentLateDetails[i].Remarks">@Model.StudentLateDetails[i].Remarks</a>
+                                                                </div>
+                                                            </fieldset>
+                                                        </div>
+
+                                                    }
+                                                </div>
+                                            </td>
+
+
+
+
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+                        }
+
+
+                    </div>
+                </div>
+            }
+            @if ((bool)ViewBag.ShowStudentEarlyDeparture)
+            {
+                <div class="card mb-1">
+                    <div class="card-header" data-toggle="collapse" href="#StudentEarlyDepartureDetails" data-parent="#cpApplication">
+                        <i class="fa fa-file"></i> @EduSuiteUIResources.StudentEarlyDeparture@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Details
+
+                    </div>
+                    <div class="card-body collapse overflow-auto" id="StudentEarlyDepartureDetails" data-parent="#cpApplication">
+                        @if (Model.StudentEarlyDepartureDetails.Count > 0)
+                        {
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>@EduSuiteUIResources.SlNo</th>
+                                        <th>@EduSuiteUIResources.StudentEarlyDeparture@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Date</th>
+                                        <th>@EduSuiteUIResources.StudentEarlyDeparture@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Time</th>
+                                        <th>@EduSuiteUIResources.Remarks</th>
+                                        <th>@EduSuiteUIResources.Attachment</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    @for (var i = 0; i < Model.StudentEarlyDepartureDetails.Count; i++)
+                                    {
+                                        <tr>
+                                            <td>@(i + 1)</td>
+                                            <td>
+                                                @string.Format("{0:dd/MM/yyyy}", Model.StudentEarlyDepartureDetails[i].EarlyDepartureDate)
+                                            </td>
+                                            <td>
+                                                @Model.StudentEarlyDepartureDetails[i].EarlyDepartureTime
+                                            </td>
+                                            <td>
+                                                @Model.StudentEarlyDepartureDetails[i].Remarks
+                                            </td>
+                                            <td>
+                                                <div class="form-row">
+                                                    @if (Model.StudentEarlyDepartureDetails[i].AttachmentPath != null)
+                                                    {
+                                                        <div class="col-12">
+                                                            <fieldset class="form-group">
+                                                                <div class="card" id="divCard">
+
+                                                                    <div class="col-sm-12 paddingNone text-center">
+                                                                        <img class="img-responsive" src="@Url.Content(Model.StudentEarlyDepartureDetails[i].AttachmentPath)" alt=" " style="height: 125px; width: 102px;margin: auto;margin-bottom: 3px;" />
+                                                                    </div>
+
+                                                                    <a class="btn btn-primary col-xs-12 card-title" target="_blank" style="position:relative" href="@Url.Content(Model.StudentEarlyDepartureDetails[i].AttachmentPath)" data-lightbox="example-set" data-title="@Model.StudentEarlyDepartureDetails[i].Remarks">@Model.StudentEarlyDepartureDetails[i].Remarks</a>
+                                                                </div>
+                                                            </fieldset>
+                                                        </div>
+
+                                                    }
+                                                </div>
+                                            </td>
+
+
+
+
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+                        }
+
+
+                    </div>
+                </div>
+            }
+            @if ((bool)ViewBag.ShowStudentDiary)
+            {
+                <div class="card mb-1">
+                    <div class="card-header" data-toggle="collapse" href="#StudentDiaryDetails" data-parent="#cpApplication">
+                        <i class="fa fa-file"></i> @EduSuiteUIResources.StudentDiary@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Details
+
+                    </div>
+                    <div class="card-body collapse overflow-auto" id="StudentDiaryDetails" data-parent="#cpApplication">
+                        @if (Model.StudentDiaryDetails.Count > 0)
+                        {
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>@EduSuiteUIResources.SlNo</th>
+                                        <th>@EduSuiteUIResources.StudentDiary@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Date</th>
+                                        <th>@EduSuiteUIResources.StudentDiary@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Subject</th>
+                                        <th>@EduSuiteUIResources.Remarks</th>
+                                        <th>@EduSuiteUIResources.Attachment</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (var i = 0; i < Model.StudentDiaryDetails.Count; i++)
+                                    {
+                                        <tr>
+                                            <td>@(i + 1)</td>
+                                            <td>
+                                                @string.Format("{0:dd/MM/yyyy}", Model.StudentDiaryDetails[i].StudentDiaryDate)
+                                            </td>
+                                            <td>
+                                                @Model.StudentDiaryDetails[i].Subject
+                                            </td>
+                                            <td>
+                                                @Model.StudentDiaryDetails[i].Remarks
+                                            </td>
+                                            <td>
+                                                <div class="form-row">
+                                                    @if (Model.StudentDiaryDetails[i].AttachmentPath != null)
+                                                    {
+                                                        <div class="col-12">
+                                                            <fieldset class="form-group">
+                                                                <div class="card" id="divCard">
+
+                                                                    <div class="col-sm-12 paddingNone text-center">
+                                                                        <img class="img-responsive" src="@Url.Content(Model.StudentDiaryDetails[i].AttachmentPath)" alt=" " style="height: 125px; width: 102px;margin: auto;margin-bottom: 3px;" />
+                                                                    </div>
+
+                                                                    <a class="btn btn-primary col-xs-12 card-title" target="_blank" style="position:relative" href="@Url.Content(Model.StudentDiaryDetails[i].AttachmentPath)" data-lightbox="example-set" data-title="@Model.StudentDiaryDetails[i].Remarks">@Model.StudentDiaryDetails[i].Remarks</a>
+                                                                </div>
+                                                            </fieldset>
+                                                        </div>
+
+                                                    }
+                                                </div>
+                                            </td>
+
+
+
+
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+                        }
+
+
+                    </div>
+                </div>
+            }
+            @if ((bool)ViewBag.ShowUnitTestResult)
+            {
+                <div class="card mb-1">
+                    <div class="card-header" data-toggle="collapse" href="#UnitTestDetails" data-parent="#cpApplication">
+                        <i class="fa fa-file"></i> @EduSuiteUIResources.UnitTest@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Details
+
+                    </div>
+                    <div class="card-body collapse overflow-auto" id="UnitTestDetails" data-parent="#cpApplication">
+                        @if (Model.UnitTestResultDetails.Count > 0)
+                        {
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>@EduSuiteUIResources.SlNo</th>
+                                        <th>@EduSuiteUIResources.Subject</th>
+                                        <th>@EduSuiteUIResources.ExamDate</th>
+                                        <th>@EduSuiteUIResources.Mark</th>
+                                        <th>@EduSuiteUIResources.MinMaxMark</th>
+                                        <th>@EduSuiteUIResources.Status</th>
+                                        <th>@EduSuiteUIResources.Remarks</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    @for (var i = 0; i < Model.UnitTestResultDetails.Count; i++)
+                                    {
+                                        <tr>
+                                            <td>@(i + 1)</td>
+                                            <td>
+                                                @Model.UnitTestResultDetails[i].SubjectName
+                                            </td>
+                                            <td>
+                                                @string.Format("{0:dd/MM/yyyy}", Model.UnitTestResultDetails[i].ExamDate)
+                                            </td>
+
+                                            <td>
+                                                @Model.UnitTestResultDetails[i].Mark
+                                            </td>
+                                            <td>
+                                                @Model.UnitTestResultDetails[i].MinimumMark & @Model.UnitTestResultDetails[i].MaximumMark
+                                            </td>
+                                            <td>
+                                                @if (Model.UnitTestResultDetails[i].AbsentStatus == true)
+                                                {
+                                                    <span class="w3-text-yellow">Absent</span>
+                                                }
+                                                else
+                                                {
+                                                    if (Model.UnitTestResultDetails[i].ResultStatus == "P")
+                                                    {
+                                                        <span class="w3-text-green">Presnt</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="w3-text-red">Failed</span>
+                                                    }
+                                                }
+                                            </td>
+                                            <td>
+                                                @Model.UnitTestResultDetails[i].Remarks
+                                            </td>
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+                        }
+
+
+                    </div>
+                </div>
+            }
+            @if ((bool)ViewBag.FeeSchedule)
+            {
+                <div class="card mb-1">
+                    <div class="card-header" data-toggle="collapse" href="#FeeSchdeuleDetails" data-parent="#cpApplication">
+                        <i class="fa fa-file"></i> @EduSuiteUIResources.FeeSchdeule@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Details
+
+                    </div>
+                    <div class="card-body collapse overflow-auto" id="FeeSchdeuleDetails" data-parent="#cpApplication">
+                        @if (Model.FeeFollowupDetails.Count > 0)
+                        {
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>@EduSuiteUIResources.SlNo</th>
+                                        <th>@EduSuiteUIResources.Date</th>
+                                        <th>@EduSuiteUIResources.Status</th>
+                                        <th>@EduSuiteUIResources.Remarks</th>
+                                        <th>@EduSuiteUIResources.FeeType</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    @for (var i = 0; i < Model.FeeFollowupDetails.Count; i++)
+                                    {
+                                        <tr>
+                                            <td>@(i + 1)</td>
+                                            <td>
+                                                @string.Format("{0:dd/MM/yyyy}", Model.FeeFollowupDetails[i].FollowupDate)
+                                            </td>
+                                            <td>                                                
+                                                @if (Model.FeeFollowupDetails[i].ProcessStatusKey == DbConstants.ProcessStatus.Pending)
+                                                {
+                                                    <span class="w3-text-red">Pending</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="w3-text-green">Completed</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                @Model.FeeFollowupDetails[i].Remarks
+                                            </td>
+                                            <td>
+                                                <ul>
+                                                    @foreach (var item in Model.FeeFollowupDetails[i].ApplicationFeeFollowupFeeTypes)
+                                                    {
+                                                        <li>
+                                                            <p>   @item.FeeTypeName</p>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </td>
+
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+                        }
+
+
+                    </div>
+                </div>
+            }
+            <div class="card mb-1">
+                <div class="card-header" data-toggle="collapse" href="#CallHistory" data-parent="#cpApplication">
+                    <i class="fa fa-phone"></i> @EduSuiteUIResources.CallHistory
+
+                </div>
+                <div class="card-body collapse overflow-auto" id="CallHistory" data-parent="#cpApplication">
+                    @if (Model.CallHistory.Count > 0)
+                    {
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>@EduSuiteUIResources.CallStatus</th>
+                                    <th>@EduSuiteUIResources.Feedback</th>
+                                    <th>@EduSuiteUIResources.CallDuration</th>
+                                    <th>@EduSuiteUIResources.Date</th>
+                                    <th>@EduSuiteUIResources.NextCallSchedule</th>
+                                    <th>@EduSuiteUIResources.Schedule @EduSuiteUIResources.Type</th>
+                                    <th>@EduSuiteUIResources.PostedBy</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.CallHistory)
+                                {
+                                    <tr>
+                                        <td>@item.CallStatusName </td>
+                                        <td>@item.Feedback </td>
+                                        <td>@item.CallDuration </td>
+                                        <td>@(string.Format("{0:dd/MM/yyyy hh:mm:ss tt }", item.FeedbackCreatedDate))</td>
+                                        <td>@(string.Format("{0:dd/MM/yyyy}", item.NextCallScheduleDate))</td>
+                                        <td>@item.ScheduleTypeName </td>
+                                        <td>@item.CreatedBy </td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    }
+                </div>
+            </div>
+
+
+
+
+        </div>
+    </div>
+
+</div>
+
+
+
+<script>
+    $(document).ready(function () {
+
+        //$("#spnApplicationStatus")[0].style.color = AppCommon.SetColorByBackgroundIntensity($("#spnApplicationStatus")[0].style.backgroundColor);
+        setTimeout(function () {
+            ApplicationFeePayment.BindTotalFeeDetails();
+            ApplicationFeePayment.BindInstallmentFeeDetails();
+            Application.GetAttendanceAcademicPerfomance();
+        }, 500);
+
+
+        var HasInstallment = '@Model.PersonalDetails.HasInstallment';
+            HasInstallment = HasInstallment ? JSON.parse(HasInstallment.toLowerCase()) : false;
+            if (!HasInstallment) {
+                $("#dvInstallement").hide();
+            }
+            else {
+                $("#dvInstallement").show();
+            }
+        $("[khaleefa]").each(function (i) {
+
+
+            var AppliedStatus = $("[id*=AppliedStatus]", $(this)).val();
+            var html;
+            if (AppliedStatus == "A") {
+                html = "<span style=color:green>Applied</span>"
+            }
+
+        })
+
+        $('[data-lightbox="example-set"]').each(function () {
+
+            var ext = $(this).attr("href").split(".");
+            ext = ext[ext.length - 1].toLowerCase();
+            var fileExtension = ['pdf', 'doc', 'docx'];
+            if (fileExtension.lastIndexOf((ext ? ext : "").toLowerCase()) > -1) {
+                $(this).removeAttr("data-lightbox");
+                var img = $(this).closest("#divCard").find("img");
+                if (ext == "pdf") {
+                    $(img).attr("src", 'data:image/png;base64,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');
+                }
+                else {
+                    $(img).attr("src", 'data:image/png;base64,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');
+                }
+            }
+
+        })
+
+    })
+
+    function GotoApplication(_this) {
+        var applicationKey = $(_this)[0];
+        applicationKey = parseInt(applicationKey) ? parseInt(applicationKey) : 0;
+
+
+        href = $("#hdnViewApplication").val() + "/" + applicationKey
+        window.location.href = href;
+    }
+
+
+</script>
+<style>
+    .timeline, .timeline li *::after, .timeline, .timeline li *::before {
+        box-sizing: border-box;
+        font-size: 9px;
+    }
+    /*.timeline ::after, .timeline ::before {
+                box-sizing: border-box;
+                font-size: 9px;
+            }   .timeline li ::after, .timeline li::before {
+                box-sizing: border-box;
+                font-size: 9px;
+            }*/
+
+    .timeline {
+        --timeline-color: #9bc;
+        position: relative;
+        list-style: none;
+        display: inline-flex;
+        flex-wrap: nowrap;
+        margin: 0;
+        padding: 0;
+        /* set here the height of the timeline */
+        height: 155px;
+    }
+
+        /* middle line */
+        .timeline:before {
+            content: "";
+            position: absolute;
+            top: calc(50% - 1px);
+            width: 100%;
+            height: 2px;
+            background: var(--timeline-color);
+        }
+
+        .timeline li {
+            margin: 0 0px;
+            min-width: 100px;
+            align-self: flex-start;
+        }
+
+            /*  event in even position are bottom-aligned */
+            .timeline li:nth-child(2n) {
+                align-self: flex-end;
+            }
+
+        .timeline div {
+            position: relative;
+            padding: 2px;
+            border: 1px var(--timeline-color) solid;
+        }
+
+            .timeline div p {
+                margin: 0px;
+            }
+
+                .timeline div p:last-child {
+                    margin-bottom: 8px;
+                }
+
+        /* style for the dot over the timeline */
+        .timeline li:before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            margin-left: 50px;
+            transform: translate(-50%, -50%);
+            border: 1px #9bc solid;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--timeline-color);
+        }
+
+        /* style for the event arrow */
+        .timeline div:before {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 100%;
+            width: 20px;
+            height: 20px;
+            transform: translate(-50%, -1px) rotateZ(45deg);
+            background: #fff;
+        }
+
+        /* position of the event arrow in odd position */
+        .timeline li:nth-child(2n - 1) div:before {
+            top: 100%;
+            margin-top: -8px;
+            border-right: 1px var(--timeline-color) solid;
+            border-bottom: 1px var(--timeline-color) solid;
+        }
+
+        /* position of the event arrow in even position */
+        .timeline li:nth-child(2n) div:before {
+            top: 0;
+            margin-top: -10px;
+            border-left: 1px var(--timeline-color) solid;
+            border-top: 1px var(--timeline-color) solid;
+        }
+</style>

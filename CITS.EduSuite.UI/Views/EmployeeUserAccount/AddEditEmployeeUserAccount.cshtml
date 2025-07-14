@@ -1,0 +1,141 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.EmployeeUserAccountViewModel
+
+
+
+@section scripts{
+    @Scripts.Render("~/Scripts/Employee")
+}
+<div class="modal-header">
+    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+    <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.Add @EduSuiteUIResources.Sla @EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace @EduSuiteUIResources.Account</h4>
+</div>
+
+
+
+@using (Html.BeginForm("AddEditEmployeeUserAccount", "EmployeeUserAccount", FormMethod.Post, new { @id = "frmEmployeeUserAccount" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.RowKey)
+    @Html.HiddenFor(m => m.EmployeeKey)
+    @Html.ValidationSummary(true)
+    <div class="modal-body">
+
+        @if ((Model.EmployeeKey != 0) || !String.IsNullOrEmpty(Model.EmployeeCode))
+        {
+            @Html.Action("EmployeeDetail", "Shared", new { id = Model.EmployeeKey, EmployeeCode = Model.EmployeeCode })
+        }
+        <div class="form-master mt-2">
+
+            <div class="form-row">
+                @if (Model.Roles.Count == 1)
+                {
+                    {
+                        Model.RoleKey = (Model.RoleKey == 0 || Model.RoleKey == null) ? (short)Model.Roles.Select(x => x.RowKey).FirstOrDefault() : Model.RoleKey;
+                    }
+                    @Html.HiddenFor(m => m.RoleKey)
+                }
+                else
+                {
+                    <div class="col-lg-2 col-md-3 col-4">
+                        <fieldset class="form-group">
+                            @Html.DropDownListFor(m => m.RoleKey, new SelectList(Model.Roles, "RowKey", "Text"), EduSuiteUIResources.Role, new { @class = "form-control input-control " })
+                        </fieldset>
+                    </div>
+                }
+
+                <div class="col-lg-2 col-md-3 col-4">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.UserName, htmlAttributes: new { @id = "lblUserName", @class = "form-label" })
+                        <div class="required-icon"><div class="text">*</div></div>
+                        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control input-control", @InputFor = "lblUserName", @data_convert = "none", @autocomplete = "false" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.UserName)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-3 col-4">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.Password, htmlAttributes: new { @id = "lblPassword", @class = "form-label" })
+                        
+                        <div class="input-group-transparent">
+                            @Html.TextBoxFor(m => m.Password, new { @class = "form-control input-control", @InputFor = "lblPassword", @type = "password", @data_convert = "none" })
+                            <span class="input-group-addon-end"><i class="fa fa-eye"></i></span>
+                        </div>
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.Password)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-4">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.Confirm + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Password, htmlAttributes: new { @id = "lblConfirmPassword", @class = "form-label", @data_convert = "none" })
+                      
+                        <div class="input-group-transparent">
+                            @Html.TextBoxFor(m => m.ConfirmPassword, new { @class = "form-control input-control", @InputFor = "lblConfirmPassword", @type = "password", @data_convert = "none" })
+                            <span class="input-group-addon-end"><i class="fa fa-eye"></i></span>
+                        </div>
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.ConfirmPassword)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-4">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.PasswordHint, htmlAttributes: new { @id = "lblPasswordHint", @class = "form-label" })
+                        @Html.TextBoxFor(m => m.PasswordHint, new { @class = "form-control input-control", @InputFor = "lblPasswordHint", @readonly = "readonly" })
+
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.PasswordHint)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-3 text-center">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.IsActive, new { @class = "form-label" })
+                        <div class="switch-check my-2">
+                            @Html.CheckBoxFor(m => m.IsActive, new { @InputFor = "lblIsActive", @class = "switch-input" })
+                            <div class="switch-label redgreen" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                            <div class="switch-handle"></div>
+                        </div>
+
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.IsActive)
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-12">
+                    <div class="form-group">
+                        <input type="submit" value="@EduSuiteUIResources.Save" id="btnSave" class="btn btn-sm btn-success mx-1" />
+                        <button type="button" data-dismiss="modal" class="btn btn-sm btn-danger mx-1">@EduSuiteUIResources.Cancel</button>
+                    </div>
+                    <div class="row Border_None">
+                        <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+<script>
+    $(document).ready(function () {
+
+        $(".input-group-addon-end").on("mousedown", function () {
+            $(this).prev("input").removeAttr("type").attr("type", "text")
+        }).on("mouseup", function () {
+            $(this).prev("input").removeAttr("type").attr("type", "password")
+        })
+        $("#Password").on("change", function () {
+            if ($(this).val().trim() != "") {
+                $("#PasswordHint").removeAttr("readonly")
+
+            }
+            else {
+                $("#PasswordHint").attr("readonly", "readonly")
+            }
+        })
+    });
+</script>

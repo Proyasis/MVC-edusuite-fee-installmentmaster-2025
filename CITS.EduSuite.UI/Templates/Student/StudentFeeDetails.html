@@ -1,0 +1,77 @@
+﻿
+
+<table class="table table-bordered" >
+
+    <thead>
+        <tr>
+
+            <th class="bg-secondary text-white align-middle text-center">
+                FeeType
+            </th>
+            <th class="bg-primary text-white text-center  border-right  border-primary">
+                Fee Amount
+            </th>
+
+            <th class="bg-success text-white text-center  border-right  border-success">
+                Fee Paid
+            </th>
+
+            <th class="bg-danger text-white text-center  border-right  border-danger">
+                Balance Fee
+            </th>
+
+        </tr>
+    </thead>
+
+    <tbody>
+        {{#TotalFeeDetails}}
+        <tr data-repeater-item data-type="@Model[i].FeeTypeKey" data-year="@Model[i].BatchKey">
+            <td class="bg-info text-white align-middle text-center">
+                {{FeeTypeName}}
+            </td>
+
+            <td class="text-primary align-middle text-center font-weight-bold border-right border-primary" >
+                {{G29 TotalAmount}}
+
+            </td>
+            <td class="text-success align-middle text-center font-weight-bold border-right border-success">
+                {{G29 FeeAmount}}
+
+            </td>
+            <td class="text-danger align-middle text-center font-weight-bold border-right border-danger">
+
+                {{G29 BalanceAmount}}
+
+            </td>
+
+        </tr>
+
+        {{/TotalFeeDetails}}
+        
+    </tbody>
+    <tfoot>
+        <tr>
+            <th class="bg-secondary text-white text-center">
+                Total
+            </th>
+            <th class="bg-primary text-white text-center border-right  border-primary" >
+                {{sum TotalFeeDetails 'TotalAmount'}}
+            </th>
+
+            <th class="bg-success text-white text-center border-right  border-success" >
+                {{sum TotalFeeDetails 'FeeAmount'}}
+            </th>
+
+            <th class="bg-danger text-white text-center border-right  border-danger" >
+                {{sum TotalFeeDetails 'BalanceAmount'}}
+            </th>
+
+        </tr>
+    </tfoot>
+</table>
+
+<script>
+    $(document).ready(function () {
+
+    });
+</script>

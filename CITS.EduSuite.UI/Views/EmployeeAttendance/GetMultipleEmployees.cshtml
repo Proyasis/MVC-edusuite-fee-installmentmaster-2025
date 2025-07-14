@@ -1,0 +1,192 @@
+﻿@model List<CITS.EduSuite.Business.Models.ViewModels.EmployeeAttendanceViewModel>
+@using CITS.EduSuite.Business.Models.ViewModels
+
+
+<div id="dynamicRepeater" class="repeater">
+    <div data-repeater-list style="margin: 0">
+
+        @for (int i = 0; i < Model.Count(); i++)
+        {
+        <div data-repeater-item class="form-row mb-1">
+            <div class="col-2">
+                @Html.DisplayFor(m => m[i].EmployeeName, new { @class = "input-control form-control form-control-sm" })
+
+                @Html.HiddenFor(m => m[i].RowKey)
+                @Html.HiddenFor(m => m[i].EmployeeKey)
+                @Html.HiddenFor(m => m[i].AttendanceConfigType)
+                @Html.HiddenFor(m => m[i].AttendanceDate)
+
+            </div>
+
+
+
+            <div class="col-2">
+                <div class="form-group ">
+                    @*@Html.DropDownListFor(m => m[i].AttendanceStatusKey, new SelectList(Model[i].AttendanceStatuses, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.AttendanceStatus, new { @class = "input-control form-control form-control-sm", @InputFor = "lblAttendanceStatus", @onchange = "EmployeeAttendance.AttendanceStatusChange(this)" })*@
+                    <div class="btn-group btn-group-toggle " data-toggle="buttons">
+                        @foreach (var AttendanceStatus in Model[i].AttendanceStatuses)
+                        {
+                            if (AttendanceStatus.RowKey == DbConstants.AttendanceStatus.Present)
+                            {
+                                <label id="lblAttendanceStatus" class="btn btn-sm btn-outline-success @(AttendanceStatus.RowKey == Model[i].AttendanceStatusKey?"active":"")" data-background="@AttendanceStatus.GroupName">
+                                    @Html.RadioButtonFor(m => m[i].AttendanceStatusKey, AttendanceStatus.RowKey)@AttendanceStatus.Text
+                                </label>
+                            }
+                            else
+                            {
+                                <label id="lblAttendanceStatus" class="btn  btn-sm btn-outline-danger @(AttendanceStatus.RowKey == Model[i].AttendanceStatusKey?"active":"")" data-background="@AttendanceStatus.GroupName">
+                                    @Html.RadioButtonFor(m => m[i].AttendanceStatusKey, AttendanceStatus.RowKey, new { @id = "Present" })@AttendanceStatus.Text
+                                </label>
+                            }
+                        }
+                    </div>
+
+                    <span class="form-control-error-text">
+                        @Html.ValidationMessageFor(m => m[i].AttendanceStatusKey)
+                    </span>
+                </div>
+            </div>
+
+            @if (Model[i].AttendanceConfigType != DbConstants.AttendanceConfigType.MarkPresent)
+            {
+                <div class="col-2 dvInOut invisible">
+                    <div class="form-group ">
+                        @Html.TextBoxFor(m => m[i].InDateTime, "{0:dd/MM/yyyy HH:mm:ss tt}", new { @class = "input-control form-control form-control-sm", @data_input_type = "datetime", @data_inputmask = "'alias': 'datetime12'", @InputFor = "lblInTime", @placeholder = "In Time" })
+
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m[i].InDateTime)
+                        </span>
+                    </div>
+
+                </div>
+
+                <div class="col-2 dvInOut invisible">
+                    <div class="form-group ">
+                        @Html.TextBoxFor(m => m[i].OutDateTime, "{0:dd/MM/yyyy HH:mm:ss tt}", new { @class = "input-control form-control form-control-sm", @data_input_type = "datetime", @data_inputmask = "'alias': 'datetime12'", @InputFor = "lblOutTime", @placeholder = "Out Time" })
+
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m[i].OutDateTime)
+                        </span>
+                    </div>
+                </div>
+
+            }
+            else
+            {
+                @Html.HiddenFor(m => m[i].InDateTime)
+                @Html.HiddenFor(m => m[i].OutDateTime)
+            }
+
+
+            <div class="col-3 form-col">
+                @Html.TextAreaFor(m => m[i].Remarks, new { @class = "input-control form-control form-control-sm", @placeholder = EduSuiteUIResources.Remarks })
+            </div>
+            <div class="col-1 form-col">
+                <span class="label AttendanceStatus" style="background:@Model[i].AttendanceStatusColor">@Html.DisplayFor(m => m[i].AttendanceStatusRemarks)</span>
+
+            </div>
+
+
+        </div>
+
+        }
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        var jsonDataList=@(Html.Raw(Json.Encode(Model)));
+        AppCommon.FormatInputCase();
+        //$("[data-repeater-list]").find("input,select,textarea").each(function () {
+        //    $(this).attr("name", "EmployeeAttendanceViewModel" + $(this).attr("name"));
+        //})
+
+
+        $("[id*=lblAttendanceStatus]").each(function () {
+            var background = this.style.backgroundColor;
+            var Color = AppCommon.SetColorByBackgroundIntensity(background);
+            $(this).css("color", Color);
+        })
+
+
+
+        $("[data-input-type =dateTime]").each(function () {
+
+            if ($(this).val() != "") {
+                $(this).val(moment($(this).val(), ["DD/MM/YYYY HH:mm:ss"]).format("DD/MM/YYYY hh:mm A"));
+            }
+        })
+        AppCommon.FormatDateInput();
+        AppCommon.FormatTimeInput();
+        AppCommon.FormatSelect2();
+        @*var outTime = '@Model[i].OutTime';
+        if (outTime == "") {
+            $("#OutTime").val("").prop("disabled", true);
+        }*@
+        //$("#BranchKey").on("change", function () {
+        //    EmployeeAttendance.GetEmployeesByBranchId($(this).val(), $("#EmployeeKey"));
+        //});
+        $("input[name*=AttendanceStatusKey]").on("change", function () {
+          
+            EmployeeAttendance.AttendanceStatusChange($(this));
+        });
+
+        $("#dvEmployeeList [data-repeater-item]").each(function (i) {
+           
+            var item = $(this).closest("[data-repeater-item]");
+            EmployeeAttendance.AttendanceStatusChange($("input[name*=AttendanceStatusKey][value="+jsonDataList[i].AttendanceStatusKey+"]",item))
+            $("select[name*=LeaveTypeKey]",item).val(jsonDataList[i].LeaveTypeKey)
+
+            EmployeeAttendance.HideShowInOutByConfigType($("input[name*=AttendanceConfigType][value="+jsonDataList[i].AttendanceConfigType+"]",item));
+
+
+            //if ($("input[name*=AttendanceStatusKey]", $(item)).val() == Resources.AttendanceStatusLeave) {
+            //    $("select[name*=LeaveTypeKey]", $(item)).val(jsonDataList[i].LeaveTypeKey);
+            //    $("#dvLeaveType", $(item)).show();
+            //}
+            //else {
+            //    $("#dvLeaveType", $(item)).hide();
+            //    $("select[name*=LeaveTypeKey]", $(item)).val("");
+            //}
+            //if ($("radio[name*=AttendanceStatusKey]", $(item)).val() != Resources.AttendanceStatusPresent) {
+            //    $("input[name*=InTime]", $(item)).val("");
+            //    $("input[name*=OutTime]", $(item)).val("");
+            //    $("#dvInOut", $(item)).hide();
+
+            //} else {
+            //    $("#dvInOut", $(item)).show();
+            //}
+
+            //EmployeeAttendance.AttendanceStatusChange($("input[name*=AttendanceStatusKey]:checked"));
+        });
+        $("form").removeData("validator");
+        $("form").removeData("unobtrusiveValidation");
+        $.validator.unobtrusive.parse("form");
+        //$("[data-toggle=buttons] label").each(function () {
+        //    var background = this.style.backgroundColor;
+        //    var Color = AppCommon.SetColorByBackgroundIntensity(background);
+        //    $(this).css("color", Color);
+        //})
+    });
+
+    function CheckboxAllChange(chk, name) {
+       
+        $("input[type=radio][name*=AttendanceStatusKey]").each(function (index) {
+
+            var item = $(chk).closest("[data-repeater-item]");
+
+            var Object = $('input[name*=' + name + ']', $(this))[0];
+
+
+            if (Object != undefined) {
+                //if (!Object.disabled) {
+                Object.checked = chk.checked
+                $("input[name*=lblAttendanceStatus]",$(item)).attr("active");
+                // }
+            }
+
+        });
+
+    }
+
+</script>

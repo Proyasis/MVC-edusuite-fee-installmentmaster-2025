@@ -1,0 +1,15 @@
+﻿<fieldset id="dvQuestionGroup{{RowKey}}">
+    <legend>Question {{QuestionStart}} - {{QuestionEnd}} </legend>
+    <h5>{{QuestionTitle}}</h5>
+    {{#QuestionDetails}}
+    <h6>{{QuestionText}}</h6>
+    <div class="form-group">
+        {{#QuestionOptions}}
+        <div class="custom-control">
+            <input type="radio" value="{{Value}}" class="custom-control-input" />
+            <label class="custom-control-input">{{{Text}}}</label>
+        </div>
+        {{/QuestionOptions}}
+    </div>
+    {{/QuestionDetails}}
+</fieldset>

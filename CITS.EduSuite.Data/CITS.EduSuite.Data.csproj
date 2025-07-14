@@ -1,0 +1,1806 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{50939764-C5BF-4B3B-AB35-ABF9F23B35B2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CITS.EduSuite.Data</RootNamespace>
+    <AssemblyName>CITS.EduSuite.Data</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AcademicTerm.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AccountFlow.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AccountGroup.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AccountHead.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AccountHeadOpeningBalance.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AccountHeadType.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AccountLedger.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AccountLedgerType.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AccountTransaction.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AccountTransactionPayment.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Action.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ActivityLog.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AdditionalComponentType.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AdditionalSalaryComponent.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Address.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AddressType.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AdmissionFee.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AdmissionNoConfig.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AdsAPI.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Agent.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Application.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ApplicationCertificate.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ApplicationConfig.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ApplicationFamilyDetail.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ApplicationFeeFollowup.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ApplicationSchedule.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ApplicationScheduleCallStatu.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ApplicationScheduleType.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ApplicationType.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ApplicationWebForm.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AppUser.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AssetDetail.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AssetPurchaseDetail.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AssetPurchaseMaster.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AssetPurchasePayment.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AssetType.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Attendance.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AttendanceCategory.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AttendanceCategoryWeekOff.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AttendanceConfigType.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AttendanceConfiguration.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AttendanceDetail.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AttendanceStatu.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AttendanceType.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AttendanceTypeDetail.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AttendanceTypeMaster.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AttendanceTypeMasterClass.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AttendencePresentStatu.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Audit.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AuditFields\EsslStudentsPartial.cs" />
+    <Compile Include="AuditFields\ApplicationScheduleCallStatusPartial.cs" />
+    <Compile Include="AuditFields\ApplicationScheduleTypePartial.cs" />
+    <Compile Include="AuditFields\ApplicationSchedulePartial.cs" />
+    <Compile Include="AuditFields\ExtendFeeFollowUpDatePartial.cs" />
+    <Compile Include="AuditFields\ApplicationFeeFollowupPartial.cs" />
+    <Compile Include="AuditFields\TCReasonMasterPartial.cs" />
+    <Compile Include="AuditFields\SalaryOtherAmountType.cs" />
+    <Compile Include="AuditFields\GSTMaster.cs" />
+    <Compile Include="AuditFields\Caste.cs" />
+    <Compile Include="AuditFields\Bank.cs" />
+    <Compile Include="AuditFields\DashBoardContent.cs" />
+    <Compile Include="AuditFields\DashBoardType.cs" />
+    <Compile Include="AuditFields\AccountFlowPartial.cs" />
+    <Compile Include="AuditFields\AccountHeadOpeningBalancePartial.cs" />
+    <Compile Include="AuditFields\AccountHeadPartial.cs" />
+    <Compile Include="AuditFields\AccountTransactionPartial.cs" />
+    <Compile Include="AuditFields\AccountTransactionPaymentPartial.cs" />
+    <Compile Include="AuditFields\AdditionalSalaryComponentParital.cs" />
+    <Compile Include="AuditFields\AddressPartial.cs" />
+    <Compile Include="AuditFields\AdsAPIPartial.cs" />
+    <Compile Include="AuditFields\ApplicationCertificatesPartial.cs" />
+    <Compile Include="AuditFields\ApplicationDocumentPartial.cs" />
+    <Compile Include="AuditFields\ApplicationEducationDetailsPartial.cs" />
+    <Compile Include="AuditFields\ApplicationElectivePaperPartial.cs" />
+    <Compile Include="AuditFields\ApplicationFamilyDetailsPartial.cs" />
+    <Compile Include="AuditFields\ApplicationFeeInstallmentPartial.cs" />
+    <Compile Include="AuditFields\ApplicationFeePartial.cs" />
+    <Compile Include="AuditFields\ApplicationFeePaymentPartial.cs" />
+    <Compile Include="AuditFields\ApplicationWebFormPartial.cs" />
+    <Compile Include="AuditFields\AssetDetailsPartial.cs" />
+    <Compile Include="AuditFields\AssetPurchaseDetailsPartial.cs" />
+    <Compile Include="AuditFields\AssetPurchaseMasterPartial.cs" />
+    <Compile Include="AuditFields\AssetPurchasePaymentsPartial.cs" />
+    <Compile Include="AuditFields\AssetTypePartial.cs" />
+    <Compile Include="AuditFields\AttendanceCategoryPartial.cs" />
+    <Compile Include="AuditFields\AttendanceCategoryWeekOffPartial.cs" />
+    <Compile Include="AuditFields\AttendanceConfigurationPartial.cs" />
+    <Compile Include="AuditFields\AttendancePartial.cs" />
+    <Compile Include="AuditFields\AttendanceTypeMasterPartial.cs" />
+    <Compile Include="AuditFields\AttendanceTypePartial.cs" />
+    <Compile Include="AuditFields\AuthorPartial.cs" />
+    <Compile Include="AuditFields\BankAccountPartial.cs" />
+    <Compile Include="AuditFields\BankReconciliationPartial.cs" />
+    <Compile Include="AuditFields\BankStatementDetailsPartial.cs" />
+    <Compile Include="AuditFields\BankStatementMasterPartial.cs" />
+    <Compile Include="AuditFields\BonafiedCertificatePartial.cs" />
+    <Compile Include="AuditFields\CashTransactionPartial.cs" />
+    <Compile Include="AuditFields\BankTransactionPartial.cs" />
+    <Compile Include="AuditFields\BatchPartial.cs" />
+    <Compile Include="AuditFields\BookCategoryPartial.cs" />
+    <Compile Include="AuditFields\BookCopyPartial.cs" />
+    <Compile Include="AuditFields\BookIssueReturnDetailsPartial.cs" />
+    <Compile Include="AuditFields\BookIssueReturnMasterPartial.cs" />
+    <Compile Include="AuditFields\BookIssueTypePartial.cs" />
+    <Compile Include="AuditFields\BookPartial.cs" />
+    <Compile Include="AuditFields\BookStatusPartial.cs" />
+    <Compile Include="AuditFields\BorrowerTypePartial.cs" />
+    <Compile Include="AuditFields\BranchDepartmentPartial.cs" />
+    <Compile Include="AuditFields\BranchPartial.cs" />
+    <Compile Include="AuditFields\BuildingDetailsPartial.cs" />
+    <Compile Include="AuditFields\BuildingMasterPartial.cs" />
+    <Compile Include="AuditFields\BulkEmailTrackDetailsPartial.cs" />
+    <Compile Include="AuditFields\BulkEmailTracksPartial.cs" />
+    <Compile Include="AuditFields\BulkSMSTrackDetailsPartial.cs" />
+    <Compile Include="AuditFields\BulkSMSTracksPartial.cs" />
+    <Compile Include="AuditFields\CertificateTypePartial.cs" />
+    <Compile Include="AuditFields\ChequeClearancePartial.cs" />
+    <Compile Include="AuditFields\CITSEduSuiteDatabasePartialClass.cs" />
+    <Compile Include="AuditFields\CITSEduSuitePrincipal.cs" />
+    <Compile Include="AuditFields\ClassDetailsPartial.cs" />
+    <Compile Include="AuditFields\ClassModePartial.cs" />
+    <Compile Include="AuditFields\CounsellingTimePartial.cs" />
+    <Compile Include="AuditFields\CourseCompletionCertificatePartial.cs" />
+    <Compile Include="AuditFields\AcademicTerm.cs" />
+    <Compile Include="AuditFields\CoursePartial.cs" />
+    <Compile Include="AuditFields\CourseSubjectPartial.cs" />
+    <Compile Include="AuditFields\AgentPartial.cs" />
+    <Compile Include="AuditFields\CourseTypePartial.cs" />
+    <Compile Include="AuditFields\DepartmentPartial.cs" />
+    <Compile Include="AuditFields\DepartmentShiftPartial.cs" />
+    <Compile Include="AuditFields\DepreciationDetailsPartial.cs" />
+    <Compile Include="AuditFields\DesignationGradeDetailPartial.cs" />
+    <Compile Include="AuditFields\DesignationGradePartial.cs" />
+    <Compile Include="AuditFields\DesignationPartial.cs" />
+    <Compile Include="AuditFields\DesignationPermissionPartial.cs" />
+    <Compile Include="AuditFields\DivisionAllocationPartial.cs" />
+    <Compile Include="AuditFields\DivisionPartial.cs" />
+    <Compile Include="AuditFields\DocumentTrackPartial.cs" />
+    <Compile Include="AuditFields\EmployeeEducationPartial.cs" />
+    <Compile Include="AuditFields\EmployeeAccountPartial.cs" />
+    <Compile Include="AuditFields\EmployeeAttendanceLogPartial.cs" />
+    <Compile Include="AuditFields\EmployeeAttendancePartial.cs" />
+    <Compile Include="AuditFields\EmployeeClassAllocationPartial.cs" />
+    <Compile Include="AuditFields\EmployeeEnquiryTargetDetailPartial.cs" />
+    <Compile Include="AuditFields\EmployeeEnquiryTargetPartial.cs" />
+    <Compile Include="AuditFields\EmployeeExperiencePartial.cs" />
+    <Compile Include="AuditFields\EmployeeFileHandoverPartial.cs" />
+    <Compile Include="AuditFields\EmployeeIdentityPartial.cs" />
+    <Compile Include="AuditFields\EmployeeLanguageSkillPartial.cs" />
+    <Compile Include="AuditFields\EmployeeLoanPartial.cs" />
+    <Compile Include="AuditFields\EmployeeLoanPaymentPartial.cs" />
+    <Compile Include="AuditFields\EmployeeMonthlyPFPartial.cs" />
+    <Compile Include="AuditFields\EmployeePartial.cs" />
+    <Compile Include="AuditFields\EmployeePFSettingPartial.cs" />
+    <Compile Include="AuditFields\EmployeeSalaryAdvanceDetailPartial.cs" />
+    <Compile Include="AuditFields\EmployeeSalaryAdvancePaymentPartial.cs" />
+    <Compile Include="AuditFields\EmployeeSalaryAdvanceReturnDetailsPartial.cs" />
+    <Compile Include="AuditFields\EmployeeSalaryAdvanceReturnMasterPartial.cs" />
+    <Compile Include="AuditFields\EmployeeSalaryDetailPartial.cs" />
+    <Compile Include="AuditFields\EmployeeSalaryMasterPartial.cs" />
+    <Compile Include="AuditFields\EmployeeSalaryOtherAmountPartial.cs" />
+    <Compile Include="AuditFields\EmployeeSalaryPaymentPartial.cs" />
+    <Compile Include="AuditFields\EmployeeShiftPartial.cs" />
+    <Compile Include="AuditFields\EmployeeSubjectAllocationPartial.cs" />
+    <Compile Include="AuditFields\EmployeeSubjectModulePartial.cs" />
+    <Compile Include="AuditFields\EmployeeTaskPartial.cs" />
+    <Compile Include="AuditFields\EnquiryCallStatusPartial.cs" />
+    <Compile Include="AuditFields\EnquiryFeedbackPartial.cs" />
+    <Compile Include="AuditFields\EnquiryLeadFeedbackPartial.cs" />
+    <Compile Include="AuditFields\EnquiryLeadPartial.cs" />
+    <Compile Include="AuditFields\EnquiryPartial.cs" />
+    <Compile Include="AuditFields\EnquiryUserBlockListPartial.cs" />
+    <Compile Include="AuditFields\ExamCentrePartial.cs" />
+    <Compile Include="AuditFields\ExamResultPartial.cs" />
+    <Compile Include="AuditFields\ExamSchedulePartial.cs" />
+    <Compile Include="AuditFields\ExamTermPartial.cs" />
+    <Compile Include="AuditFields\ExamTestAnswerPartial.cs" />
+    <Compile Include="AuditFields\ExamTestPartial.cs" />
+    <Compile Include="AuditFields\ExamTestSectionPartial.cs" />
+    <Compile Include="AuditFields\ExamTestsPartial.cs" />
+    <Compile Include="AuditFields\FeeRefundMasterPartial.cs" />
+    <Compile Include="AuditFields\FeeTypePartial.cs" />
+    <Compile Include="AuditFields\FutureTransactionOtherAmountTypePartial.cs" />
+    <Compile Include="AuditFields\FutureTransactionPartial.cs" />
+    <Compile Include="AuditFields\FutureTransactionPaymentPartial.cs" />
+    <Compile Include="AuditFields\HolidayPartial.cs" />
+    <Compile Include="AuditFields\IAuditable.cs" />
+    <Compile Include="AuditFields\InternalExamPartial.cs" />
+    <Compile Include="AuditFields\InternalExamResultPartial.cs" />
+    <Compile Include="AuditFields\InternalExamTermPartial.cs" />
+    <Compile Include="AuditFields\JournalDetailsPartilal.cs" />
+    <Compile Include="AuditFields\JournalMasterPartial.cs" />
+    <Compile Include="AuditFields\JournalPartial.cs" />
+    <Compile Include="AuditFields\LanguagePartial.cs" />
+    <Compile Include="AuditFields\LeaveApplicationPartial.cs" />
+    <Compile Include="AuditFields\LibraryBookPartial.cs" />
+    <Compile Include="AuditFields\LoanMonthlyRepaymentPartial.cs" />
+    <Compile Include="AuditFields\MarkGroupPartial.cs" />
+    <Compile Include="AuditFields\MediumPartial.cs" />
+    <Compile Include="AuditFields\MemberPlanDetailsPartial.cs" />
+    <Compile Include="AuditFields\MemberRegistrationPartial.cs" />
+    <Compile Include="AuditFields\MemberTypePartial.cs" />
+    <Compile Include="AuditFields\MenuActionPartial.cs" />
+    <Compile Include="AuditFields\MenuPartial.cs" />
+    <Compile Include="AuditFields\MenuTypePartial.cs" />
+    <Compile Include="AuditFields\NotificationDataPartial.cs" />
+    <Compile Include="AuditFields\OtherBankTransactionPartial.cs" />
+    <Compile Include="AuditFields\OtherBankTransactionsPartial.cs" />
+    <Compile Include="AuditFields\PartyPartial.cs" />
+    <Compile Include="AuditFields\PromotionPartial.cs" />
+    <Compile Include="AuditFields\PublisherPartial.cs" />
+    <Compile Include="AuditFields\PushNotificationPartial.cs" />
+    <Compile Include="AuditFields\RackPartial.cs" />
+    <Compile Include="AuditFields\ReligionPartial.cs" />
+    <Compile Include="AuditFields\SalaryComponentPartial.cs" />
+    <Compile Include="AuditFields\SalarySettingsPartial.cs" />
+    <Compile Include="AuditFields\ScholarshipExamResultPartial.cs" />
+    <Compile Include="AuditFields\ScholarshipExamSchedulePartial.cs" />
+    <Compile Include="AuditFields\ScholarshipPartial.cs" />
+    <Compile Include="AuditFields\ScholarshipTypePartial.cs" />
+    <Compile Include="AuditFields\SecondLanguagePartial.cs" />
+    <Compile Include="AuditFields\ShiftBreakPartial.cs" />
+    <Compile Include="AuditFields\ShiftPartial.cs" />
+    <Compile Include="AuditFields\StatusPartial.cs" />
+    <Compile Include="AuditFields\StudentAbscondersPartial.cs" />
+    <Compile Include="AuditFields\StudentCourseTransferPartial.cs" />
+    <Compile Include="AuditFields\StudentDiaryPartial.cs" />
+    <Compile Include="AuditFields\StudentEarlyDeparturePartial.cs" />
+    <Compile Include="AuditFields\StudentIDCardPartial.cs" />
+    <Compile Include="AuditFields\StudentLateDetailsPartial.cs" />
+    <Compile Include="AuditFields\StudentLeaveDetailsPartial.cs" />
+    <Compile Include="AuditFields\StudentsCertificateReturnPartial.cs" />
+    <Compile Include="AuditFields\StudentStatusPartial.cs" />
+    <Compile Include="AuditFields\StudentStudyMaterialDetailsPartial.cs" />
+    <Compile Include="AuditFields\StudentStudyMaterialsPartial.cs" />
+    <Compile Include="AuditFields\StudentTCMasterPartial.cs" />
+    <Compile Include="AuditFields\StudentTimeTablePartial.cs" />
+    <Compile Include="AuditFields\StudyMaterialPartial.cs" />
+    <Compile Include="AuditFields\SubjectModulePartial.cs" />
+    <Compile Include="AuditFields\SubjectsPartial.cs" />
+    <Compile Include="AuditFields\TeacherWorkScheduleMasterPartial.cs" />
+    <Compile Include="AuditFields\TestModulePartial.cs" />
+    <Compile Include="AuditFields\TestPaperPartial.cs" />
+    <Compile Include="AuditFields\TestQuestionOptionsPartial.cs" />
+    <Compile Include="AuditFields\TestQuestionPartial.cs" />
+    <Compile Include="AuditFields\TestSectionPartial.cs" />
+    <Compile Include="AuditFields\TimeTableTempDetailsPartial.cs" />
+    <Compile Include="AuditFields\TimeTableTempMasterPartial.cs" />
+    <Compile Include="AuditFields\TransferAdmissionFeePartial.cs" />
+    <Compile Include="AuditFields\T_ApplicationPartial.cs" />
+    <Compile Include="AuditFields\UnitTestResultPartial.cs" />
+    <Compile Include="AuditFields\UnitTestSchedulePartial.cs" />
+    <Compile Include="AuditFields\UniversityCertificatePartial.cs" />
+    <Compile Include="AuditFields\UniversityCourseFeePartial.cs" />
+    <Compile Include="AuditFields\UniversityCoursePartial.cs" />
+    <Compile Include="AuditFields\UniversityMasterPartial.cs" />
+    <Compile Include="AuditFields\UniversityPaymentCancelationPartial.cs" />
+    <Compile Include="AuditFields\UniversityPaymentPartial.cs" />
+    <Compile Include="AuditFields\DashBoardUserPermissionPartial.cs" />
+    <Compile Include="AuditFields\UserManualDetailsPartial.cs" />
+    <Compile Include="AuditFields\UserManualPartial.cs" />
+    <Compile Include="AuditFields\UserPermissionPartial.cs" />
+    <Compile Include="AuditFields\VideoDetailsPartial.cs" />
+    <Compile Include="AuditFields\VideoPartial.cs" />
+    <Compile Include="Author.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BalanceSheet_Result.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BandStatu.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Bank.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BankAccount.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BankAccountType.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BankReconciliation.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BankSetting.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BankStatementDetail.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BankStatementMaster.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BankTransaction.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BankTransactionType.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Batch.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BloodGroup.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BonafiedCertificate.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Book.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BookCategory.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BookCopy.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BookIssueReturnDetail.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BookIssueReturnMaster.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BookIssueType.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BookStatu.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BorrowerType.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Branch.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BranchAccount.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BranchDepartment.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BuildingDetail.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BuildingMaster.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BulkEmailTrack.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BulkEmailTrackDetail.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BulkSMSTrack.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BulkSMSTrackDetail.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CalculateFeeDetails_Result.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CalculateUniversityFeeDetails_Result.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CalculateUniversityFeeReportDetails_Result.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CallType.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CashFlow.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CashFlowType.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CashTransaction.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Caste.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CertificateType.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ChequeClearance.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CITSEduSuiteDataModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CITSEduSuiteDataModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CITSEduSuiteDataModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CITSEduSuiteDataModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CITSEduSuiteDataModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="ClassDetail.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ClassMode.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CommonSubjectDetail.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CommonSubjectMaster.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CommunityType.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Company.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ComponentType.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CondentType.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ContactVerification.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CounsellingTime.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Country.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Course.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CourseCompletionCertificate.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CourseDurationType.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CourseSubjectDetail.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CourseSubjectMaster.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CourseType.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Currency.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DashBoardContent.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DashBoardType.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DashBoardUserPermission.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DayBook_Result.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Department.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DepartmentShift.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DepreciationDetail.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DepreciationMethod.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Designation.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DesignationGrade.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DesignationGradeDetail.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DesignationPermission.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="District.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Division.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DocumentTrack.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EducationQualification.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EducationType.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ElectivePaper.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Employee.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmployeeAccount.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmployeeAchievement.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmployeeAttendance.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmployeeAttendanceLog.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmployeeAttendanceStatu.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmployeeCategory.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmployeeConfig.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmployeeContact.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmployeeDurationConfig.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmployeeEducation.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmployeeEnquiryTarget.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmployeeEnquiryTargetDetail.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmployeeExperience.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmployeeFileHandover.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmployeeHierarchy.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmployeeIdentity.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmployeeLanguageSkill.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmployeeLoan.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmployeeLoanPayment.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmployeeMonthlyPF.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmployeeOvertime.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmployeePFSetting.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmployeeSalaryAdvanceDetail.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmployeeSalaryAdvancePayment.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmployeeSalaryAdvanceReturnDetail.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmployeeSalaryAdvanceReturnMaster.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmployeeSalaryDetail.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmployeeSalaryMaster.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmployeeSalaryOtherAmount.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmployeeSalaryPayment.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmployeeShift.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmployeeShiftDetail.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmployeeStatu.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmployeeTask.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmployeeWorkType.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Enquiry.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EnquiryCallStatu.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EnquiryConfiguration.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EnquiryFeedback.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EnquiryLead.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EnquiryLeadCallStatu.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EnquiryLeadFeedback.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EnquiryProcessStatu.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EnquiryStatu.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EnquiryUserBlockList.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ESSLAttendnaceLogDetail.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EsslStudent.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ExamCenter.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ExamResult.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ExamSchedule.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ExamScheduleDetail.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ExamScheduleMaster.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ExamTerm.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ExamTest.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ExamTestAnswer.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ExamTestSection.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ExamType.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ExtendFeeFollowUpDate.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Extensions\DbContextExtensions.cs" />
+    <Compile Include="FamilyMemberType.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FeeCarryForwordDetail.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FeeCarryForwordMaster.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FeeFollowUpFeeType.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FeePaymentDetail.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FeePaymentMaster.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FeeRefundDetail.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FeeRefundMaster.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FeeType.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FeeTypeMode.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FileHandoverType.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="fnChildEmployees_Result.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="fnGetEmployeeShiftByDate_Result.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="fnParentEmployeesByDesignation_Result.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="fnStudentYear_Result.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FN_EmployeeHeirarchy_Result.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ForgotPassword.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FutureTransaction.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FutureTransactionOtherAmountType.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FutureTransactionPayment.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="F_StudentBooks_Result.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneralConfiguration.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GetTrialBalance_Result.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Grade.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GradingSystem.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GSTEFilingReportSum_Result.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GSTMaster.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Holiday.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="HolidayClass.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="HSNCodeMaster.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IdentificationType.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IdentityType.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Income.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="InternalExam.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="InternalExamDetail.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="InternalExamDivision.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="InternalExamResult.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="InternalExamResult_Select_ByType_Result.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="InternalExamTerm.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IssueOfStudyMaterial.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="JournalDetail.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="JournalMaster.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Language.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LeaveApplication.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LeaveCarryForward.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LeaveCountType.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LeaveDurationType.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LeaveType.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LibraryBook.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LibraryCardConfig.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LibraryConfig.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LoanMonthlyRepayment.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MaritalStatu.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MarkGroup.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Medium.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MemberPlanDetail.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MemberRegistration.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MemberTitle.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MemberType.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Menu.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MenuAction.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MenuCatagory.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MenuType.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Mode.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Module.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModuleTopic.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="M_University.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="M_UniversityMaster.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NatureOfEnquiry.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NotificationColumn.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NotificationColumnGroup.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NotificationData.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NotificationTemplate.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Offer.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OtherBankTransaction.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OverTimeFormulaType.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Party.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PartyType.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PaymentMode.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PaymentModeSub.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PaymentReceiptNumberConfiguration.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PeriodType.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PrintConfiguration.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PrintPaperSize.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Priority.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProcessStatu.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Promotion.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PromotionDetail.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PromotionStatu.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Province.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Publisher.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PushNotification.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PushNotificationDetail.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PushNotificationTemplate.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="QuestionStatu.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="QuestionType.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Rack.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RegistratonCatagory.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Religion.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Role.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SalaryComponent.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SalaryConfiguration.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SalaryHead.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SalaryHeadType.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SalaryOtherAmountType.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SalaryType.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Salutation.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Scholarship.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ScholarshipExamRegNoConfig.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ScholarshipExamResult.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ScholarshipExamSchedule.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ScholarshipType.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SecondLanguage.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ServiceType.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Shift.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ShiftBreak.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SkillLevel.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SMSSetting.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spAttendanceCalculation_Result.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SpEnquiryReportSelectDetails_Result.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SpEnquiryReportSelect_Result.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spEnquiryScheduleSelect_Result.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SpExamScheduleSelect_Result.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SpLeadSelectClient_Result.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spProfitAndLossAccount_Result.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SpSelectBulkEmailSms_Result.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spSelectDesignationSalarySetting_Result.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spSelectEmployeeAttendanceById_Result.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spSelectEmployeeSalariesByMonth_Result.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spSelectEmployeeSalaryById_Result.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spSelectEmployeesAttendanceByMonth_Result.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SpSelectTestPaperList_Result.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spUniversityPaymentBulkSelect_Result.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Sp_ActivityLogSummary_Result.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Sp_BookIssueSummary_Report_Result.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SP_EnquiryandLeadSelectDetails_Result.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Sp_FeeInstallmentDetails_Select_ByType_Result.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SP_FeeInstallmentSummary_Result.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Sp_GetAttendanceDetails_Result.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Sp_InternalExamResultSummary_Result.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Sp_libraryBookIssueSummary_Result.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Sp_LibraryBookSummary_Result.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Sp_MemberPlanSummary_Result.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Sp_StudentAbscondersSummary_Report_Result.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Sp_StudentCertificateSummary_Report_Result.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Sp_StudentDayToDayFeePaymentSummary_Result.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Sp_StudentDayToDayUniversityPaymentSummary_Result.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SP_StudentDivisionAllocation_Select_ByType_Result.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Sp_StudentEarlyDepartureSummary_Report_Result.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Sp_StudentExamScheduleDetails_Summary_Result.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Sp_StudentExamScheduleDetails_Summary_Result1.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Sp_StudentExamSchedule_Summary_Result.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Sp_StudentIdCardSummary_Report_Result.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Sp_StudentLateSummary_Report_Result.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Sp_StudentLeaveSummary_Report_Result.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Sp_TeacherWorkScheduleSummary_Result.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Sp_UnitExamResultSummary_Result.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Sp_UniversityCertificateSummary_Report_Result.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Sp_UniversityFeePaymentSummary_Report_Result.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Status.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StudentAbsconder.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StudentCourseTransfer.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StudentDiary.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StudentDivisionAllocation.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StudentDocument.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StudentEarlyDeparture.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StudentFeeInstallment.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StudentIDCard.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StudentLateDetail.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StudentLeaveDetail.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StudentPaper.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StudentsCertificateReturn.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StudentStatu.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StudentStudyMaterial.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StudentStudyMaterialDetail.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StudentTCDetail.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StudentTCMaster.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StudentTimeTable.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StudyMaterial.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SubBranch.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Subject.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SubjectModule.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SubRack.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TaskStatu.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TaxRateType.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TCConfigColumn.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TCReasonMaster.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TeacherClassAllocation.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TeacherSubjectAllocation.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TeacherSubjectModule.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TeacherWorkScheduleDetail.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TeacherWorkScheduleMaster.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TestModule.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TestPaper.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TestQuestion.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TestQuestionOption.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TestSection.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TimeTableTempDetail.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TimeTableTempMaster.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TransactionType.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TransferAdmissionFee.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UnitTestResult.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UnitTestSchedule.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UnitTestTopic.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UnitType.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UniversityCertificate.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UniversityCourse.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UniversityCourseFee.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UniversityCourseFeeInstallment.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UniversityMaster.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UniversityPaymentCancelation.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UniversityPaymentDetail.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UniversityPaymentMaster.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserManualDetail.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserManualMaster.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserManualType.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserPermission.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Video.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VideoDetail.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VisibilityType.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VoucherType.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwAcadamicTermSelectActiveOnly.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwAccountGroup.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwAccountHeadSelectActiveOnly.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwAccountHeadType.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwAccountLedgerSelectActiveOnly.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwAdditionalComponentTypeSelectActiveOnly.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwAdditionalComponentTypeSelectAll.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwAddressTypeSelectActiveOnly.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwBankAccountTypeSelectActiveOnly.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwBankAccountTypeSelectAll.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwBankPaymentSelect.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwBankSelectActiveOnly.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwBankSelectAll.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwBatchSelectActiveOnly.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwBloodGroupSelectActiveOnly.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwBookSelectActiveOnly.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwBranchDepartmentSelectActiveOnly.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="vwBranchSelectActiveOnly.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VWBuildingDetailsSelectActiveOnly.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwCertificateTypeSelectActiveOnly.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwChequeClearanceSelect.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwClassDetailsSelectActiveOnly.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwClassModeSelectActiveOnly.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwCountrySelectActiveOnly.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwCountrySelectAll.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwCourseSelectActiveOnly.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwCourseTypeSelectActiveOnly.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwDepartmentSelectActiveOnly.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwDesignationWithoutAdminSelectActiveOnly.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwDistrictBranchCount.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwDistrictSelectActiveOnly.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwDistrictSelectAll.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwDivisionSelectActiveOnly.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwEducationTypeSelectActiveOnly.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwEducationTypeSelectAll.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwEmailAddess.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwEmployeeCategorySelectActiveOnly.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwEmployeeCategorySelectAll.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwEmployeeStatusSelectActiveOnly.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwEmployeeStatusSelectAll.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwEnquiryFeedbackReportSelectAll.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwEnquiryStatusSelectAll.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwGradeSelectActiveOnly.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwGradeSelectAll.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwGradingSystemSelectActiveOnly.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwGradingSystemSelectAll.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwIdentityTypeSelectActiveOnly.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwIncomeSelectActiveOnly.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwInternalExamTermSelectActiveOnly.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwLanguageSelectActiveOnly.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwLanguageSelectAll.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwLeaveTypeSelectActiveOnly.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwMaritalStatusSelectActiveOnly.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwMediumSelectActiveOnly.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwMenuSelectActiveOnly.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwMobileNumber.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwMobileNumbersWithCountry.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwModeSelectActiveOnly.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwOfferSelectActiveOnly.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwPaymentModeSelectActiveOnly.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwPrioritySelectActiveOnly.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwPrioritySelectAll.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwProcessStatusSelectActiveOnly.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwProcessStatusSelectAll.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwPromotionStatusSelectActiveOnly.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwProvinceSelectActiveOnly.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwProvinceSelectAll.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwReligionSelectActiveOnly.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwRoleSelectActiveOnly.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwSalutationSelectActiveOnly.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwSecoundLanguageSelectActiveOnly.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwSelectBulkEmailSm.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwSelectMarkGroup.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwSkillLevelSelectActiveOnly.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwStaffSelectActiveOnly.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwStudyMaterialSelectActiveOnly.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwSubjectSelectActiveOnly.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwTaskStatusSelectActiveOnly.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwTaskStatusSelectAll.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwTeacherSelectActiveOnly.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwTestPaper.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwUniversityMasterSelectActiveOnly.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VwUniversitySelectActiveOnly.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VW_LibraryBookCopy.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VW_MemberPlanDetails.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WeekOff.cs">
+      <DependentUpon>CITSEduSuiteDataModel.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config" />
+    <EntityDeploy Include="CITSEduSuiteDataModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>CITSEduSuiteDataModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="CITSEduSuiteDataModel.edmx.diagram">
+      <DependentUpon>CITSEduSuiteDataModel.edmx</DependentUpon>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CITS.EduSuite.Business.Models\CITS.EduSuite.Business.Models.csproj">
+      <Project>{cf2ceebf-278a-4d25-b43d-d14a7e47bf25}</Project>
+      <Name>CITS.EduSuite.Business.Models</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="CITSEduSuiteDataModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>CITSEduSuiteDataModel.edmx</DependentUpon>
+      <LastGenOutput>CITSEduSuiteDataModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="CITSEduSuiteDataModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>CITSEduSuiteDataModel.edmx</DependentUpon>
+      <LastGenOutput>CITSEduSuiteDataModel.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

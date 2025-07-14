@@ -1,0 +1,124 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.AccountFlowViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+
+
+<div class="col-12 paddingNone">
+
+    <table id="ledgerTable" class="table table-bordered">
+
+        <thead>
+            <tr class="ledgerSubHead">
+                <th>
+                    @EduSuiteUIResources.Account
+                </th>
+                <th>
+                    @EduSuiteUIResources.Amount
+                </th>
+                <th>
+                    @EduSuiteUIResources.Total
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <span>
+                        <strong>
+                            @EduSuiteUIResources.Income
+                        </strong>
+                    </span>
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+            @for (int i = 0; i < Model.CreditAccountFlow.Count; i++)
+            {
+                <tr>
+                    <td>
+                        <span class="col-2">
+                        </span>
+                        <span>
+                            @Model.CreditAccountFlow[i].AccountHeadName
+                        </span>
+                    </td>
+                    <td class="text-right link" onclick="AccountHead.LedgerDetailPopup(this)" data-code="@Model.CreditAccountFlow[i].AccountHeadKey" data-name="@Model.CreditAccountFlow[i].AccountHeadName" data-url="@Url.Action("BindLedgerById", "AccountFlow")">
+                        @Model.CreditAccountFlow[i].Amount
+                    </td>
+                    <td></td>
+                </tr>
+            }
+            <tr class="ledgerTotal">
+                <th>
+                    @EduSuiteUIResources.Total@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Income
+                </th>
+                <th></th>
+                <th class="text-right">
+                    @Model.CreditAccountFlow.Sum(p => p.Amount)
+                </th>
+            </tr>
+
+            <tr>
+                <td>
+                    <strong>
+                        @EduSuiteUIResources.Expense
+                    </strong>
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+
+            @for (int i = 0; i < Model.DebitAccountFlow.Count; i++)
+            {
+                <tr>
+                    <td>
+                        <span class="col-2">
+                        </span>
+                        <span>
+                            @Model.DebitAccountFlow[i].AccountHeadName
+                        </span>
+                    </td>
+                    <td class="text-right link" onclick="AccountHead.LedgerDetailPopup(this)" data-code="@Model.DebitAccountFlow[i].AccountHeadKey" data-name="@Model.DebitAccountFlow[i].AccountHeadName" data-url="@Url.Action("BindLedgerById", "AccountFlow")">
+                        @Model.DebitAccountFlow[i].Amount
+                    </td>
+                    <td></td>
+                </tr>
+            }
+            <tr class="ledgerTotal">
+                <th>
+                    @EduSuiteUIResources.Total@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Expense
+                </th>
+                <th></th>
+                <th class="text-right">
+                    @Model.DebitAccountFlow.Sum(p => p.Amount)
+                </th>
+
+            </tr>
+            <tr class="ledgerTotal">
+                <th>
+                    @if (((Model.CreditAccountFlow.Sum(p => p.Amount)) - (Model.DebitAccountFlow.Sum(p => p.Amount))) >= 0)
+                    {
+                        @EduSuiteUIResources.Net@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Profit
+                    }
+                    else
+                    {
+                        @EduSuiteUIResources.Net@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Loss
+                    }
+                </th>
+                <th></th>
+                <th class="text-right">
+                    @if (((Model.CreditAccountFlow.Sum(p => p.Amount)) - (Model.DebitAccountFlow.Sum(p => p.Amount))) >= 0)
+                    {
+                        @(Model.CreditAccountFlow.Sum(p => p.Amount) - Model.DebitAccountFlow.Sum(p => p.Amount))
+                    }
+                    else
+                    {
+                        @(-(Model.CreditAccountFlow.Sum(p => p.Amount) - Model.DebitAccountFlow.Sum(p => p.Amount)))
+                    }
+                </th>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+

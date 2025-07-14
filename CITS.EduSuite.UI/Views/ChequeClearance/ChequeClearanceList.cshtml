@@ -1,0 +1,119 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.ChequeClearanceViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+@using System.Web.Mvc
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Scripts/ChequeClearance")
+}
+@{
+    ViewBag.Title = EduSuiteUIResources.ChequeClearance;
+}
+
+<input type="hidden" id="hdnGetChequeClearanceList" value="@Url.Action("GetChequeClearance", "ChequeClearance")" />
+<input type="hidden" id="hdnDeleteChequeClearance" value="@Url.Action("DeleteChequeClearance", "ChequeClearance")" />
+<input type="hidden" id="hdnClearCheques" value="@Url.Action("ClearCheques", "ChequeClearance")" />
+
+
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-sm-6 col-12">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.ChequeClearance</h3>
+
+                    
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</header>
+<section class="section-content mx-sm-3 mx-0">
+    <div class="GridBody">
+
+        <div class="grid-nav-bar form-row justify-content-between">
+
+
+           @if (DbConstants.Role.AdminUserTypes.Contains(DbConstants.User.RoleKey))
+            {
+                <div class="col-12 col-sm-3 col-lg-2">
+                    <fieldset class="form-group">
+                        @*@Html.Label(EduSuiteUIResources.Branch, htmlAttributes: new { @id = "lblBranch", @class = "form-label" })*@
+                      
+                        @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Branch, new { @class = "form-control input-control", @InputFor = "lblBranch", @data_live_search = "true" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.BranchKey)
+                        </span>
+                    </fieldset>
+                </div>
+            }
+            else
+            {
+                <div class="col-12 col-sm-3 col-lg-2">
+                    <fieldset class="form-group">
+                        @*@Html.Label(EduSuiteUIResources.Branch, htmlAttributes: new { @id = "lblBranch", @class = "form-label" })*@
+                        <div class="required-icon"><div class="text">*</div></div>
+                        @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), new { @class = "form-control input-control", @InputFor = "lblBranch" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.BranchKey)
+                        </span>
+                    </fieldset>
+                </div>
+            }
+            <div class="col-lg-3 col-6">
+                <div class="form-group">
+                    @*@Html.Label(EduSuiteUIResources.ChequeClearance, htmlAttributes: new { @class = "form-label" })*@
+                    <input id="txtsearch" type="text" name="focus" class="form-control gridSearchTextBox" placeholder="@EduSuiteUIResources.Search@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.ChequeClearance" /> @* Change Search TextBox Placeholder*@
+                </div>
+            </div>
+            <div class="col-lg-6 col-4">
+                <a class="btn btn-info btn-sm float-right " onclick='window.location.reload()'>
+                    <i class="fa fa-refresh"></i>   @EduSuiteUIResources.Refresh
+                </a>
+            </div>
+
+        </div>
+
+        <div class="table-wrapper">
+
+            <div class="jqGrid_wrapper overflow-auto">
+                <table id="grid"></table>
+                <div id="pager"></div>
+            </div>
+        </div>
+
+    </div>
+    <div id='myModal' class='modal fade in'>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div id='myModalContent'></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<script>
+    $(document).ready(function () {
+        $("#txtsearch").on("input", function () {
+            ChequeClearance.GetChequeClearance();
+        });
+        $("#BranchKey").on("change", function () {
+            ChequeClearance.GetChequeClearance();
+        });
+
+        $("#iconSpan").click(function () {
+            $('#txtsearch').val('');
+            ChequeClearance.GetChequeClearance();
+        });
+        ChequeClearance.GetChequeClearance();
+
+       
+    });
+</script>

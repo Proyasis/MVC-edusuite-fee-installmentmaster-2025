@@ -1,0 +1,409 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.UniversityFeePrintViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+
+
+<head>
+    <title></title>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/Scripts/Common")
+</head>
+<body>
+
+    <div class="PrintReciept">
+        <div class="rows">
+            <div class="Companydetails">
+                <h3 class="CompanyName">@Model.CompanyName</h3>
+                <p class="CompanyAddress">@Model.CompanyAddress, @Model.AddressLine2, @Model.AddressLine3  </p>
+                <p class="CompanyAddress">@Model.CityName @Model.PostalCode</p>
+                <h5 class="RecieptHead">Fee Reciept</h5>
+            </div>
+        </div>
+
+
+        <div class="rows Content">
+            <div class="Content-left">
+
+                <div class="Content-lef1">
+                    <div class="content-divleft">Reciept No </div><span>:</span>
+                    <div class="content-divright">@Model.UniversityPaymentViewmodel.RecieptNo</div>
+                </div>
+
+                <div class="Content-lef2">
+                    <div class="content-div">
+                        <div class="content-divleft">Admission No</div><span>:</span>
+                        <div class="content-divright" style="width:33%">@Model.AdmissionNo</div>
+                    </div>
+                    <div class="content-div">
+                        <div class="content-divleft">Name</div><span>:</span>
+                        <div class="content-divright">@Model.StudentName</div>
+                    </div>
+                    <div class="content-div">
+                        <div class="content-divleft">Program</div><span>:</span>
+                        <div class="content-divright">@Model.ProgramName</div>
+                    </div>
+                    <div class="content-div">
+                        <div class="content-divleft">University</div><span>:</span>
+                        <div class="content-divright">@Model.UniversityName</div>
+                    </div>
+                </div>
+            </div>
+            <div class="Content-right">
+                <div class="content-div">
+                    <div class="content-divleft">Date</div><span>:</span>
+                    <div class="content-divright">@string.Format("{0:dd/MM/yyyy}", Model.UniversityPaymentViewmodel.FeeDate)</div>
+                </div>
+                <div class="content-div">
+                    <div class="content-divleft">Place</div><span>:</span>
+                    <div class="content-divright">@Model.AddressLine3 </div>
+                </div>
+
+
+            </div>
+        </div>
+
+        <div class="row FeeDetails">
+            <center>
+                <table>
+                    <thead>
+                        <tr>
+
+                            <th rowspan="2">Fee Descreption</th>
+                            <th colspan="2">Amount</th>
+                        </tr>
+                        <tr>
+                            <th>Rs.</th>
+                            <th>Ps.</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+                            <td>
+                                <ul>
+                                    @foreach (var item in Model.UniversityPaymentViewmodel.UniversityFeePaymentDetails)
+                                    {
+                                        <li>@item.FeeTypeName
+                                            @if (item.UniversityPaymentYear != null)
+                                            {
+                                                <span>(</span> @item.FeeYearText<span>)</span>
+                                            }
+                                    </li>
+                                    }
+
+                                </ul>
+                            </td>
+                            <td>
+                                <ul class="FeeDetails-Amount">
+                                    @foreach (var item in Model.UniversityPaymentViewmodel.UniversityFeePaymentDetails)
+                                    {
+                                        <li>@string.Format("{0:G29}", item.UniversityPaymentAmount)</li>
+                                    }
+
+                                </ul>
+                            </td>
+                            <td>
+                                <ul class="FeeDetails-Amount">
+                                    <li></li>
+                                </ul>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th rowspan="2" class="FeeDetails-Amount" style="text-align:right;padding-right:50px;">Total</th>
+
+                        </tr>
+                        <tr>
+                            <th id="totalAmount" class="FeeDetails-Amount" style="text-align:right">@string.Format("{0:G29}", Model.UniversityPaymentViewmodel.UniversityFeePaymentDetails.Select(row => row.UniversityPaymentAmount).DefaultIfEmpty().Sum())</th>
+                            <th class="FeeDetails-Amount"></th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </center>
+        </div>
+
+        <div class="Contentfooter">
+            <div class="content-div">
+                <div class="content-divleft">Amount in Words</div><span>:</span>
+                <div class="content-divright" id="amountWords"></div>
+            </div>
+            <div class="content-div CasType">
+                <div class="CasType-left">
+                    @foreach (var item in Model.UniversityPaymentViewmodel.PaymentModes)
+                    {
+                        if (item.RowKey == Model.UniversityPaymentViewmodel.PaymentModeKey)
+                        {
+                            <div class="content-DivCheckboxleft">@item.Text</div>
+                            <div class="content-DivCheckbox">&#9745;</div>
+                        }
+                        else
+                        {
+                            <div class="content-DivCheckboxleft">@item.Text</div>
+                            <div class="content-DivCheckbox">&#x2610;</div>
+                        }
+                    }
+
+
+                </div>
+                @*@if (Model.UniversityPaymentViewmodel.PaymentModeKey == DbConstants.PaymentMode.Cheque)
+                {
+
+                    <div class="content-DivCheckboxright">Check No: <span class="FBoldNone"> @Model.UniversityPaymentViewmodel.ChequeOrDDNumber</span><span style="padding-right:11px">,</span>Check Date: <span class="FBoldNone"> @string.Format("{0:dd/MM/yyyy}", Model.ApplicationFeePaymentViewModel.ChequeClearanceDate)</span></div>
+
+                }*@
+                @*else if (Model.UniversityPaymentViewmodel.PaymentModeKey == DbConstants.PaymentMode.Card)
+                {
+                    <div class="content-DivCheckboxright">Card No: <span class="FBoldNone"> @Model.UniversityPaymentViewmodel.CardNumber</span></div>
+                }*@
+                @if (Model.UniversityPaymentViewmodel.PaymentModeKey == DbConstants.PaymentMode.Bank)
+                {
+                    <div class="content-DivCheckboxright">Bank Account: <span class="FBoldNone"> @Model.UniversityPaymentViewmodel.BankAccountName</span></div>
+                }
+
+            </div>
+
+            <div class="Footer-sign">
+                <span class="Footer-signright">Authorized signatory</span>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>
+    $(document).ready(function () {
+
+        $("#amountWords").html(AppCommon.AmounToWords($("#totalAmount").html()))
+       
+        setTimeout(function () {
+            window.print();
+            window.close()
+            //printDiv()
+        }, 500)
+        $("#btnPrintReceipt").on("click", function () {
+            window.print();
+            window.close()
+            //printDiv()
+        })
+    });
+</script>
+
+<style>
+    body {
+        font-family: 'Oswald', 'sans-serif';
+        font-size: 11px;
+        font-weight: 500;
+    }
+
+
+    .PrintReciept {
+        border: double 8px;
+        border-color: #ad3a3a;
+        border-radius: 5px;
+    }
+
+    .PrintReciept-Details {
+        margin-left: 20px;
+    }
+
+    .HeaderLeft {
+        padding-left: 38px;
+    }
+
+    .HeaderRight {
+        position: relative;
+        top: 70px;
+        font-size: 16px;
+        right: -74px;
+    }
+
+    .Companydetails {
+        text-align: center;
+        font-size: 16px;
+    }
+
+        .Companydetails .CompanyName {
+            font-weight: bold;
+            color: black;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .Companydetails .RecieptHead {
+            color: orange;
+            font-weight: bold;
+            margin: 7px 0px;
+            font-size: 18px;
+        }
+
+        .Companydetails .CompanyAddress {
+            margin: 0px 0px 0px;
+            font-weight: bold;
+        }
+
+
+
+    .FeeDetails {
+        margin-top: 15px;
+    }
+
+        .FeeDetails table {
+            width: 95%;
+            border: solid 1px;
+            border-collapse: collapse;
+            top: -30px;
+            position: relative;
+            margin-bottom: -29px;
+        }
+
+            .FeeDetails table th {
+                text-align: center;
+            }
+
+            .FeeDetails table tr th, .FeeDetails table tr, .FeeDetails table td {
+                border: 1px solid black;
+            }
+
+        .FeeDetails ul li {
+            list-style: none;
+        }
+
+    .FeeDetails-Amount {
+        text-align: right;
+        padding-right: 5px;
+    }
+
+    .padding-None {
+        padding: 0px;
+    }
+
+
+    /*new style*/
+
+
+    .Content-left {
+        width: 72%;
+        font-size: 15px;
+        margin-left: 19px;
+    }
+
+    .Content-lef1 .content-divleft {
+        width: 18%;
+        display: inline-block;
+        font-weight: bold;
+    }
+
+    .Content-lef1 .content-divright {
+        border-bottom: dotted 1px black;
+        display: inline-block;
+        width: 18%;
+    }
+
+    .Content-lef2 {
+        margin-left: 49px;
+        margin-top: 9px;
+    }
+
+    .content-div {
+        margin: 6px 0px;
+    }
+
+    .Content-lef2 .content-div .content-divleft {
+        width: 30%;
+        display: inline-block;
+        font-weight: bold;
+    }
+
+    .Content-lef2 .content-div .content-divright {
+        display: inline-block;
+        width: 65%;
+        border-bottom: dotted 1px black;
+    }
+
+    .Content-right {
+        width: 25%;
+        font-size: 15px;
+        margin-left: 19px;
+        float: right;
+        position: relative;
+        top: -155px;
+    }
+
+        .Content-right .content-div .content-divleft {
+            width: 24%;
+            display: inline-block;
+            font-weight: bold;
+        }
+
+        .Content-right .content-div .content-divright {
+            display: inline-block;
+            width: 68%;
+            border-bottom: dotted 1px black;
+        }
+
+    .Contentfooter {
+        font-size: 13px;
+        font-weight: bold;
+        margin: 10px 30px;
+    }
+
+        .Contentfooter .CasType {
+            margin: 10px 0px;
+            font-size: 18px;
+            font-weight: 100;
+        }
+
+            .Contentfooter .CasType .CasType-left {
+                width: 52%;
+                display: inline-block;
+            }
+
+        .Contentfooter .content-div .content-divleft {
+            width: 17%;
+            display: inline-block;
+        }
+
+        .Contentfooter .content-div .content-divright {
+            display: inline-block;
+            width: 81%;
+            border-bottom: dotted 1px black;
+        }
+
+        .Contentfooter .content-div .content-DivCheckboxleft {
+            width: 17%;
+            display: inline-block;
+        }
+
+        .Contentfooter .content-div .content-DivCheckbox {
+            display: inline-block;
+            width: 5%;
+        }
+
+
+        .Contentfooter .content-div .content-DivCheckboxright {
+            display: inline-block;
+            font-size: 14px;
+            width: 45%;
+            border-bottom: dotted 1px black;
+            text-transform: capitalize;
+            word-break: break-all;
+            font-weight: bold;
+        }
+
+    .Footer-sign {
+        text-align: right;
+        margin-top: 56px;
+    }
+
+        .Footer-sign .Footer-signright {
+            border-top: solid 2px;
+            text-align: center;
+            padding: 5px 29px 0px;
+        }
+
+    .FBoldNone {
+        font-weight: 100;
+    }
+</style>

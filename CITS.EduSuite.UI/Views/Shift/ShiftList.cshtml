@@ -1,0 +1,83 @@
+﻿
+@using System.Web.Mvc
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/CitsValidation")
+    @Scripts.Render("~/Content/JqueryRepeater")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Content/TimePickerJS")
+    @Scripts.Render("~/Content/momentJS")
+    @Scripts.Render("~/Scripts/Shift")
+}
+<input type="hidden" id="hdnGetShift" value="@Url.Action("GetShift", "Shift")" />
+<input type="hidden" id="hdnAddEditShift" value="@Url.Action("AddEditShift", "Shift")" />
+<input type="hidden" id="hdnDeleteShift" value="@Url.Action("DeleteShift", "Shift")" />
+
+
+
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-sm-6 col-12">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.Shift</h3>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 text-right">
+            <a id="addEditShift" data-href="@Url.Action("AddEditShift", "Shift")" onclick="Shift.EditPopup(this)" class="btn btn-success btn-sm"><i class="fa fa-plus-square-o"></i> <span>@EduSuiteUIResources.New @EduSuiteUIResources.BlankSpace @EduSuiteUIResources.Shift</span></a>
+        </div>
+    </div>
+</header>
+<section class="section-content mx-sm-3 mx-0">
+    <div class="GridBody">
+
+        <div class="grid-nav-bar form-row justify-content-between">
+            <div class="col-lg-3 col-6">
+                <input id="txtsearch" type="text" name="focus" class="form-control" placeholder="@EduSuiteUIResources.Search@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Shift" /> @* Change Search TextBox Placeholder*@
+                <span id="iconSpan" class="iconSpan"><i class="fa fa-times-circle" aria-hidden="true"></i></span>
+
+            </div>
+
+            <div class="col-6">
+                <a class="btn btn-info btn-sm float-right" onclick='Shift.GetShift()'>
+                    <i class="fa fa-refresh"></i>   Refresh
+                </a>
+            </div>
+
+        </div>
+
+        <div class="table-wrapper">
+            <div class="jqGrid_wrapper overflow-auto">
+                <table id="grid"></table>
+                <div id="pager"></div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<script>
+    $(document).ready(function () {
+        var jsonData=@(Html.Raw(Json.Encode(Model)));
+        $("#txtsearch").keydown(function () {
+            Shift.GetShift(jsonData);
+        });
+        $("#txtsearch").keyup(function () {
+            Shift.GetShift(jsonData);
+        });
+
+        $("#iconSpan").click(function () {
+            $('#txtsearch').val('');
+            Shift.GetShift(jsonData);
+        });
+        Shift.GetShift(jsonData);
+
+    });
+</script>
+

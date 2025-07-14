@@ -1,0 +1,76 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.FeeRefundViewModel
+
+
+<table class="table table-bordered">
+    <thead>
+       
+        <tr class="white-bg">
+            <th class="text-center">
+                Fee type
+            </th>
+
+            <th class="text-center">
+                Deduct Amount
+            </th>
+            <th class="text-center">
+                Balance
+            </th>
+            <th class="text-center">
+                Is Deduct?
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < Model.FeeRefundDetails.Count; i++)
+        {
+
+            <tr advancerepeater="" data-repeater-item>
+                <td class="text-center">
+                    @Model.FeeRefundDetails[i].FeeTypeName - @Model.FeeRefundDetails[i].RecieptNo  -
+                    @string.Format("{0:dd MMM yyyy}", Model.FeeRefundDetails[i].FeeRecieptDate)
+
+                    @Html.HiddenFor(m => m.FeeRefundDetails[i].RowKey)
+                    @Html.HiddenFor(m => m.FeeRefundDetails[i].FeeRefundMasterKey)
+                    @Html.HiddenFor(m => m.FeeRefundDetails[i].FeeTypeKey)
+                    @Html.HiddenFor(m => m.FeeRefundDetails[i].FeePaymentDetailKey)
+                    @Html.HiddenFor(m => m.FeeRefundDetails[i].FeeYear)
+                </td>
+
+                <td class="text-center">
+                    @Html.HiddenFor(m => m.FeeRefundDetails[i].BeforeTakenAdvance)
+                    @Html.TextBoxFor(m => m.FeeRefundDetails[i].ReturnAmount, "{0:G29}", new { @class = "input-control text-right full-width Approvedclass", @onClick = "this.setSelectionRange(0, this.value.length)" })
+                </td>
+                <td advancebalance class="text-center">
+                    @string.Format("{0:G29}", Model.FeeRefundDetails[i].AdvanceBalance)
+                </td>
+                <td>
+                    <div class="switch-check">
+                        @Html.CheckBoxFor(m => m.FeeRefundDetails[i].IsDeduct, new { @class = "switch-input Approvedclass" })
+                        <div class="switch-label" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                        <div class="switch-handle"></div>
+                    </div>
+                </td>
+            </tr>
+
+        }
+    </tbody>
+    <tfoot>
+        <tr style="background-color: #d0f7e0;">
+            <th class="text-center">
+                Total
+            </th>
+            <th totaladvance class="text-center">
+                @Model.FeeRefundDetails.Select(x => x.ReturnAmount).DefaultIfEmpty().Sum()
+
+            </th>
+            <th totalbalance class="text-center">
+                @Model.FeeRefundDetails.Select(x => x.AdvanceBalance).DefaultIfEmpty().Sum()
+            </th>
+            <th class="text-center">
+               
+
+            </th>
+        </tr>
+    </tfoot>
+</table>
+

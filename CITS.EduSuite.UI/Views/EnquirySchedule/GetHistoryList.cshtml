@@ -1,0 +1,43 @@
+﻿
+@using System.Web.Mvc
+@model List<CITS.EduSuite.Business.Models.ViewModels.EnquiryScheduleViewModel>
+@using CITS.EduSuite.Business.Models.ViewModels
+
+
+<table class="table table-bordered table-responsive table-sm">
+    <thead>
+        <tr>
+
+            <th>@EduSuiteUIResources.Name</th>
+            <th>@EduSuiteUIResources.Phone</th>
+            <th>@EduSuiteUIResources.Location</th>
+            <th>@EduSuiteUIResources.CallStatus</th>
+            <th>@EduSuiteUIResources.CallDuration</th>
+            <th>@EduSuiteUIResources.Date</th>
+            <th>@EduSuiteUIResources.NextCallSchedule</th>
+            <th>@EduSuiteUIResources.PostedBy</th>
+        </tr>
+    </thead>
+
+
+
+    @for (var i = 0; i < Model.Count; i++)
+    {
+
+        <tr>
+            <td>@Model[i].Name </td>
+            <td>@Model[i].MobileNumber </td>
+            <td>@Model[i].LocationName </td>
+            <td>@Model[i].CallStatusName </td>
+            <td>@Model[i].CallDuration </td>
+            <td>@(string.Format("{0:dd/MM/yyyy hh:mm:ss tt }", Model[i].FeedbackCreatedDate))</td>
+            <td>@(string.Format("{0:dd/MM/yyyy}", Model[i].NextCallScheduleDate))</td>
+            <td>@Model[i].CreatedBy </td>
+        </tr>
+
+
+    }
+
+</table>
+
+

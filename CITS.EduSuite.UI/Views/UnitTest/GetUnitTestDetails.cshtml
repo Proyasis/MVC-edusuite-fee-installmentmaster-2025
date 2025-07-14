@@ -1,0 +1,193 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.UnitTestScheduleViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+
+<div id="dynamicRepeater" class="repeater">
+    <table class="table  table-stripped">
+        <thead class="thead-light">
+            <tr>
+                <th>
+                    @Html.Label(EduSuiteUIResources.AdmissionNo, htmlAttributes: new { @class = "form-label" })
+                </th>
+
+                <th>
+                    @Html.Label(EduSuiteUIResources.StudentName, htmlAttributes: new { @class = "form-label" })
+                </th>
+                <th>
+                    @Html.Label(EduSuiteUIResources.Mark, htmlAttributes: new { @class = "form-label" })
+                </th>
+                @*<th>
+                        @Html.Label(EduSuiteUIResources.MinimumMark, htmlAttributes: new { @class = "form-label" })
+                    </th>
+                    <th>
+                        @Html.Label(EduSuiteUIResources.MaximumMark, htmlAttributes: new { @class = "form-label" })
+                    </th>*@
+
+                <th>
+                    @Html.Label(EduSuiteUIResources.Status, htmlAttributes: new { @class = "form-label" })
+                </th>
+                <th>
+                    @Html.Label(EduSuiteUIResources.Absent, htmlAttributes: new { @class = "form-label" })
+                </th>
+
+                <th>
+                    @Html.Label(EduSuiteUIResources.Remarks, htmlAttributes: new { @class = "form-label" })
+                </th>
+
+            </tr>
+        </thead>
+        <tbody data-repeater-list id="DivUnitTestResult">
+            @for (int i = 0; i < Model.UnitTestResultViewModel.Count(); i++)
+            {
+                <tr data-repeater-item>
+                    <td class="px-1">
+                        @Html.DisplayFor(m => m.UnitTestResultViewModel[i].AdmissionNo, new { @class = "form-control input-control smallFont", @readonly = "true" })
+                        @Html.HiddenFor(m => m.UnitTestResultViewModel[i].RowKey, new { @class = "rowKeyClass" })
+                        @Html.HiddenFor(m => m.UnitTestResultViewModel[i].UnitTestScheduleKey)
+                        @Html.HiddenFor(m => m.UnitTestResultViewModel[i].ApplicationKey)
+                        @Html.HiddenFor(m => m.UnitTestResultViewModel[i].AdmissionNo)
+
+
+                    </td>
+                    <td class="px-1">
+                        &nbsp;&nbsp;   @Html.DisplayFor(m => m.UnitTestResultViewModel[i].StudentName, new { @class = "form-control input-control", @readonly = "true" })
+                        @Html.HiddenFor(m => m.UnitTestResultViewModel[i].StudentName)
+
+
+                    </td>
+                    <td class="px-1">
+                        @Html.TextBoxFor(m => m.UnitTestResultViewModel[i].Mark, new { @class = "form-control input-control", @placeholder = EduSuiteUIResources.Mark, @oninput = "UnitTestSchedule.SetExamResultStatus()", @onchange = "UnitTestSchedule.SetExamResultStatus()" })
+                        <span class="form-control-error-text">    @Html.ValidationMessageFor(m => m.UnitTestResultViewModel[i].Mark)</span>
+                    </td>
+                    @*<td class="px-1">
+                            @Html.TextBoxFor(m => m.UnitTestResultViewModel[i].MinimumMark, new { @class = "form-control input-control", @readonly = "true" })
+                        </td>
+                        <td class="px-1">
+                            @Html.TextBoxFor(m => m.UnitTestResultViewModel[i].MaximumMark, new { @class = "form-control input-control", @readonly = "true" })
+                        </td>*@
+
+                    <td class="px-1">
+                        <span id="spnResultStatus"></span>
+                        @Html.HiddenFor(m => m.UnitTestResultViewModel[i].ResultStatus)
+
+
+                    </td>
+
+
+                    <td class="px-1">
+                        <div class="switch-check switch">
+                            @Html.CheckBoxFor(m => m.UnitTestResultViewModel[i].AbsentStatus, new { @class = "switch-input", @onchange = "UnitTestSchedule.SetExamResultStatus()" })
+                            <div class="switch-label redgreen" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                            <div class="switch-handle"></div>
+                        </div>
+                    </td>
+
+                    <td class="px-1">
+                        @Html.TextBoxFor(m => m.UnitTestResultViewModel[i].Remarks, new { @class = "form-control input-control", @placeholder = EduSuiteUIResources.Remarks })
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div class="col-12">
+    <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        @*$("#RowKey").val(@Model.RowKey)
+        $("[data-input-type=time]").each(function ()
+        {
+
+            if ($(this).val() != "")
+            {
+                $(this).val(moment($(this).val(), ["HH:mm:ss"]).format("hh:mm A"));
+            }
+        })*@
+        AppCommon.FormatDateInput();
+        AppCommon.FormatInputCase();
+        AppCommon.FormatTimeInput();
+        $("form").removeData("validator");
+        $("form").removeData("unobtrusiveValidation");
+        $.validator.unobtrusive.parse("form");
+        UnitTestSchedule.SetExamResultStatus();
+
+
+        //SetExamResultStatus();
+        //$("input[id*=Mark]", $("#DivInternalExamResult")).on('input', function () {
+        //    SetExamResultStatus();
+        //});
+
+        //$("input[id*=Mark]", $("#DivInternalExamResult")).on('keydown', function (e) {
+        //    if (e.keycode == '13') {
+        //        var tr = $(this).closest(tr).next();
+        //        $("input[id*=Mark]", $(tr)).focus();
+        //    }
+        //    if (e.keycode == '38') {
+        //        var tr = $(this).closest(tr).prev();
+        //        $("input[id*=Mark]", $(tr)).focus();
+        //    }
+
+        //});
+
+        //$("input[id*=AbsentStatus]", $("#DivInternalExamResult")).change(function () {
+        //    SetExamResultStatus();
+        //});
+
+
+    });
+    //function SetExamResultStatus() {
+    //    $("#DivUnitTestResult [data-repeater-item]").each(function (i) {
+
+    //        //var item = $(_this).closest("[data-repeater-item]");
+    //        var AbsentStatus = $("input[type=checkbox][id*=AbsentStatus]", $(this)).is(":checked");
+    //        var Mark = $("input[id*=Mark]", $(this))[0];
+    //        var MinimumMark = $("input[id*=MinimumMark]", $(this)).val();
+    //        var MaximumMark = $("input[id*=MaximumMark]", $(this)).val();
+    //        var ResultStatus = $("input[id*=ResultStatus]", $(this))[0];
+
+    //        if (AbsentStatus == true) {
+    //            $("#spnResultStatus", $(this)).html("Absent").attr("style", "color:orange;");
+
+    //            ResultStatus.value = "A";
+    //            Mark.value = "";
+    //            Mark.disabled = true;
+    //        }
+    //        else {
+    //            Mark.disabled = false;
+
+    //            if (Mark.value == "") {
+    //                $("#spnResultStatus", $(this)).html("No Result").attr("style", "color:black;");
+
+    //                ResultStatus.value = "N";
+    //            }
+
+    //            else if (parseFloat(Mark.value) < parseFloat(MinimumMark)) {
+    //                if (parseFloat(Mark.value) < parseFloat(0)) {
+    //                    Mark.value = 0;
+    //                }
+    //                $("#spnResultStatus", $(this)).html("Fail").attr("style", "color:red;");
+
+    //                ResultStatus.value = "F";
+    //            }
+    //            else if (parseFloat(Mark.value) >= parseFloat(MinimumMark)) {
+    //                if (parseFloat(Mark.value) > parseFloat(MaximumMark)) {
+    //                    Mark.value = MaximumMark;
+    //                }
+    //                $("#spnResultStatus", $(this)).html("Pass").attr("style", "color:green;");
+
+    //                ResultStatus.value = "P";
+    //            }
+    //        }
+
+    //    });
+
+    //}
+
+
+
+
+</script>

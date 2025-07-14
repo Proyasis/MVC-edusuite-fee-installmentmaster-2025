@@ -1,0 +1,222 @@
+﻿
+@using System.Web.Mvc
+@model CITS.EduSuite.Business.Models.ViewModels.EnquiryLeadViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/CitsValidation")
+    @Scripts.Render("~/Content/DatePickerJS")
+
+    @Scripts.Render("~/Scripts/EnquiryLead")
+
+}
+<input type="hidden" id="hdnGetEnquiryLeads" value="@Url.Action("GetEnquiryLeads", "EnquiryLead")" />
+<input type="hidden" id="hdnDeleteEnquiryLead" value="@Url.Action("DeleteEnquiryLead", "EnquiryLead")" />
+<input type="hidden" id="hdnGetEmployeeByBranchId" value="@Url.Action("GetEmployeeByBranchId", "EnquiryLead")" />
+<input type="hidden" id="hdnGetEnquiryLead" value="@Url.Action("GetEnquiryLead", "EnquiryLead")" />
+<input type="hidden" id="hdnLogin" value="@Url.Action("LogOut","Login")" />
+<input type="hidden" id="hdnGetCallStatusByEnquiryStatus" value="@Url.Action("GetCallStatusByEnquiryStatus", "EnquiryLead")" />
+
+
+
+
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-lg-8 col-6">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.EnquiryLead</h3>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*<div class="col-lg-1 col-6">
+            </div>*@
+        <div class="col-lg-4 text-right">
+            <a id="addEditEnquiryLead" href="@Url.Action("EnquiryLead", "Import")" class=" btn btn-primary btn-sm">
+                <i class="fa fa-file-excel-o" aria-hidden="true"></i>  @EduSuiteUIResources.BulkLead @*Change Add new button Here *@
+            </a>
+            <a id="addEditEnquiryLead" href="@Url.Action("AddEditEnquiryLead", "EnquiryLead")" class="btn btn-success btn-sm">
+                <i class="fa fa-plus-square-o" aria-hidden="true"></i><span> @EduSuiteUIResources.New@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.EnquiryLead</span>  @*Change Add new button Here *@
+            </a>
+        </div>
+    </div>
+</header>
+<section class="section-content mx-sm-3 mx-0">
+
+
+    <div class="GridBody">
+        @Html.HiddenFor(m => m.PageIndex)
+        @Html.HiddenFor(m => m.PageSize)
+        <div class="grid-nav-bar">
+            <div class="form-row">
+                <div class="col-lg-2 col-sm-4 col-6">
+                    <fieldset class="form-group">
+                        @Html.TextBoxFor(m => m.SearchName, new
+                   {
+                       @class = "form-control input-control",
+                       @placeholder = EduSuiteUIResources.Search + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Name + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Or + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Phone + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Or + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Email,
+
+                       @onkeyup = "EnquiryLead.GetLeadByText(this)",
+                       @onclick = "EnquiryLead.GetLeadByText(this)",
+                       @autocomplete = "off"
+                   })
+                    </fieldset>
+                </div>
+                <div class="col-lg-2 col-sm-4 col-6" style="display:none">
+                    <fieldset class="form-group">
+                        @Html.TextBoxFor(m => m.SearchPhone, new { @class = "form-control input-control", @placeholder = EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Phone })
+                    </fieldset>
+                </div>
+                <div class="col-lg-3 col-sm-4 col-6" style="display:none">
+                    <fieldset class="form-group">
+                        @Html.TextBoxFor(m => m.SearchEmail, new { @class = "form-control input-control", @placeholder = EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Email })
+                    </fieldset>
+                </div>
+                <div class="col-lg-1 col-sm-4 col-6">
+                    <fieldset class="form-group">
+                        @Html.TextBoxFor(m => m.SearchFromDate, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_input_type = "date", @data_inputmask = "'alias': 'dd/mm/yyyy'", @placeholder = EduSuiteUIResources.FromDate })
+                    </fieldset>
+                </div>
+                <div class="col-lg-1 col-sm-4 col-6">
+                    <fieldset class="form-group">
+                        @Html.TextBoxFor(m => m.SearchToDate, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_input_type = "date", @data_inputmask = "'alias': 'dd/mm/yyyy'", @placeholder = EduSuiteUIResources.ToDate })
+
+                    </fieldset>
+                </div>
+
+
+                @if (Model.Branches.Count == 1)
+                {
+                    {
+                        Model.SearchBranchKey = (Model.SearchBranchKey == 0 || Model.SearchBranchKey == null) ? (short)Model.Branches.Select(x => x.RowKey).FirstOrDefault() : Model.SearchBranchKey;
+                    }
+                    @Html.HiddenFor(m => m.SearchBranchKey)
+                }
+                else
+                {
+                    <div class="col-lg-2 col-sm-4 col-6">
+                        <fieldset class="form-group">
+                            @Html.DropDownListFor(m => m.SearchBranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.Branch, new { @class = "form-control input-control ", @data_live_search = "true" })
+                        </fieldset>
+                    </div>
+                }
+
+                <div class="col-lg-2 col-sm-3 col-4">
+                    <fieldset class="form-group">
+                        @Html.DropDownListFor(m => m.SearchEmployeeKey, new SelectList(Model.Employees, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Employee, new { @class = "form-control input-control  selectpicker", @data_live_search = "true", @InputFor = "lblEmployee" })
+                    </fieldset>
+                </div>
+
+                <div class="col-lg-2 col-sm-4 col-6">
+                    <fieldset class="form-group">
+                        @Html.DropDownListFor(m => m.SearchEnquiryLeadStatusKey, new SelectList(Model.EnquiryLeadStatuses, "RowKey", "Text"), EduSuiteUIResources.Lead + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Status, new { @class = "form-control input-control" })
+                    </fieldset>
+                </div>
+                <div class="col-lg-2 col-sm-4 col-6">
+                    <fieldset class="form-group">
+                        @Html.DropDownListFor(m => m.SearchCallStatusKey, new SelectList(Model.EnquiryLeadCallStatuses, "RowKey", "Text"), EduSuiteUIResources.Search + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.CallStatus, new { @class = "form-control input-control" })
+                    </fieldset>
+                </div>
+                <div class="col-lg-2 col-sm-4 col-6">
+                    <fieldset class="form-group">
+                        @Html.DropDownListFor(m => m.NatureOfEnquiryKey, new SelectList(Model.NatureOfEnquiries, "RowKey", "Text"), EduSuiteUIResources.Search + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.NatureOfEnquiry, new { @class = "form-control input-control" })
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+        @*<hr class="my-2" />*@
+        <br />
+        <div class="form-row">
+            <div class="col-md-5">
+                <h6>
+                    @EduSuiteUIResources.TotalRecords  <span id="TotalRecords" class="label label-info"></span>
+
+                </h6>
+            </div>
+            <div class="col-md-7 float-right">
+                <div id="page-selection-up" class="float-right m-0"></div>
+            </div>
+        </div>
+        <div id="dvScheduleContainer">
+            <div id="dvRepeaterList" class="row"></div>
+        </div>
+
+    </div>
+
+</section>
+<script type="text/javascript">
+    var jsonData=@(Html.Raw(Json.Encode(Model)));
+
+    $(document).ready(function () {
+        AppCommon.FormatDateInput();
+      
+
+        EnquiryLead.GetEnquiryLeads(jsonData, 1, true);
+
+        $("#SearchBranchKey").on("change", function () {
+            BindEmployee();
+        });
+        //$("#SearchBranchKey").on("change", function () {
+        //    EnquiryLead.GetEmployeesByBranchId($(this).val(), $("#SearchEmployeeKey"));
+        //});
+
+
+
+        $("#SearchName,#SearchCallStatusKey,#SearchBranchKey,#SearchEmployeeKey,#SearchAcademicTermKey,#SearchEmail,#SearchPhone,#SearchFromDate,#SearchToDate,#NatureOfEnquiryKey").on("change",function(){
+            EnquiryLead.GetEnquiryLeads(jsonData,1,true);
+        })
+
+
+        $("#SearchEnquiryLeadStatusKey").on("change", function () {
+            var obj = {};
+            obj.EnquiryStatusKey = $(this).val();
+            EnquiryLead.GetCallStatusByEnquiryStatus(obj, $("#SearchCallStatusKey"));
+            EnquiryLead.GetEnquiryLeads(jsonData,1,true);
+        });
+
+    });
+
+
+    var BindEmployee = function () {
+        var obj = {};
+        obj.id = $("#SearchBranchKey").val() != "" ? $("#SearchBranchKey").val() : 0;
+        AppCommon.BindDropDownbyId(obj, $("#hdnGetEmployeeByBranchId").val(), $("#SearchEmployeeKey"), Resources.Employee);
+
+    }
+</script>
+
+@if (!DbConstants.Role.AdminUserTypes.Contains(DbConstants.User.RoleKey))
+{
+    <script>
+        var DefaultBranchKey = jsonData["SearchBranchKey"];
+        var DefaultEmployeeKey = jsonData["SearchEmployeeKey"];
+    </script>
+
+}
+else
+{
+    <script>
+        var DefaultBranchKey = false;
+        var DefaultEmployeeKey = false;
+    </script>
+}
+
+
+<script>
+
+    function LoadHistory(obj) {
+
+        $("#ClosedFeedbackList").empty();
+        $("#txtMobileNumber").val(obj.id);
+
+        var Obj = {};
+        Obj.TelephoneCodeKey = $("#SearchHistoryTelephoneCodeKey").val();
+        Obj.MobileNumber = $("#txtMobileNumber").val();
+        EnquiryScheduleHistory.GetAllHistoryByMobileNumber(Obj);
+    }
+</script>

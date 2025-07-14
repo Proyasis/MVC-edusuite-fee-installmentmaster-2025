@@ -1,0 +1,96 @@
+﻿
+@using System.Web.Mvc
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/Scripts/Attendance")
+    @Scripts.Render("~/Content/DatePickerJS")
+}
+<input type="hidden" id="hdnGetAttendanceQuick" value="@Url.Action("GetAttendanceQuick", "Attendance")" /> />
+<input type="hidden" id="hdnDeleteAttendance" value="@Url.Action("DeleteAttendance", "Attendance")" />
+<input type="hidden" id="hdnAddEditAttendance" value="@Url.Action("AddEditAttendance", "Attendance")" />
+
+
+<div class="col-12 Page_Head_Master">
+    <div class="col-6 Text_Left">
+        <label class="Page_Heading  ">@EduSuiteUIResources.Attendance</label>
+    </div>
+
+    <div class="col-6 Text_Right">
+        <a id="addEditAttendance" href="@Url.Action("AddEditAttendance", "Attendance")" class="btn btn-sm btnBack">
+            <i class="fa fa-plus" aria-hidden="true"></i> @EduSuiteUIResources.AddNew @EduSuiteUIResources.BlankSpace @EduSuiteUIResources.Attendance
+        </a>
+    </div>
+</div>
+<div class="GridBody">
+
+    <div class="grid-nav-bar form-row justify-content-between">
+        <div class="col">
+            <input id="txtsearch" type="text" name="focus" class="form-control gridSearchTextBox" placeholder="@EduSuiteUIResources.Search" />
+
+            <span id="iconSpan" class="iconSpan"><i class="fa fa-times-circle" aria-hidden="true"></i></span>
+        </div>
+        <div class="col">
+            @Html.TextBox("txtsearchDate", "", "{0:dd/MM/yyyy}", new { @class = "form-control gridSearchTextBox", @data_inputmask = "'alias': 'dd/mm/yyyy'", @data_input_type = "date" })
+
+
+        </div>
+
+        <div class="col-9 float-right">
+            <a class="btn btn-info btn-sm float-right " onclick='window.location.reload()'>
+                <i class="fa fa-refresh"></i>   @EduSuiteUIResources.Refresh
+            </a>
+        </div>
+
+    </div>
+
+    <br /><br />
+
+    <div class="portlet-body" id="portletBody">
+        <div class='table-scrollable'>
+            <table id="grid"></table>
+            <div id="pager"></div>
+        </div>
+    </div>
+
+
+
+</div>
+@*<div id='myModal' class='modal fade in'>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div id='myModalContent'></div>
+            </div>
+        </div>
+    </div>*@
+
+
+<script>
+    $(document).ready(function () {
+
+        AppCommon.FormatDateInput();
+        $("#txtsearchDate").datepicker("setDate", new Date());
+
+        $("#txtsearch").on("input", function () {
+            Attendance.GetAttendanceQuick();
+        });
+        $("#txtsearchDate").on("changeDate", function () {
+            Attendance.GetAttendanceQuick();
+        })
+
+        $("#iconSpan").click(function () {
+            $('#txtsearch').val('');
+            $('#txtsearchDate').val('');
+
+            Attendance.GetAttendanceQuick();
+        });
+        Attendance.GetAttendanceQuick();
+        //AppCommon.EditGridPopup($("#addEditAttendance"))
+
+      
+
+
+
+    });
+</script>
+

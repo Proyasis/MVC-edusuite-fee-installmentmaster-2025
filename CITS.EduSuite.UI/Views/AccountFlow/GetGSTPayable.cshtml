@@ -1,0 +1,139 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.GSTEFilingTotalViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+
+
+<div class="col-sm-12 form-col paddingNone">
+
+    <table id="ledgerTable" class="table table-bordered">
+
+        <thead>
+            <tr class="ledgerSubHead">
+                <td class="col-sm-3">
+                    @EduSuiteUIResources.Particulars
+                </td>
+                <td class="col-sm-1">
+                    @EduSuiteUIResources.SGST
+                </td>
+                <td class="col-sm-1">
+                    @EduSuiteUIResources.CGST
+                </td>
+                <td class="col-sm-1">
+                    @EduSuiteUIResources.IGST
+                </td>
+
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    @EduSuiteUIResources.Total@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Input
+                </td>
+                <td>
+                    @(string.Format("{0:G29}", Model.TotalInputSGSTAmt))
+                </td>
+                <td>
+                    @(string.Format("{0:G29}", Model.TotalInputCGSTAmt))
+                </td>
+                <td>
+                    @(string.Format("{0:G29}", Model.TotalInputIGSTAmt))
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @EduSuiteUIResources.Output@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Liability
+                </td>
+                <td>
+                    @(string.Format("{0:G29}", Model.OutputSGSTAmt))
+                </td>
+                <td>
+                    @(string.Format("{0:G29}", Model.OutputCGSTAmt))
+                </td>
+                <td>
+                    @(string.Format("{0:G29}", Model.OutputIGSTAmt))
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @EduSuiteUIResources.Less@EduSuiteUIResources.FullColon@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Input@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.GST@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Credit
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @EduSuiteUIResources.SGST
+                </td>
+                <td>
+                    @(string.Format("{0:G29}", Model.InputSGSTAmt))
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @EduSuiteUIResources.CGST
+                </td>
+                <td>
+                </td>
+                <td>
+                    @(string.Format("{0:G29}", Model.InputCGSTAmt))
+                </td>
+                <td>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @EduSuiteUIResources.IGST
+                </td>
+                <td>
+                    @(string.Format("{0:G29}", Model.BalanceISGSTAmt))
+                </td>
+                <td>
+                    @(string.Format("{0:G29}", Model.BalanceICGSTAmt))
+                </td>
+                <td>
+                    @(string.Format("{0:G29}", Model.BalanceIIGSTAmt))
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @EduSuiteUIResources.Amount@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Payable
+                </td>
+                <td>
+                    @(string.Format("{0:G29}", Model.BalancePaidSGSTAmt))
+                </td>
+                <td>
+                    @(string.Format("{0:G29}", Model.BalancePaidCGSTAmt))
+                </td>
+                <td>
+                    @(string.Format("{0:G29}", Model.BalancePaidIGSTAmt))
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @EduSuiteUIResources.Amount@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Receivable
+                </td>
+                <td>
+                    @(string.Format("{0:G29}", Model.RecievableSGSTAmt))
+                </td>
+                <td>
+                    @(string.Format("{0:G29}", Model.RecievableCGSTAmt))
+                </td>
+                <td>
+                    @(string.Format("{0:G29}", Model.RecievableIGSTAmt))
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+

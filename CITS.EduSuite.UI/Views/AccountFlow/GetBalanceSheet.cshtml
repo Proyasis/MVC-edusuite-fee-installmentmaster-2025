@@ -1,0 +1,141 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.AccountFlowViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+
+
+<table id="BalanceSheetTable" class="table table-bordered balance-sheet">
+    <thead class="ledgerSubHead">
+        <tr>
+            <th class="w-25 border-right-0">
+                @EduSuiteUIResources.Asset
+            </th>
+            <th class="w-25 text-right  border-left-0">
+                @EduSuiteUIResources.Amount
+            </th>
+            <th class="w-25 border-right-0">
+                 @EduSuiteUIResources.Liability
+            </th>
+            <th class="w-25 text-right border-left-0">
+                @EduSuiteUIResources.Amount
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+
+        <tr>
+            <td colspan="2" class="p-0 align-text-top">
+                <ul class="list-group ">
+                    @for (int i = 0; i < Model.DebitAccountFlow.Count; i++)
+                    {
+                        if (i == 0 || (i != 0 && Model.DebitAccountFlow[i].AccountHeadTypeKey != Model.DebitAccountFlow[i - 1].AccountHeadTypeKey))
+                        {
+                            <li class="list-group-item rounded-0 w3-light-grey">
+                                <div class="form-row">
+                                    <div class="w-75">
+                                        <strong>
+                                            @Model.DebitAccountFlow[i].AccountHeadTypeName
+                                        </strong>
+                                    </div>
+                                    <div class="w-25">
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                        <li class="list-group-item rounded-0">
+                            <div class="form-row">
+                                <div class="w-75">
+                                    @Model.DebitAccountFlow[i].AccountHeadName
+                                </div>
+                                @if ((Model.DebitAccountFlow[i].AccountHeadKey) == 0)
+                                {
+                                    <div class="text-right w-25 link" onclick="AccountHead.LedgerDetailPopup(this)" data-code="@Model.DebitAccountFlow[i].AccountHeadKey" data-name="@Model.DebitAccountFlow[i].AccountHeadName" data-url="@Url.Action("GetIncomeStatement", "AccountFlow")">
+
+
+                                        @string.Format("{0:G29}", Model.DebitAccountFlow[i].TotalDebitAmount)
+
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="text-right w-25 link" onclick="AccountHead.LedgerDetailPopup(this)" data-code="@Model.DebitAccountFlow[i].AccountHeadKey" data-name="@Model.DebitAccountFlow[i].AccountHeadName" data-url="@Url.Action("BindLedgerById", "AccountFlow")">
+
+
+                                        @string.Format("{0:G29}", Model.DebitAccountFlow[i].TotalDebitAmount)
+
+                                    </div>
+                                }
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </td>
+            <td colspan="2" class="p-0 align-text-top">
+
+                <ul class="list-group ">
+                    @for (int i = 0; i < Model.CreditAccountFlow.Count; i++)
+                    {
+
+                        if (i == 0 || (i != 0 && Model.CreditAccountFlow[i].AccountHeadTypeKey != Model.CreditAccountFlow[i - 1].AccountHeadTypeKey))
+                        {
+                            <li class="list-group-item rounded-0 w3-light-grey">
+                                <div class="form-row">
+                                    <div class="w-75">
+                                        <strong>
+                                            @Model.CreditAccountFlow[i].AccountHeadTypeName
+                                        </strong>
+                                    </div>
+                                    <div class="w-25">
+                                    </div>
+                                </div>
+                            </li>
+                        }
+
+                        <li class="list-group-item rounded-0">
+                            <div class="form-row">
+                                <div class="w-75">
+                                    @Model.CreditAccountFlow[i].AccountHeadName
+                                </div>
+                                @if ((Model.CreditAccountFlow[i].AccountHeadKey) == 0)
+                                {
+                                    <div class="text-right link w-25" onclick="AccountHead.LedgerDetailPopup(this)" data-code="@Model.CreditAccountFlow[i].AccountHeadKey" data-name="@Model.CreditAccountFlow[i].AccountHeadName" data-url="@Url.Action("GetIncomeStatement", "AccountFlow")">
+
+                                        @Model.CreditAccountFlow[i].TotalCreditAmount
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="text-right link w-25" onclick="AccountHead.LedgerDetailPopup(this)" data-code="@Model.CreditAccountFlow[i].AccountHeadKey" data-name="@Model.CreditAccountFlow[i].AccountHeadName" data-url="@Url.Action("BindLedgerById", "AccountFlow")">
+
+                                        @Model.CreditAccountFlow[i].TotalCreditAmount
+                                    </div>
+                                }
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </td>
+
+
+
+        </tr>
+    </tbody>
+    <tfoot>
+        <tr class="ledgerTotal">
+
+
+            <th class="w-25 border-right-0">
+                @EduSuiteUIResources.Total@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Asset
+            </th>
+            <th class="w-25 text-right border-left-0">
+                @Model.DebitAccountFlow.Sum(p => p.TotalDebitAmount)
+            </th>
+            <th class="w-25 border-right-0">
+                @EduSuiteUIResources.Total@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Liability
+            </th>
+            <th class="w-25 text-right  border-left-0">
+                @Model.CreditAccountFlow.Sum(p => p.TotalCreditAmount)
+            </th>
+        </tr>
+    </tfoot>
+
+</table>

@@ -1,0 +1,66 @@
+﻿
+@model CITS.EduSuite.Business.Models.ViewModels.BookCopyViewModel
+@using System.Web.Mvc
+
+<input type="hidden" id="hdnGetBookCopiesList" value="@Url.Action("GetBookCopies", "BookCopy")" />
+<input type="hidden" id="hdnDeleteBookCopy" value="@Url.Action("DeleteBookCopy", "BookCopy")" />
+<input type="hidden" id="hdnAddEditBookCopy" value="@Url.Action("AddEditBookCopy", "BookCopy")" />
+
+<div class="GridBody">
+
+    <div class="table-wrapper">
+        <div class="table-title">
+            <div class="form-row">
+                <div class="col-12">
+                    @Html.HiddenFor(m => m.BookKey)
+                    <a id="addEditMember" data-modal="" data-href="@Url.Action("AddEditBookCopy", "BookCopy", new { BookId = Model.BookKey })" class="btn btn-sm float-right">
+                        <i class="fa fa-plus" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="jqGrid_wrapper overflow-auto">
+            <table id="grid"></table>
+            <div id="pager"></div>
+        </div>
+    </div>
+
+
+
+</div>
+
+
+@*<div id='myModal' class='modal fade in'>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div id='myModalContent'></div>
+            </div>
+        </div>
+    </div>*@
+
+
+
+<script>
+    $(document).ready(function () {
+        var Id = $("#BookKey").val();
+        $("#txtsearch").keydown(function () {
+            BookCopies.GetBookCopies(Id);
+        });
+        $("#txtsearch").keyup(function () {
+            BookCopies.GetBookCopies(Id);
+        });
+
+        $("#iconSpan").click(function () {
+            BookCopies.GetBookCopies(Id);
+        });
+        BookCopies.GetBookCopies(Id);
+        AppCommon.EditGridPopup("#addEditMember")
+        $(window).on("resize", function (Id) {
+            var $grid = $("#grid"),
+            newWidth = $grid.closest(".ui-jqgrid").parent().width();
+            $grid.jqGrid("setGridWidth", newWidth, true);
+        });
+    });
+</script>
+
+

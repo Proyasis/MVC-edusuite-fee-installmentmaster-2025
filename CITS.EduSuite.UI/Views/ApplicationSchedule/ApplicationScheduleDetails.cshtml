@@ -1,0 +1,66 @@
+﻿
+@model CITS.EduSuite.Business.Models.ViewModels.ApplicationScheduleViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+<input type="hidden" value="@Model.TotalRecords" id="hdnTotalRecords" />
+<div class="table-responsive">
+    <table class="table CustomTable mt-2">
+        <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Admission No</th>
+                <th scope="col">Mobile</th>
+                <th scope="col">Course</th>
+                <th scope="col"> Affiliation</th>
+                <th scope="col">Batch</th>
+                <th scope="col">Schedule Type</th>
+                <th scope="col">Next Call Schedule</th>
+                <th scope="col">Call Type</th>
+                <th scope="col">Call Status</th>
+                <th scope="col">Remarks</th>
+                <th scope="col">Status</th>
+                @if (Model.SearchTabKey != @DbConstants.ScheduleStatus.History)
+                {
+                    <th style="width:170px" scope="col">Action</th>
+                }
+            </tr>
+        </thead>
+
+        <tbody>
+            @{
+                int i = 0;
+            }
+            @foreach (var item in Model.LeadsModelList)
+            {
+
+            <tr>
+                <td>
+                    @item.Name
+                </td>
+                <td> @item.AdmissionNo</td>
+                <td>@item.Mobile</td>
+                <td>@item.Course</td>
+                <td>@item.Affiliations</td>
+                <td>@item.Batch</td>
+                <td>@item.ScheduleTypeName</td>
+                <td>@(string.Format("{0:dd/MM/yyyy}", item.ReminderDate))</td>
+                <td>@item.CallTypeName</td>
+                <td>@item.ApplicationCallStatusName</td>
+                <td>@item.Remarks</td>
+                <td>@item.ProcessStatusName</td>
+                @if (Model.SearchTabKey != @DbConstants.ScheduleStatus.History)
+                {
+                    <td>
+                        <a onclick="ApplicationSchedule.EditApplicationSchedulePopup(@item.ApplicationKey,@item.RowKey,@item.ApplicationScheduleTypeKey)" class="btn btn-outline-primary btn-sm mx-1"> <i class="fa fa-pencil"></i></a>
+                        <a onclick="ApplicationSchedule.DeleteApplicationSchedule(@item.RowKey)" class="btn btn-outline-danger btn-sm mx-1"> <i class="fa fa-trash"></i> </a>
+
+                    </td>
+                }
+            </tr>
+
+                i = i + 1;
+            }
+
+        </tbody>
+    </table>
+</div>
+

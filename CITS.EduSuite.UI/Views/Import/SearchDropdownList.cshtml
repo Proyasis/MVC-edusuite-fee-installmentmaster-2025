@@ -1,0 +1,77 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.ApplicationPersonalViewModel
+<div class="form-row justify-content-between">
+    @if (Model.Branches.Count == 1)
+    {
+        {
+            Model.BranchKey = (short)Model.Branches.Select(x => x.RowKey).FirstOrDefault();
+        }
+        @Html.HiddenFor(m => m.BranchKey)
+    }
+    else
+    {
+        <div class="col-lg-2 col-sm-3 col-4">
+            <fieldset class="form-group">
+                @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), new { @class = "form-control input-control", @data_live_search = "true" })
+            </fieldset>
+        </div>
+    }
+    <div class="col-lg-2 col-sm-3 col-4">
+        <fieldset class="form-group">
+            @Html.DropDownListFor(m => m.BatchKey, new SelectList(Model.Batches, "RowKey", "Text"), EduSuiteUIResources.Batch, new { @class = "form-control input-control", @data_live_search = "true" })
+        </fieldset>
+    </div>
+
+    @if ((bool)ViewBag.ShowAcademicTerm)
+    {
+        <div class="col-lg-2 col-sm-3 col-4">
+            <fieldset class="form-group">
+                @Html.DropDownListFor(m => m.AcademicTermKey, new SelectList(Model.AcademicTerms, "RowKey", "Text"), EduSuiteUIResources.AcademicTerm, new { @class = "form-control input-control ", onchange = "Import.FillCourseTypesById();Import.FillYearsById()" })
+            </fieldset>
+        </div>
+
+    }
+    else
+    {
+        {
+            Model.AcademicTermKey = (byte)Model.AcademicTerms.Select(row => row.RowKey).FirstOrDefault();
+
+        }
+        @Html.HiddenFor(m => m.AcademicTermKey)
+    }
+
+    <div class="col-lg-2 col-sm-3 col-4">
+        <fieldset class="form-group">
+            @Html.DropDownListFor(m => m.CourseTypeKey, new SelectList(Model.CourseTypes, "RowKey", "Text"), new { @class = "form-control input-control", @data_live_search = "true", onchange = "Import.FillCoursesById()", @data_title = EduSuiteUIResources.CourseType })
+        </fieldset>
+    </div>
+
+    <div class="col-lg-2 col-sm-3 col-4">
+        <fieldset class="form-group">
+            @*@Html.DropDownListFor(m => m.CourseKey, new SelectList(Model.Course, "RowKey", "Text"), EduSuiteUIResources.Course, new { @class = "form-control input-control " })*@
+            @Html.DropDownListFor(m => Model.CourseKey, new SelectList(Model.Courses, "RowKey", "Text"), new { @class = "form-control border-radius input-control", @data_live_search = "true", onchange = "Import.FillUniversitiesById();Import.FillYearsById()", @data_title = EduSuiteUIResources.Course })
+        </fieldset>
+    </div>
+    @if ((bool)ViewBag.ShowUniversity)
+    {
+        <div class="col-lg-2 col-sm-3 col-4">
+            <fieldset class="form-group">
+                @Html.DropDownListFor(m => m.UniversityKey, new SelectList(Model.Universities, "RowKey", "Text"), new { @class = "form-control input-control", @data_live_search = "true", @data_title = EduSuiteUIResources.University })
+            </fieldset>
+        </div>
+    }
+    else
+    {
+        {
+            Model.UniversityKey = (byte)Model.Universities.Select(row => row.RowKey).FirstOrDefault();
+
+        }
+        @Html.HiddenFor(m => m.UniversityKey)
+    }
+
+    <div class="col-lg-2 col-sm-3 col-4">
+        <fieldset class="form-group">
+            @Html.DropDownListFor(m => m.CurrentYear, new SelectList(Model.AdmittedYear, "RowKey", "Text"), new { @class = "form-control input-control", @data_live_search = "true", @data_title = EduSuiteUIResources.Year })
+        </fieldset>
+    </div>
+
+</div>

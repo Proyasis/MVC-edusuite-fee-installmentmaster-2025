@@ -1,0 +1,79 @@
+﻿
+@model CITS.EduSuite.Business.Models.ViewModels.ReportViewModel
+<div class="modal-header">
+    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+    <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.Application @EduSuiteUIResources.BlankSpace @EduSuiteUIResources.Attendance@EduSuiteUIResources.BlankSpace @EduSuiteUIResources.Details</h4>
+</div>
+<div class="modal-body bottomLine">
+    <div class="form-master">
+        <input type="hidden" value="@Model.Name" id="hdnApplicantName" />
+        @Html.HiddenFor(m => m.ApplicationKey)
+        <table class="table table-responsive table-sm mt-2">
+
+            <tr>
+                <td>@EduSuiteUIResources.AdmissionNo</td>
+                <td>@Model.AdmissionNo</td>
+
+                <td>@EduSuiteUIResources.StudentName</td>
+                <td>@Model.Name </td>
+
+                <td>@EduSuiteUIResources.Course</td>
+                <td>@Model.Course</td>
+            </tr>
+            <tr>
+                <td>@EduSuiteUIResources.AffiliationsTieUps</td>
+                <td>@Model.Affiliations</td>
+
+                <td>@EduSuiteUIResources.Batch</td>
+                <td>@Model.BatchName</td>
+                <td>@Model.CurrentYearText</td>
+                <td></td>
+
+            </tr>
+            <tr>
+                <td colspan="6">
+                    <lable class="btn btn-primary-outline font-14">
+                        Total Working Days : <span class="badge font-16 w3-blue" id="spnTotalWorkingDays">0</span>
+                    </lable>
+                    <lable class="btn btn-success-outline font-14">
+                        Total Present : <span class="badge font-16 w3-green" id="spnTotalPresent">0</span>
+                    </lable>
+                    <lable class="btn btn-danger-outline font-14">
+                        Total Absent : <span class="badge font-16 w3-red" id="spnTotalAbsent">0</span>
+                    </lable>
+                </td>
+            </tr>
+
+        </table>
+        <div class="button-group float-right export-buttons">
+            @* <button id="btnPrint" type="button" onclick="AttendanceReport.GetExportPrintData('P','#hdnGetAttendanceReport','AttendanceReport','Attendance Report')" class="btn btn-primary btn-sm"><i class="fa fa-print btn-blue" aria-hidden="true"></i></button>*@
+            <button id="btnExport" type="button" onclick="AttendanceReport.GetExportPrintApplicationData('E','#hdnGetAttendanceReport','StudentAttendanceReport','Student Attendance Report')" class="btn btn-success btn-sm"><i class="fa fa-file-excel-o fa-align-right" aria-hidden="true"></i></button>
+
+        </div>
+
+        <div class="table-wrapper">
+
+            <div class="jqGrid_wrapper">
+                <table id="gridApplication" class="table table-striped"></table>
+                <div id="pagerApplication"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer justify-content-start">
+    <div class="form-group">
+        <button type="button" data-dismiss="modal" class="btn btn-sm btn-danger mx-1">@EduSuiteUIResources.Cancel</button>
+
+    </div>
+</div>
+<script type="text/javascript">
+     var jsonApplication=@(Html.Raw(Json.Encode(Model)));
+
+    $(document).ready(function () {
+
+
+        AttendanceReport.GetApplicationAttendance(jsonApplication);
+
+
+    });
+</script>

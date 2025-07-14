@@ -1,0 +1,68 @@
+﻿<div id="dvGstFilingList" class="col-sm-12 form-col paddingNone">
+
+    <table id="ledgerTable" class="table table-bordered">
+
+
+        <thead>
+            <tr class="ledgerSubHead">
+                <td>
+                    Category Of Supply
+                </td>
+                <td>
+                    Taxable Amount
+                </td>
+                <td>
+                    Cess Per
+                </td>
+                <td>
+                    Kerala Flood Cess Payable
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            {{#InvoiceDetails}}
+            <tr>
+                <td>
+                   Taxable supply at the rate of {{G29 SGSTPer}}% SGST
+                </td>
+                <td class="text-right">
+                    {{G29 Total}}
+                </td>
+                <td class="text-right">
+                    {{G29 CessPer}}%
+                </td>
+                <td class="text-right">
+                    {{G29 CessAmt}}
+                </td>
+                
+            </tr>
+
+            {{/InvoiceDetails}}
+
+
+        </tbody>
+        {{#if InvoiceDetails}}
+        <tfoot class="ledgerSubHead">
+            <tr>
+                <td>
+                    Total
+                </td>
+                <td class="text-right">
+                    {{sum InvoiceDetails 'Total'}}
+                </td>
+                <td></td>
+                <td class="text-right">
+                    {{sum InvoiceDetails 'CessAmt'}}
+                </td>
+            </tr>
+        </tfoot>
+        {{/if}}
+    </table>
+    <style>
+        #ledgerTable .ledgerSubHead td {
+            background-color: #0e7dab;
+            color: white;
+            font-size: 14px;
+        }
+    </style>
+</div>

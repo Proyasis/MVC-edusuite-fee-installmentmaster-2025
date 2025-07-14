@@ -1,0 +1,229 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.AccountHeadOpeningBalanceViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+
+<div class="modal-header">
+    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+    <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.Add @EduSuiteUIResources.Sla @EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace @EduSuiteUIResources.AccountHead@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.OpeningBalance</h4>
+</div>
+@using (Html.BeginForm("AddEditAccountHeadOpeningBalance", "AccountHeadOpeningBalance", FormMethod.Post, new { @id = "frmAccountHeadOpeningBalance" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.Hidden("AccountPayable", Decimal.Round((Model.AccountPayable ?? 0), 2))
+    @Html.Hidden("AdvancePayable", Decimal.Round((Model.AdvancePayable ?? 0), 2))
+    @Html.Hidden("AdvanceReceivable", Decimal.Round((Model.AdvanceReceivable ?? 0), 2))
+    @Html.Hidden("AccountReceivable", Decimal.Round((Model.AccountReceivable ?? 0), 2))
+    @Html.Hidden("Inventory", Decimal.Round((Model.Inventory ?? 0), 2))
+    <input type="hidden" id="hdnFillAccountHeadOpeningBalanceType" value="@Url.Action("FillAccountHeadOpeningBalanceType", "AccountHeadOpeningBalance")" />
+
+    <div class="modal-body">
+        <div class="form-master">
+
+            <div class="form-row">
+                <div class="col-6 col-lg-4">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.Branch, htmlAttributes: new { @class = "form-label" }) <div class="required-icon"><div class="text">*</div></div>
+                        @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches.Where(x => x.RowKey == Model.BranchKey), "RowKey", "Text"), new { @class = "form-control input-control" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.BranchKey)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-6 col-lg-4">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.Date, htmlAttributes: new { @id = "lblDate", @class = "form-label" }) <div class="required-icon"><div class="text">*</div></div>
+                        @Html.TextBoxFor(m => m.OpeningDate, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_inputmask = "'alias': 'date'", @data_input_type = "date" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.OpeningDate)
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <table class="table table-striped">
+
+                <thead class="thead-light">
+                    <tr>
+                        <th>
+                            @EduSuiteUIResources.AccountHead
+                        </th>
+                        <th>
+                            @EduSuiteUIResources.Debit
+                        </th>
+
+
+                        <th>
+                            @EduSuiteUIResources.Credit
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.OpeningBalanceDetails.Count; i++)
+                    {
+                        <tr data-repeater-item>
+                            <td class="px-1">
+                                <fieldset class="form-group">
+                                    @Html.TextBoxFor(m => Model.OpeningBalanceDetails[i].AccountHeadName, new { @class = "form-control input-control", @readonly = "readonly" })
+                                    @Html.HiddenFor(m => Model.OpeningBalanceDetails[i].AccountHeadKey)
+                                    @Html.HiddenFor(m => Model.OpeningBalanceDetails[i].RowKey)
+                                    <span class="form-control-error-text">
+                                        @Html.ValidationMessageFor(m => Model.OpeningBalanceDetails[i].AccountHeadName)
+                                    </span>
+                                </fieldset>
+                            </td>
+                            <td class="px-1">
+                                <fieldset class="form-group">
+                                    @if (Model.OpeningBalanceDetails[i].AccountGroupKey != DbConstants.AccountGroup.Asset && Model.OpeningBalanceDetails[i].AccountGroupKey != DbConstants.AccountGroup.Expenses)
+                                    {
+                                        @Html.TextBoxFor(m => Model.OpeningBalanceDetails[i].DebitAmount, new { @class = "form-control input-control text-right-decimal" })
+                                        <span class="form-control-error-text">
+                                            @Html.ValidationMessageFor(m => Model.OpeningBalanceDetails[i].DebitAmount)
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        @Html.TextBoxFor(m => Model.OpeningBalanceDetails[i].DebitAmount, new { @class = "form-control input-control text-right-decimal", @readonly = "readonly" })
+                                        <span class="form-control-error-text">
+                                            @Html.ValidationMessageFor(m => Model.OpeningBalanceDetails[i].DebitAmount)
+                                        </span>
+                                    }
+                                </fieldset>
+                            </td>
+                            <td class="ConcessionCoulumns px-1">
+                                <fieldset class="form-group">
+                                    @if (Model.OpeningBalanceDetails[i].AccountGroupKey != DbConstants.AccountGroup.Liability && Model.OpeningBalanceDetails[i].AccountGroupKey != DbConstants.AccountGroup.Income)
+                                    {
+                                        @Html.TextBoxFor(m => Model.OpeningBalanceDetails[i].CreditAmount, new { @class = "form-control input-control text-right-decimal" })
+                                        <span class="form-control-error-text">
+                                            @Html.ValidationMessageFor(m => Model.OpeningBalanceDetails[i].CreditAmount)
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        @Html.TextBoxFor(m => Model.OpeningBalanceDetails[i].CreditAmount, new { @class = "form-control input-control text-right-decimal", @readonly = "readonly" })
+                                        <span class="form-control-error-text">
+                                            @Html.ValidationMessageFor(m => Model.OpeningBalanceDetails[i].CreditAmount)
+                                        </span>
+                                    }
+                                </fieldset>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th class="px-1">
+                            <div class="form-group">
+                                @Html.Label(EduSuiteUIResources.Total, htmlAttributes: new { @id = "lblEligibility", @class = "form-label" })
+                            </div>
+                        </th>
+                        <th class="px-1">
+                            <div class="form-group">
+                                @Html.TextBox("lblTotalDebit", Model.OpeningBalanceDetails.Select(x => x.DebitAmount).DefaultIfEmpty().Sum(), htmlAttributes: new { @class = "form-control input-control text-right-decimal", @readonly = "readonly" })
+                            </div>
+                        </th>
+                        <th class="px-1">
+                            <div class="form-group">
+                                @Html.TextBox("lblTotalCredit", Model.OpeningBalanceDetails.Select(x => x.CreditAmount).DefaultIfEmpty().Sum(), htmlAttributes: new { @class = "form-control input-control text-right-decimal", @readonly = "readonly" })
+                            </div>
+                        </th>
+
+                </tfoot>
+            </table>
+        </div>
+        <div class="form-row">
+            <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+        </div>
+    </div>
+
+
+
+    <div class="modal-footer justify-content-start">
+        <div class="form-group">
+            <input type="submit" value="@EduSuiteUIResources.Submit" id="btnSave" class="btn btn-sm btn-success mx-1" />
+            <button type="button" data-dismiss="modal" class="btn btn-sm btn-danger mx-1">@EduSuiteUIResources.Cancel</button>
+
+        </div>
+    </div>
+}
+
+<style>
+    .datepicker {
+        z-index: 9999 !important;
+    }
+
+    .opening-table-header input[type=text] {
+        background-color: #0dada5 !important;
+        color: white !important;
+    }
+</style>
+
+<script>
+    $(document).ready(function () {
+        AppCommon.FormatDateInput();
+        AppCommon.FormatInputCase()
+        AppCommon.EnterKeyToTab($("form"));
+
+        $("[id*=DebitAmount]").on("input", function () {
+            item = $(this).closest("[data-repeater-item]")
+            credit = $("[id*=CreditAmount]", item)
+            credit.val("")
+            AccountHeadOpeningBalance.DebitCreditTotalCalc()
+        })
+        $("[id*=CreditAmount]").on("input", function () {
+            item = $(this).closest("[data-repeater-item]")
+            debit = $("[id*=DebitAmount]", item)
+            debit.val("")
+            AccountHeadOpeningBalance.DebitCreditTotalCalc()
+        })
+
+        //$("[id*=DebitAmount],[id*=CreditAmount]").on("change", function () {
+        //    var AccountReceivable = $("#AccountReceivable").val()
+        //    AccountReceivable = parseFloat(AccountReceivable) ? parseFloat(AccountReceivable) : 0;
+        //    var AccountPayable = $("#AccountPayable").val()
+        //    AccountPayable = parseFloat(AccountPayable) ? parseFloat(AccountPayable) : 0;
+        //    var AdvancePayable = $("#AdvancePayable").val()
+        //    AdvancePayable = parseFloat(AdvancePayable) ? parseFloat(AdvancePayable) : 0;
+        //    var AdvanceReceivable = $("#AdvanceReceivable").val()
+        //    AdvanceReceivable = parseFloat(AdvanceReceivable) ? parseFloat(AdvanceReceivable) : 0;
+        //    var Inventory = $("#Inventory").val()
+        //    Inventory = parseFloat(Inventory) ? parseFloat(Inventory) : 0;
+        //    $("[repeateritem]").each(function () {
+        //        var AccountHeadKey = $("[id*=AccountHeadKey]", $(this)).val()
+        //        var debit = $("[id*=DebitAmount]", $(this))
+        //        debit = parseFloat(debit) ? parseFloat(debit) : 0;
+        //        var credit = $("[id*=CreditAmount]", $(this))
+        //        credit = parseFloat(credit) ? parseFloat(credit) : 0;
+        //        AccountHeadKey = parseInt(AccountHeadKey) ? parseInt(AccountHeadKey) : 0;
+        //        if (AccountHeadKey == Resources.HeadAccountReceivable) {
+        //            if ((debit + credit) < AccountReceivable) {
+        //                $("[id*=CreditAmount]", $(this)).val(AccountReceivable)
+        //            }
+        //        }
+        //        else if (AccountHeadKey == Resources.HeadAccountsPayable) {
+        //            if ((debit + credit) < AccountPayable) {
+        //                $("[id*=DebitAmount]", $(this)).val(AccountPayable)
+        //            }
+        //        }
+        //        else if (AccountHeadKey == Resources.HeadAdvanceReceivable) {
+        //            if ((debit + credit) < AdvanceReceivable) {
+        //                $("[id*=CreditAmount]", $(this)).val(AdvanceReceivable)
+        //            }
+        //        }
+        //        else if (AccountHeadKey == Resources.HeadAdvancePayable) {
+        //            if ((debit + credit) < AdvancePayable) {
+        //                $("[id*=DebitAmount]", $(this)).val(AdvancePayable)
+        //            }
+        //        }
+        //        else if (AccountHeadKey == Resources.HeadInventory) {
+        //            if ((debit + credit) < Inventory) {
+        //                $("[id*=CreditAmount]", $(this)).val(Inventory)
+        //            }
+        //        }
+        //    })
+        //})
+    });
+</script>
+
+

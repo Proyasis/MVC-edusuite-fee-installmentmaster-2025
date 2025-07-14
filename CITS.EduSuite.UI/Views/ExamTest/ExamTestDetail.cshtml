@@ -1,0 +1,235 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.ExamTestViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+<div class="list-fields1 ">
+
+    <input type="hidden" id="hdnTotalRecords" value="@Model.TotalRecords" />
+    <ul style="display:none">
+        @{int i = 0;}
+        @foreach (var item in Model.ExamTestList)
+        {
+            <li>
+                <span class="list-box">
+                    <span>@item.SubjectName</span>
+                    @if (item.ExamStatusKey == DbConstants.OnlineExamStatus.Finished || item.ExamStatusKey == DbConstants.OnlineExamStatus.NotCompleted)
+                    {
+                        @Html.ActionLink(EduSuiteUIResources.Review, "ShowExamReview", "ExamTest", new { id = item.TestPaperKey }, new { @class = "tst-overlay" })
+
+                    }
+                    else
+                    {
+                        @*@Html.ActionLink((item.RowKey == 0 ? EduSuiteUIResources.Start : EduSuiteUIResources.Continue), "AddEditExamTest", "ExamTest", new { id = item.TestPaperKey }, new { @class = "tst-overlay" })*@
+
+                        <a class="tst-overlay" id="link_@item.TestPaperKey" onclick="OpenPage(this)" data_href="/ExamTest/AddEditExamTest/@item.TestPaperKey">
+                            @if (item.RowKey == 0)
+                            {
+                                @EduSuiteUIResources.Start
+                            }
+                            else
+                            {
+                                @EduSuiteUIResources.Continue
+                            }
+                        </a>
+                    }
+
+                </span>
+            </li>
+        }
+    </ul>
+
+
+    <ul>
+        @foreach (var item in Model.ExamTestList)
+        {
+            <li class="ExamList">
+                <a class="ExamSubject">
+                    <div class="col-sm-12 SubjectName">@item.SubjectName</div>
+
+                    @if (item.TestPaperName != null)
+                    {
+                        <div class="col-sm-12 DivisionName">@item.TestPaperName</div>
+                    }
+                    @if (item.SubjectDivisionName != null)
+                    {
+                        <div class="col-sm-12 DivisionName">
+                            @item.SubjectDivisionName
+                            @if (item.SubjectSubDivisionName != null)
+                            {
+                                <span>-@item.SubjectSubDivisionName</span>
+                            }
+                        </div>
+                    }
+
+
+                </a>
+
+
+                @if (item.ExamStatusKey == DbConstants.OnlineExamStatus.Finished || item.ExamStatusKey == DbConstants.OnlineExamStatus.NotCompleted)
+                {
+                    @Html.ActionLink(EduSuiteUIResources.Review, "ShowExamReview", "ExamTest", new { id = item.TestPaperKey }, new { @class = "tst-overlay btnContinueExam" })
+                }
+                else
+                {
+
+                    if (item.RowKey == null)
+                    {
+                        <a class="tst-overlay btnStartExam" id="link_@item.TestPaperKey" onclick="OpenPage(this)" data_href="/ExamTest/AddEditExamTest/@item.TestPaperKey">
+
+                            @EduSuiteUIResources.Start
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="tst-overlay btnContinueExam" id="link_@item.TestPaperKey" onclick="OpenPage(this)" data_href="/ExamTest/AddEditExamTest/@item.TestPaperKey">
+
+                            @EduSuiteUIResources.Continue
+                        </a>
+                    }
+                }
+                @if (item.ExamDate != null)
+                {
+                    <div class="col-sm-12 ExamDate">@item.ExamDate.Value.ToString("dd/MM/yyyy")</div>
+                }
+            </li>
+        }
+    </ul>
+
+</div>
+<script>
+    $(document).ready(function () {
+        var colorArray = ['#FF6633', '#FFB399', '#FF33FF', '#FFFF99', '#00B3E6',
+            '#E6B333', '#3366E6', '#999966', '#99FF99', '#B34D4D',
+            '#80B300', '#809900', '#E6B3B3', '#6680B3', '#66991A',
+            '#FF99E6', '#CCFF1A', '#FF1A66', '#E6331A', '#33FFCC',
+            '#66994D', '#B366CC', '#4D8000', '#B33300', '#CC80CC',
+            '#66664D', '#991AFF', '#E666FF', '#4DB3FF', '#1AB399',
+            '#E666B3', '#33991A', '#CC9999', '#B3B31A', '#00E680',
+            '#4D8066', '#809980', '#E6FF80', '#1AFF33', '#999933',
+            '#FF3380', '#CCCC00', '#66E64D', '#4D80CC', '#9900B3',
+            '#E64D66', '#4DB380', '#FF4D4D', '#99E6E6', '#6666FF'];
+        $(".list-box").each(function () {
+            var color = colorArray[Math.floor(Math.random() * colorArray.length)];
+            $(this).css("background", color)
+            $(this).find("span").css("color", AppCommon.SetColorByBackgroundIntensity(color))
+        })
+
+    })
+</script>
+
+<script>
+    function OpenPage(_this) {
+        var RedirectTo = $(_this).attr("data_href");
+        $(_this).attr("data_href", "#");
+        $(_this).html("In progress");
+        if (RedirectTo != "#") {
+            window.open(RedirectTo);
+            //setTimeout(window.close, 100);
+        }
+    }
+</script>
+
+<style>
+    li.ExamList {
+        background: #ffffff;
+        margin: 7px 8px;
+        display: inline-block;
+        width: 225px;
+        height: 200px;
+        float: left;
+        box-shadow: 0px 2px 5px #bcbcbc94;
+    }
+
+    .ExamSubject {
+        display: block;
+        width: 100%;
+        padding: 0px;
+    }
+
+    .ExamSubject {
+        display: block;
+        height: 137px;
+    }
+
+    .SubjectName {
+        font-size: 12px;
+        text-align: center;
+        color: #032f67;
+        font-size: 11px;
+        font-weight: 500;
+        border-bottom: solid #e2e2e2 0px;
+        padding: 9px 3px;
+        background: #ffffff;
+        border-bottom: solid #e2e0db 0px;
+        line-height: 22px;
+        border-top-right-radius: 0px;
+        border-top-left-radius: 0px;
+        border-bottom: solid #90b8f3 2px;
+        font-weight: bold;
+    }
+
+    .DivisionName {
+        padding: 5px 7px;
+        /* background: #ffffff; */
+        min-height: 31px;
+        word-break: break-all;
+        text-align: center;
+        font-size: 12px;
+        font-weight: 500;
+        /* background: white; */
+        width: 96%;
+        margin-top: 4px !important;
+        margin: auto;
+        font-weight: bold;
+    }
+
+    .ExamDate {
+        bottom: 0px;
+        /* position: absolute; */
+        bottom: 18px;
+        margin: auto;
+        width: 100%;
+        float: left;
+        background: #ffffff;
+        margin-top: 104px;
+        /* position: absolute; */
+        padding: 5px 1px;
+        font-weight: bold;
+        text-align: center;
+        /* bottom: -2px; */
+        text-align: center;
+        position: initial;
+        margin: 0px;
+        float: left;
+        height: 30px;
+        font-size: 13px;
+        color: #e41010;
+    }
+
+    .btnStartExam {
+        background: #27b77b;
+        display: block;
+        padding: 8px 7px;
+        text-align: center;
+        color: white !important;
+        font-weight: 500;
+        font-size: 13px;
+    }
+
+    .btnContinueExam {
+        background: #310c6c;
+        display: block;
+        padding: 8px 7px;
+        text-align: center;
+        color: white !important;
+        font-weight: 500;
+        font-size: 13px;
+    }
+
+    .btnStartExam:hover {
+        background: #0b5007;
+    }
+
+    .btnContinueExam:hover {
+        background: #517dde;
+    }
+</style>

@@ -1,0 +1,27 @@
+﻿<table class="table table-bordered  table-stripped table-students">
+    <tbody>
+        {{#Students}}
+        <tr>
+            <td class="px-1">
+               <div class="media" style="cursor:pointer" onclick="TeacherPortal.StudentClick('{{../type}}','{{BranchKey}}', '{{ClassDetailsKey}}', '{{ClassName}}', '{{ApplicationKey}}')">
+                  
+                        <div class="img-fluid img-thumbnail rounded-circle mr-2 overflow-hidden">
+                            {{#if ApplicantPhoto}}
+                            <img height="20" width="20" src="{{../ApplicationUrl}}/{{AdmissionNo}}/{{ApplicantPhoto}}" alt="">
+                            {{else}}
+                            <img height="20" width="20" src="{{../FullPath}}/images/no-photo.png" alt="">
+                            {{/if}}
+                        </div>
+                        <div class="media-body">
+                            <h5 class="m-1 w3-text-deep-purple">
+                                <strong>{{ApplicantName}}</strong>
+                                <span class="badge badge-pill badge-success float-right">{{RollNoCode}} </span>
+                            </h5>
+                        </div>
+                    </div>
+
+            </td>
+        </tr>
+        {{/Students}}
+    </tbody>
+</table>

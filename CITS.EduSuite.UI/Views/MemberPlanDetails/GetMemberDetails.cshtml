@@ -1,0 +1,204 @@
+﻿@model List<CITS.EduSuite.Business.Models.ViewModels.MemberPlanDetailsViewModel>
+@using CITS.EduSuite.Business.Models.ViewModels
+@using CITS.EduSuite.UI
+<input type="hidden" id="hdnTotalRecords" value="@ViewBag.TotalRecords" />
+<section class="card">
+    <header class="card-header bg-light">
+        @EduSuiteUIResources.Member@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Details
+    </header>
+    <div id="dynamicRepeater" class="repeater card-body p-2 overflow-auto">
+        <table class="table table-bordered table-sm" id="divInstallmentFeeDetails">
+
+            <thead>
+                <tr>
+                    <th>
+                        @Html.Label(EduSuiteUIResources.Status, htmlAttributes: new { @class = "form-label" })
+                        <div class="checkbox-bird green inline-block mt-2">
+                            @Html.CheckBox("chekAll", new { @InputFor = "lblIsOriginal", @class = "custom-control-input", @onchange = "CheckboxAllChange(this, 'CheckStatus')" })
+                            <label for="chekAll" class="label-for-check form-label">
+                            </label>
+                        </div>
+                        <span id="CheckedAllCount"></span>
+                    </th>
+                    <th>
+                        @Html.Label(EduSuiteUIResources.Name, htmlAttributes: new { @class = "form-label", @Id = "lblMemberType" })
+                    </th>
+                    <th>
+                        @Html.Label(EduSuiteUIResources.MobileNumber, htmlAttributes: new { @class = "form-label" })
+                    </th>
+                    <th>
+                        @Html.Label(EduSuiteUIResources.Descreption, htmlAttributes: new { @class = "form-label", @id = "lblApplicationtype" })
+                    </th>
+                    <th>
+                        @Html.Label(EduSuiteUIResources.MemberType, htmlAttributes: new { @class = "form-label" })
+                        @if (Model.Count > 0)
+                        {
+                            @Html.DropDownList("AllMemberTypeKey", new SelectList(Model[0].MemberType, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.MemberType, new { @class = "form-control input-control ", @onchange = "ChangeMemberTypeAll(this)" })
+                        }
+                    </th>
+                    <th>
+                        @Html.Label(EduSuiteUIResources.BorrowerType, htmlAttributes: new { @class = "form-label" })
+                        @if (Model.Count > 0)
+                        {
+                            @Html.DropDownList("AllBorreowerTypeKey", new SelectList(Model[0].BorrowerType, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.BorrowerType, new { @class = "form-control input-control ", @onchange = "ChangeBorrowerTypeAll(this)" })
+                        }
+                    </th>
+
+
+                </tr>
+            </thead>
+            <tbody data-repeater-list id="DivEmployeeSalaryDetails">
+                @for (int i = 0; i < Model.Count; i++)
+                {
+
+                    <tr data-repeater-item>
+                        <td>
+                            @*<input type="checkbox" id="[@i].CheckStatus" name="[@i].CheckStatus" />*@
+                            <div class="switch-check my-2">
+                                @Html.CheckBoxFor(m => Model[i].CheckStatus, new { @class = "switch-input chkIsActive", })
+                                <div class="switch-label redgreen" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                                <div class="switch-handle"></div>
+                            </div>
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => Model[i].CheckStatus)
+                            </span>
+                        </td>
+
+                        <td>
+                            @Model[i].MemberFullName
+                            @Html.HiddenFor(m => m[i].RowKey)
+                            @Html.HiddenFor(m => m[i].ApplicationTypeKey)
+                            @Html.HiddenFor(m => m[i].BranchKey)
+                            @Html.HiddenFor(m => m[i].ApplicationKey)
+                            @Html.HiddenFor(m => m[i].CardId)
+                            @Html.HiddenFor(m => m[i].CardSerialNo)
+                        </td>
+                        <td>
+                            @Model[i].MobilleNo
+                        </td>
+                        <td>
+                            @if (Model[i].ApplicationTypeKey == DbConstants.ApplicationType.Staff)
+                            {
+                                @Model[i].DesignationName
+                            }
+                            else if (Model[i].ApplicationTypeKey == DbConstants.ApplicationType.Student)
+                            {
+                                @Model[i].UniversityCourse      @Model[i].CurrentYearText     @Model[i].BatchName
+                            }
+
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(m => Model[i].MemberTypeKey, new SelectList(Model[i].MemberType, "RowKey", "Text", Model[i].MemberTypeKey), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.MemberType, new { @class = "form-control input-control" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => Model[i].MemberTypeKey)
+                            </span>
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(m => Model[i].BorrowerTypeKey, new SelectList(Model[i].BorrowerType, "RowKey", "Text", Model[i].BorrowerTypeKey), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.BorrowerType, new { @class = "form-control input-control" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => Model[i].BorrowerTypeKey)
+                            </span>
+                        </td>
+
+
+
+                    </tr>
+
+
+                }
+            </tbody>
+
+
+        </table>
+    </div>
+</section>
+
+
+<div class="col-12">
+    <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+
+        AppCommon.FormatDateInput();
+        AppCommon.FormatInputCase();
+        AppCommon.FormatTimeInput();
+        $("form").removeData("validator");
+        $("form").removeData("unobtrusiveValidation");
+        $.validator.unobtrusive.parse("form");
+
+
+        $(".chkIsActive").change(function () {
+            StudentsCheckedCount();
+        });
+    });
+
+    function ChangeMemberTypeAll(_this) {
+        var MemberTypeKeyAll = $(_this).val() != "" ? $(_this).val() : 0;
+        
+        $("#dvStudentsList [data-repeater-item]").each(function (i) {
+            var item = $(this).closest("[data-repeater-item]");
+            var object = $("input[type=checkbox][name*=CheckStatus]", $(item))[0];
+            if (object.checked) {
+                $("select[name*=MemberTypeKey]", $(item)).val(MemberTypeKeyAll)
+                $("select[id*=MemberTypeKey]", $(item)).val(MemberTypeKeyAll)
+                //$("input[id*=ExamCenterName]", $(item)).val($(_this).find('option:selected').text());
+            }
+        });
+    }
+    function ChangeBorrowerTypeAll(_this) {
+        var BorrowerKeyAll = $(_this).val() != "" ? $(_this).val() : 0;
+        
+        $("#dvStudentsList [data-repeater-item]").each(function (i) {
+            var item = $(this).closest("[data-repeater-item]");
+            var object = $("input[type=checkbox][name*=CheckStatus]", $(item))[0];
+            if (object.checked) {
+
+
+                $("select[name*=BorrowerTypeKey]", $(item)).val(BorrowerKeyAll)
+                $("select[id*=BorrowerTypeKey]", $(item)).val(BorrowerKeyAll)
+                var brwrtype = $("select[name*=BorrowerTypeKey]", $(item));
+                brwrtype = brwrtype.val();
+
+            }
+        });
+    }
+    function CheckboxAllChange(chk, name) {
+        
+        $("[data-repeater-item]").each(function (index) {
+
+            var Object = $('input[name*=' + name + ']', $(this))[0];
+            if (Object != undefined) {
+                if (!Object.disabled) {
+                    Object.checked = chk.checked
+
+                }
+            }
+        });
+        StudentsCheckedCount();
+    }
+    function StudentsCheckedCount() {
+        
+        var CheckedCount = $("input[type=checkbox][name*=CheckStatus]:checked").length;
+        var CheckboxCount = $("input[type=checkbox][name*=CheckStatus]").length;
+        var CheckedAll = false;
+        if (parseInt(CheckboxCount) == parseInt(CheckedCount)) {
+            CheckedAll = true;
+        }
+        $("#CheckedAllCount").html("");
+        $("#NoOfStudents").val("");
+        if (CheckedCount != 0) {
+            $("#CheckedAllCount").html("(" + CheckedCount + ")");
+            $("#NoOfStudents").val(CheckedCount);
+
+            if (CheckedAll == true) {
+                $("#chekAll").prop("checked", true);
+            }
+            else {
+                $("#chekAll").prop("checked", false);
+            }
+        }
+    }
+</script>

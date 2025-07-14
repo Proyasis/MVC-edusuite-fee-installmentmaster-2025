@@ -1,0 +1,189 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.BankStatementMasterViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+
+
+@section scripts{
+    @Styles.Render("~/Content/ExcelSheetCSS")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Content/JqueryRepeater")
+    @Scripts.Render("~/Scripts/BankStatement")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Content/momentJS")
+
+}
+
+<input type="hidden" id="hdnGetBankStatementDetailsById" value="@Url.Action("GetBankStatementDetailsById", "BankStatement")" />
+<input type="hidden" id="hdnBankStatementList" value="@Url.Action("BankStatementList", "BankStatement")" />
+<input type="hidden" id="hdnFillBankAccount" value="@Url.Action("FillBankAccount", "BankStatement")" />
+<input type="hidden" id="hdnBankStatementDetailsList" value="@Url.Action("BankStatementDetailsList", "BankStatement")" />
+<input type="hidden" id="hdnDeleteBankStatementItem" value="@Url.Action("DeleteBankStatementItem", "BankStatement")" />
+@using (Html.BeginForm("AddEditBankStatement", "BankStatement", FormMethod.Post))
+{
+    @Html.HiddenFor(m => m.MonthKey)
+    @Html.HiddenFor(m => m.YearKey)
+    @Html.HiddenFor(m => m.RowKey)
+
+    <header class="section-header">
+        <div class="row justify-content-between px-1">
+            <div class="col-12">
+                <div class="tbl">
+                    <div class="tbl-row">
+                        <div class="tbl-cell">
+                            <h3>@EduSuiteUIResources.Add@EduSuiteUIResources.Sla@EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.BankStatement</h3>
+                            <ol class="breadcrumb breadcrumb-simple mb-2 float-sm-right">
+                                <li><a href="#" onclick="location.href='@Url.Action("BankStatementList", "BankStatement")' ">@EduSuiteUIResources.BankStatement</a></li>
+                                <li class="active">@EduSuiteUIResources.Add@EduSuiteUIResources.Hyphen@EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.BankStatement</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <section class="section-content mx-sm-3 mx-0">
+        <div class="form-row">
+            @if (Model.Branches.Count == 1)
+            {
+                {
+                    Model.BranchKey = (Model.BranchKey == 0 || Model.BranchKey == null) ? (short)Model.Branches.Select(x => x.RowKey).FirstOrDefault() : Model.BranchKey;
+                }
+                @Html.HiddenFor(m => m.BranchKey)
+            }
+            else
+            {
+                <div class="col-lg-2 col-sm-4 col-6">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.Branch, htmlAttributes: new { @class = "form-label" })
+                        @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.Branch, new { @class = "form-control input-control ", @data_live_search = "true" })
+                    </fieldset>
+                </div>
+            }
+            <div class="col-lg-2 col-sm-4 col-6">
+                <fieldset class="form-group">
+                    @Html.Label(EduSuiteUIResources.BankAccount, htmlAttributes: new { @class = "form-label" })
+                    @Html.DropDownListFor(m => m.BankAccountKey, new SelectList(Model.BankAccounts, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.BankAccount, new { @class = "form-control input-control SearchDropDown" })
+                    <span class="form-control-error-text">
+                        @Html.ValidationMessageFor(m => m.BankAccountKey)
+                    </span>
+                </fieldset>
+            </div>
+
+            <div class="col-lg-2 col-sm-4 col-6">
+                @Html.Label(EduSuiteUIResources.BankStatement + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Month, htmlAttributes: new { @class = "form-label" })
+                @Html.TextBoxFor(m => m.BankStatementMonth, "{0:MMM yyyy}", new { @class = "form-control input-control gridSearchTextBox", @data_input_type = "month", @readonly = "readonly", @style = "background-color: #fff;" })
+                @Html.HiddenFor(m => m.BankStatementMonth, "{0:MMM yyyy}")
+                <span class="form-control-error-text">
+                    @Html.ValidationMessageFor(m => m.BankStatementMonth)
+                </span>
+            </div>
+
+
+
+        
+
+
+
+            <div class="col-12">
+                <div class="repeater overflow-auto">
+                    <table class="table table-stripped">
+                        <thead class="w3-indigo">
+                            <tr>
+                                <th></th>
+                                <th>@EduSuiteUIResources.Reference@EduSuiteUIResources.Sla@EduSuiteUIResources.Cheque@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Number</th>
+                                <th>@EduSuiteUIResources.TransactionDate</th>
+                                <th>@EduSuiteUIResources.Particulars</th>
+                                <th>@EduSuiteUIResources.Amount</th>
+                                <th>@EduSuiteUIResources.TransactionType</th>
+                                <th>@EduSuiteUIResources.Amount@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Type</th>
+                            </tr>
+                        </thead>
+
+
+                        <tbody data-repeater-list id="dynamicRepeater">
+                            @Html.Action("BankStatementDetailsList", new { rowKey = Model.RowKey, bankAccountKey = Model.BankAccountKey, yearKey = Model.YearKey, monthKey = Model.MonthKey })
+
+                        </tbody>
+
+                        <tfoot>
+                            <tr>
+                                <th class="px-1" colspan="9">
+                                    <span data-repeater-create class="btn btn-info btn-sm">
+                                        <span class="fa fa-plus"></span>
+                                    </span>
+                                </th>
+                            </tr>
+                        </tfoot>
+                    </table>
+
+
+
+                </div>
+                <div class="row mt-2">
+                    <div class="col-10 form-col">
+                        <div class="form-group">
+                            <input type="submit" value="@EduSuiteUIResources.Save" id="btnSave" class="btn btn-sm btn-success mx-1" />
+                            @*<button type="button" data-dismiss="modal" class="btnForm btnSubmit btn btn-sm btn-danger">@EduSuiteUIResources.Cancel</button>*@
+                        </div>
+                        <div class="col-sm-12 paddingNone">
+                            <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+}
+
+<script>
+
+    $(document).ready(function () {
+        var jsonData=@(Html.Raw(Json.Encode(Model)));
+        $("#MonthKey").val(moment($("#BankStatementMonth").val(), ["MMM yyyy"]).format("M"));
+        $("#YearKey").val(moment($("#BankStatementMonth").val(), ["MMM yyyy"]).format("Y"));
+
+        $("#BankStatementMonth").on("changeDate",function(){
+            $("input#BankStatementMonth:hidden").val($(this).val());
+            $("#MonthKey").val(moment($("#BankStatementMonth").val(), ["MMM YYYY"]).format("M"));
+            $("#YearKey").val(moment($("#BankStatementMonth").val(), ["MMM YYYY"]).format("Y"));
+            LoadReport();
+        })
+
+        $("#BankAccountKey").on("change",function(){
+            LoadReport();
+        })
+        fillBank();
+        $("#BranchKey").on("change", function () {
+            fillBank();
+            
+            $("#dynamicRepeater").hide()
+        })
+        if($("RowKey").val()==0)
+        {
+            AppCommon.BindDropDownbyId($("#BranchKey"),$("#hdnFillBankAccount").val(),$("#BankAccountKey"),Resources.BankAccount)
+        }
+
+        function LoadReport() {
+            var obj = {};
+            obj.rowKey = $("#RowKey").val()
+            obj.bankAccountKey = $("#BankAccountKey").val()
+            obj.yearKey = $("#YearKey").val()
+            obj.monthKey = $("#MonthKey").val()
+            $("#dynamicRepeater").hide()
+            $(".RightContentMaster").mLoading()
+            $("#dynamicRepeater").load($("#hdnBankStatementDetailsList").val() + "?" + $.param(obj), function () {
+                $(".RightContentMaster").mLoading("destroy")
+                $("#dynamicRepeater").show()
+            })
+
+        }
+    });
+    function fillBank() {
+        var obj = {};
+        obj.key = $("#BranchKey").val() != "" ? $("#BranchKey").val() : 0;
+        AppCommon.BindDropDownbyId(obj, $("#hdnFillBankAccount").val(), $("#BankAccountKey"), Resources.BankAccount)
+    }
+</script>

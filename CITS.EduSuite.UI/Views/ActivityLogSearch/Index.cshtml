@@ -1,0 +1,52 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.ActivityLogReportViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+@using System.Web.Mvc
+
+
+@Html.HiddenFor(m => m.page)
+@Html.HiddenFor(m => m.rows)
+@Html.HiddenFor(m => m.sidx)
+@Html.HiddenFor(m => m.sord)
+@Html.HiddenFor(m => m.TotalRecords)
+
+
+    <div class="col-lg-2 col-sm-3 col-6">
+        <div class="form-group">
+            @Html.Label(EduSuiteUIResources.FromDate, htmlAttributes: new { @class = "form-label" })
+            @Html.TextBoxFor(m => m.DateAddedFrom, "{0:dd/MM/yyyy}", new { @class = "form-control", @data_inputmask = "'alias': 'dd/mm/yyyy'", @data_input_type = "date" })
+            <span class="form-control-error-text">
+                @Html.ValidationMessageFor(m => m.DateAddedFrom)
+            </span>
+        </div>
+    </div>
+    <div class="col-lg-2 col-sm-3 col-6">
+        <div class="form-group ">
+            @Html.Label(EduSuiteUIResources.ToDate, htmlAttributes: new { @class = "form-label" })
+            @Html.TextBoxFor(m => m.DateAddedTo, "{0:dd/MM/yyyy}", new { @class = "form-control", @data_inputmask = "'alias': 'dd/mm/yyyy'", @data_input_type = "date" })
+            <span class="form-control-error-text">
+                @Html.ValidationMessageFor(m => m.DateAddedTo)
+            </span>
+        </div>
+    </div>
+
+
+    <div class="col-lg-2 col-sm-3 col-4">
+        <div class="form-group">
+            @Html.Label(EduSuiteUIResources.User, htmlAttributes: new { @class = "form-label" })
+            @Html.DropDownListFor(m => m.UserIdKey, new SelectList(Model.UserIDs, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.User, new { @class = "form-control input-control", @InputFor = "lblCountry" })
+
+
+        </div>
+    </div>
+
+    <div class="col-lg-2 col-sm-3 col-4">
+        <div class="form-group">
+            @Html.Label(EduSuiteUIResources.Menu, htmlAttributes: new { @class = "form-label" })
+            @Html.DropDownListFor(m => m.MenuKey, new SelectList(Model.Menus, "Code", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Menu, new { @class = "form-control input-control", @InputFor = "lblCountry" })
+
+
+        </div>
+    </div>
+
+

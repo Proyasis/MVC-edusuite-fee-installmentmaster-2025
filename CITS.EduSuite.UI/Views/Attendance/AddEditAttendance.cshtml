@@ -1,0 +1,311 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.AttendanceViewModel
+
+@using CITS.EduSuite.Business.Models.ViewModels
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Content/JqueryRepeater")
+    @Scripts.Render("~/Scripts/Common")
+    @Scripts.Render("~/Scripts/Attendance")
+    @Scripts.Render("~/Content/DatePickerJS")
+}
+
+<input type="hidden" id="hdnFillClassDetails" value="@Url.Action("FillClassDetails", "Attendance")" />
+<input type="hidden" id="hdnDeleteAttendanceItem" value="@Url.Action("DeleteAttendance", "Attendance")" />
+<input type="hidden" id="hdnAttendanceList" value="@Url.Action("AttendanceList", "Attendance")" />
+<input type="hidden" id="hdnFillBatch" value="@Url.Action("FillBatch", "Attendance")" />
+<input type="hidden" id="hdnUrl" value="@Url.Action("GetAttendance", "Attendance", new { id = "" })" />
+<input type="hidden" id="hdnCheckAttendanceBlocked" value="@Url.Action("CheckAttendanceBlocked", "Attendance")" />
+<input type="hidden" id="hdnAbsentListFilePath" value=@Url.Content("~/Templates/TeacherPortal/AbsentList.html") />
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-12">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.Add@EduSuiteUIResources.Hyphen@EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Attendance</h3>
+                        <ol class="breadcrumb breadcrumb-simple mb-2 float-sm-right">
+                            <li><a href="#" onclick="location.href='@Url.Action("AttendanceList", "Attendance")' ">@EduSuiteUIResources.Attendance</a></li>
+                            <li class="active">@EduSuiteUIResources.Add@EduSuiteUIResources.Hyphen@EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Attendance</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="section-content mx-sm-3 mx-0">
+    <div class="form-master">
+
+        @using (Html.BeginForm("AddEditAttendanceSubmit", "Attendance", FormMethod.Post, new { @id = "frmAttendance" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            @Html.HiddenFor(m => m.RowKey)
+            @Html.HiddenFor(m => m.TemplateKey)
+        <div class="form-row">
+
+            @if (Model.Branches.Count == 1)
+            {
+                {
+                    Model.BranchKey = (Model.BranchKey ?? 0) == 0 ? (short)Model.Branches.Select(x => x.RowKey).FirstOrDefault() : Model.BranchKey;
+                }
+                @Html.HiddenFor(m => m.BranchKey)
+            }
+            else
+            {
+                <div class="col-12 col-sm-3 col-lg-2">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.Branch, htmlAttributes: new { @id = "lblBranch", @class = "form-label" })
+                        <div class="required-icon"><div class="text">*</div></div>
+                        @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Branch, new { @class = "form-control input-control", @InputFor = "lblBranch", @data_live_search = "true" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.BranchKey)
+                        </span>
+                    </fieldset>
+                </div>
+            }
+
+            <div class="col-lg-2 col-md-3 col-6">
+                <fieldset class="form-group ">
+                    @Html.Label(EduSuiteUIResources.ClassCode, htmlAttributes: new { @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                    @Html.DropDownListFor(m => m.ClassDetailsKey, new SelectList(Model.ClassDetails, "RowKey", "Text", Model.ClassDetailsKey), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.ClassCode, new { @class = "form-control border-radius input-control autoselect-select", @data_live_search = "true" })
+                    <span class="form-control-error-text">
+                        @Html.ValidationMessageFor(m => m.ClassDetailsKey)
+                    </span>
+                </fieldset>
+            </div>
+
+            <div class="col-lg-2 col-md-3 col-6">
+                <fieldset class="form-group ">
+                    @Html.Label(EduSuiteUIResources.Batch, htmlAttributes: new { @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                    @Html.DropDownListFor(m => m.BatchKey, new SelectList(Model.Batches, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Batch, new { @class = "form-control border-radius input-control autoselect-select" })
+                    <span class="form-control-error-text">
+                        @Html.ValidationMessageFor(m => m.BatchKey)
+                    </span>
+                </fieldset>
+            </div>
+            <div class="col-lg-2 col-md-3 col-6">
+                <fieldset class="form-group ">
+                    @Html.Label(EduSuiteUIResources.Attendance + EduSuiteUIResources.Date, htmlAttributes: new { @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                    @Html.TextBoxFor(m => m.AttendanceDate, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_inputmask = "'alias': 'dd/mm/yyyy'", @data_input_type = "date" })
+                    <span class="form-control-error-text">
+                        @Html.ValidationMessageFor(m => m.AttendanceDate)
+                    </span>
+                </fieldset>
+            </div>
+            <div class="col-lg-2 col-md-3 col-6" id="divchkPresent">
+                <fieldset class="form-group">
+                    <div class="switch-check my-4" style="width:80px;">
+                        @Html.CheckBoxFor(m => m.IfPresent, new { @class = "switch-input", @onchange = "CheckByNoOfStudents(this)" })
+                        <div class="switch-label redgreen" data-on="@EduSuiteUIResources.Present" data-off="@EduSuiteUIResources.Absent"></div>
+                        <div class="switch-handle"></div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+
+
+            <div class="form-row ">
+                @if (Model.Teachers.Count > 1)
+                {
+                    <div class="col-lg-2 col-md-3 col-6 d-none">
+                        <fieldset class="form-group ">
+                            @Html.Label(EduSuiteUIResources.Teacher, htmlAttributes: new { @class = "form-label" })
+                            @Html.DropDownListFor(m => m.EmployeeKey, new SelectList(Model.Teachers, "RowKey", "Text", Model.EmployeeKey), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Teacher, new { @class = "form-control border-radius input-control autoselect-select" })
+                        </fieldset>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-lg-2 col-md-3 col-6 d-none">
+                        <fieldset class="form-group ">
+                            @Html.Label(EduSuiteUIResources.Teacher, htmlAttributes: new { @class = "form-label" })
+                            @Html.DropDownListFor(m => m.EmployeeKey, new SelectList(Model.Teachers, "RowKey", "Text", Model.EmployeeKey), new { @class = "form-control border-radius input-control autoselect-select" })
+                        </fieldset>
+                    </div>
+                }
+
+                <div class="col-lg-2 col-md-3 col-6 d-none">
+                    <fieldset class="form-group ">
+                        @Html.Label(EduSuiteUIResources.Role + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.NoOfStudents, htmlAttributes: new { @class = "form-label" })
+
+                        @Html.TextBoxFor(m => m.NoOfStudents, new { @class = "form-control input-control", @InputFor = "lblNoOfStudents", @oninput = "CheckByNoOfStudents(this)" })
+                    </fieldset>
+                </div>
+               
+            </div>
+
+            <div id="dvStudentsList"></div>
+            <div class="form-row">
+                <div class="col-sm-6 text-left">
+                    @if (ApplicationSettingModel.SMSEnabled)
+                    {
+                        if (!(Model.AutoSMS ?? true))
+                        {
+                            <div class="checkbox-bird green inline-block">
+                                @Html.CheckBox("AutoSMS", (Model.AutoSMS ?? false))
+                                <label for="AutoSMS">@EduSuiteUIResources.SendSms</label>
+                            </div>
+                        }
+                        else
+                        {
+                            @Html.Hidden("AutoSMS", (Model.AutoSMS ?? false), new { @class = "pull-left" })
+                        }
+                    }
+
+                    @if (ApplicationSettingModel.EmailEnabled)
+                    {
+                        if (!(Model.AutoEmail ?? true))
+                        {
+                            <div class="checkbox-bird green inline-block">
+                                @Html.CheckBox("AutoEmail", (Model.AutoEmail ?? false), new { @class = "pull-left" })
+                                <label for="AutoEmail">@EduSuiteUIResources.SendEmail</label>
+                            </div>
+                        }
+                        else
+                        {
+                            @Html.Hidden("AutoEmail", (Model.AutoEmail ?? false))
+                        }
+                    }
+
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="form-group">
+                    <div class="col-12">
+                        <fieldset class="form-group">
+                            <input type="button" value="@EduSuiteUIResources.Save" id="btnSave" class="btn btn-sm btn-success mx-1" />
+                            <input type="button" value="@EduSuiteUIResources.Cancel" onclick="location.href='@Url.Action("AttendanceList", "Attendance")' " class="btn btn-sm btn-danger mx-1" />
+                        </fieldset>
+                        <div class="col-12 paddingNone">
+                            <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</section>
+<script>
+    var jsonData=@(Html.Raw(Json.Encode(Model)));
+
+    $(document).ready(function () {
+        AppCommon.FormatInputCase();
+
+        AppCommon.FormatDateInput();
+        AppCommon.CustomRemoteMethod();
+
+        $('#AttendanceDate').datepicker('setStartDate', '');
+        $('#AttendanceDate').datepicker('setEndDate', new Date());
+
+        //$("#AttendanceDate").datepicker("setDate", new Date());
+        //$("#AttendanceDate").datepicker("update",AppCommon.JsonDateToServerDate(jsonData["AttendanceDate"]));
+        Attendance.LoadData();
+        $("#btnSave").on("click",function(){
+
+            Attendance.CheckConfirmAttendance();
+        })
+
+        $("[data-repeater-list]").find("input,select,textarea").each(function () {
+            $(this).attr("name", "AttendanceDetails" + $(this).attr("name"));
+            $(this).attr("id", $(this).attr("name"));
+        });
+
+
+       // BindCourseType();
+        // Bind Class Details
+
+        $("#BranchKey").on("change", function () {
+            var obj={};
+            obj.Branchkey=$("#BranchKey").val()!=""?$("#BranchKey").val():0;
+            AppCommon.BindDropDownbyId(obj, $("#hdnFillClassDetails").val(), $("#ClassDetailsKey"), Resources.ClassCode);
+        });
+
+        //Bind Batch
+
+        $("#ClassDetailsKey").on("change", function () {
+            debugger
+            var obj = {};
+            obj.Branchkey = $("#BranchKey").val() != "" ? $("#BranchKey").val() : 0;
+            setTimeout(function () {
+            obj.ClassDetailsKey = $("#ClassDetailsKey").val() != "" ? $("#ClassDetailsKey").val() : 0;
+            
+                AppCommon.BindDropDownbyId(obj, $("#hdnFillBatch").val(), $("#BatchKey"), Resources.Batch);
+            }, 1000)
+           
+            
+          
+
+        });
+
+
+
+
+
+        $("#BatchKey").on("change", function () {
+
+            Attendance.LoadData(jsonData);
+        });
+        $("#AttendanceDate").on("change", function () {
+
+            Attendance.LoadData(jsonData);
+        });
+
+
+    });
+    function CheckByNoOfStudents(_this)
+    {
+        Attendance.SetCheckboxStatusColor();
+        //
+        ////var QuickCount=$("input#NoOfStudents").val();
+        //var QuickCount=$("[name*=NoOfStudents]").val();
+        //var arr=[]; arr=QuickCount.split(',');
+        //var AttStatus=$("input[type=checkbox][name*=IfPresent]").prop("checked");
+        //// AttStatus = AttStatus ? JSON.parse(AttStatus.toLowerCase()) : false;
+        ////var AttStatus=$("input#IfPresent").val();
+        //QuickCount = QuickCount != "" ? QuickCount : 0;
+
+        //$("#dvStudentsList [data-repeater-item]").each(function(){
+
+        //    var RollNo= $("[name*=RollNumber]",$(this)).val();
+        //    var chk=$("input[type=checkbox][name*=AttendanceStatus]",$(this))
+        //    //$(chk).closest('[data-repeater-item]').show();
+        //    chk.prop("checked",false);
+        //    if(QuickCount!="")
+        //    {
+        //        if(AttStatus)
+        //        {
+        //            if (arr.indexOf(RollNo) > -1) {
+        //                chk.prop("checked",true);
+        //                //$(chk).closest('[data-repeater-item]').show();
+        //            }
+        //            else {
+        //                chk.prop("checked",false);
+        //                //$(chk).closest('[data-repeater-item]').hide();
+        //            }
+        //        }
+        //        else
+        //        {
+        //            if (arr.indexOf(RollNo) > -1) {
+        //                chk.prop("checked",false);
+        //                // $(chk).closest('[data-repeater-item]').show();
+        //            }
+        //            else {
+        //                chk.prop("checked",true);
+        //                //  $(chk).closest('[data-repeater-item]').hide();
+        //            }
+        //        }
+        //    }
+        //})
+
+    }
+
+    var BindCourseType = function () {
+        var obj = {};
+        obj.BranchKey = $("#BranchKey").val() != "" ? $("#BranchKey").val() : 0;
+        AppCommon.BindDropDownbyId(obj, $("#hdnFillClassDetails").val(), $("#ClassDetailsKey"), Resources.ClassCode);
+
+    }
+</script>

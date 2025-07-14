@@ -1,0 +1,205 @@
+﻿@model List<CITS.EduSuite.Business.Models.ViewModels.EnquiryLeadViewModel>
+
+@using CITS.EduSuite.Business.Models.ViewModels
+<input type="hidden" id="hdnAddEditEnquiryLeadFeedback" value="@Url.Action("AddEditEnquiryLeadFeedback", "EnquiryLead", new { id=""})" />
+<input type="hidden" id="hdnTotalRecords" value="@ViewBag.TotalRecords" />
+<div class="enquiry-repeater col-12">
+    @for (var i = 0; i < Model.Count; i++)
+    {
+        <div class="card shadow mb-2" data-repeater-item>
+            @Html.HiddenFor(m => Model[i].RowKey)
+            <div class="card-heading bg-light p-3">
+                <div class="form-row px-sm-0 px-3">
+                    <div class="col-md-4 col-sm-6 col-12">
+                        <fieldset class="form-group">
+                            <div class="input-group">
+                                <label class="input-group-addon  bg-transparent fullcolon-after"><span> @EduSuiteUIResources.Name</span></label>
+                                <label class="ml-2">
+                                    @Model[i].Name
+                                </label>
+
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="col-md-4 col-sm-6 col-12">
+                        <fieldset class="form-group">
+                            <div class="input-group">
+                                <label class="input-group-addon  bg-transparent fullcolon-after">@EduSuiteUIResources.Mobile</label>
+                                <label class="ml-2">
+                                    @Model[i].MobileNumber
+                                </label>
+
+                            </div>
+                        </fieldset>
+                    </div>
+
+                    <div class="col-md-4 col-sm-6 col-12">
+                        <fieldset class="form-group">
+                            <div class="input-group">
+                                <label class="input-group-addon  bg-transparent fullcolon-after">@EduSuiteUIResources.Email</label>
+                                <label class="ml-2">
+                                    @Model[i].EmailAddress
+                                </label>
+
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="col-md-4 col-sm-6 col-12">
+                        <fieldset class="form-group">
+                            <div class="input-group">
+                                <label class="input-group-addon  bg-transparent fullcolon-after">@EduSuiteUIResources.Qualification</label>
+                                <label class="ml-2">
+                                    @Model[i].Qualification
+                                </label>
+
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="col-md-4 col-sm-6 col-12">
+                        <fieldset class="form-group">
+                            <div class="input-group">
+                                <label class="input-group-addon  bg-transparent fullcolon-after">@EduSuiteUIResources.Branch</label>
+                                <label class="ml-2">
+                                    @Model[i].BranchName
+                                </label>
+
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="col-md-4 col-sm-6 col-12">
+                        <fieldset class="form-group">
+                            <div class="input-group">
+                                <label class="input-group-addon  bg-transparent fullcolon-after">@EduSuiteUIResources.Employee</label>
+                                <label class="ml-2">
+                                    @Model[i].EmployeeName
+                                </label>
+
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="col-md-4 col-sm-6 col-12">
+                        <fieldset class="form-group">
+                            <div class="input-group">
+                                <label class="input-group-addon  bg-transparent fullcolon-after">@EduSuiteUIResources.Status</label>
+                                <label class="ml-2">
+                                    @Model[i].EnquiryLeadStatusName
+                                </label>
+
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="col-md-4 col-sm-6 col-12">
+                        <fieldset class="form-group">
+                            <div class="input-group">
+                                <label class="input-group-addon  bg-transparent fullcolon-after">@EduSuiteUIResources.CallStatus</label>
+                                <label class="ml-2">
+                                    @Model[i].EnquiryLeadCallStatusName
+                                </label>
+
+                            </div>
+                        </fieldset>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="card-body MessageBody">
+                <div class="form-row">
+                    <div class="col-12">
+                        <p>@Model[i].Message  </p>
+                    </div>
+                    <div class="col-12">
+                        <b class="w3-text-purple">  <i class="fa fa-phone"></i>  Next Call Schedule :</b>   <span class=""> @(string.Format("{0:dd/MM/yyyy}", Model[i].NextCallSchedule)) </span>
+                        <div class="btn-group float-right">
+                            @if (Model[i].IsEditable && Model[i].EnquiryLeadStatusKey != DbConstants.EnquiryStatus.AdmissionTaken)
+                            {
+
+                                <button data-modal="" onclick="EnquiryLead.EditFeedbackPopUp(this)" data-url="@Url.Action("AddEditEnquiryLeadFeedback", "EnquiryLead", new { @id = 0, @LeadKey = Model[i].RowKey })" type="button" class="btn btn-success rounded-circle btn3d btn-sm mx-1">
+                                    <span class="glyphicon glyphicon-earphone"></span>
+                                </button>
+
+                            }
+                            <button type="button" class="btn btn-primary btn-sm rounded-circle btn3d  mx-1" data-toggle="collapse" data-target="#lead_@i" data-url="@Url.Action("EnquiryLeadFeedbackList", "EnquiryLead", new { id = Model[i].RowKey, IsEditable = Model[i].IsEditable })">
+                                <span class="fa fa-commenting-o"></span>
+                            </button>
+                        </div>
+                        @*<button id="@Model[i].MobileNumber" onclick="LoadHistory(this)" data-target="#AllHistoryModal" data-toggle="modal" type="button" class="btn btn-primary btn-sm mx-1 btnShowAllHistory2">
+                                <span class="fa fa-history"></span>
+                            </button>*@
+                    </div>
+
+                </div>
+                <ul id="lead_@i" class="list-group collapse LeadFeedback"></ul>
+            </div>
+            <div class="card-footer">
+                <div class="form-row">
+                    <div class="col-md-4 col-sm-6 col-12">
+                        <fieldset class="form-group">
+                            <div class="input-group">
+                                <label class="input-group-addon  bg-transparent fullcolon-after">@EduSuiteUIResources.LeadDate</label>
+                                <label class="ml-2">
+                                    @(string.Format("{0:dd/MM/yyyy}", Model[i].LeadDate))
+                                </label>
+
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="col-md-4 col-sm-6 col-12">
+                        <fieldset class="form-group">
+                            <div class="input-group">
+                                <label class="input-group-addon  bg-transparent fullcolon-after">@EduSuiteUIResources.CreatedBy</label>
+                                <label class="ml-2">
+                                    @Model[i].CreatedBy
+                                </label>
+
+                            </div>
+                        </fieldset>
+                    </div>
+
+                    <div class="col-sm-3 col-5 col-11">
+                        <fieldset class="form-group">
+                            <div class="input-group">
+                                <label class="input-group-addon  bg-transparent fullcolon-after">@EduSuiteUIResources.CreatedOn</label>
+                                <label class="ml-2">
+                                    @(string.Format("{0:dd/MM/yyyy}", Model[i].CreateOn))
+                                </label>
+
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="col-1">
+                        <fieldset class="form-group">
+                            @if (Model[i].IsEditable && Model[i].EnquiryLeadStatusKey != DbConstants.EnquiryStatus.AdmissionTaken)
+                            {
+                                <div class="btn-group float-right">
+                                    <button type="button" class="btn btn-info btn-sm dropdown-toggle " data-toggle="dropdown">
+                                        <span class="glyphicon glyphicon-cog"></span>
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="@Url.Action("AddEditEnquiryLead", "EnquiryLead", new { id = Model[i].RowKey })"><span class="glyphicon glyphicon-pencil mx-1"></span>@EduSuiteUIResources.Edit</a>
+                                        <a class="dropdown-item" href="#" onclick="EnquiryLead.DeleteEnquiryLead('@Model[i].RowKey')"><span class="glyphicon glyphicon-trash mx-1"></span>@EduSuiteUIResources.Delete</a>
+                                        <a class="dropdown-item" href="@Url.Action("AddEditEnquiry", "Enquiry", new { LeadId = Model[i].RowKey })"><span class="glyphicon glyphicon-question-sign mx-1"></span>@EduSuiteUIResources.AddToEnquiry</a>
+                                    </div>
+
+                                </div>
+                            }
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<script>
+
+    $(document).ready(function () {
+
+        $("[data-repeater-item] .collapse").on('shown.bs.collapse', function (e) {
+            
+            var url = $("[data-target='#" + e.currentTarget.id + "']").data("url");
+            EnquiryLead.GetEnquiryLeadFeadbacks($(this), url)
+        })
+    });
+
+</script>
+

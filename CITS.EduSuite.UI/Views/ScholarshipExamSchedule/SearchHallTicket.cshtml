@@ -1,0 +1,69 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.ScholarshipViewModel
+@Styles.Render("~/Content/BootstrapCSS")
+@Styles.Render("~/Content/DatePickerCSS")
+@Styles.Render("~/Styles/css")
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/jqueryval")
+@Scripts.Render("~/Content/DatePickerJS")
+@Scripts.Render("~/Content/InputMaskJS")
+@Scripts.Render("~/Scripts/Common")
+<script src="~/CITSEduSuiteScripts/Common/AppCommon.js"></script>
+<script src="~/Scripts/handlebars.min.js"></script>
+<link href="~/Styles/pages/hallticket.css" rel="stylesheet" />
+<form>
+    <div class="form-row">
+        <div class="col-12 col-sm-4 col-lg-2">
+            <fieldset class="form-group">
+                @Html.Label(EduSuiteUIResources.PhoneNumber, htmlAttributes: new { @id = "lblPhoneNumber1", @class = "form-label" })
+                <div class="required-icon"><div class="text">*</div></div>
+                <div class="input-group-transparent">
+                    @Html.TextBoxFor(m => m.MobileNumber, new { @class = "form-control input-control", @InputFor = "lblPhoneNumber1" })
+
+                </div>
+                <span class="form-control-error-text">
+                    @Html.ValidationMessageFor(m => m.MobileNumber)
+                </span>
+            </fieldset>
+        </div>
+        <div class="col-12 col-sm-4 col-lg-2">
+            <fieldset class="form-group">
+                @Html.Label(EduSuiteUIResources.DateOfBirth, htmlAttributes: new { @id = "lblDateOfBirth", @class = "form-label" })
+                <div class="required-icon"><div class="text">*</div></div>
+                @Html.TextBoxFor(m => m.DateOfBirth, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_input_type = "date", @InputFor = "lblDateOfBirth", @data_inputmask = "'alias': 'dd/mm/yyyy'" })
+                <span class="form-control-error-text">
+                    @Html.ValidationMessageFor(m => m.DateOfBirth)
+                </span>
+            </fieldset>
+        </div>
+        <div class="col-12 col-sm-4 col-lg-2">
+            <div class="form-group">
+                <input type="button" value="@EduSuiteUIResources.Search" id="btnSearch" class="btn btn-sm btn-success mt-4" />
+
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+    $(document).ready(function () {
+        $("#DateOfBirth").val("")
+        AppCommon.FormatDateInput();
+        $("#btnSearch").on("click", function () {
+            var valid = true;
+            var validator = $("form").validate();
+            valid = valid && validator.element('#MobileNumber');
+            valid = valid && validator.element('#DateOfBirth');
+            if (valid) {
+                var obj = {};
+                obj.MobilNumber = $("input[type=text][id*=MobileNumber]").val();
+                obj.DOB = $("input[type=text][id*=DateOfBirth]").val();
+
+                window.open('http://edusuite.jobtrack.co.in/ScholarshipExamSchedule/Hallticket' + "?" + $.param(obj));
+
+
+
+            }
+
+        })
+    })
+</script>

@@ -1,0 +1,192 @@
+﻿
+@using System.Web.Mvc
+@model CITS.EduSuite.Business.Models.ViewModels.EnquiryScheduleViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+
+
+
+
+<div class="modal-header">
+    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+    <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.View @EduSuiteUIResources.BlankSpace @EduSuiteUIResources.CallHistory</h4>
+</div>
+<div class="modal-body">
+    @for (var i = 0; i < Model.MobileNumberSearch.Count; i++)
+    {
+
+    @*if (Model.MobileNumberSearch[i].IsSpamed == true)
+        {
+            <span class="spamedRecord">This is a spam record</span>
+        }*@
+        <div class="form-row">
+            <div class="col-lg-4 col-6">
+                <div class="form-group">
+                    <div class="input-group">
+                        <label class="input-group-addon  bg-transparent fullcolon-after">@EduSuiteUIResources.Name</label>
+                        <label class="ml-2">@Model.MobileNumberSearch[i].Name </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-6">
+                <div class="form-group">
+                    <div class="input-group">
+                        <label class="input-group-addon  bg-transparent fullcolon-after">@EduSuiteUIResources.Phone</label>
+                        <label class="ml-2">@Model.MobileNumberSearch[i].MobileNumber </label>
+                    </div>
+                </div>
+            </div>
+            @*<div class="col-lg-4 col-6">
+                <div class="form-group">
+                    <div class="input-group">
+                        <label class="input-group-addon  bg-transparent fullcolon-after">@EduSuiteUIResources.Location</label>
+                        <label class="ml-2">@Model.MobileNumberSearch[i].LocationName </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-6">
+                <div class="form-group">
+                    <div class="input-group">
+                        <label class="input-group-addon  bg-transparent fullcolon-after">@EduSuiteUIResources.AcademicTerm</label>
+                        <label class="ml-2">@Model.MobileNumberSearch[i].AcademicTermName </label>
+                    </div>
+                </div>
+            </div>*@
+            <div class="col-lg-4 col-6">
+                <div class="form-group">
+                    <div class="input-group">
+                        <label class="input-group-addon  bg-transparent fullcolon-after">@EduSuiteUIResources.ApplicationStatus</label>
+                        <label class="ml-2">
+                            @if (Model.MobileNumberSearch[i].ApplicationStatusKey == DbConstants.ApplicationStatus.Droped)
+                            {
+                                <span class="badge badge-danger">@Model.MobileNumberSearch[i].ApplicationStatusName </span>
+                            }
+                            else if (Model.MobileNumberSearch[i].ApplicationStatusKey == DbConstants.ApplicationStatus.OnGoing)
+                            {
+                                <span class="badge badge-success">@Model.MobileNumberSearch[i].ApplicationStatusName </span>
+                            }
+                            else if (Model.MobileNumberSearch[i].ApplicationStatusKey == DbConstants.ApplicationStatus.Completed)
+                            {
+                                <span class="badge badge-warning">@Model.MobileNumberSearch[i].ApplicationStatusName </span>
+                            }
+                            else if (Model.MobileNumberSearch[i].ApplicationStatusKey == DbConstants.ApplicationStatus.Refunded)
+                            {
+                                <span class="badge badge-danger">@Model.MobileNumberSearch[i].ApplicationStatusName </span>
+                            }
+                            else if (Model.MobileNumberSearch[i].ApplicationStatusKey != 0)
+                            {
+                                <span class="badge badge-info">@Model.MobileNumberSearch[i].ApplicationStatusName </span>
+                            }
+                            else
+                            {
+                                <span class="w3-text-red">Not in Application</span>
+                            }
+
+
+
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-6">
+                <div class="form-group">
+                    <div class="input-group">
+                        <label class="input-group-addon  bg-transparent fullcolon-after">@EduSuiteUIResources.CounsellingBy</label>
+                        <label class="ml-2">@Model.MobileNumberSearch[i].CouncellingBy </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-6">
+                <div class="form-group">
+                    <div class="input-group">
+                        <label class="input-group-addon  bg-transparent fullcolon-after">@EduSuiteUIResources.ScheduledBy</label>
+                        <label class="ml-2">@Model.MobileNumberSearch[i].ScheduledBy </label>
+                    </div>
+                </div>
+            </div>
+            @*<div class="col-lg-4 col-6">
+                <div class="form-group">
+                    <div class="input-group">
+                        <label class="input-group-addon  bg-transparent fullcolon-after"></label>
+                        <label class="ml-2"></label>
+                    </div>
+
+                </div>
+            </div>*@
+
+        </div>
+
+        <table class="table table-bordered table-responsive table-sm">
+            <thead>
+                <tr>
+
+                    @*<th>@EduSuiteUIResources.Name</th>
+                        <th>@EduSuiteUIResources.Phone</th>
+                        <th>@EduSuiteUIResources.Location</th>*@
+                    <th>@EduSuiteUIResources.CallStatus</th>
+                    <th>@EduSuiteUIResources.Feedback</th>
+                    @*<th>@EduSuiteUIResources.ServiceType</th>*@
+                    <th>@EduSuiteUIResources.CallDuration</th>
+                    <th>@EduSuiteUIResources.Date</th>
+                    <th>@EduSuiteUIResources.NextCallSchedule</th>
+                    <th>@EduSuiteUIResources.Branch</th>
+                    <th>@EduSuiteUIResources.Schedule @EduSuiteUIResources.Type</th>
+                    <th>@EduSuiteUIResources.PostedBy</th>
+                </tr>
+            </thead>
+
+
+
+
+            @{
+
+                String ScheduleColor = "";
+
+
+
+                foreach (var History in Model.MobileNumberSearch[i].EnquirySchedule)
+                {
+                    //if (History.ScheduleTypeKey == DbConstants.ScheduleTypeKey.NewLead)
+                    //{
+                    //    ScheduleColor = "#b90b92";
+                    //}
+                    //else if (History.ScheduleTypeKey == DbConstants.ScheduleTypeKey.Lead)
+                    //{
+                    //    ScheduleColor = "#0c10c7";
+                    //}
+                    //else if (History.ScheduleTypeKey == DbConstants.ScheduleTypeKey.Enquiry)
+                    //{
+                    //    ScheduleColor = "#07b907";
+                    //}
+                    if (History.FeedbackCreatedDate != DateTime.MinValue)
+                    {
+
+                        <tr>
+                            @*<td>@Model[i].Name </td>
+                                <td>@Model[i].MobileNumber </td>
+                                <td>@Model[i].LocationName </td>*@
+                            <td>@History.CallStatusName </td>
+                            <td>@History.Feedback </td>
+                            @*<td>@Model[i].ServiceTypeName </td>*@
+                            <td>@History.CallDuration </td>
+                            <td>
+                                @if (History.FeedbackCreatedDate != DateTime.MinValue)
+                                {
+                                    @(string.Format("{0:dd/MM/yyyy hh:mm:ss tt }", History.FeedbackCreatedDate))
+                                }
+
+                            </td>
+                            <td>@(string.Format("{0:dd/MM/yyyy}", History.NextCallScheduleDate))</td>
+                            <td>@History.BranchName </td>
+                            <td style="color:@ScheduleColor">@History.ScheduleTypeName </td>
+                            <td>@History.CreatedBy </td>
+                        </tr>
+                    }
+                }
+            }
+        </table>
+
+
+}
+
+</div>

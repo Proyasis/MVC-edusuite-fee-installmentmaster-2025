@@ -1,0 +1,16 @@
+﻿
+<div class="btn-group d-table">
+    {{#TestSections}}
+    <!--<button type="button" class="btn btn-dark btn-sm" data-section="{{TestSectionName}}">
+        <span>{{TestSectionName}}</span>
+    </button>-->
+
+    {{#QuestionDetails}}
+    <button type="button" class="btn btn-primary-outline btn-sm  position-relative" data-questionStatus="{{QuestionStatusKey}}" data-question="{{QuestionNumber}}">
+        <span>{{QuestionNumber}}</span>
+    </button>
+    {{/QuestionDetails}}
+
+
+    {{/TestSections}}
+</div>

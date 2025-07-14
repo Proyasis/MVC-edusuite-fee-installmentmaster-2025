@@ -1,0 +1,231 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.EnquiryReportViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+@using System.Web.Mvc
+
+<input type="hidden" id="hdnTotalRecords" value="@Model.TotalRecordsCount" />
+
+
+
+
+    <table class=" table table-responsive table-sm mt-2 " id="ReportTable">
+    <tr>
+        <th>No</th>
+        <th>Type</th>
+        <th showcolindex="name">Name</th>
+        <th showcolindex="mobile">Mobile</th>
+
+        <th showcolindex="applicationstatusname">Application Status</th>
+        <th showcolindex="currentstatus"> Status</th>
+        @*<th showcolindex="statusoncall">Status on Call</th>*@
+        <th showcolindex="callstatusname">Call Status</th>
+        <th showcolindex="calltypename">Call Type</th>
+        <th showcolindex="feedback">Feedback</th>
+
+        <th showcolindex="calleddate">Called on</th>
+        <th showcolindex="nextcallschedule">Next Schedule</th>
+        @*<th showcolindex="lastcalled">Last Called on</th>
+            <th showcolindex="lastscheduledto">Last Scheduled to</th>*@
+
+        <th showcolindex="department">Department</th>
+
+        <th showcolindex="callduration">Duration</th>
+
+        <th showcolindex="branch">Branch</th>
+        <th showcolindex="counsellingbranch">Other Branch Counselling</th>
+        <th showcolindex="counsellingtime">Counselling Time</th>
+        <th showcolindex="counsellingdate">Counselling Date</th>
+        <th showcolindex="counselleddate">Counselled Date</th>
+        <th showcolindex="counsellingcalleddate">Counselling Called Date</th>
+        <th showcolindex="employee">Counselling By</th>
+        <th showcolindex="scheduledemployee">Scheduled By</th>
+        <th showcolindex="postedby">Posted By</th>
+        <th><i class="fa fa-history" aria-hidden="true"></i></th>
+    </tr>
+
+    @{
+        foreach (var item in Model.CallReportsDetailsList)
+        {
+            <tr feedbacktext="@item.Feedback">
+                <td>@item.RowNumber <span id="feedbackToolTip">@item.Feedback</span> </td>
+                <td>
+
+                    <span>@item.ScheduleTypeName</span>
+                </td>
+                <td showcolindex="name">@item.Name</td>
+                <td showcolindex="mobile">@item.MobileNumber</td>
+                <td showcolindex="applicationstatusname">
+
+
+                    @if (item.ApplicationStatusKey == DbConstants.ApplicationStatus.Droped)
+                    {
+                        <span class="label label-danger">@item.ApplicationStatusName</span>
+                    }
+                    else if (item.ApplicationStatusKey == DbConstants.ApplicationStatus.Completed)
+                    {
+                        <span class="label label-success">@item.ApplicationStatusName</span>
+                    }
+                    else if (item.ApplicationStatusKey == DbConstants.ApplicationStatus.OnGoing)
+                    {
+                        <span class="label label-warning">@item.ApplicationStatusName</span>
+                    }
+
+                    else
+                    {
+                        <span class="label label-primary">@item.ApplicationStatusName </span>
+                    }
+
+                </td>
+                <td showcolindex="currentstatus">@item.StatusName</td>
+                @*<td showcolindex="statusoncall">@item.EnquiryStatusOnCall</td>*@
+                <td showcolindex="callstatusname">@item.CallStatusName</td>
+                <td showcolindex="calltypename">@item.CallTypeName</td>
+                <td showcolindex="feedback" width="200px">@item.Feedback</td>
+
+                <td showcolindex="calleddate">@(string.Format("{0:dd/MM/yyyy   hh:mm:ss tt}", item.CalledDate))</td>
+                <td showcolindex="nextcallschedule">@(string.Format("{0:dd/MM/yyyy}", item.NextCallSchedule)) </td>
+                @*<td showcolindex="lastcalled">@(string.Format("{0:dd/MM/yyyy    hh:mm:ss tt}", item.LastCalledDate))    </td>
+                    <td showcolindex="lastscheduledto">@(string.Format("{0:dd/MM/yyyy}", item.LastCallSchedule))</td>*@
+
+                <td showcolindex="department">@item.Department</td>
+
+                <td showcolindex="callduration">@item.CallDuration</td>
+                <td showcolindex="branch">@item.Branch</td>
+                <td showcolindex="counsellingbranch">@item.CounsellingBranchName</td>
+                <td showcolindex="counsellingtime">@item.CounsellingTime</td>
+                <td showcolindex="counsellingdate">@item.EnquiryCounsellingDate</td>
+                <td showcolindex="counselleddate">@item.CreatedOn</td>
+                <td showcolindex="counsellingcalleddate">@item.EnquiryCounsellingDate</td>
+                <td showcolindex="employee">@item.EmployeeName</td>
+                <td showcolindex="scheduledemployee">@item.ScheduledEmployeeName</td>
+                <td showcolindex="postedby">@item.PostedBy</td>
+                <td><span class="callHistory" telephonecode="@item.TelephoneCodeKey" mobilenumber="@item.MobileNumber" onclick="LoadHistory(this)"><i class="fa fa-history" aria-hidden="true"></i></td>
+
+            </tr>
+
+        }
+    }
+
+</table>
+
+
+
+
+
+    
+
+    <script>
+      
+
+
+        function ManageColumns(obj)
+        {
+            
+            var selectedCount = 0;
+            //var LastElements = $("#CustomizeColumn option:selected").map(function () {
+            //    return $(this).val();
+            //}).get();
+       
+            
+
+              
+                $('#CustomizeColumn option').each(function (value, object) 
+                {
+                    if ($(object).prop("selected") == true)
+                    {
+                        selectedCount = selectedCount + 1;
+                    }
+                    $(object).removeAttr("disabled");
+
+                    
+                    var ddl = $("#CustomizeColumn");
+                  
+                    $(ddl).selectpicker("refresh");
+                });
+            
+                $(".tempRow #FeedbackCol").attr("colspan", selectedCount+5);
+
+
+            $('#CustomizeColumn option').each(function (value, object)
+            {
+                if (selectedCount <=12)
+                {
+
+                    if ($(object).prop("selected") == true) {
+                        $("[showcolindex=" + object.value + "]").removeAttr("style");
+                    }
+                    else {
+                        $("[showcolindex=" + object.value + "]").css("display", "none");
+                    }
+                }
+                //else if(obj!=undefined)
+                //{
+                //    $(object).removeAttr("disabled");
+                  
+                       
+                       
+                //        if ($(object).prop("selected") == false)
+                //        {
+                //            $(object).attr("disabled", "disabled");
+                //            $('#CustomizeColumn').multiselect('refresh');
+                //        }
+                 
+                 
+                //}
+
+
+               
+
+
+            });
+
+
+            if (selectedCount == 12) {
+
+               
+                $('#CustomizeColumn option').each(function (value, object) {
+
+
+                            if ($(object).prop("selected") == false)
+                            {
+                                $(object).attr("disabled", "disabled");
+                                //$('#CustomizeColumn').multiselect('refresh');
+                                var ddl = $("#CustomizeColumn");
+                               
+                                $(ddl).selectpicker("refresh");
+                            }
+                });
+            }            
+        }
+
+        $(document).ready(function ()
+
+        {
+
+
+            $(".TotalCount .Count").html($("#hdnTotalRecords").val());
+
+            
+
+            ManageColumns();
+
+            //$('#CustomizeColumn').each(function () {
+            //    $(this).multiselect({
+            //        includeSelectAllOption: true,
+            //        includeSelectAllIfMoreThan: 10,
+            //        buttonWidth: '100%',
+            //        buttonClass: $(this).attr("class"),
+            //        enableFiltering: $(this).find("option").length > 10 ? true : false,
+            //        nonSelectedText: $(this).data("placeholder")
+            //    })
+            //});
+
+        });
+
+    </script>
+
+
+<style>
+     #CallReportContentDiv {
+        display: block !important;
+    }
+</style>

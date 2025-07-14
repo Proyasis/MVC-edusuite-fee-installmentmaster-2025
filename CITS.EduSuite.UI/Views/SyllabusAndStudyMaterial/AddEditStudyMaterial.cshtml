@@ -1,0 +1,145 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.SyllabusAndStudyMaterialViewModel
+
+
+@{
+    ViewBag.Title = EduSuiteUIResources.Add + EduSuiteUIResources.Sla + EduSuiteUIResources.Edit + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.StudyMaterial;
+}
+<input type="hidden" id="hdnDeleteStudyMaterial" value="@Url.Action("DeleteStudyMaterial", "SyllabusAndStudyMaterial")" />
+@using (Html.BeginForm("AddEditStudyMaterial", "SyllabusAndStudyMaterial", FormMethod.Post, new { @id = "frmAddEditStudyMaterial" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.SubjectKey)
+    @Html.ValidationSummary(true)
+
+    <div class="modal-header">
+        <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+        <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.Add @EduSuiteUIResources.Sla @EduSuiteUIResources.BlankSpace @EduSuiteUIResources.Edit @EduSuiteUIResources.BlankSpace @EduSuiteUIResources.StudyMaterial</h4>
+    </div>
+    <div class="modal-body">
+        <div class="form-master">
+
+            <div class="repeater" id="dynamicRepeaterStudyMaterial">
+                <table class="table table-bordered">
+                    <thead class="form-group">
+                        <tr>
+                            <th></th>
+                            <th>
+                                @Html.Label(EduSuiteUIResources.StudyMaterial + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Code, htmlAttributes: new { @class = "form-label" })
+                            </th>
+
+                            <th>
+                                @Html.Label(EduSuiteUIResources.StudyMaterial + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Name, htmlAttributes: new { @class = "form-label" })
+                                <div class="input-group-transparent">
+                                    <span class="input-group-addon-end" style="cursor: pointer; right: 37px; color: red; top: -32px; font-size: 22px; " data-gap="18">*</span>
+                                </div>
+                            </th>
+                            <th>
+                                @EduSuiteUIResources.IsActive
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody data-repeater-list>
+                        @for (int i = 0; i < Model.StudyMaterials.Count(); i++)
+                        {
+                            <tr data-repeater-item>
+                                <td class="px-1">
+                                    <span data-repeater-delete="" class="btn btn-danger btn-sm pull-right">
+                                        <span class="fa fa-remove"></span>
+                                    </span>
+                                </td>
+                                <td class="px-1">
+                                    <fieldset class="form-group">
+                                        @Html.TextBoxFor(m => m.StudyMaterials[i].StudyMaterialCode, new { @class = "form-control input-control text-right-decimal", @CharSpace = "RemoveSpace", @data_unique = true })
+                                        <span class="form-control-error-text">
+                                            @Html.ValidationMessageFor(m => m.StudyMaterials[i].StudyMaterialCode)
+                                        </span>
+                                        @Html.HiddenFor(m => m.StudyMaterials[i].RowKey)
+                                        @Html.HiddenFor(m => m.StudyMaterials[i].SubjectKey)
+                                      
+                                    </fieldset>
+                                </td>
+                                <td class="px-1">
+                                    <fieldset class="form-group">
+                                        @Html.TextBoxFor(m => m.StudyMaterials[i].StudyMaterialName, new { @class = "form-control input-control text-right-decimal", @CharSpace = "RemoveSpace", @data_unique = true })
+                                      
+                                        <span class="form-control-error-text">
+                                            @Html.ValidationMessageFor(m => m.StudyMaterials[i].StudyMaterialName)
+                                        </span>
+                                    </fieldset>
+                                </td>
+                                <td class="text-center">
+                                    <fieldset class=" form-group ">
+                                        <div class=" switch-check my-2">
+                                            @Html.CheckBoxFor(m => m.StudyMaterials[i].IsActive, new { @class = "switch-input" })
+                                            <div class="switch-label redgreen" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                                            <div class="switch-handle"></div>
+                                        </div>
+                                        <span class="form-control-error-text">
+                                            @Html.ValidationMessageFor(m => m.StudyMaterials[i].IsActive)
+                                        </span>
+
+                                    </fieldset>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th class="px-1" colspan="4">
+                                <span data-repeater-create class="btn btn-info btn-sm">
+                                    <span class="fa fa-plus"></span>
+                                </span>
+                            </th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+        </div>
+
+
+    </div>
+    <div class="modal-footer justify-content-start">
+
+        <div class="form-group">
+            <input type="submit" value="@EduSuiteUIResources.Add" id="btnAddDealer" class="btn btn-sm btn-success mx-1" />
+            <button type="button" data-dismiss="modal" class="btn btn-sm btn-danger mx-1" onclick="location.href='@Url.Action("SyllabusAndStudyMaterialList", "SyllabusAndStudyMaterial")' ">@EduSuiteUIResources.Cancel</button>
+        </div>
+
+    </div>
+
+    <style>
+        .select2-container {
+            width: 100% !important;
+        }
+    </style>
+    <script>
+
+        var jsonData=@(Html.Raw(Json.Encode(Model)));
+
+        $(document).ready(function () {
+            
+            setTimeout(function ()
+            {
+                SyllabusAndStudyMaterial.GetStudyMaterialDetails(jsonData);
+            }, 500)
+            AppCommon.FormatInputCase()
+            AppCommon.FormatDateInput();
+            AppCommon.CustomRepeaterRemoteMethod();
+
+
+
+
+        });
+
+
+    </script>
+}
+
+
+
+
+
+
+

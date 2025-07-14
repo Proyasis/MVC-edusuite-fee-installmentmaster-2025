@@ -1,0 +1,496 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.ApplicationWebFormViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+@{
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+}
+
+@*@section scripts{
+        @Scripts.Render("~/bundles/jqueryval")
+        @Scripts.Render("~/bundles/CitsValidation")
+        @Scripts.Render("~/bundles/jqueryui")
+        @Scripts.Render("~/Content/DatePickerJS")
+        @Scripts.Render("~/Scripts/ApplicationWebForm")
+    }*@
+
+<link href="~/Content/bootstrap-datepicker3.min.css" rel="stylesheet" />
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+<script src="~/Content/CitsValidation/citsvalidations.min.js"></script>
+<script src="~/Content/CitsValidation/citsvalidations.unobtrusive.js"></script>
+<script src="~/Scripts/bootstrap-datepicker.js"></script>
+<script src="~/Scripts/bootstrap-select.js"></script>
+<script src="~/CITSEduSuiteScripts/ApplicationWebForm.js"></script>
+
+
+@using (Html.BeginForm("AddEditApplicationWebForm", "ApplicationWebForm", new { id = "" }, FormMethod.Post, new { @id = "frmApplicationWebForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.RowKey)
+    @Html.HiddenFor(m => m.EnquiryKey)
+    @Html.HiddenFor(m => m.TemplateKey)
+    @Html.HiddenFor(m => m.DateTimeNow)
+    @Html.ValidationSummary(true)
+
+    <input type="hidden" id="hdnGetProgramTypeByCountry" value="@Url.Action("GetProgramTypeByCountry", "ApplicationWebForm")" />
+    <input type="hidden" id="hdnGetCourseTypeByAcademicTerm" value="@Url.Action("GetCourseTypeByAcademicTerm", "ApplicationWebForm")" />
+    <input type="hidden" id="hdnGetCourseByCourseType" value="@Url.Action("GetCourseByCourseType", "ApplicationWebForm")" />
+    <input type="hidden" id="hdnGetUniversityByCourse" value="@Url.Action("GetUniversity", "ApplicationWebForm")" />
+    <input type="hidden" id="hdnGetCasteByReligion" value="@Url.Action("GetCasteByReligion", "ApplicationWebForm")" />
+    <input type="hidden" id="hdnCheckPhoneExists" value="@Url.Action("CheckPhoneExistsByUI", "ApplicationWebForm")" />
+    <input type="hidden" id="hdnGetEmployeesByBranchId" value="@Url.Action("GetEmployeesByBranchId", "ApplicationWebForm")" />
+    <input type="hidden" id="hdnAddEditApplicationWebForm" value="@Url.Action("Index", "ApplicationWebForm")" />
+
+
+
+    <div class="content">
+
+
+        <div class="container">
+            <div class="form-row">
+                <h3 class="mb-3">Registration Form</h3>
+            </div>
+            <div class="card mt-2">
+                <div class="card-header">@EduSuiteUIResources.Personal@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Details</div>
+                <div class="card-body">
+                    <div class="form-row">
+
+                        <div class="col-12 col-sm-3 col-lg-2">
+                            <fieldset class="form-group">
+                                @Html.Label(EduSuiteUIResources.ApplicantName, htmlAttributes: new { @id = "lblApplicantName", @class = "form-label" })
+                                <div class="required-icon"><div class="text">*</div></div>
+                                @Html.TextBoxFor(m => m.ApplicantName, new { @class = "form-control input-control", @InputFor = "lblApplicantName" })
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => m.ApplicantName)
+                                </span>
+                            </fieldset>
+
+                        </div>
+
+                        <div class="col-12 col-sm-3 col-lg-2">
+                            <fieldset class="form-group">
+                                @Html.Label(EduSuiteUIResources.MobileNumber, htmlAttributes: new { @id = "lblMobileNumber", @class = "form-label" })
+                                <div class="required-icon"><div class="text">*</div></div>
+                                @*@Html.TextBoxFor(m => m.MobileNumber, new { @class = "form-control input-control", @InputFor = "lblMobileNumber", @type = "tel", @oninput = "ApplicationWebForm.CheckMobileNo(this)", @onblur = "ApplicationWebForm.CheckMobileNo(this)", @onpaste = "ApplicationWebForm.CheckMobileNo(this)" })*@
+                                @Html.TextBoxFor(m => m.MobileNumber, new { @class = "form-control input-control", @InputFor = "lblMobileNumber", @type = "tel" })
+
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => m.MobileNumber)
+                                </span>
+                            </fieldset>
+                        </div>
+
+                        <div class="col-12 col-sm-3 col-lg-2">
+                            <fieldset class="form-group">
+                                @Html.Label(EduSuiteUIResources.EmailAddress, htmlAttributes: new { @id = "lblEmailAddress", @class = "form-label" })
+                                @Html.TextBoxFor(m => m.StudentEmail, new { @class = "form-control input-control", @InputFor = "lblEmailAddress", @data_convert = "lowercase", @type = "email" })
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => m.StudentEmail)
+                                </span>
+                            </fieldset>
+                        </div>
+
+                        <div class="col-12 col-sm-3 col-lg-2">
+                            <fieldset class="form-group">
+                                @Html.Label(EduSuiteUIResources.Gender, new { @class = "form-label" })
+                                <div class="required-icon"><div class="text">*</div></div>
+                                <div class="form-control text-center">
+                                    <div class="radio inline-block mr-2">
+                                        @Html.RadioButtonFor(m => m.Gender, 1, new { @id = "rbMale" })
+                                        @Html.Label("rbMale", EduSuiteUIResources.Male)
+                                    </div>
+                                    <div class="radio inline-block">
+                                        @Html.RadioButtonFor(m => m.Gender, 2, new { @id = "rbFemale" })
+                                        @Html.Label("rbFemale", EduSuiteUIResources.Female)
+                                    </div>
+                                </div>
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => m.Gender)
+                                </span>
+
+
+                            </fieldset>
+                        </div>
+
+                        <div class="col-12 col-sm-3 col-lg-2" data-customise>
+                            <fieldset class="form-group">
+                                @Html.Label(EduSuiteUIResources.Religion, htmlAttributes: new { @id = "lblReligion", @class = "form-label" })
+                                @Html.DropDownListFor(m => m.ReligionKey, new SelectList(Model.Religions, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Religion, new { @class = "form-control input-control", @InputFor = "lblReligion" })
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => m.ReligionKey)
+                                </span>
+                            </fieldset>
+                        </div>
+
+                        <div class="col-12 col-sm-3 col-lg-2" data-customise>
+                            <fieldset class="form-group">
+                                @Html.Label(EduSuiteUIResources.Caste, htmlAttributes: new { @id = "lblReligion", @class = "form-label" })
+                                @Html.DropDownListFor(m => m.CasteKey, new SelectList(Model.Caste, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Caste, new { @class = "form-control input-control", @InputFor = "lblReligion" })
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => m.CasteKey)
+                                </span>
+                            </fieldset>
+                        </div>
+
+                        <div class="col-12 col-sm-3 col-lg-2" data-customise>
+                            <fieldset class="form-group">
+                                @Html.Label(EduSuiteUIResources.CommunityType, htmlAttributes: new { @id = "lblReligion", @class = "form-label" })
+                                @Html.DropDownListFor(m => m.CommunityTypeKey, new SelectList(Model.CommunityTypes, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.CommunityType, new { @class = "form-control input-control", @InputFor = "lblReligion" })
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => m.CommunityTypeKey)
+                                </span>
+                            </fieldset>
+                        </div>
+
+                        <div class="col-8 col-sm-2 col-lg-2  pr-1">
+                            <fieldset class="form-group">
+                                @Html.Label(EduSuiteUIResources.DateOfBirth, htmlAttributes: new { @id = "lblDateOfBirth", @class = "form-label" })
+                                <div class="required-icon"><div class="text">*</div></div>
+                                @Html.TextBoxFor(m => m.DateOfBirth, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_input_type = "date", @InputFor = "lblDateOfBirth", @data_inputmask = "'alias': 'dd/mm/yyyy'", @onchange = "calculateage(this)", @oninput = "calculateage(this)" })
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => m.DateOfBirth)
+                                </span>
+                            </fieldset>
+                        </div>
+
+                        <div class="col-4 col-sm-1 col-lg-1 pl-1">
+                            <fieldset class="form-group">
+                                @Html.Label(EduSuiteUIResources.Age, htmlAttributes: new { @id = "lblAge", @class = "form-label" })
+                                @Html.TextBoxFor(m => m.Age, new { @class = "form-control input-control", @InputFor = "lblAge", @readonly = "readonly" })
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => m.Age)
+                                </span>
+                            </fieldset>
+                        </div>
+
+                        <div class="col-12 col-sm-3 col-lg-2">
+                            <fieldset class="form-group">
+                                @Html.Label(EduSuiteUIResources.NameOfGuardian, htmlAttributes: new { @id = "lblReligion", @class = "form-label" })
+                                @Html.TextBoxFor(m => m.ApplicantGuardianName, new { @class = "form-control input-control", @InputFor = "lblApplicantName" })
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => m.ApplicantGuardianName)
+                                </span>
+                            </fieldset>
+                        </div>
+                        <div class="col-12 col-sm-3 col-lg-2">
+                            <fieldset class="form-group">
+                                @Html.Label(EduSuiteUIResources.GuardianMobile, htmlAttributes: new { @id = "lblMobileNumber", @class = "form-label" })
+                               
+                                @Html.TextBoxFor(m => m.GuardianMobile, new { @class = "form-control input-control", @InputFor = "lblMobileNumber", @type = "tel" })
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => m.GuardianMobile)
+                                </span>
+                            </fieldset>
+                        </div>
+                        <div class="col-12 col-sm-4 col-lg-5" data-customise>
+                            <div class="form-group">
+                                @Html.Label(EduSuiteUIResources.PermenantAddress, htmlAttributes: new { @id = "lblPermenantAddress", @class = "form-label" })
+                                @Html.TextAreaFor(m => m.PermenantAddress, new { @class = "form-control input-control", @InputFor = "lblPermenantAddress" })
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => m.PermenantAddress)
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+
+                        <div class="col-12">
+                            <fieldset class="form-group ">
+                                @Html.Label(EduSuiteUIResources.Remarks, htmlAttributes: new { @id = "lblRemarks", @class = "form-label" })<span class="spnStar"></span>
+                                @Html.TextAreaFor(m => m.Remarks, new { @class = "form-control input-control", @InputFor = "lblRemarks" })
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => m.Remarks)
+                                </span>
+                            </fieldset>
+                        </div>
+
+                        <div class="col-sm-6 text-left d-none">
+                            @if (ApplicationSettingModel.SMSEnabled)
+                            {
+                                if (!(Model.AutoSMS ?? true))
+                                {
+                                    <div class="checkbox-bird green inline-block">
+                                        @Html.CheckBox("AutoSMS", (Model.AutoSMS ?? false))
+                                        <label for="AutoSMS">@EduSuiteUIResources.SendSms</label>
+                                    </div>
+                                }
+                                else
+                                {
+                                    @Html.Hidden("AutoSMS", (Model.AutoSMS ?? false), new { @class = "pull-left" })
+                                }
+                            }
+
+
+                            @if (ApplicationSettingModel.EmailEnabled)
+                            {
+                                if (!(Model.AutoEmail ?? true))
+                                {
+                                    <div class="checkbox-bird green inline-block">
+                                        @Html.CheckBox("AutoEmail", (Model.AutoEmail ?? false), new { @class = "pull-left" })
+                                        <label for="AutoEmail">@EduSuiteUIResources.SendEmail</label>
+                                    </div>
+                                }
+                                else
+                                {
+                                    @Html.Hidden("AutoEmail", (Model.AutoEmail ?? false))
+                                }
+                            }
+
+                        </div>
+
+
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="card mt-2">
+                <div class="card-header">@EduSuiteUIResources.Academic@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Details</div>
+                <div class="card-body">
+                    <div class="form-row">
+
+
+                        @if ((bool)ViewBag.ShowAcademicTerm)
+                        {
+                            <div class="col-12 col-sm-3 col-lg-2 ">
+                                <div class="form-group">
+                                    @Html.Label(EduSuiteUIResources.AcademicTerm, htmlAttributes: new { @id = "lblAcademicTerm", @class = "form-label" })
+                                    <div class="required-icon"><div class="text">*</div></div>
+                                    @Html.DropDownListFor(m => m.AcademicTermKey, new SelectList(Model.AcademicTerms, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.AcademicTerm, new { @data_toggle = "dropdown", @class = "form-control input-control", @InputFor = "lblAcademicTerm" })
+                                    <span class="form-control-error-text">
+                                        @Html.ValidationMessageFor(m => m.AcademicTermKey)
+                                    </span>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            {
+                                Model.AcademicTermKey = (byte)Model.AcademicTerms.Select(row => row.RowKey).FirstOrDefault();
+
+                            }
+                            @Html.HiddenFor(m => m.AcademicTermKey)
+                        }
+                        <div class="col-12 col-sm-3 col-lg-2">
+                            <fieldset class="form-group">
+                                @Html.Label(EduSuiteUIResources.CourseType, htmlAttributes: new { @id = "lblProgramType", @class = "form-label" })
+                                <div class="required-icon"><div class="text">*</div></div>
+                                @Html.DropDownListFor(m => m.CourseTypeKey, new SelectList(Model.CourseTypes, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.CourseType, new { @class = "form-control input-control", @InputFor = "lblProgramType" })
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => m.CourseTypeKey)
+                                </span>
+                            </fieldset>
+                        </div>
+                        <div class="col-12 col-sm-3 col-lg-2">
+                            <fieldset class="form-group">
+                                @Html.Label(EduSuiteUIResources.Course, htmlAttributes: new { @id = "lblProgram", @class = "form-label" })
+                                <div class="required-icon"><div class="text">*</div></div>
+                                @Html.DropDownListFor(m => m.CourseKey, new SelectList(Model.Courses, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Course, new { @class = "form-control input-control" })
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => m.CourseKey)
+                                </span>
+                            </fieldset>
+                        </div>
+
+                        @if ((bool)ViewBag.ShowUniversity)
+                        {
+                            <div id="dvUniversity" class="col-12 col-sm-3 col-lg-2 ">
+                                <fieldset class="form-group">
+                                    @Html.Label(EduSuiteUIResources.AffiliationsTieUps, htmlAttributes: new { @id = "lblUniversity", @class = "form-label" })
+                                    <div class="required-icon"><div class="text">*</div></div>
+                                    @Html.DropDownListFor(m => m.UniversityKey, new SelectList(Model.Universities, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.AffiliationsTieUps, new { @class = "form-control input-control", @InputFor = "lblUniversity" })
+                                    <span class="form-control-error-text">
+                                        @Html.ValidationMessageFor(m => m.UniversityKey)
+                                    </span>
+
+                                </fieldset>
+                            </div>
+                        }
+                        else
+                        {
+                            {
+                                Model.UniversityKey = (short)Model.Universities.Select(row => row.RowKey).FirstOrDefault();
+                            }
+                            @Html.HiddenFor(m => m.UniversityKey)
+                        }
+
+
+
+                        <div class="col-12 col-sm-3 col-lg-2 " data-customise>
+                            <fieldset class="form-group">
+                                @Html.Label(EduSuiteUIResources.SecoundLanguage, htmlAttributes: new { @id = "lblReligion", @class = "form-label" })
+
+                                @Html.DropDownListFor(m => m.SecondLanguageKey, new SelectList(Model.SecondLanguages, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.SecoundLanguage, new { @class = "form-control input-control", @InputFor = "lblReligion" })
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => m.SecondLanguageKey)
+                                </span>
+                            </fieldset>
+                        </div>
+
+
+
+
+                        <div class="col-12 col-sm-3 col-lg-2" data-customise>
+                            <fieldset class="form-group">
+                                @Html.Label(EduSuiteUIResources.NatureOfEnquiry, htmlAttributes: new { @id = "lblNatureOfEnquiry", @class = "form-label" })
+                                @Html.DropDownListFor(m => m.NatureOfEnquiryKey, new SelectList(Model.NatureOfEnquiries, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.NatureOfEnquiry, new { @class = "form-control input-control", @InputFor = "lblNatureOfEnquiry" })
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => m.NatureOfEnquiryKey)
+                                </span>
+                            </fieldset>
+                        </div>
+
+                        @if (Model.Branches.Count == 1)
+                        {
+                            {
+                                Model.BranchKey = (Model.BranchKey == 0 || Model.BranchKey == null) ? (short)Model.Branches.Select(x => x.RowKey).FirstOrDefault() : Model.BranchKey;
+                            }
+                            @Html.HiddenFor(m => m.BranchKey)
+                        }
+                        else
+                        {
+                            <div class="col-12 col-sm-3 col-lg-2">
+                                <fieldset class="form-group">
+                                    @Html.Label(EduSuiteUIResources.Branch, htmlAttributes: new { @id = "lblBranch", @class = "form-label" })
+                                    <div class="required-icon"><div class="text">*</div></div>
+                                    @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Branch, new { @class = "form-control input-control", @InputFor = "lblBranch" })
+                                    <span class="form-control-error-text">
+                                        @Html.ValidationMessageFor(m => m.BranchKey)
+                                    </span>
+                                </fieldset>
+                            </div>
+                        }
+                        <div class="col-12 col-sm-3 col-lg-2">
+                            <fieldset class="form-group">
+                                @Html.Label(EduSuiteUIResources.Employee, htmlAttributes: new { @id = "lblBranch", @class = "form-label" })
+
+                                @Html.DropDownListFor(m => m.EmployeeKey, new SelectList(Model.Employees, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Employee, new { @class = "form-control input-control" })
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => m.EmployeeKey)
+                                </span>
+                            </fieldset>
+                        </div>
+
+
+                        <div class="col-12 col-sm-3 col-lg-2  d-none">
+                            <fieldset class=" form-group">
+                                @Html.Label(EduSuiteUIResources.Agent, htmlAttributes: new { @id = "lblAgent", @class = "form-label" })
+                                @Html.DropDownListFor(m => m.AgentKey, new SelectList(Model.Agents, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Agent, new { @class = "form-control input-control", @InputFor = "lblAgent" })
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => m.AgentKey)
+                                </span>
+                            </fieldset>
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+            </div>
+
+            
+            <div class="form-row">
+                <div class="col-6">
+                    <fieldset class="form-group">
+                        <input type="button" value="@EduSuiteUIResources.Save" id="btnSave" class="btn btn-block btn-primary px-4 mt-2" />
+                    </fieldset>
+                    <div>
+                        <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+}
+
+
+<script>
+
+    $(document).ready(function () {
+        AppCommon.FormatDateInput();
+
+        if ( @Model.RowKey==0)
+        {
+            if (!JSON.parse(('@ViewBag.ShowAcademicTerm').toLowerCase()))
+            {
+                var obj = { };
+                obj.AcademicTermKey = $("#AcademicTermKey").val();
+                ApplicationWebForm.GetCourseTypeByAcademicTerm(obj, $("#CourseTypeKey"));
+            }
+        }
+        $("#btnSave").click(function () {
+            ApplicationWebForm.FormSubmit($(this));
+        })
+        $("#AcademicTermKey").change("change", function () {
+            var obj = {};
+            obj.AcademicTermKey = $(this).val();
+            ApplicationWebForm.GetCourseTypeByAcademicTerm(obj, $("#CourseTypeKey"));
+        });
+
+        $("#CourseTypeKey,#AcademicTermKey").change("change", function () {
+            var obj = {};
+            obj.CourseTypeKey = $("#CourseTypeKey").val();
+            obj.AcademicTermKey = $("#AcademicTermKey").val();
+            ApplicationWebForm.GetCourseByCourseType(obj, $("#CourseKey"));
+
+        });
+
+        $("#AcademicTermKey,#CourseKey").on("change", function () {
+            var obj = {};
+            obj.AcademicTermKey = $("#AcademicTermKey").val();
+            obj.CourseKey = $("#CourseKey").val();
+            ApplicationWebForm.GetUniversityByCourse(obj, $("#UniversityKey"));
+        });
+
+        $("#DateOfBirth").on("changeDate", function (ev) {
+            $("#Age").val(AppCommon.GetAge(ev.date));
+        });
+
+
+        $("#ReligionKey").on("change",function()
+        {
+            var obj={};
+            obj.ReligionKey=$("#ReligionKey").val();
+            AppCommon.BindDropDownbyId(obj, $("#hdnGetCasteByReligion").val(), $("#CasteKey"), Resources.Caste);
+        })
+
+        $("#BranchKey").change("change", function () {
+            var obj = {};
+            obj.Id = $("#BranchKey").val();
+            AppCommon.BindDropDownbyId(obj, $("#hdnGetEmployeesByBranchId").val(), $("#EmployeeKey"), Resources.Employee);
+        });
+
+
+    });
+
+
+    function calculateage(_this)
+    {
+        var birthDate = new moment($(_this).val(), "DD/MM/YYYY");
+        var age = moment().diff(birthDate, 'years', true);
+        if (!isNaN(age))
+            $("#Age").val(Math.floor(age));
+    }
+
+
+
+</script>
+
+<style>
+    body {
+        font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+        background-color: #697c37;
+        /*color: rgba(255, 255, 255, 0.5);*/
+        line-height: 2;
+    }
+    .content {
+        padding: 3rem 0 0 0;
+    }
+    h3 {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #fff;
+    }
+</style>

@@ -1,0 +1,199 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.AccountFlowViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+
+
+<table id="ledgerTable" class="table table-bordered">
+    <thead>
+        <tr class="ledgerSubHead">
+            <th>
+                @EduSuiteUIResources.Date
+            </th>
+            <th>
+                @EduSuiteUIResources.Particulars
+            </th>
+            <th>
+                @EduSuiteUIResources.VoucherType
+            </th>
+            <th>
+                @EduSuiteUIResources.Debit
+            </th>
+            <th>
+                @EduSuiteUIResources.Credit
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @if (!Model.CreditAccountFlow.Where(x => x.VoucherTypeKey == DbConstants.VoucherType.OpeningBalance).Any())
+        {
+        <tr>
+            <td>
+                @(string.Format("{0:dd/MM/yyyy}", Model.OpeningBalanceDate))
+            </td>
+            <td>
+                @EduSuiteUIResources.OpeningBalance
+            </td>
+            <td></td>
+            <td class="text-right">
+                @if (Model.OpeningBalanceTypeKey == DbConstants.CashFlowType.In)
+                {
+                    @Model.OpeningBalance
+                }
+            </td>
+            <td class="text-right">
+                @if (Model.OpeningBalanceTypeKey == DbConstants.CashFlowType.Out)
+                {
+                    @Model.OpeningBalance
+                }
+            </td>
+
+        </tr>
+
+        }
+
+
+
+        @for (int i = 0; i < Model.CreditAccountFlow.Count; i++)
+        {
+        <tr>
+
+            @if (i == 0 || (i != 0 && Convert.ToDateTime(Model.CreditAccountFlow[i].TransactionDate).Date != Convert.ToDateTime(Model.CreditAccountFlow[i - 1].TransactionDate).Date))
+            {
+                <td rowspan="@((Model.CreditAccountFlow.Count(row => row.TransactionDate.Date == Model.CreditAccountFlow[i].TransactionDate.Date) - 1) + 1)">
+
+                    @(string.Format("{0:dd/MM/yyyy}", Model.CreditAccountFlow[i].TransactionDate))
+                </td>
+            }
+            <td>
+                @Model.CreditAccountFlow[i].Purpose
+            </td>
+            <td>
+                @Model.CreditAccountFlow[i].VoucherTypeName
+            </td>
+            <td class="text-right">
+                @if (Model.CreditAccountFlow[i].CashFlowTypeKey == DbConstants.CashFlowType.In)
+                {
+                    @Model.CreditAccountFlow[i].Amount
+                }
+            </td>
+            <td class="text-right">
+                @if (Model.CreditAccountFlow[i].CashFlowTypeKey == DbConstants.CashFlowType.Out)
+                {
+                    @Model.CreditAccountFlow[i].Amount
+                }
+            </td>
+
+        </tr>
+        }
+
+        <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+
+            <th class="text-right ledgerSubTotal">
+                @if (Model.OpeningBalanceTypeKey == DbConstants.CashFlowType.In)
+                {
+                    @(Model.CreditAccountFlow.Where(x => x.CashFlowTypeKey == DbConstants.CashFlowType.In).Select(x => x.Amount).DefaultIfEmpty().Sum() + Model.OpeningBalance)
+                }
+                else
+                {
+                    @Model.CreditAccountFlow.Where(x => x.CashFlowTypeKey == DbConstants.CashFlowType.In).Select(x => x.Amount).DefaultIfEmpty().Sum()
+                }
+            </th>
+            <th class="text-right ledgerSubTotal">
+                @if (Model.OpeningBalanceTypeKey == DbConstants.CashFlowType.Out)
+                {
+                    @(Model.CreditAccountFlow.Where(x => x.CashFlowTypeKey == DbConstants.CashFlowType.Out).Select(x => x.Amount).DefaultIfEmpty().Sum() + Model.OpeningBalance)
+                }
+                else
+                {
+                    @Model.CreditAccountFlow.Where(x => x.CashFlowTypeKey == DbConstants.CashFlowType.Out).Select(x => x.Amount).DefaultIfEmpty().Sum()
+                }
+            </th>
+        </tr>
+
+
+
+        <tr>
+            <td>
+                @(string.Format("{0:dd/MM/yyyy}", Model.ClosingBalanceDate))
+            </td>
+            <td>
+                @EduSuiteUIResources.ClosingBalance
+            </td>
+            <td></td>
+
+            <td class="text-right ledgerBottomSubTotal">
+                @if (Model.ClosingBalanceKey == DbConstants.CashFlowType.In)
+                {
+                    @Model.ClosingBalance
+                }
+            </td>
+            <td class="text-right ledgerBottomSubTotal">
+                @if (Model.ClosingBalanceKey == DbConstants.CashFlowType.Out)
+                {
+                    @Model.ClosingBalance
+                }
+            </td>
+        </tr>
+
+        <tr class="ledgerTotal">
+            <th></th>
+            <th>
+                @EduSuiteUIResources.Total
+            </th>
+            <th></th>
+            <th class="text-right">
+                @Model.TotalCreditAmount
+            </th>
+            <th class="text-right">
+                @Model.TotalDebitAmount
+            </th>
+
+        </tr>
+    </tbody>
+    @*<tfoot>
+            <tr>
+                <td>
+                    @if (Model.CreditOpeningBalance != 0)
+                    {
+                        @(string.Format("{0:dd/MM/yyyy}", Model.NextDate))
+                    }
+                </td>
+                <td>
+                    @if (Model.CreditOpeningBalance != 0)
+                    {
+                        @EduSuiteUIResources.OpeningBalance
+                    }
+                </td>
+                <td class="text-right">
+                    @if (Model.CreditOpeningBalance != 0)
+                    {
+                        @Model.TotalCreditAmount
+                    }
+                </td>
+                <td>
+                    @if (Model.DebitOpeningBalance != 0)
+                    {
+                        @(string.Format("{0:dd/MM/yyyy}", Model.NextDate))
+                    }
+                </td>
+                <td>
+                    @if (Model.DebitOpeningBalance != 0)
+                    {
+                        @EduSuiteUIResources.OpeningBalance
+                    }
+                </td>
+                <td class="text-right">
+                    @if (Model.DebitOpeningBalance != 0)
+                    {
+                        @Model.TotalDebitAmount
+                    }
+                </td>
+            </tr>
+        </tfoot>*@
+</table>
+
+

@@ -1,0 +1,56 @@
+﻿<div class="table-responsive">
+    <table class="table verticle-middle h-100" >
+
+        <thead>
+            <tr>
+                <th class="text-center">
+                    Date
+                </th>
+                <th class="text-center">
+                    Student
+                </th>
+                <th class="text-center">
+                    Class
+                </th>
+
+               
+                <th class="text-center">
+                    Attendance Type
+                </th>
+                <th class="text-center">
+                    Attendance Status
+                </th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {{#AbsentList}}
+
+            <tr data-repeater-item>
+                <td>
+                    {{dateformat AttendanceDate 'DD MMM YYYY '}}
+                </td>
+                <td class="text-center">
+                    {{StudentName}} ( {{AdmissionNo}} )
+                </td>
+
+                <td class="text-center">
+                    {{ClassCode}}
+                </td>
+
+                <td class="text-center">
+                    {{AttendanceTypeName}}
+
+                </td>
+                <td class="text-center" style="background-color:{{AttendanceStatusColor}}">
+                    {{AttendanceStatusName}}
+
+                </td>
+
+            </tr>
+            {{/AbsentList}}
+        </tbody>
+
+
+    </table>
+</div>

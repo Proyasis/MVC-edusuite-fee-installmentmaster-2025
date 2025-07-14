@@ -1,0 +1,72 @@
+﻿@using CITS.EduSuite.UI
+@using System.Web.Mvc
+
+@section scripts{
+
+    @Scripts.Render("~/Scripts/AttendanceTypeMaster")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Content/JqueryRepeater")
+
+}
+
+<input type="hidden" id="hdnGetAttendanceTypeMasterDetails" value="@Url.Action("GetAttendanceTypeMasterDetails", "AttendanceTypeMaster")" />
+<input type="hidden" id="hdnDeleteAttendanceTypeMaster" value="@Url.Action("DeleteAttendanceTypeMaster", "AttendanceTypeMaster")" />
+<input type="hidden" id="hdnAttendanceTypeMasterList" value="@Url.Action("AttendanceTypeMasterList", "AttendanceTypeMaster")" />
+<input type="hidden" id="hdnAddEditAttendanceTypeMaster" value="@Url.Action("AddEditAttendanceTypeMaster", "AttendanceTypeMaster")" />
+
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-sm-6 col-12">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.AttendanceType@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Details</h3>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 text-right">
+            <a onclick="AttendanceTypeMaster.AddEditAttendanceTypeMaster()" data-href="@Url.Action("AddEditAttendanceTypeMaster", "AttendanceTypeMaster")" class="btn btn-success btn-sm "><i class="fa fa-plus-square-o"></i> <span>@EduSuiteUIResources.New @EduSuiteUIResources.BlankSpace @EduSuiteUIResources.AttendanceType@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Details</span></a>
+        </div>
+    </div>
+</header>
+<section class="section-content mx-sm-3 mx-0">
+    <div class="GridBody">
+
+        <div class="grid-nav-bar form-row justify-content-between">
+           
+
+            <div class="col-12 float-right">
+                <a class="btn btn-info btn-sm float-right " onclick='window.location.reload()'>
+                    <i class="fa fa-refresh"></i>   @EduSuiteUIResources.Refresh
+                </a>
+            </div>
+
+        </div>
+        <div class="table-wrapper">
+
+            <div class="jqGrid_wrapper overflow-auto">
+                <table id="grid"></table>
+                <div id="pager"></div>
+            </div>
+        </div>
+
+    </div>
+</section>
+<script>
+    $(document).ready(function () {
+        $("#txtsearch").on("input", function () {
+            AttendanceTypeMaster.GetAttendanceTypeMaster();
+        });
+
+        $("#iconSpan").click(function () {
+            $('#txtsearch').val('');
+            AttendanceTypeMaster.GetAttendanceTypeMaster();
+        });
+        AttendanceTypeMaster.GetAttendanceTypeMaster();
+    });
+</script>

@@ -1,0 +1,186 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.EmployeeAttendanceViewModel
+
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Content/momentJS")
+    @Scripts.Render("~/Content/ExcelSheetJS")
+    @Scripts.Render("~/Scripts/EmployeeAttendance")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Styles.Render("~/Content/ExcelSheetCSS")
+    @Scripts.Render("~/Content/JqueryRepeater")
+    @Scripts.Render("~/Scripts/Common")
+
+}
+<input type="hidden" id="hdnEmployeeAttendanceList" value="@Url.Action("EmployeeAttendanceList", "EmployeeAttendance")" />
+<input type="hidden" id="hdnGetAttendanceSheet" value="@Url.Action("GetAttendanceSheet", "EmployeeAttendance")" />
+<input type="hidden" id="hdnAddEditEmployeesAttendance" value="@Url.Action("AddEditEmployeesAttendance", "EmployeeAttendance")" />
+<input type="hidden" id="hdnReadExcel" value="@Url.Action("ReadExcel", "EmployeeAttendance")" />
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-12">
+            <div class="tbl">
+                <div class="tbl-row  px-1">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.AttendanceSheet</h3>
+                        <ol class="breadcrumb breadcrumb-simple mb-2 float-sm-right">
+                            <li><a href="#" onclick="location.href='@Url.Action("EmployeeAttendanceList", "EmployeeAttendance")' ">@EduSuiteUIResources.EmployeeAttendance</a></li>
+                            <li class="active">@EduSuiteUIResources.AttendanceSheet</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+      
+    </div>
+</header>
+<section class="section-content mx-sm-3 mx-0">
+    <div class="GridBody">
+        <div class="grid-nav-bar">
+            <div class="form-row">
+                <div class="col-lg-2 col-sm-4 col-6">
+                    <div class="form-group">
+                        @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), new { @class = "input-control form-control form-control-sm form-control-smSearchDropDown" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.BranchKey)
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-lg-2 col-sm-4 col-6">
+                    <div class="form-group">
+
+                        <a id="btnUploadExcel" class="btn btn-primary btn-sm " onclick="document.getElementById('statementExcel').click()" style="height: 30px;padding-top: 6px;">
+                            <i class="fa fa-upload" aria-hidden="true"></i>@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Upload@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.ExcelSheet
+                        </a>
+                        <input id="statementExcel" type="file" style="display:none">
+                    </div>
+                </div>
+
+                <div class="col-lg-2 col-sm-4 col-6">
+                    <div class="form-group">
+
+                        <a id="btnDownloadExcel" class="btn btn-primary btn-sm " style="height: 30px;padding-top: 6px;">
+                            <i class="fa fa-download" aria-hidden="true"></i>@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Download@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.ExcelSheet
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-sm-4 col-6 float-right">
+                    <div class="form-group">                       
+                        <a class="btn btn-info btn-sm float-right " onclick='window.location.reload()'>
+                            <i class="fa fa-refresh"></i>   Refresh
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        @using (Html.BeginForm("AttendanceSheet", "EmployeeAttendance", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-row mt-2">
+                <div class="col-3 form-control rounded-0 w3-light-blue">
+                    @Html.Label(EduSuiteUIResources.Employee, htmlAttributes: new { @id = "lblOrderNumber", @class = "lblControlHead" })
+                </div>
+
+                <div class="col-2 form-control rounded-0 w3-light-blue">
+                    @Html.Label(EduSuiteUIResources.AttendanceDate, htmlAttributes: new { @class = "lblControlHead" })
+                </div>
+                <div class="col-2 form-control rounded-0 w3-light-blue">
+                    @Html.Label(EduSuiteUIResources.AttendanceStatus, htmlAttributes: new { @class = "lblControlHead" })
+                </div>
+
+                <div class="col-2 form-control rounded-0 w3-light-blue d-none">
+                    @Html.Label(EduSuiteUIResources.InTime, htmlAttributes: new { @class = "lblControlHead" })
+                </div>
+                <div class="col-2 form-control rounded-0 w3-light-blue d-none">
+                    @Html.Label(EduSuiteUIResources.OutTime, htmlAttributes: new { @class = "lblControlHead" })
+                </div>
+                <div class="col-1 form-control rounded-0 w3-light-blue">
+                </div>
+
+            </div>
+
+            <div id="dynamicRepeater" class="repeater">
+                @*   @Html.Action("GetAttendanceSheet")*@
+
+            </div>
+
+            <div class="form-row mt-1">
+                <div class="col-sm-6 col-12 p-0">
+                    <div class="form-group">
+                        <button type="button" id="btnSave" onclick="EmployeeAttendance.FormSubmit()" class="btn btn-sm btn-success mx-1"><i class="fa fa-save"></i> @EduSuiteUIResources.Save</button>
+                    </div>
+                    <div class="col-12">
+                        <span class="ValidateDataMsg"> @Html.ValidationMessage("error_msg")  </span>
+                    </div>
+                </div>
+
+            </div>
+
+        }
+
+
+    </div>
+
+</section>
+
+
+
+
+<script>
+    $(document).ready(function () {
+        var jsonData=@(Html.Raw(Json.Encode(Model)));
+
+        AppCommon.FormatMonthInput();
+        //EmployeeAttendance.GetAttendanceSheet(jsonData,true);
+        // setAttendanceSheetParam(jsonData);
+        //EmployeeAttendance.GetAttendanceDetail(jsonData);
+        // $("#BranchKey").on("change", function () {
+        //     setAttendanceSheetParam(jsonData);
+        //     EmployeeAttendance.GetAttendanceSheet(jsonData,true);
+        // });
+        // $("input#AttendanceDate").on('changeDate', function(ev){
+
+        //     setAttendanceSheetParam(jsonData);
+        //     EmployeeAttendance.GetAttendanceSheet(jsonData,true);
+        // });
+        //$('#ExcelFile').change(function (e) {
+        //    EmployeeAttendance.HandleFile(e)
+        //});
+        //$("#btnProcess").on('click', function(ev){
+
+        //    EmployeeAttendance.MultipleProcessClickEvent(jsonData);
+        //});
+
+        //$(window).on("resize", function () {
+        //    var $grid = $("#grid"),
+        //    newWidth = $grid.closest(".ui-jqgrid").parent().width();
+        //    $grid.jqGrid("setGridWidth", newWidth, true);
+        //});
+
+        $("#btnDownloadExcel").on("click",function(){
+            EmployeeAttendance.DownloadAttendanceSheet()
+        });
+        $('#statementExcel').on("change",function (e) {
+            EmployeeAttendance.HandleFile(e)
+
+        });
+        AttendanceSheetLoad();
+        $("#BranchKey").on("change", function () {
+            AttendanceSheetLoad();
+        });
+        function AttendanceSheetLoad()
+        {
+            $("#dynamicRepeater").load('@Url.Action("GetAttendanceSheet")'+"/"+$("#BranchKey").val(),function(){
+                $("form").removeData("validator");
+                $("form").removeData("unobtrusiveValidation");
+                $.validator.unobtrusive.parse("form");
+            })
+
+        }
+
+    });
+</script>

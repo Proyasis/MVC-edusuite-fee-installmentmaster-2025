@@ -1,0 +1,13 @@
+﻿<div class="form-group mceNonEditable" contenteditable="false" data-key="Question" data-question="{{QuestionNumber}}" data-questiontype="{{QuestionTypeKey}}">
+    <div data-optionhint class="custom-control">
+        <span>{{QuestionNumber}}</span>
+    </div>
+    {{#QuestionOptions}}
+    <div class="custom-control">
+        <input id="{{../QuestionNumber}}_{{@index}}_QuestionNumber" name="[{{../QuestionNumber}}].QuestionNumber" type="checkbox" value="{{Value}}" class="custom-control-input" />
+        <label class="custom-control-label" for="{{../QuestionNumber}}_{{@index}}_QuestionNumber" data-val="{{Text}}">{{{Value}}} - {{{Text}}}</label>
+    </div>
+
+    {{/QuestionOptions}}
+</div>
+

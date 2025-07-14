@@ -1,0 +1,149 @@
+﻿@model List<CITS.EduSuite.Business.Models.ViewModels.UniversityPaymentViewmodel>
+@using CITS.EduSuite.Business.Models.ViewModels
+
+
+<input type="hidden" id="hdnAddEditUniversityFeePayment" value="@Url.Action("AddEditUniversityFeePayment", "UniversityPayment", new { id = "" })" />
+<input type="hidden" id="hdnDeleteUniveristyFeePayment" value="@Url.Action("DeleteUniveristyFeePayment", "UniversityPayment")" />
+<input type="hidden" id="hdnViewFeePrint" value="@Url.Action("FeePrint", "UniversityPayment", new { id = "" })" />
+<input type="hidden" id="hdnUniversityTotalFeeDetails" value="@Url.Action("UniversityTotalFeeDetails", "UniversityPayment", new { id = ViewBag.ApplicationKey })" />
+
+
+
+<section class="card">
+    <header class="card-header w3-indigo">
+        @EduSuiteUIResources.Payment @EduSuiteUIResources.BlankSpace @EduSuiteUIResources.Details
+    </header>
+    <div class="card-body p-2 overflow-auto">
+        <table class="table table-bordered table-sm">
+            <thead>
+                <tr>
+                    <th>
+                        @EduSuiteUIResources.SlNo
+                    </th>
+                    <th>
+                        @EduSuiteUIResources.Receipt
+                    </th>
+                    <th>
+                        @EduSuiteUIResources.Date
+                    </th>
+                    <th>
+                        @EduSuiteUIResources.FeeType
+                    </th>
+                    <th>
+                        @EduSuiteUIResources.Year
+                    </th>
+                    <th>
+                        @EduSuiteUIResources.PaymentMode
+                    </th>
+                    <th>
+                        @EduSuiteUIResources.Paid
+                    </th>
+
+                    <th>
+                        @EduSuiteUIResources.Remarks
+                    </th>
+                    <th>
+
+                    </th>
+                </tr>
+            </thead>
+            @for (var i = 0; i < Model.Count; i++)
+            {
+            <tr>
+                <td>
+                    @(i + 1)
+                </td>
+                <td>
+                    @Model[i].VoucherNo
+                </td>
+                <td>
+                    @string.Format("{0:dd/MM/yyyy}", Model[i].UniversityPaymentDate)
+                </td>
+                <td>
+                    <ul class="list-unstyled m-0">
+                        @foreach (var item in Model[i].UniversityFeePaymentDetails)
+                        {
+
+                            <li class="col-md-9"><em>@item.FeeTypeName</em></li>
+
+                        }
+                    </ul>
+                </td>
+                <td>
+                    <ul class="list-unstyled m-0">
+                        @foreach (var item in Model[i].UniversityFeePaymentDetails)
+                        {
+
+                            <li class="col-md-9"><em>@item.FeeYearText</em></li>
+
+                        }
+                    </ul>
+                </td>
+                <td>
+                    <ul class="list-unstyled">
+                        <li>Paid By : <span class="text-red"> @Model[i].PaymentModeName</span></li>
+
+                        @if (Model[i].PaymentModeKey == DbConstants.PaymentMode.Cheque)
+                        {
+                            <li>@EduSuiteUIResources.ChequeOrDDNumber: <span> @Model[i].ChequeOrDDNumber</span></li>
+
+                            <li>@EduSuiteUIResources.ChequeOrDDDate: <span> @string.Format("{0:dd/MM/yyyy}", Model[i].ChequeClearanceDate)</span></li>
+                        }
+                        @*else if (Model[i].PaymentModeKey == DbConstants.PaymentMode.Card)
+                {
+                    <li>@EduSuiteUIResources.CardNumber: <span> @Model[i].CardNumber</span></li>
+                }*@
+                        else if (Model[i].PaymentModeKey == DbConstants.PaymentMode.Bank)
+                        {
+                            <li>@EduSuiteUIResources.BankAccount: <span> @Model[i].BankAccountName</span></li>
+                        }
+                    </ul>
+                </td>
+                <td>
+                    @string.Format("{0:G29}", Model[i].UniversityFeePaymentDetails.Select(AF => AF.UniversityPaymentAmount).DefaultIfEmpty().Sum())
+                </td>
+
+                <td>
+                    @Model[i].FeeDescription
+                    <br />
+                    @if (Model[i].ChequeStatusKey != null)
+                    {
+                        if (Model[i].ChequeStatusKey == DbConstants.ProcessStatus.Approved)
+                        {
+                            <span style="color:green"> Cheque @Model[i].ChequeAction </span> <span> On @string.Format("{0:dd/MM/yyyy}", @Model[i].ChequeApprovedRejectedDate)</span>
+                        }
+                        else
+                        {
+                            <span style="color:red"> Cheque @Model[i].ChequeAction </span> <span> On @string.Format("{0:dd/MM/yyyy}", @Model[i].ChequeApprovedRejectedDate)</span>
+                        }
+                    }
+
+                </td>
+                <td>
+                    <div class="btn-group">
+                      
+                        @if (Model[i].ChequeStatusKey == null && Model[i].IsCancel == false)
+                        {
+                            <button type="button" class="btn btn-primary btn-sm mx-1 btnfeeEdit" onclick="javascript:UniversityPayment.EditUniversityFeePayment('@Model[i].RowKey','@ViewBag.ApplicationKey');"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+                        }
+                        @if (Model[i].IsCancel == false)
+                        {
+                            <button type="button" class="btn btn-danger btn-sm mx-1" onclick="javascript:UniversityPayment.DeleteUniversityFeePayment('@Model[i].RowKey','@ViewBag.ApplicationKey');return false;">  <i class="fa fa-trash pointer" aria-hidden="true"></i>  </button>
+                        }
+                        else
+                        {
+                            <span class="label label-danger" style="padding: 10px;">Canceled</span>
+                        }
+
+
+                        <button type="button" class="btn btn-primary btn-sm mx-1" target="_blank" onclick="UniversityPayment.FeeReceiptPopup('@Model[i].RowKey')"><i class="fa fa-print" aria-hidden="true"></i></button>
+
+                    </div>
+                </td>
+            </tr>
+            }
+        </table>
+    </div>
+</section>
+
+

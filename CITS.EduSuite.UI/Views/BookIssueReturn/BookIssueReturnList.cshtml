@@ -1,0 +1,129 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.BookIssueReturnMasterViewModel
+@using System.Web.Mvc
+@using CITS.EduSuite.UI
+@using CITS.EduSuite.Business.Models.ViewModels
+
+@{
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/CitsValidation")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Content/JqueryRepeater")
+    @Scripts.Render("~/Scripts/BookIssueReturn")
+}
+
+<input type="hidden" id="hdnGetBookIssueReturnList" value="@Url.Action("GetBookIssueReturn", "BookIssueReturn")" />
+<input type="hidden" id="hdnDeleteBookIssueReturn" value="@Url.Action("DeleteBookIssueReturn", "BookIssueReturn")" />
+<input type="hidden" id="hdnAddEditBookReturn" value="@Url.Action("AddEditBookReturn", "BookIssueReturn")" />
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-sm-6 col-12">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.BookIssueReturn</h3>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 text-right">
+            <a id="addEditBookIssueReturn" href="@Url.Action("BookIssueList", "BookIssueReturn")" class="btn btn-success btn-sm "><i class="fa fa-plus-square-o"></i> <span>@EduSuiteUIResources.New @EduSuiteUIResources.BlankSpace @EduSuiteUIResources.BookIssueReturn</span></a>
+        </div>
+    </div>
+</header>
+<section class="section-content mx-sm-3 mx-0">
+    <div class="GridBody">
+
+        <div class="grid-nav-bar form-row ">
+            @if (Model.Branches.Count == 1)
+            {
+                {
+                    Model.BranchKey = (Model.BranchKey ?? 0) == 0 ? (short)Model.Branches.Select(x => x.RowKey).FirstOrDefault() : Model.BranchKey;
+                }
+                @Html.HiddenFor(m => m.BranchKey)
+            }
+            else
+            {
+
+                if (DbConstants.Role.AdminUserTypes.Contains(DbConstants.User.RoleKey))
+                {
+                    <div class="col-lg-2 col-sm-4 col-6">
+                        <div class="form-group">
+                            @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Branch, new { @class = "form-control input-control autohide-select", @data_plugin_type = "select2", @InputFor = "lblBranch", @data_live_search = "true" })
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-lg-2 col-sm-4 col-6">
+                        <div class="form-group">
+                            @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), new { @class = "form-control input-control autohide-select", @data_plugin_type = "select2", @InputFor = "lblBranch" })
+                        </div>
+                    </div>
+                }
+
+            }
+
+            <div class="col-lg-2 col-sm-4 col-6">
+                <div class="form-group">
+                    @Html.DropDownListFor(m => m.ApplicationTypeKey, new SelectList(Model.ApplicationTypes, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.ApplicationType, new { @class = "form-control input-control autohide-select", @data_plugin_type = "select2", @InputFor = "lblBranch", @data_live_search = "true" })
+                </div>
+            </div>
+            <div class="col-lg-2 col-sm-4 col-6">
+                <input id="txtsearch" type="text" name="focus" class="form-control gridSearchTextBox" placeholder="@EduSuiteUIResources.SearchIssuedDetails" /> @* Change Search TextBox Placeholder*@
+                <span id="iconSpan" class="iconSpan"><i class="fa fa-times-circle" aria-hidden="true"></i></span>
+            </div>
+
+            <div class="col-lg-2 col-sm-4 col-6">
+                <a class="btn btn-info btn-sm float-right " onclick='window.location.reload()'>
+                    <i class="fa fa-refresh"></i>   @EduSuiteUIResources.Refresh
+                </a>
+            </div>
+
+        </div>
+        <div class="table-wrapper">
+
+            <div class="jqGrid_wrapper overflow-auto">
+                <table id="grid"></table>
+                <div id="pager"></div>
+            </div>
+        </div>
+
+
+    </div>
+</section>
+
+<script>
+    $(document).ready(function () {
+        $("#txtsearch").keydown(function () {
+            BookIssueReturn.GetBookIssueReturn();
+        });
+        $("#txtsearch").keyup(function () {
+            BookIssueReturn.GetBookIssueReturn();
+        });
+
+        $("#iconSpan").click(function () {
+            $('#txtsearch').val('');
+            BookIssueReturn.GetBookIssueReturn();
+        });
+
+        $("#BranchKey,#ApplicationTypeKey").on("change", function () {
+            BookIssueReturn.GetBookIssueReturn();
+        });
+
+        BookIssueReturn.GetBookIssueReturn();
+        //AppCommon.EditGridPopup($("#addEditBookIssueReturn"));
+      
+    });
+</script>
+
+
+
+

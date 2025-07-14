@@ -1,0 +1,90 @@
+﻿
+@model CITS.EduSuite.Business.Models.ViewModels.CountryViewModel
+@using System.Web.Mvc
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+
+    @Scripts.Render("~/Scripts/Country")
+}
+
+<input type="hidden" id="hdnGetCountryList" value="@Url.Action("GetCountry", "Country")" />
+<input type="hidden" id="hdnDeleteCountry" value="@Url.Action("DeleteCountry", "Country")" />
+<input type="hidden" id="hdnAddEditCountry" value="@Url.Action("AddEditCountry", "Country")" />
+
+
+
+<div class="col-sm-12 Page_Head_Master">
+    <div class="col-sm-6 Text_Left">
+        <label class="Page_Heading  ">@EduSuiteUIResources.Country</label>
+    </div>
+
+    <div class="col-sm-6 Text_Right">
+
+        <a id="addEditCountry" data-href="@Url.Action("AddEditCountry", "Country", new { id = Model.RowKey})" data-modal="" class="btn btn-danger btn-sm">
+            <i class="fa fa-plus" aria-hidden="true"></i>  @EduSuiteUIResources.AddNewCountry @*Change Add new button Here *@
+        </a>
+    </div>
+
+
+</div>
+<div class="GridBody">
+
+    <div class="grid-nav-bar col-sm-12">
+        <div class="col-sm-3">
+            <input id="txtsearch" type="text" name="focus" class="input-control form-control form-control-sm" placeholder="@EduSuiteUIResources.Search@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Branch" /> @* Change Search TextBox Placeholder*@
+            <span id="iconSpan" class="iconSpan"><i class="fa fa-times-circle" aria-hidden="true"></i></span>
+        </div>
+
+        <div class="col-sm-9 F_Right">
+            <a class="btn btn-info btn-sm F_Right btn_Refresh" onclick='Country.GetCountry()'>
+                <i class="fa fa-refresh"></i>   Refresh
+            </a>
+        </div>
+
+    </div>
+
+    <br /><br />
+
+
+
+    <div class="portlet-body" id="portletBody">
+        <div class='table-scrollable'>
+            <table id="grid"></table>
+            <div id="pager"></div>
+        </div>
+    </div>
+
+
+
+</div>
+
+
+
+<script>
+    $(document).ready(function () {
+        $("#txtsearch").keydown(function () {
+            Country.GetCountry();
+        });
+        $("#txtsearch").keyup(function () {
+            Country.GetCountry();
+        });
+
+        $("#iconSpan").click(function () {
+            $('#txtsearch').val('');
+            Country.GetCountry();
+        });
+        Country.GetCountry();
+
+        AppCommon.EditGridPopup($("#addEditCountry"));
+
+        $(window).on("resize", function () {
+            var $grid = $("#grid"),
+            newWidth = $grid.closest(".ui-jqgrid").parent().width();
+            $grid.jqGrid("setGridWidth", newWidth, true);
+        });
+    });
+</script>
+
+
+

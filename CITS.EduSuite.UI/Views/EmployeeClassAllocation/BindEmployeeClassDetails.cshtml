@@ -1,0 +1,118 @@
+﻿@model List<CITS.EduSuite.Business.Models.ViewModels.EmployeeClassAllocationViewModel>
+@using CITS.EduSuite.Business.Models.ViewModels
+@using CITS.EduSuite.UI
+
+
+<input type="hidden" id="hdnAddEditStudentDiary" value="@Url.Action("AddEditEmployeeClassAllocation", "EmployeeClassAllocation", new { id = "" })" />
+<input type="hidden" id="hdnDeleteStudentDiary" value="@Url.Action("DeleteClassAllocation", "EmployeeClassAllocation", new { id = "" })" />
+<input type="hidden" id="hdnStudentDiaryList" value="@Url.Action("StudentDiaryList", "EmployeeClassAllocation", new { id = "" })" />
+
+
+
+
+
+<section class="card">
+    <header class="card-header w3-indigo">
+        @EduSuiteUIResources.Employee @EduSuiteUIResources.BlankSpace @EduSuiteUIResources.ClassAllocation
+    </header>
+    <div class="card-body p-2 overflow-auto">
+        <table class="table table-bordered table-sm" id="divInstallmentFeeDetails">
+
+            <thead>
+                <tr>
+                    <th>
+                        @EduSuiteUIResources.SlNo
+                    </th>
+                    <th>
+                        @Html.Label(EduSuiteUIResources.ClassCode, htmlAttributes: new { @class = "form-label" })
+                    </th>
+                    <th>
+                        @Html.Label(EduSuiteUIResources.Batch, htmlAttributes: new { @class = "form-label" })
+                    </th>
+
+                    <th>
+                        @Html.Label(EduSuiteUIResources.Subject, htmlAttributes: new { @class = "form-label" })
+                    </th>
+                    <th>
+                        @Html.Label(EduSuiteUIResources.Incharge, htmlAttributes: new { @class = "form-label" })
+                    </th>
+                    <th>
+                        @Html.Label(EduSuiteUIResources.Attendance, htmlAttributes: new { @class = "form-label" })
+                    </th>
+                    <th>
+                        @Html.Label(EduSuiteUIResources.Status, htmlAttributes: new { @class = "form-label" })
+                    </th>
+                    <th>
+                        @Html.Label(EduSuiteUIResources.Action, htmlAttributes: new { @class = "form-label" })
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.Count; i++)
+                {
+
+                    <tr data-repeater-item>
+
+                        <td>
+                            @(i + 1)
+                        </td>
+                        <td>
+
+                            @Html.HiddenFor(m => m[i].RowKey)
+                            @Html.HiddenFor(m => m[i].EmployeesKey)
+
+                            @Model[i].ClassDetailsName
+
+                        </td>
+
+                        <td>
+                            @Model[i].BatchName
+                        </td>
+                        <td>
+                           
+                            <ul>
+                                @{
+
+                                    int sno = 0;
+                                }
+                                @foreach (string name in @Model[i].SubjectNames)
+                                {
+                                   
+                                <li> @{sno++;} @sno : @name</li>
+                                }
+                            </ul>
+                        </td>
+                        <td>
+                            @Model[i].InCharge
+
+                        </td>
+                        <td>
+                            @Model[i].IsAttendance
+
+                        </td>
+                        <td>
+                            @Model[i].IsActive
+
+                        </td>
+                        <td>
+                            <div class="btn-group">
+
+                                <button type="button" class="btn btn-primary btn-sm mx-1 btnfeeEdit" onclick="javascript:EmployeeClassAllocation.AddEditClassAllocation('@Model[i].RowKey');"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+                                <button type="button" class="btn btn-danger btn-sm mx-1" onclick="javascript:EmployeeClassAllocation.DeleteClassAllocation('@Model[i].RowKey','@Model[i].EmployeesKey');return false;">  <i class="fa fa-trash pointer" aria-hidden="true"></i>  </button>
+
+
+                            </div>
+                        </td>
+
+                    </tr>
+
+
+                }
+            </tbody>
+
+
+        </table>
+    </div>
+</section>
+

@@ -1,0 +1,168 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.BankReconciliationViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+
+
+@section scripts{
+    @Styles.Render("~/Content/ExcelSheetCSS")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/Content/JqueryRepeater")
+    @Scripts.Render("~/Scripts/BankReconciliation")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Content/momentJS")
+
+
+}
+
+<input type="hidden" id="hdnGetBankReconciliationDetailsById" value="@Url.Action("GetBankReconciliationDetailsById", "BankReconciliation")" />
+<input type="hidden" id="hdnBankReconciliationList" value="@Url.Action("BankReconciliationList", "BankReconciliation")" />
+<input type="hidden" id="hdnFillBankAccount" value="@Url.Action("FillBankAccount", "BankReconciliation")" />
+@*<input type="hidden" id="hdnBankReconciliationList" value="@Url.Action("BankReconciliationList", "BankReconciliation")" />*@
+<input type="hidden" id="hdnDeleteBankReconciliationItem" value="@Url.Action("DeleteBankReconciliationItem", "BankReconciliation")" />
+<input type="hidden" id="hdnMatchedStatementList" value="@Url.Action("MatchedStatementList", "BankReconciliation")" />
+<input type="hidden" id="hdnViewBankReconciliation" value="@Url.Action("ViewBankReconciliation", "BankReconciliation")" />
+
+@*<div class="row bottomLine">
+        <div class="col-sm-12 Page_Head_Master">
+            <div class="col-sm-6 Text_Left">
+                <label class="Page_Heading  ">@EduSuiteUIResources.Add @EduSuiteUIResources.Sla @EduSuiteUIResources.Edit @EduSuiteUIResources.BlankSpace@EduSuiteUIResources.BankReconciliation</label>
+            </div>
+        </div>
+    </div>*@
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-12">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.Add@EduSuiteUIResources.Sla@EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.BankReconciliation</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<section class="section-content mx-sm-3 mx-0">
+    <div class="form-row">
+
+
+        @if (Model.Branches.Count == 1)
+        {
+            {
+                Model.BranchKey = (Model.BranchKey == 0 || Model.BranchKey == null) ? (short)Model.Branches.Select(x => x.RowKey).FirstOrDefault() : Model.BranchKey;
+            }
+            @Html.HiddenFor(m => m.BranchKey)
+        }
+        else
+        {
+
+            <div class="col-lg-2 col-sm-4 col-6">
+                <div class="form-group">
+                    @Html.Label(EduSuiteUIResources.Branch, htmlAttributes: new { @class = "form-label" })
+                    @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.Branch, new { @class = "form-control input-control ", @data_live_search = "true" })                    <span class="red">
+                        @Html.ValidationMessageFor(m => m.BranchKey)
+                    </span>
+                </div>
+            </div>
+           
+        }
+        <div class="col-lg-2 col-sm-4 col-6">
+            <div class="form-group">
+                @Html.Label(EduSuiteUIResources.BankAccount, htmlAttributes: new { @class = "form-label" })
+                @Html.DropDownListFor(m => m.BankAccountKey, new SelectList(Model.BankAccounts, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.BankAccount, new { @class = "form-control input-control" })
+                <span class="red">
+                    @Html.ValidationMessageFor(m => m.BankAccountKey)
+                </span>
+            </div>
+        </div>
+
+        <div class="col-lg-2 col-sm-4 col-6">
+            @Html.Label(EduSuiteUIResources.FromDate, htmlAttributes: new { @class = "form-label" })
+            @Html.TextBoxFor(m => m.FromDate, "{0:dd/MM/yyyy}", new { @class = "form-control input-control gridSearchTextBox", @data_input_type = "date" })
+            <span class="red">
+                @Html.ValidationMessageFor(m => m.FromDate)
+            </span>
+        </div>
+        <div class="col-lg-2 col-sm-4 col-6">
+            @Html.Label(EduSuiteUIResources.ToDate, htmlAttributes: new { @class = "form-label" })
+            @Html.TextBoxFor(m => m.ToDate, "{0:dd/MM/yyyy}", new { @class = "form-control input-control gridSearchTextBox", @data_input_type = "date" })
+            <span class="red">
+                @Html.ValidationMessageFor(m => m.ToDate)
+            </span>
+        </div>
+        <div class="col-lg-2 col-sm-4 col-6">
+            <br />
+            <a id="searchReconcile" class="btn btn-primary" role="button">
+                View
+            </a>
+        </div>
+        <div class="col-lg-2 col-sm-4 col-6">
+            <br />
+            <a id="viewReconcile" data-href="@Url.Action("ViewBankReconciliation", "BankReconciliation")" class="btn btn-success" role="button">
+                Reconciled
+                (<span id="reconcileCount">@Model.ReconcileCount</span>)
+            </a>
+        </div>
+
+
+
+        <div id="bankReconciliationRepeater" class="col-sm-12">
+            @*@Html.Action("BankReconciliationList", "BankReconciliation", new { bankAccountKey = Model.BankAccountKey, fromDate = Model.FromDate, toDate = Model.ToDate })*@
+        </div>
+
+
+    </div>
+
+</section>
+
+<script>
+
+    $(document).ready(function () {
+        var jsonData =@(Html.Raw(Json.Encode(Model)));
+        AppCommon.FormatDateInput()
+        $("#searchReconcile").on("click",function(){
+            LoadReport();
+        })
+
+        $("#viewReconcile").on("click",function(){
+            var obj = {};
+            obj.bankAccountKey = $("#BankAccountKey").val()
+            obj.fromDate = $("#FromDate").val()
+            obj.toDate = $("#ToDate").val()
+            BankReconciliation.ViewReconcilePopup($(this),obj)
+        })
+        fillBank();
+        $("#BranchKey").on("change",function (){
+            fillBank();
+        })
+        if($("RowKey").val()==0)
+        {
+            AppCommon.BindDropDownbyId($("#BranchKey"),$("#hdnFillBankAccount").val(),$("#BankAccountKey"),Resources.BankAccount)
+        }
+
+
+
+        function LoadReport() {
+            var obj = {};
+            obj.bankAccountKey = $("#BankAccountKey").val()
+            obj.fromDate = $("#FromDate").val()
+            obj.toDate = $("#ToDate").val()
+            $("[data-repeater-list]").html("")
+            $(".section-content").mLoading()
+            $("#bankReconciliationRepeater").load($("#hdnBankReconciliationList").val() + "?" + $.param(obj), function () {
+                BankReconciliation.GetBankStatementList();
+                $("select[id*=AccountHeadKey]").hide();
+                $(".section-content").mLoading("destroy")
+            })
+
+        }
+    });
+
+    function fillBank() {
+        var obj = {};
+        obj.key = $("#BranchKey").val() != "" ? $("#BranchKey").val() : 0;
+        AppCommon.BindDropDownbyId(obj, $("#hdnFillBankAccount").val(), $("#BankAccountKey"), Resources.BankAccount)
+    }
+
+</script>

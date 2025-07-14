@@ -1,0 +1,188 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.EmployeeShiftViewModel
+
+@section scripts{
+
+    @Scripts.Render("~/Scripts/Common")
+    @Scripts.Render("~/Content/JqueryRepeater")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/Scripts/EmployeeShift")
+}
+
+<input type="hidden" id="hdnDeleteEmployeeShiftDetails" value="@Url.Action("DeleteEmployeeShiftDetails", "EmployeeShift")" />
+<input type="hidden" id="hdnGetEmployeeShifts" value="@Url.Action("EmployeeShiftList", "EmployeeShift")" />
+
+<div class="modal-header">
+    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+    <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.Add @EduSuiteUIResources.Sla @EduSuiteUIResources.Edit @EduSuiteUIResources.Employee@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Shift</h4>
+</div>
+@using (Html.BeginForm("AddEditEmployeeShift", "EmployeeShift", FormMethod.Post, new { @id = "frmEmployeeShift" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.RowKey)
+    @Html.ValidationSummary(true)
+
+    <div class="modal-body">
+        <div class="form-master">
+            <div class="paddingNone">
+                <span class="ValidateDataMsg"> @Html.ValidationMessage("error_msg")  </span>
+            </div>
+
+            <div class="form-row">
+
+                <div class="col-sm-4 col-6">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.Shift, htmlAttributes: new { @class = "lblControlHead" })
+                        <div class="required-icon"><div class="text">*</div></div>
+                        @Html.DropDownListFor(m => m.ShiftKey, new SelectList(Model.Shifts, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Shift, new { @class = "input-control form-control form-control-sm" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.ShiftKey)
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-sm-4 col-6">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.FromDate, htmlAttributes: new { @id = "lblInTime", @class = "lblControlHead" })
+                        <div class="required-icon"><div class="text">*</div></div>
+                        @Html.TextBoxFor(m => m.FromDate, "{0:dd/MM/yyyy}", new { @class = "input-control form-control form-control-sm", @data_inputmask = "'alias': 'dd/mm/yyyy'", @data_input_type = "date" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.FromDate)
+                        </span>
+
+                    </div>
+                </div>
+
+                <div class="col-sm-4 col-6">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.ToDate, htmlAttributes: new { @id = "lblOutTime", @class = "lblControlHead" })
+                        <div class="required-icon"><div class="text">*</div></div>
+                        @Html.TextBoxFor(m => m.ToDate, "{0:dd/MM/yyyy}", new { @class = "input-control form-control form-control-sm", @data_inputmask = "'alias': 'dd/mm/yyyy'", @data_input_type = "date" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.ToDate)
+                        </span>
+
+                    </div>
+                </div>
+
+
+            </div>
+
+            @Html.TextBoxFor(m => m.RecordCount, new { @class = "invisible", @readonly = "readonly" })
+
+            <span class="form-control-error-text">
+                @Html.ValidationMessageFor(m => m.RecordCount)
+            </span>
+            <div id="dynamicRepeater" class="repeater">
+                <table class="table table-responsive">
+                    <thead>
+                        <tr>
+
+                            <th>
+                                @Html.Label(EduSuiteUIResources.Employee + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Name, htmlAttributes: new { @class = "form-label" })
+                            </th>
+                            <th>
+                                @Html.Label(EduSuiteUIResources.Department + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Name, htmlAttributes: new { @class = "form-label" })
+                            </th>
+                            <th>
+                                @Html.Label(EduSuiteUIResources.Branch, htmlAttributes: new { @class = "form-label" })
+                            </th>
+                            <th class="text-center">
+                                <div class="switch-check my-2">
+                                    <input type="checkbox" id="chekAllIsActive" onchange="EmployeeShift.CheckboxAllEmployee(this)" class="switch-input chkIsActive" />
+                                    <div class="switch-label redgreen" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                                    <div class="switch-handle"></div>
+
+                                </div>
+
+                                <span id="spnRecordCount" class="badge badge-pill badge-primary"></span>
+
+                            </th>
+                        </tr>
+
+                    </thead>
+                    <tbody data-repeater-list>
+                        @for (int i = 0; i < Model.EmployeeShiftDetailsModel.Count(); i++)
+                        {
+                            <tr data-repeater-item>
+
+                                <td>
+                                    <fieldset class="form-group">
+                                        @Html.DisplayFor(m => m.EmployeeShiftDetailsModel[i].EmployeeName, new { @class = "input-control form-control form-control-sm", @data_convert = "uppercase" })
+                                        @Html.HiddenFor(m => m.EmployeeShiftDetailsModel[i].RowKey)
+                                        @Html.HiddenFor(m => m.EmployeeShiftDetailsModel[i].EmployeeKey)
+                                        @Html.HiddenFor(m => m.EmployeeShiftDetailsModel[i].EmployeeShiftKey)
+                                    </fieldset>
+
+                                </td>
+
+                                <td>
+                                    <fieldset class="form-group">
+                                        @Html.DisplayFor(m => m.EmployeeShiftDetailsModel[i].DepartmentName, new { @class = "input-control form-control form-control-sm", @data_convert = "uppercase" })
+
+                                    </fieldset>
+                                </td>
+                                <td>
+                                    <fieldset class="form-group">
+                                        @Html.DisplayFor(m => m.EmployeeShiftDetailsModel[i].BranchName, new { @class = "input-control form-control form-control-sm", @data_convert = "uppercase" })
+
+                                    </fieldset>
+                                </td>
+                                <td>
+                                   
+                                        <fieldset class="form-group">
+                                            @Html.Label(EduSuiteUIResources.IsActive, new { @class = "form-label" })
+
+                                            <div class="switch-check my-2">
+                                                @Html.CheckBoxFor(m => m.EmployeeShiftDetailsModel[i].IsActive, new { @class = "switch-input" })
+                                                <div class="switch-label redgreen" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                                                <div class="switch-handle"></div>
+                                            </div>
+                                            <span class="form-control-error-text">
+                                                @Html.ValidationMessageFor(m => m.EmployeeShiftDetailsModel[i].IsActive)
+                                            </span>
+                                        </fieldset>
+
+                                    
+                                   
+                                   
+                                </td>
+
+                                <td>
+                                    @if (Model.EmployeeShiftDetailsModel[i].RowKey != 0)
+                                    {
+                                        @*<label class="form-label" style="visibility:hidden">NothingToDisplay</label>*@
+                                        <span class="btn btn-danger btn-sm" onclick="deleteEmployeeShiftDetails(@Model.EmployeeShiftDetailsModel[i].RowKey,this)">
+                                            <span class="fa fa-remove "></span>
+                                        </span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+
+
+                </table>
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <button type="submit" id="btnSave" class="btn btn-sm btn-success mx-1"><i class="fa fa-save"></i> @EduSuiteUIResources.Save</button>
+                <button type="button" data-dismiss="modal" class="btn btn-sm btn-danger mx-1"><i class="fa fa-close"></i>@EduSuiteUIResources.Cancel</button>
+            </div>
+        </div>
+    </div>
+
+
+}
+
+
+
+
+

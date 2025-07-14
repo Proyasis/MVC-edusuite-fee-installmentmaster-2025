@@ -1,0 +1,94 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.StudentTCViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+<div id="dynamicRepeater" class="repeater card col-12">
+    <header class="card-header w3-teal">
+        @EduSuiteUIResources.StudentTC @EduSuiteUIResources.BlankSpace @EduSuiteUIResources.Details
+    </header>
+    <div class="card-body p-2 overflow-auto">
+        <table class="table fixed-table-body-columns">
+            <thead class="thead-light">
+                <tr>
+                    <th></th>
+                    <th class="mw-sm-150">@EduSuiteUIResources.Question</th>
+                    <th class="mw-sm-150">@EduSuiteUIResources.Answer</th>
+
+
+
+                </tr>
+            </thead>
+            <tbody data-repeater-list>
+                @for (int i = 0; i < Model.StudentTCDetailsViewModel.Count(); i++)
+                {
+                    <tr data-repeater-item>
+                        <td class="px-1">
+                            @if (Model.StudentTCDetailsViewModel[i].RowKey != null && Model.StudentTCDetailsViewModel[i].RowKey != 0)
+                            {
+                            
+                                <span data-repeater-delete="" onclick="StudentTC.ResetTCDetails(@Model.StudentTCDetailsViewModel[i].RowKey)" class="btn btn-danger btn-sm">
+                                    <span class="fa fa-remove"></span>
+                                </span>
+                            }
+                        </td>
+                        <td class="px-1 mw">
+                            @Html.TextBoxFor(m => Model.StudentTCDetailsViewModel[i].TCConfigColumnName, new { @class = "form-control input-control", @InputFor = "lblCourseName", @readonly = "readonly" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => Model.StudentTCDetailsViewModel[i].TCConfigColumnName)
+                            </span>
+                            @Html.HiddenFor(m => Model.StudentTCDetailsViewModel[i].RowKey)
+                            @Html.HiddenFor(m => Model.StudentTCDetailsViewModel[i].IsMandatory)
+                            @Html.HiddenFor(m => Model.StudentTCDetailsViewModel[i].IsDeletable)
+                            @Html.HiddenFor(m => Model.StudentTCDetailsViewModel[i].TCConfigColumnKey)
+                        </td>
+                        @if (Model.StudentTCDetailsViewModel[i].CondentTypeKey == DbConstants.CondentType.Date)
+                        {
+                            <td class="px-1">
+                                @Html.TextBoxFor(m => Model.StudentTCDetailsViewModel[i].Value, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_inputmask = "'alias': 'dd/mm/yyyy'", @data_input_type = "date" })
+
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => Model.StudentTCDetailsViewModel[i].Value)
+                                </span>
+                            </td>
+                        }
+                        else if (Model.StudentTCDetailsViewModel[i].CondentTypeKey == DbConstants.CondentType.Optional)
+                        {
+                            <td class="px-1">
+                                @Html.DropDownListFor(m => Model.StudentTCDetailsViewModel[i].Value, new SelectList(Model.StudentTCDetailsViewModel[i].OptionalValues, "Text", "Text"), new { @class = "form-control input-control" })
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => Model.StudentTCDetailsViewModel[i].Value)
+                                </span>
+                            </td>
+                        }
+                        else
+                        {
+                            <td class="px-1">
+                                @Html.TextBoxFor(m => Model.StudentTCDetailsViewModel[i].Value, new { @class = "form-control input-control", @InputFor = "LblUniversity" })
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => Model.StudentTCDetailsViewModel[i].Value)
+                                </span>
+                            </td>
+                        }
+
+                    </tr>
+
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+
+        AppCommon.FormatDateInput();
+        AppCommon.FormatInputCase();
+        //$("[data-repeater-list]").find("input,select,textarea").each(function () {
+        //    $(this).attr("name", "StudentTCDetailsViewModel" + $(this).attr("name"));
+        //})
+
+        $("form").removeData("validator");
+        $("form").removeData("unobtrusiveValidation");
+        $.validator.unobtrusive.parse("form");
+    });
+</script>

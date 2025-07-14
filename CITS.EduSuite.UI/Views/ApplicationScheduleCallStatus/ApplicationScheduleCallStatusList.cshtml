@@ -1,0 +1,73 @@
+﻿
+@using System.Web.Mvc
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/Scripts/ApplicationScheduleCallStatus")
+    @Scripts.Render("~/Content/MultiselectJs")
+}
+<input type="hidden" id="hdnGetApplicationScheduleCallStatus" value="@Url.Action("GetApplicationScheduleCallStatus", "ApplicationScheduleCallStatus")" />
+<input type="hidden" id="hdnDeleteApplicationScheduleCallStatus" value="@Url.Action("DeleteApplicationScheduleCallStatus", "ApplicationScheduleCallStatus")" />
+<input type="hidden" id="hdnAddEditApplicationScheduleCallStatus" value="@Url.Action("AddEditApplicationScheduleCallStatus", "ApplicationScheduleCallStatus")" />
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-sm-6 col-12">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.ApplicationScheduleCallStatus</h3>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 text-right">
+            <a id="addEditMedium" data-href="@Url.Action("AddEditApplicationScheduleCallStatus", "ApplicationScheduleCallStatus")" class="btn btn-success btn-sm "><i class="fa fa-plus-square-o"></i> <span>@EduSuiteUIResources.New @EduSuiteUIResources.BlankSpace @EduSuiteUIResources.ApplicationScheduleCallStatus</span></a>
+        </div>
+    </div>
+</header>
+<section class="section-content mx-sm-3 mx-0">
+    <div class="GridBody">
+
+        <div class="grid-nav-bar form-row justify-content-between">
+            <div class="col-lg-3 col-6">
+                <input id="txtsearch" type="text" name="focus" class="form-control gridSearchTextBox" placeholder="@EduSuiteUIResources.Search @EduSuiteUIResources.CallStatus" /> @* Change Search TextBox Placeholder*@
+                <span id="iconSpan" class="iconSpan"><i class="fa fa-times-circle" aria-hidden="true"></i></span>
+            </div>
+
+            <div class="col-6">
+                <a class="btn btn-info btn-sm float-right " onclick='window.location.reload()'>
+                    <i class="fa fa-refresh"></i>   @EduSuiteUIResources.Refresh
+                </a>
+            </div>
+
+        </div>
+
+        <div class="table-wrapper">
+
+            <div class="jqGrid_wrapper overflow-auto">
+                <table id="grid"></table>
+                <div id="pager"></div>
+            </div>
+        </div>
+
+
+    </div>
+</section>
+
+<script>
+    $(document).ready(function () {
+        $("#txtsearch").on("input", function () {
+            ApplicationScheduleCallStatus.GetApplicationScheduleCallStatus();
+        });
+
+        $("#iconSpan").click(function () {
+            $('#txtsearch').val('');
+            ApplicationScheduleCallStatus.GetApplicationScheduleCallStatus();
+        });
+        ApplicationScheduleCallStatus.GetApplicationScheduleCallStatus();
+        AppCommon.EditGridPopup($("#addEditMedium"))
+
+    });
+</script>

@@ -1,0 +1,519 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.DashBoardViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section scripts{
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Content/Select2JS")
+    @Scripts.Render("~/Scripts/AccountHead")
+    @Scripts.Render("~/Scripts/Dashboard")
+}
+<link rel="stylesheet" href="~/Content/icofont.min.css">
+<link href="~/Styles/Dashboard.css" rel="stylesheet" />
+<link href="~/Content/c3/c3.min.css" rel="stylesheet" />
+<script src="~/Content/c3/c3.min.js"></script>
+<script src="~/Content/d3/d3.min.js"></script>
+<script src="~/Content/d3-funnel/d3-funnel.js"></script>
+
+
+
+<input type="hidden" id="hdnEnquiryCountsPath" value=@Url.Content("~/Templates/DashBoard/EnquiryCount.html") />
+<input type="hidden" id="hdnEnquiryCounts" value="@Url.Action("EnquiryCounts", "Home")" />
+<input type="hidden" id="hdnLeadStageFlows" value="@Url.Action("LeadStageFlows", "Home")" />
+<input type="hidden" id="hdnLeadSource" value="@Url.Action("LeadSource", "Home")" />
+<input type="hidden" id="hdnEnquiryRecentCalls" value="@Url.Action("EnquiryRecentCalls", "Home")" />
+<input type="hidden" id="hdnEnquiryRecentCallsPath" value=@Url.Content("~/Templates/DashBoard/EnquiryRecentCalls.html") />
+<input type="hidden" id="hdnEnquiryLeadSourcePath" value=@Url.Content("~/Templates/DashBoard/EnquiryLeadSource.html") />
+<input type="hidden" id="hdnEnquiryMonthlyGraph" value="@Url.Action("EnquiryMonthlyGraph", "Home")" />
+
+<input type="hidden" id="hdnStudentsCountPath" value=@Url.Content("~/Templates/DashBoard/StudentCount.html") />
+<input type="hidden" id="hdnStudentsCount" value="@Url.Action("StudentsCount", "Home")" />
+<input type="hidden" id="hdnYearlyAdmissionGraph" value="@Url.Action("YearlyAdmissionGraph", "Home")" />
+
+<input type="hidden" id="hdnStudentCountByCourse" value="@Url.Action("StudentCountByCourse", "Home")" />
+<input type="hidden" id="hdnStudentCountByCoursePath" value=@Url.Content("~/Templates/DashBoard/StuedntCourseCount.html") />
+
+<input type="hidden" id="hdnTodayAbsentList" value="@Url.Action("TodayAbsentList", "Home")" />
+<input type="hidden" id="hdnStudentAbsentListPath" value=@Url.Content("~/Templates/DashBoard/StudentAbsentList.html") />
+
+<input type="hidden" id="hdnStudentDiaryDetails" value="@Url.Action("StudentDiaryDetails", "Home")" />
+<input type="hidden" id="hdnStudentDiaryDetailsPath" value=@Url.Content("~/Templates/DashBoard/StudentDiaryDetails.html") />
+
+
+<input type="hidden" id="hdnStudentNewAdmission" value="@Url.Action("StudentNewAdmission", "Home")" />
+<input type="hidden" id="hdnStudentNewAdmissionPath" value=@Url.Content("~/Templates/DashBoard/StudentNewAdmission.html") />
+
+<input type="hidden" id="hdnAccountsCount" value="@Url.Action("AccountsCount", "Home")" />
+<input type="hidden" id="hdnAccountsCountPath" value=@Url.Content("~/Templates/DashBoard/AccountsCount.html") />
+
+<input type="hidden" id="hdnRecentTransaction" value="@Url.Action("RecentTransaction", "Home")" />
+<input type="hidden" id="hdnRecentTransactionPath" value=@Url.Content("~/Templates/DashBoard/AccountRecentTransaction.html") />
+
+<input type="hidden" id="hdnCashFlowGraph" value="@Url.Action("CashFlowGraph", "Home")" />
+<input type="hidden" id="hdnIncomeandExpenseChart" value="@Url.Action("IncomeandExpenseChart", "Home")" />
+
+<input type="hidden" id="hdnChequeDetails" value="@Url.Action("ChequeDetails","Home")" />
+<input type="hidden" id="hdnChequeDetailsPath" value=@Url.Content("~/Templates/DashBoard/AccountChequeDetails.html") />
+
+<input type="hidden" id="hdnEnquiryEmployeeCounts" value="@Url.Action("EnquiryEmployeeCounts","Home")" />
+<input type="hidden" id="hdnEnquiryEmployeeCountsPath" value=@Url.Content("~/Templates/DashBoard/EnquiryEmployeeCounts.html") />
+<input type="hidden" id="hdnFillEmployeeByBranch" value="@Url.Action("FillEmployeeByBranch", "Home")" />
+
+<div class="px-5">
+    <div class="form-row my-2">
+        <div class="col-lg-4 pl-0">
+            @{
+                Model.BranchKey = (Model.BranchKey ?? 0) == 0 ? (short)Model.Branches.Select(x => x.RowKey).FirstOrDefault() : Model.BranchKey;
+                Model.BranchName = (Model.BranchKey ?? 0) == 0 ? Model.Branches.Select(x => x.Text).FirstOrDefault() : Model.Branches.Where(x => x.RowKey == Model.BranchKey).Select(x => x.Text).FirstOrDefault();
+            }
+
+            @if (Model.Branches.Count != 1)
+            {
+            <div class="dropdown show px-2">
+                <div class="input-group">
+                    <label id="lblBranchName" class="form-control px-3">@Model.BranchName</label>
+                    <div class="input-group-append">
+                        <i class="fa fa-pencil dropdown-toggle w3-text-blue bg-white input-group-text py-1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
+                        <div class="dropdown-menu" id="ddBranch" aria-labelledby="dropdownMenuLink">
+                            @foreach (var item in Model.Branches)
+                                {
+
+                            <a class="dropdown-item" href="#" value="@item.RowKey">@item.Text</a>
+                                }
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            }
+            @Html.HiddenFor(m => m.BranchKey)
+            @Html.HiddenFor(m => m.EmployeeKey)
+
+        </div>
+    </div>
+</div>
+<div class="px-lg-5 px-md-3 px-sm-3 py-xl-1 mb-5">
+
+
+    <!-- Bordered tabs-->
+    <ul id="myTab1" role="tablist" class="nav nav-tabs nav-pills with-arrow flex-column flex-sm-row text-center border-0">
+        <li class="nav-item flex-sm-fill ">
+            <a id="enquiry-tab" data-toggle="tab" href="#enquiry" role="tab" aria-controls="enquiry" aria-selected="false" class="nav-link text-uppercase font-weight-bold mr-sm-3 rounded-0 border p-3 ">Enquiry</a>
+        </li>
+        <li class="nav-item flex-sm-fill ">
+            <a id="student-tab" data-toggle="tab" href="#student" role="tab" aria-controls="student" aria-selected="true" class="nav-link text-uppercase font-weight-bold mr-sm-3 rounded-0 border p-3 active">Student</a>
+        </li>
+
+        <li class="nav-item flex-sm-fill ">
+            <a id="Account-tab" data-toggle="tab" href="#Account" role="tab" aria-controls="Account" aria-selected="false" class="nav-link text-uppercase font-weight-bold rounded-0 border p-3">Account</a>
+        </li>
+        <li class="nav-item flex-sm-fill ">
+            <a id="contact1-tab" data-toggle="tab" href="#contact1" role="tab" aria-controls="contact1" aria-selected="false" class="nav-link text-uppercase font-weight-bold rounded-0 border p-3">Library</a>
+        </li>
+
+    </ul>
+
+    
+
+    <div id="myTab1Content" class="tab-content p-0 border-0">
+        <div id="enquiry" role="tabpanel" aria-labelledby="enquiry-tab" class="tab-pane fade p-0  show active">
+
+
+            <div class="form-row mt-3" id="dvEnquiryCounts">
+
+            </div>
+
+
+            <div class="form-row d-flex mt-3">
+                <div class="col-lg-8">
+                    <div class="form-row d-flex">
+                        <div class="col-lg-5 col-12">
+                            <div class="card h-100">
+                                <div class="card-header">
+                                    <span>Lead Stage Flows</span>
+
+                                    <button id="reportrange" class="btn btn-light float-right">
+                                        <i class="fa fa-calendar"></i>&nbsp;
+                                        <i class="fa fa-caret-down float-right"></i>
+                                    </button>
+                                    <span id="spnReportrange" class="text-muted font-11 d-block"></span>
+                                </div>
+                                <div class="card-body">
+                                    <div id="funnel"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-7 col-12">
+                            <div class="card h-100">
+                                <div class="card-header">
+                                    Lead Source
+                                </div>
+                                <div class="card-body " style="max-height: 441px; overflow-y: auto !important;">
+                                    <div id="dvLeadSource">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-12 mt-2 ">
+                            <div class="card h-100">
+                                <div class="card-header">
+
+                                    <span>Enquiry Survey</span>
+
+                                    <button id="ESreportrange" class="btn btn-light float-right">
+                                        <i class="fa fa-calendar"></i>&nbsp;
+                                        <i class="fa fa-caret-down float-right"></i>
+                                    </button>
+                                    <span id="ESspnReportrange" class="text-muted font-11 d-block">@DateTimeUTC.Now.ToString("yyyy")</span>
+                                    @Html.Hidden("hdnEnquirySurveyYear", DateTimeUTC.Now.ToString("yyyy-MM-dd"))
+                                </div>
+                                <div class="card-body">
+                                    <div id="dvEnquirySurvey"></div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card h-100">
+                        <div class="card-header">
+                            Recent Call Details
+                        </div>
+                        <div class="card-body" style="max-height: 928px;overflow-y: hidden; ">
+                            <div class="notice-box-wrap" id="divRecentCalls">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-row mt-3">
+                <div class="card h-100">
+                    <div class="card-header">
+
+                        <span>Employee Counts</span>
+
+                        <div class="form-row">
+
+                            @if (Model.AppUsers.Count == 1)
+                            {
+                                {
+                                    Model.AppUserKey = (Model.AppUserKey == 0 || Model.AppUserKey == null) ? (short)Model.AppUsers.Select(x => x.RowKey).FirstOrDefault() : Model.AppUserKey;
+                                }
+                                @Html.HiddenFor(m => m.AppUserKey)
+                            }
+                            else
+                            {
+                                <div class="col-12 col-sm-3 col-lg-4">
+                                    <fieldset class="form-group">
+                                        @Html.DropDownListFor(m => m.AppUserKey, new SelectList(Model.AppUsers, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Employee, new { @class = "form-control input-control", @data_live_search = "true" })
+                                    </fieldset>
+                                </div>
+                            }
+                            <div class="col-12 col-sm-3 col-lg-2">
+                                <fieldset class="form-group">
+                                    <button id="ECreportrange" class="btn btn-light float-right">
+                                        <i class="fa fa-calendar"></i>&nbsp;
+                                        <i class="fa fa-caret-down float-right"></i>
+                                    </button>
+                                    <span id="ECspnReportrange" class="text-muted font-11 d-block"></span>
+                                </fieldset>
+                            </div>
+                            <a href="/Report/EnquiryReportsList">View All</a>
+
+                        </div>
+
+
+                    </div>
+                    <div class="card-body">
+                        <div id="dvEnquiryEmployeeCounts"></div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div id="student" role="tabpanel" aria-labelledby="student-tab" class="tab-pane fade px-4 py-5">
+
+            <div class="form-row" id="dvStudentCount">
+
+            </div>
+            <div class="form-row">
+                <div class="col-lg-6 col-sm-4 col-12">
+                    <div class="card h-100">
+                        <div class="card-header">
+                            <span>Students Survey</span>
+
+                        </div>
+                        <div class="card-body">
+                            <div id="dvYearlyAdmissionGraph">
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-sm-4 col-12">
+                    <div class="card h-100">
+                        <div class="card-header">
+                            <span>Students By Course Type</span>
+                            <button id="ESStudentCountCourseType" class="btn btn-light float-right">
+                                <i class="fa fa-calendar"></i>&nbsp;
+                                <i class="fa fa-caret-down float-right"></i>
+                            </button>
+                            <span id="ESspnStudentCountByCourseType" class="text-muted font-11 d-block">@DateTimeUTC.Now.ToString("yyyy")</span>
+                            @Html.Hidden("hdnStudentCountByCourseType", DateTimeUTC.Now.ToString("yyyy-MM-dd"))
+                        </div>
+                        <div class="card-body">
+                            <div id="dvStudentCountByCourseType">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-4 col-12">
+                    <div class="card h-100">
+                        <div class="card-header">
+                            <span>Students By Course</span>
+                            <button id="ESStudentCountCourse" class="btn btn-light float-right">
+                                <i class="fa fa-calendar"></i>&nbsp;
+                                <i class="fa fa-caret-down float-right"></i>
+                            </button>
+                            <span id="ESspnStudentCountByCourse" class="text-muted font-11 d-block">@DateTimeUTC.Now.ToString("yyyy")</span>
+                            @Html.Hidden("hdnStudentsCountByCourse", DateTimeUTC.Now.ToString("yyyy-MM-dd"))
+                        </div>
+                        <div class="card-body" style="max-height: 360px; overflow-y: auto !important;">
+                            <div id="dvStudentCountByCourse">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="form-row mt-3">
+
+                <div class="col-lg-6 col-sm-4 col-12">
+                    <div class="card h-100">
+                        <div class="card-header">
+                            <span>Recently Absent List</span>
+
+
+                            <button id="AbsentListreportrange" class="btn btn-light float-right">
+                                <i class="fa fa-calendar"></i>&nbsp;
+                                <i class="fa fa-caret-down float-right"></i>
+                            </button>
+                            <span id="spnAbsentListReportrange" class="text-muted font-11 d-block"></span>
+                        </div>
+                        <div class="card-body">
+                            <div id="dvAbsentList">
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-sm-4 col-12">
+                    <div class="card h-100">
+                        <div class="card-header">
+                            <span>Student Diary Notes</span>
+                            <button id="StudentDiaryreportrange" class="btn btn-light float-right">
+                                <i class="fa fa-calendar"></i>&nbsp;
+                                <i class="fa fa-caret-down float-right"></i>
+                            </button>
+                            <span id="spnStudentDiaryReportrange" class="text-muted font-11 d-block"></span>
+                        </div>
+                        <div class="card-body">
+                            <div class="notice-box-wrap" id="dvStudentDiaryNotes">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="form-row mt-3">
+                <div class="col-lg-12 col-sm-12 col-12">
+                    <div class="card h-100">
+                        <div class="card-header">
+                            <span>Recently Admitted Stuent</span>
+                            <button id="NewAdmissionStudentsreportrange" class="btn btn-light float-right">
+                                <i class="fa fa-calendar"></i>&nbsp;
+                                <i class="fa fa-caret-down float-right"></i>
+                            </button>
+                            <span id="spnNewAdmissionStudentsReportrange" class="text-muted font-11 d-block"></span>
+                        </div>
+                        <div class="card-body">
+                            <div id="dvNewAdmissionStudents">
+
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="Account" role="tabpanel" aria-labelledby="Account-tab" class="tab-pane fade px-4 py-5">
+
+            <div class="form-row" id="dvAccountsCount">
+
+            </div>
+
+            <div class="form-row d-flex mt-3">
+                <div class="col-lg-8">
+                    <div class="col-lg-12  col-12">
+                        <div class="card h-100">
+                            <div class="card-header">
+                                <span>Cash Flow Statement</span>
+                                <button id="ESCashFlowStatement" class="btn btn-light float-right">
+                                    <i class="fa fa-calendar"></i>&nbsp;
+                                    <i class="fa fa-caret-down float-right"></i>
+                                </button>
+                                <span id="ESspnCashFlowStatement" class="text-muted font-11 d-block">@DateTimeUTC.Now.ToString("yyyy")</span>
+                                @Html.Hidden("hdnCashFlowStatement", DateTimeUTC.Now.ToString("yyyy-MM-dd"))
+                            </div>
+                            <div class="card-body">
+                                <div id="dvCashFlowStatement">
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12  col-12">
+                        <div class="card h-100">
+                            <div class="card-header">
+                                <span>Income & Expense Chart</span>
+                                <button id="ESIncomeExpenseChart" class="btn btn-light float-right">
+                                    <i class="fa fa-calendar"></i>&nbsp;
+                                    <i class="fa fa-caret-down float-right"></i>
+                                </button>
+                                <span id="ESspnIncomeExpenseChart" class="text-muted font-11 d-block">@DateTimeUTC.Now.ToString("yyyy")</span>
+                                @Html.Hidden("hdnIncomeExpenseChart", DateTimeUTC.Now.ToString("yyyy-MM-dd"))
+                            </div>
+                            <div class="card-body">
+                                <div id="dvIncomeExpenseChart">
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-lg-12  col-12">
+                        <div class="card h-100">
+                            <div class="card-header">
+                                <span>Cheque Details</span>
+
+
+                                <button id="Chequereportrange" class="btn btn-light float-right">
+                                    <i class="fa fa-calendar"></i>&nbsp;
+                                    <i class="fa fa-caret-down float-right"></i>
+                                </button>
+                                <span id="spnChequeReportrange" class="text-muted font-11 d-block"></span>
+                            </div>
+                            <div class="card-body">
+                                <div id="dvChequeDetails">
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-lg-4">
+                    <div class="card h-100">
+                        <div class="card-header">
+                            RecentTransactions
+                        </div>
+                        <div class="card-body">
+                            <div class="notice-box-wrap" id="divRecentTransaction">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+        </div>
+
+    </div>
+
+
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        FormatAmountDatePicker();
+        AppCommon.FormatSelect2();
+
+        LoadData();
+
+
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            LoadData();
+        })
+
+
+
+        $("#ddBranch a").click(function (e) {
+            $("#BranchKey").val($(e.target).attr("value"))
+            $("#lblBranchName").html($(e.target).html())
+            LoadData();
+            BindAppUser();
+        });
+
+        BindAppUser();
+        function LoadData() {
+            debugger
+            var index = $('a[data-toggle="tab"].active').closest("li").index()
+            if (index == 0) {
+                EnquiryDashBoard.GetEnquiryCounts();
+                EnquiryDashBoard.GetLeadStageFlows();
+                EnquiryDashBoard.GetLeadSource();
+                EnquiryDashBoard.GetEnquiryRecentCalls();
+                EnquiryDashBoard.GetEnquirySurvey();
+                EnquiryDashBoard.GetEnquiryEmployeeCounts();
+            } else if (index == 1) {
+                StudentDashBoard.GetStudentCounts();
+                StudentDashBoard.GetYearlyAdmissionGraph();
+                StudentDashBoard.GetStudentCountByCourse();
+                StudentDashBoard.GetAdmissionByCourseType();
+                StudentDashBoard.GetAbsentList();
+                StudentDashBoard.GetStudentDiaryNotes();
+                StudentDashBoard.GetNewAdmissionStudents();
+            }
+            else if (index == 2) {
+                AccountDashBoard.GetAccountsCounts();
+                AccountDashBoard.GetIncomeExpenseChart();
+                AccountDashBoard.GetCashFlowStatement();
+                AccountDashBoard.GetRecentTransaction();
+                AccountDashBoard.GetChequeDetails();
+            }
+        }
+    });
+
+    function BindAppUser() {
+        var obj = {};
+        obj.BranchKey = $("#BranchKey").val()
+        AppCommon.BindDropDownbyId(obj, $("#hdnFillEmployeeByBranch").val(), $("#AppUserKey"), Resources.Employee);
+    }
+</script>
+

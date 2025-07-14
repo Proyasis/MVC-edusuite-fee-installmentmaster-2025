@@ -1,0 +1,135 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.EmployeeUserPermissionViewModel
+
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Content/JSTreeJS")
+    @Scripts.Render("~/Scripts/EmployeeUserPermission")
+}
+<input type="hidden" id="hdnGetEmployeeUserPermissionById" value="@Url.Action("GetEmployeeUserPermissionById", "EmployeeUserPermission", new { id = Model.EmployeeKey })" />
+<input type="hidden" id="hdnAddEditEmployeeUserPermission" value="@Url.Action("AddEditEmployeeUserPermission", "EmployeeUserPermission", new { id = "" })" />
+<input type="hidden" id="hdnEmployeeList" value="@Url.Action("EmployeeList", "Employee", new { id = "" })" />
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-12">
+            <div class="tbl">
+                <div class="tbl-row  px-1">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.Add@EduSuiteUIResources.Hyphen@EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Employee@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Permission</h3>
+                        <ol class="breadcrumb breadcrumb-simple mb-2 float-sm-right">
+                            <li><a href="#" onclick="location.href='@Url.Action("EmployeeList", "Employee")' ">@EduSuiteUIResources.Employee@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Details</a></li>
+                            <li class="active">@EduSuiteUIResources.Add@EduSuiteUIResources.Hyphen@EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Employee@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Permission</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+<section class="section-content mx-sm-3 mx-0">
+    <div class="form-master">
+
+        @*<div class="form-row">
+            <div class="col-12 mandatoryHead ">
+                <span>@EduSuiteUIResources.FieldsMarkedAs<span class="mandatoryStar"> * </span>@EduSuiteUIResources.AreMandatory</span>
+
+            </div>
+        </div>*@
+        @using (Html.BeginForm("AddEditEmployeeUserPermission", "EmployeeUserPermission", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.EmployeeKey)
+            @Html.ValidationSummary(true)
+
+            if ((Model.EmployeeKey != 0))
+            {
+                @Html.Action("EmployeeDetail", "Shared", new { id = Model.EmployeeKey, EmployeeCode = "" })
+            }
+
+            <div class="form-row mt-4">
+                <div class="col-12 col-sm-3 col-lg-2">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.MenuType, htmlAttributes: new { @class = "form-label" })
+                        @Html.DropDownListFor(m => m.MenuTypeKey, new SelectList(Model.MenuTypes, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.MenuType, new { @class = "form-control input-control", @onchange = "EmployeeUserPermission.BindPerissionTree()" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.MenuTypeKey)
+                        </span>
+                    </fieldset>
+                </div>
+                <div class="col-12 col-sm-3 col-lg-2">
+                    <fieldset class="form-group mt-4">
+                        <input id="txtsearch" type="text" name="focus" class="form-control gridSearchTextBox" placeholder="@EduSuiteUIResources.Search @EduSuiteUIResources.Menu" oninput="EmployeeUserPermission.BindPerissionTree()" /> @* Change Search TextBox Placeholder*@
+                        <span id="iconSpan" class="iconSpan"><i class="fa fa-times-circle" aria-hidden="true"></i></span>
+                    </fieldset>
+                </div>
+
+
+                <div class="checkbox-bird green inline-block mt-4 ml-3">
+                    @Html.CheckBox("chkSelectAll", new { @InputFor = "lblConsession", @class = "switch-input" })
+                    <label for="chkSelectAll">@EduSuiteUIResources.SelectAll</label>
+                </div>
+            </div>
+            <fieldset class="row bottomLine">
+                <legend class="col-12">@EduSuiteUIResources.MenuAccesses</legend>
+
+                <div class="col-12 jstree-inline">
+                    <div id="dvUserPermission"></div>
+                </div>
+
+            </fieldset>
+
+            <fieldset class="row bottomLine">
+                <legend class="col-12">@EduSuiteUIResources.DashBoardAccess</legend>
+
+                <div class="col-12 jstree-inline">
+                    <div id="dvDashBoardPermission"></div>
+                </div>
+
+            </fieldset>
+
+            <fieldset class="row bottomLine ">
+                <legend class="col-12">@EduSuiteUIResources.DataAccesses</legend>
+
+                <div class="col-4 jstree-inline">
+                    <div id="dvBranchAccess"></div>
+                </div>
+                <div class="col-4 jstree-inline">
+                    <div id="dvCountryAccess"></div>
+                </div>
+            </fieldset>
+            <div class="form-row">
+                <div class="col-12">
+                    <input type="button" value="@EduSuiteUIResources.Save" id="btnSave" class="btn btn-sm btn-success mx-1pull-left " />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="paddingNone">
+                    <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+                </div>
+            </div>
+        }
+    </div>
+</section>
+
+<script>
+    var jsonData=@(Html.Raw(Json.Encode(Model)));
+    $(document).ready(function() {
+        EmployeeUserPermission.GetEmployeeUserPermissionById();
+        $("#btnSave").on("click", function () {
+            EmployeeUserPermission.FormSubmit($(this),jsonData)
+
+        })
+
+        $("#chkSelectAll").on("change", function () {
+            if (this.checked)
+                $("#dvUserPermission").jstree("check_all");
+            else
+                $("#dvUserPermission").jstree("uncheck_all");
+        })
+    });
+
+</script>

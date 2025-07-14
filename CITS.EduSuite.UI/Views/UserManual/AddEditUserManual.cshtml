@@ -1,0 +1,209 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.UserManualViewModel
+
+
+<div class="modal-content">
+
+    <!-- Modal Header -->
+    <div class="modal-header">
+        <h4 class="modal-title">Add/Edit User Manual </h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+    </div>
+    <input type="hidden" id="hdnDeleteUserManualDetails" value="@Url.Action("DeleteUserManualDetails", "UserManual")" />
+    <div class="modal-body">
+        <div class="form-Container">
+            @using (Html.BeginForm("AddEditUserManual", "UserManual", FormMethod.Post, new { @id = "frmUserManualAddEdit" }))
+            {
+@Html.HiddenFor(m => m.RowKey)
+                @Html.HiddenFor(m => m.Document)
+                                @Html.ValidationSummary(true)
+
+                                                <div class="form-row">
+                                                    <div class="col-12 col-lg-3 col-sm-3">
+                                                        <fieldset class="form-group">
+                                                            @Html.Label(EduSuiteUIResources.UserManualType, htmlAttributes: new { @id = "lblCountry", @class = "form-label" })
+                                                            <div class="required-icon"><div class="text">*</div></div>
+                                                            @Html.DropDownListFor(m => m.UserManualTypeKey, new SelectList(Model.UserManualTypes, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.UserManualType, new { @class = "form-control input-control", @data_live_search = "true" })
+                                                            <span class="form-control-error-text">
+                                                                @Html.ValidationMessageFor(m => m.UserManualTypeKey)
+                                                            </span>
+                                                        </fieldset>
+                                                    </div>
+                                                    <div class="col-12 col-lg-3 col-sm-3 divDashboardType">
+                                                        <fieldset class="form-group">
+                                                            @Html.Label(EduSuiteUIResources.DashBoardType, htmlAttributes: new { @id = "lblCountry", @class = "form-label" })
+                                                            <div class="required-icon"><div class="text">*</div></div>
+                                                            @Html.DropDownListFor(m => m.DashBoardTypeKey, new SelectList(Model.DashBoardTypes, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.DashBoardType, new { @class = "form-control input-control", @data_live_search = "true" })
+                                                            <span class="form-control-error-text">
+                                                                @Html.ValidationMessageFor(m => m.DashBoardTypeKey)
+                                                            </span>
+                                                        </fieldset>
+                                                    </div>
+                                                    <div class="col-12 col-lg-3 col-sm-3 divMenuType">
+                                                        <fieldset class="form-group">
+                                                            @Html.Label(EduSuiteUIResources.MenuType, htmlAttributes: new { @id = "lblCountry", @class = "form-label" })
+                                                            <div class="required-icon"><div class="text">*</div></div>
+                                                            @Html.DropDownListFor(m => m.MenuTypeKey, new SelectList(Model.MenuTypes, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.MenuType, new { @class = "form-control input-control", @data_live_search = "true" })
+                                                            <span class="form-control-error-text">
+                                                                @Html.ValidationMessageFor(m => m.MenuTypeKey)
+                                                            </span>
+                                                        </fieldset>
+                                                    </div>
+                                                    <div class="col-12 col-lg-3 col-sm-3 divMenuType">
+                                                        <fieldset class="form-group">
+                                                            @Html.Label(EduSuiteUIResources.Menu, htmlAttributes: new { @id = "lblCountry", @class = "form-label" })
+                                                            <div class="required-icon"><div class="text">*</div></div>
+                                                            @Html.DropDownListFor(m => m.MenuKey, new SelectList(Model.Menus, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Menu, new { @class = "form-control input-control", @data_live_search = "true" })
+                                                            <span class="form-control-error-text">
+                                                                @Html.ValidationMessageFor(m => m.MenuKey)
+                                                            </span>
+                                                        </fieldset>
+                                                    </div>
+                                                    <div class="col-12 col-lg-3 col-sm-3">
+                                                        <fieldset class="form-group">
+                                                            @Html.Label(EduSuiteUIResources.IsActive, new { @class = "form-label" })
+                                                            <div class="switch-check my-2">
+                                                                @Html.CheckBoxFor(m => m.IsActive, new { @class = "switch-input" })
+                                                                <div class="switch-label redgreen" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                                                                <div class="switch-handle"></div>
+                                                            </div>
+                                                            <span class="form-control-error-text">
+                                                                @Html.ValidationMessageFor(m => m.IsActive)
+                                                            </span>
+                                                        </fieldset>
+                                                    </div>
+                                                    <div class="col-lg-2 col-12">
+                                                        <fieldset class="form-group MemberPhotoUpload" style="width: auto; height: auto;">
+
+                                                            @if (Model.DocumentPath != null)
+                                                            {
+                                            <img id="Documentphotos" src="@Url.Content(Model.DocumentPath)" alt="Image" class="img-thumbnail" />}
+
+                                                            <div class="custom-file">
+                                                                @Html.TextBoxFor(m => m.DocumentFile, new { type = "file", @class = "custom-file-input" })
+                                                                <label class="custom-file-label" for="MFile">Choose file</label>
+                                                            </div>
+
+                                                            <span class="form-control-error-text">
+                                                                @Html.ValidationMessageFor(m => m.DocumentFile)
+                                                            </span>
+                                                            <input type="button" value="@EduSuiteUIResources.Delete" id="btnPhotoDelete" class="btn btn-sm btn-danger mx-1" style="display:none" />
+                                                        </fieldset>
+
+                                                    </div>
+                                                </div>
+                                                                <div class="form-row">
+                                                                    <div class="col-12 ">
+                                                                        <fieldset class="form-group">
+                                                                            @Html.Label(EduSuiteUIResources.Descreption, htmlAttributes: new { @class = "form-label" })
+                                                                            <div class="required-icon"><div class="text">*</div></div>
+                                                                            @Html.TextAreaFor(m => m.Descreption, new { @class = "form-control input-control" })
+                                                                            <span class="form-control-error-text">
+                                                                                @Html.ValidationMessageFor(m => m.Descreption)
+                                                                            </span>
+                                                                        </fieldset>
+                                                                    </div>
+                                                                </div>
+
+
+                                                                                <div id="rptRepeater" class="repeater">
+                                                                                    <div data-repeater-list>
+
+                                                                                        @for (int i = 0; i < Model.UserManualDetails.Count(); i++)
+                                                                                        {
+
+                                                                        <div data-repeater-item>
+                                                                            <div class="form-row">
+
+                                                                                @Html.HiddenFor(x => x.UserManualDetails[i].RowKey)
+
+                                                                                <div class="col-12 col-lg-3 col-sm-3">
+                                                                                    <fieldset class="form-group">
+                                                                                        @Html.Label(EduSuiteUIResources.Description , htmlAttributes: new { @class = "form-label" })
+                                                                                        @Html.TextBoxFor(m => m.UserManualDetails[i].Descreption, new { @class = "form-control input-control", @InputFor = "lblBranchCode", @data_convert = "uppercase" })
+                                                                                        <span class="form-control-error-text">
+                                                                                            @Html.ValidationMessageFor(m => m.Descreption)
+                                                                                        </span>
+                                                                                    </fieldset>
+                                                                                </div>
+                                                                                <div class="col-12 col-lg-3 col-sm-3">
+                                                                                    <br />
+                                                                                    <div class="custom-file">
+                                                                                        @Html.TextBoxFor(m => m.UserManualDetails[i].DocumentFileDetails, new { type = "file", @class = "custom-file-input" })
+                                                                                        <label class="custom-file-label" for="DocumentFileDetails">Choose file</label>
+                                                                                    </div>
+                                                                                    @if (Model.UserManualDetails[i].Document != null)
+                                                                                    {
+                                                                <a href=@Url.Action("DownloadFile", "ApplicationEducationalDetails", new { filename = Model.UserManualDetails[i].DocumentPath })>@EduSuiteUIResources.Download</a>}
+                                                                                    <span class="form-control-error-text">
+                                                                                        @Html.ValidationMessageFor(m => m.UserManualDetails[i].DocumentFileDetails)
+                                                                                    </span>
+                                                                                </div>
+
+                                                                                <div class="form-group col-md-1">
+                                                                                    <br>
+                                                                                    <button type="button" data-repeater-delete="" class="btn btn-sm btn-danger position-relative pull-left"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                                                                                </div>
+                                                                            </div>
+
+                                                                        </div>}
+
+
+                                                                                    </div>
+                                                                                    <div class="form-row">
+                                                                                        <div class="form-group col-md-12">
+                                                                                            <span data-repeater-create class="btn btn-info btn-sm  btnadd">
+                                                                                                <span class="glyphicon glyphicon-plus"></span> Add
+                                                                                            </span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+
+
+
+
+
+
+                                                                                                <div class="form-row">
+                                                                                                    <div class="form-group col-md-12">
+                                                                                                        <button type="button" id="btnSave" onclick="UserManual.FormSubmit()" class="btn btn-success CustomBtn mr-2"><i class="fa fa-save mx-1"></i>@EduSuiteUIResources.Save</button>
+                                                                                                        <button type="button" class="btn btn-danger CustomBtn" data-dismiss="modal">Close</button>
+
+                                                                                                    </div>
+                                                                                                </div>}
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<script>
+    var jsonData =@(Html.Raw(Json.Encode(Model)));
+
+    $(document).ready(function () {
+        setTimeout(function () {
+            
+            UserManual.CheckUserManualType();
+            $("#MenuTypeKey", $("#frmUserManualAddEdit")).on("change", function () {
+                var obj = {};
+                obj.MenuTypeKey = $("#MenuTypeKey", $("#frmUserManualAddEdit")).val();
+                AppCommon.BindDropDownbyId(obj, $("#hdnFillMenu").val(), $("#MenuKey"), Resources.Menu);
+
+            });
+            $("#UserManualTypeKey", $("#frmUserManualAddEdit")).on("change", function () {
+                UserManual.CheckUserManualType();
+            })
+            $("#DocumentFile").change(function () {
+                debugger
+                if (this.files && this.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $('#Documentphotos').attr('src', e.target.result);
+                    }
+                    reader.readAsDataURL(this.files[0]);
+                }
+            });
+        });
+    })
+</script>

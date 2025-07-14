@@ -1,0 +1,87 @@
+﻿<table id="tblAttendance" class="table table-stripped table-bordered table-attendance">
+    <thead class="thead-dark">
+        <tr>
+            <th>
+                Students
+            </th>
+            <th>
+                Present
+            </th>
+            <th>
+                Absent
+            </th>
+            <th>
+                HalfDay
+            </th>
+            <th>
+                WeekOff
+            </th>
+            {{#AttendanceHeads}}
+            <th>
+                {{MonthName}}
+
+                {{DayNumber}}
+
+                - {{DayName}}
+            </th>
+            {{/AttendanceHeads}}
+        </tr>
+    </thead>
+    <tbody data-repeater-list>
+        {{#Students}}
+
+        <tr data-repeater-item>
+
+            <td class="py-0">
+                <div class="media">
+                    <!--<div class="img-fluid img-thumbnail rounded-circle mr-2 overflow-hidden">
+                {{#if ApplicantPhoto}}
+                <img height="20" width="20" src="{{../ApplicationUrl}}/{{AdmissionNo}}/{{ApplicantPhoto}}" alt="">
+                {{else}}
+                <img height="20" width="20" src="{{../FullPath}}/images/no-photo.png" alt="">
+                {{/if}}
+            </div>-->
+                    <div class="media-body">
+                        <h5 class="m-1 w3-text-deep-purple">
+                            <strong>{{StudentName}}</strong>
+                            <span class="badge badge-pill badge-success float-right">{{RollNoCode}}</span>
+                        </h5>
+                    </div>
+                </div>
+
+
+            </td>
+            <td class="p-0 text-center">
+                {{Presents}}
+
+            </td>
+            <td class="p-0 text-center">
+                {{Absents}}
+
+            </td>
+            <td class="p-0 text-center">
+                {{HalfDays}}
+
+            </td>            
+            <td class="p-0 text-center">
+                {{WeekOffs}}
+
+            </td>
+            {{#AttendanceDetails}}
+
+            <td class="p-0">
+                <div class="btn-group btn-group-toggle " data-toggle="buttons">
+                    {{#AttendanceStatusDetails}}
+                    <label class="btn btn-attendance" style="background-color:{{AttendanceStatusColor}}">
+                        {{AttendanceStatusCode}}
+                    </label>
+                    {{/AttendanceStatusDetails}}
+
+                </div>
+            </td>
+            {{/AttendanceDetails}}
+
+        </tr>
+        {{/Students}}
+    </tbody>
+</table>

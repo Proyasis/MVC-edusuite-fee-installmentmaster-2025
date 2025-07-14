@@ -1,0 +1,95 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.EmployeeSubjectModuleViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+<input type="hidden" id="hdnAddEditEmployeeSubjectModule" value="@Url.Action("AddEditEmployeeSubjectModule", "EmployeeSubjectModule", new { id = "" })" />
+<div id="dynamicRepeater" class="repeater card">
+    <header class="card-header w3-teal">
+        @EduSuiteUIResources.Subject @EduSuiteUIResources.BlankSpace @EduSuiteUIResources.Module @EduSuiteUIResources.BlankSpace @EduSuiteUIResources.Details
+    </header>
+    <div class="card-body p-2 overflow-auto">
+        <table class="table  table-stripped">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.Label(EduSuiteUIResources.Subject, htmlAttributes: new { @class = "form-label" })
+                    </th>
+                    <th>
+                        @Html.Label(EduSuiteUIResources.TotalModuleCount, htmlAttributes: new { @class = "form-label" })
+                    </th>
+                    <th>
+                        @Html.Label(EduSuiteUIResources.AllocatedModuleCount, htmlAttributes: new { @class = "form-label" })
+                    </th>
+                    <th>
+
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody data-repeater-list id="DivWorkScheduleDetails">
+                @for (int i = 0; i < Model.EmployeeSubjectDetailsModel.Count(); i++)
+                {
+                    if (i == 0 || (i != 0 && Model.EmployeeSubjectDetailsModel[i].ClassDetailsKey != Model.EmployeeSubjectDetailsModel[i - 1].ClassDetailsKey))
+                    {
+                        <tr class="w3-light-grey">
+                            <th colspan="5">
+                                @Model.EmployeeSubjectDetailsModel[i].ClassDetailsName - <span>Class</span>
+                            </th>
+                        </tr>
+
+                    }
+                    <tr data-repeater-item>
+                        <td class="px-1">
+                            @*@Html.DisplayFor(m => m.EmployeeSubjectDetailsModel[i].SubjectName, new { @class = "form-control input-control smallFont", @readonly = "true" })*@
+                            @Model.EmployeeSubjectDetailsModel[i].SubjectName
+                            @EduSuiteUIResources.OpenBracket @EduSuiteUIResources.BlankSpace @Model.EmployeeSubjectDetailsModel[i].SubjectCode@EduSuiteUIResources.BlankSpace @EduSuiteUIResources.CloseBracket
+
+                            @Html.HiddenFor(m => m.EmployeeSubjectDetailsModel[i].TeacherClassAllocationKey)
+                            @Html.HiddenFor(m => m.EmployeeSubjectDetailsModel[i].SubjectKey)
+                            @Html.HiddenFor(m => m.EmployeeSubjectDetailsModel[i].ClassDetailsKey)
+                            @Html.HiddenFor(m => m.EmployeeSubjectDetailsModel[i].EmployeeKey)
+                        </td>
+                        <td class="px-1">
+                            @Html.DisplayFor(m => m.EmployeeSubjectDetailsModel[i].TotalModuleCount, new { @class = "form-control input-control smallFont", @readonly = "true" })
+                        </td>
+                        <td class="px-1">
+                            @Html.DisplayFor(m => m.EmployeeSubjectDetailsModel[i].ModuleCount, new { @class = "form-control input-control smallFont", @readonly = "true" })
+                        </td>
+                        <td class="px-1">
+
+                            <button type="button" class="btn btn-primary btn-sm mx-1" onclick="EmployeeSubjectModule.EmployeeSubjectModuleCustomPopup(this)"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+
+                        </td>
+
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+@*<div class="col-12">
+        <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+    </div>*@
+
+<script>
+
+    $(document).ready(function () {
+
+
+        AppCommon.FormatDateInput();
+        AppCommon.FormatInputCase();
+        AppCommon.FormatTimeInput();
+        $("form").removeData("validator");
+        $("form").removeData("unobtrusiveValidation");
+        $.validator.unobtrusive.parse("form");
+
+
+    });
+
+</script>
+<style>
+    .progress {
+        margin: 10px;
+        width: 50%;
+    }
+</style>

@@ -1,0 +1,72 @@
+﻿<div class="modal-header">
+    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+    <h4 class="modal-title" id="myModalLabel">Exam Review</h4>
+</div>
+<div class="modal-body bottomLine">
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>
+                </th>
+                <th>
+                    Total
+                </th>
+                <th>
+                    Correct
+                </th>
+                <th>
+                    Incorrect
+                </th>
+                <th>
+                    Not Attend
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#ExamDetails}}
+            <tr>
+                <td>
+                    {{ModuleName}}
+                </td>
+                <td>
+                    {{TotalCount}}
+                </td>
+                <td>
+                    {{CorrectCount}}
+                </td>
+                <th>
+                    {{IncorrectCount}}
+                </th>
+                <td>
+                    {{NotAttendedCount}}
+                </td>
+            </tr>
+            {{/ExamDetails}}
+        </tbody>
+        <tfoot>
+
+            <tr>
+                <th>
+                    {{ModuleName}}
+                </th>
+                <th>
+                    {{sum ExamDetails 'TotalCount'}}
+                </th>
+                <th>
+                    {{sum ExamDetails 'CorrectCount'}}
+
+                </th>
+                <th>
+                    {{sum ExamDetails 'IncorrectCount'}}
+
+                </th>
+                <th>
+                    {{sum ExamDetails 'NotAttendedCount'}}
+
+                </th>
+            </tr>
+
+        </tfoot>
+    </table>
+</div>

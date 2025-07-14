@@ -1,0 +1,160 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.StudentDiaryViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+@using CITS.EduSuite.UI
+
+
+
+
+<input type="hidden" id="hdnStudentDiaryList" value="@Url.Action("StudentDiaryList", "StudentDiary", new { id = Model.ApplicationsKey })" />
+
+@using (Html.BeginForm("AddEditStudentDiary", "StudentDiary", new { id = "" }, FormMethod.Post, htmlAttributes: new { @id = "frmAddEditStudentDiary" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.RowKey)
+    @Html.HiddenFor(m => m.ApplicationsKey)
+    @Html.HiddenFor(m => m.TemplateKey)
+    @Html.HiddenFor(m => m.StudentEmail)
+    @Html.HiddenFor(m => m.StudentMobile)
+    @Html.HiddenFor(m => m.StudentGuardianPhone)
+    @Html.ValidationSummary(true)
+
+    <div class="modal-header w3-deep-purple">
+        <button type="button" class="modal-close" data-hidden data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+        <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.StudentDiary</h4>
+    </div>
+
+
+    <div class="modal-body bg-white">
+        <div class="form-row">
+
+            <div class="col-12 col-sm-12 col-lg-12">
+                <fieldset class="form-group">
+                    @Html.Label(EduSuiteUIResources.Date, htmlAttributes: new { @id = "lblFeeDate", @class = "form-label" })
+                    <div class="required-icon"><div class="text">*</div></div>
+                    @Html.TextBoxFor(m => m.StudentDiaryDate, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_input_type = "date", @InputFor = "lblFeeDate", @data_inputmask = "'alias': 'dd/mm/yyyy'" })
+                </fieldset>
+                <span class="form-control-error-text">
+                    @Html.ValidationMessageFor(m => m.StudentDiaryDate)
+                </span>
+            </div>
+            <div class="col-12 col-sm-12 col-lg-12  px-1">
+                <fieldset class="form-group">
+                    @Html.Label(EduSuiteUIResources.Subject, htmlAttributes: new { @id = "lblFeeAmount", @class = "form-label" })
+                    <div class="required-icon"><div class="text">*</div></div>
+                    @Html.TextBoxFor(m => m.Subject, new { @class = "form-control input-control", @InputFor = "lblApplicantName" })
+                    <span class="form-control-error-text">
+                        @Html.ValidationMessageFor(m => m.Subject)
+                    </span>
+                </fieldset>
+            </div>
+            <div class="col-12">
+                <fieldset class="form-group">
+
+                    @Html.Label(EduSuiteUIResources.Remarks, htmlAttributes: new { @id = "lblRemarks", @class = "form-label" })
+                    <div class="required-icon"><div class="text">*</div></div>
+                    @Html.TextAreaFor(m => m.Remarks, new { @class = "input-control form-control full-width", @InputFor = "lblRemarks" })
+                    <span class="form-control-error-text">
+                        @Html.ValidationMessageFor(m => m.Remarks)
+                    </span>
+                </fieldset>
+
+            </div>
+        </div>
+
+
+        <div class="form-row">
+
+            <div class="col-sm-6 text-left">
+                @if (ApplicationSettingModel.SMSEnabled)
+                {
+                    if (!(Model.AutoSMS ?? true))
+                    {
+                        <div class="checkbox-bird green inline-block">
+                            @Html.CheckBox("AutoSMS", (Model.AutoSMS ?? false))
+                            <label for="AutoSMS">@EduSuiteUIResources.SendSms</label>
+                        </div>
+                    }
+                    else
+                    {
+                        @Html.Hidden("AutoSMS", (Model.AutoSMS ?? false), new { @class = "pull-left" })
+                    }
+                }
+                @if (ApplicationSettingModel.GuardianSMSEnabled)
+                {
+                    if (!(Model.GuardianSMS ?? true))
+                    {
+                        <div class="checkbox-bird green inline-block">
+                            @Html.CheckBox("GuardianSMS", (Model.GuardianSMS ?? false))
+                            <label for="GuardianSMS">@EduSuiteUIResources.GuardianSMS</label>
+                        </div>
+                    }
+                    else
+                    {
+                        @Html.Hidden("GuardianSMS", (Model.GuardianSMS ?? false), new { @class = "pull-left" })
+                    }
+                }
+
+
+                @if (ApplicationSettingModel.EmailEnabled)
+                {
+                    if (!(Model.AutoEmail ?? true))
+                    {
+                        <div class="checkbox-bird green inline-block">
+                            @Html.CheckBox("AutoEmail", (Model.AutoEmail ?? false), new { @class = "pull-left" })
+                            <label for="AutoEmail">@EduSuiteUIResources.SendEmail</label>
+                        </div>
+                    }
+                    else
+                    {
+                        @Html.Hidden("AutoEmail", (Model.AutoEmail ?? false))
+                    }
+                }
+
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col-6">
+                <div class="form-group">
+                    <input type="submit" value="@EduSuiteUIResources.Save" id="btnSave" class="btn btn-sm btn-success" />
+                    @if (Model.RowKey != 0)
+                    {
+                        <button type="button" id="btnCancel" class="btn btn-sm btn-danger mx-1">@EduSuiteUIResources.Cancel</button>
+                    }
+                </div>
+                <div class="col-12 paddingNone">
+                    <span class="text-danger"> @Html.ValidationMessage("error_msg")  </span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+}
+
+<script>
+    var jsonData=@(Html.Raw(Json.Encode(Model)));
+
+    $(document).ready(function () {
+        setTimeout(function () {
+            AppCommon.FormatDateInput();
+
+        });
+
+
+
+        $("#btnCancel").on("click",function(){
+          StudentDiary.BindStudentDiaryDetails();
+                StudentDiary.AddEditStudentDiary(null, @Model.ApplicationsKey);
+        })
+    });
+
+
+
+</script>
+<style>
+    .exportbutton {
+        position: absolute;
+        right: 11px;
+        top: 11px;
+    }
+</style>

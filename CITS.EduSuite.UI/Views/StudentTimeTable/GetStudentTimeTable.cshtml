@@ -1,0 +1,76 @@
+﻿@model List<CITS.EduSuite.Business.Models.ViewModels.StudentTimeTableViewModel>
+@using CITS.EduSuite.UI
+@using CITS.EduSuite.Business.Models.ViewModels
+<script src="~/Scripts/tinymce/tiny_mce.js"></script>
+<div id="dynamicRepeater" class="repeater col-12 px-1">
+
+
+    <table id="tblAttendance" class="table table-stripped table-bordered table-attendance">
+        <thead class="thead-dark">
+            <tr>
+
+                <th>
+                    @Html.Label(EduSuiteUIResources.ClassCode, htmlAttributes: new { @class = "form-label" })
+                </th>
+
+                @foreach (var item in (ViewBag.Periods as List<SelectListModel>))
+                {                    
+                    <th class="active">
+                        @item.Text
+                    </th>
+                }
+            </tr>
+        </thead>
+        <tbody data-repeater-list>
+            @{
+                var index = 0;
+            }
+            @foreach (var classItem in (ViewBag.Classes as List<SelectListModel>))
+            {
+                <tr data-repeater-item>
+                    <td class="py-0">
+                        @classItem.Text
+                    </td>
+                    @foreach (var item in (ViewBag.Periods as List<SelectListModel>))
+                    {
+                        <td class="p-0">
+                            @{
+                        var currItem = Model.Where(row => row.PeriodKey == item.RowKey && row.ClassDetailsKey == classItem.RowKey).FirstOrDefault() as StudentTimeTableViewModel;
+                        currItem = currItem == null ? new StudentTimeTableViewModel() : currItem;
+                            }
+                            @Html.Hidden("[" + index + "].RowKey", currItem.RowKey)
+                            @Html.Hidden("[" + index + "].ClassDetailsKey", classItem.RowKey)
+                            @Html.Hidden("[" + index + "].PeriodKey", item.RowKey)
+                            @Html.Hidden("[" + index + "].Day", currItem.Day)
+                            @Html.DropDownList("[" + index + "].EmployeeKey", new SelectList(new List<SelectListModel>(), "RowKey", "Text"), new { @class = "form-control input-control", @data_val = @currItem.EmployeeKey })
+                            
+                        </td>
+                        { index++; }
+                    }
+                </tr>
+                 
+            }
+
+
+        </tbody>
+    </table>
+
+
+</div>
+
+<div class="col-12">
+    <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+</div>
+<script>
+    $(document).ready(function () {
+       AppCommon.FormatInputCase();
+        $("[data-repeater-item]").each(function () {
+         
+            TimeTable.GetEmployeeById(this);
+        })
+        
+       
+    });
+
+
+</script>

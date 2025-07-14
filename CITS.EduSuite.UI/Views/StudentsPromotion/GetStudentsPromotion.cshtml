@@ -1,0 +1,298 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.StudentsPromotionViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+
+<div id="dynamicRepeater" class="repeater">
+    @*@Html.HiddenFor(m => m.CourseDuration)*@
+    @Html.HiddenFor(m => m.IfEdit)
+    @Html.HiddenFor(m => m.CurrentYear)
+    @Html.HiddenFor(m => m.CurrentClassDetailsKey)
+
+    <table class="table table-stripped">
+        <thead class="thead-light">
+            <tr>
+                <th></th>
+                <th>
+                    @Html.Label(EduSuiteUIResources.Admission + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.No, htmlAttributes: new { @class = "form-label" })
+                </th>
+
+                <th>
+                    @Html.Label(EduSuiteUIResources.Name, htmlAttributes: new { @class = "form-label" })
+                </th>
+                <th>
+                    @Html.Label(EduSuiteUIResources.CurrentYear, htmlAttributes: new { @class = "form-label" })
+                </th>
+                <th>
+                    @Html.Label(EduSuiteUIResources.CurrentClass, htmlAttributes: new { @class = "form-label" })
+                </th>
+                <th>
+                    @Html.Label(EduSuiteUIResources.PromotionStatus, htmlAttributes: new { @class = "form-label" })
+                    @Html.DropDownListFor(m => m.AllPromotionStatusKey, new SelectList(Model.PromotionStatus, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.PromotionStatus, new { @class = "form-control input-control ", @onchange = "ChangePromotionStatusAll(this)" })
+                </th>
+                <th>
+                    @Html.Label(EduSuiteUIResources.PromotedClass, htmlAttributes: new { @class = "form-label" })
+                    @Html.DropDownListFor(m => m.AllPromotedClassDetailsKey, new SelectList(Model.PromotedClasses, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.PromotedClass, new { @class = "form-control input-control ", @onchange = "ChangePromotedDivisionAll(this)" })
+                </th>
+
+                <th>
+                    @Html.Label(EduSuiteUIResources.PromotedYear, htmlAttributes: new { @class = "form-label" })
+                </th>
+            </tr>
+        </thead>
+        <tbody data-repeater-list>
+            @for (int i = 0; i < Model.StudentsPromotionDetails.Count(); i++)
+            {
+                <tr data-repeater-item>
+                    <td class="px-1">
+                        @if (Model.StudentsPromotionDetails[i].RowKey != null && Model.StudentsPromotionDetails[i].RowKey != 0)
+                        {
+                            <span onclick="StudentsPromotion.ResetPromotion(@Model.StudentsPromotionDetails[i].RowKey)" class="btn btn-danger btn-sm">
+                                <span class="fa fa-remove"></span>
+                            </span>
+                        }
+                    </td>
+                    <td class="px-1">
+                        @Html.DisplayFor(m => m.StudentsPromotionDetails[i].AdmissionNo, new { @class = "form-control input-control" })
+                        @Html.HiddenFor(m => m.StudentsPromotionDetails[i].ApplicationKey)
+                        @Html.HiddenFor(m => m.StudentsPromotionDetails[i].RowKey)
+                        @Html.HiddenFor(m => m.StudentsPromotionDetails[i].CourseDuration)
+                        @Html.HiddenFor(m => m.StudentsPromotionDetails[i].AcademicTermKey)
+
+                    </td>
+
+                    <td class="px-1">
+                        @Html.DisplayFor(m => m.StudentsPromotionDetails[i].Name, new { @class = "form-control input-control" })
+                    </td>
+
+                    <td class="px-1">
+                        @Html.DisplayFor(m => m.StudentsPromotionDetails[i].CurrentYearText, new { @class = "form-control input-control" })
+                        @Html.HiddenFor(m => m.StudentsPromotionDetails[i].CurrentYear)
+
+
+                    </td>
+
+                    <td class="px-1">
+                        @Html.DisplayFor(m => m.StudentsPromotionDetails[i].ClassCode, new { @class = "form-control input-control" })
+                        @*@Html.HiddenFor(m => m.StudentsPromotionDetails[i].CurrentClassDetailsKey)*@
+                    </td>
+
+                    <td class="px-1">
+                        @Html.DropDownListFor(m => m.StudentsPromotionDetails[i].PromotionStatusKey, new SelectList(Model.PromotionStatus, "RowKey", "Text", Model.StudentsPromotionDetails[i].PromotionStatusKey), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.PromotionStatus, new { @class = "form-control input-control", @onchange = "ChangePromotion(this)" })
+                    </td>
+
+                    <td class="px-1 ">
+                        <div class="div_promoteddivision">
+                            @Html.DropDownListFor(m => m.StudentsPromotionDetails[i].PromotedClassDetailsKey, new SelectList(Model.PromotedClasses, "RowKey", "Text", Model.StudentsPromotionDetails[i].PromotedClassDetailsKey), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.PromotedClass, new { @class = "form-control input-control", })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.StudentsPromotionDetails[i].PromotedClassDetailsKey)
+                            </span>
+                        </div>
+                    </td>
+
+                    <td class="px-1 div_promoteddivision">
+                        <div class="div_promoteddivision">
+                            <span id="spnPromotedYear">
+                                @if (@Model.StudentsPromotionDetails[i].PromotedYear > 0)
+                                {
+                                    @Model.StudentsPromotionDetails[i].PromotedYear
+                                }
+                            </span>
+                            @Html.HiddenFor(m => m.StudentsPromotionDetails[i].PromotedYear)
+                        </div>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+
+</div>
+<script>
+    $(document).ready(function () {
+
+        $("#RowKey").val(@Model.RowKey)
+        AppCommon.FormatInputCase();
+        $("form").removeData("validator");
+        $("form").removeData("unobtrusiveValidation");
+        $.validator.unobtrusive.parse("form");
+        if (@Model.RowKey != 0) {
+
+            $("#dvStudentsList [data-repeater-item]").each(function (i) {
+                
+                var item = $(this).closest("[data-repeater-item]");
+                var PromotionStatusKey=$("select[name*=PromotionStatusKey]", $(item)).val();
+                if (PromotionStatusKey != "@DbConstants.PromotionStatus.Promoted") {
+                    $("select[name*=PromotedClassDetailsKey]", $(item)).hide();
+                    $("#spnPromotedYear", $(item)).hide();
+                    $(".div_promoteddivision", $(item)).hide();
+                }
+                else {
+                    var year = $("input[name*=PromotedYear]", $(item)).val();
+                    var CourseDuration = $("input[name*=CourseDuration]", $(item)).val();
+                    var AcademicTermKey = $("input[name*=AcademicTermKey]", $(item)).val();
+                    var yeartext = AppCommon.GetYearDescriptionByCodeDetails(CourseDuration, year, AcademicTermKey)
+                    $("#spnPromotedYear", $(item)).html(yeartext);
+                    $("select[name*=PromotedClassDetailsKey]", $(item)).show();
+                    $("#spnPromotedYear", $(item)).show();
+                    $(".div_promoteddivision", $(item)).show();
+                }
+            });
+        }
+    });
+
+
+
+    function ChangePromotion(_this) {
+        
+        var PromotionStatusKey = $(_this).val();
+        var promotedYear = currentYear = 0;
+        var item = $(_this).closest("[data-repeater-item]");
+
+        if (PromotionStatusKey == "@DbConstants.PromotionStatus.Promoted") {
+            $(".div_promoteddivision", $(item)).show();
+            $("select[name*=PromotedClassDetailsKey]", $(item)).show();
+            $("#spnPromotedYear", $(item)).show();
+
+            currentYear = $("input[name*=CurrentYear]", $(item)).val();
+            currentYear = parseInt(currentYear) ? parseInt(currentYear) : 0;
+            var CourseDuration = $("input[name*=CourseDuration]", $(item)).val();
+            CourseDuration = parseInt(CourseDuration) ? parseInt(CourseDuration) : 0;
+            var AcademicTermKey = $("input[name*=AcademicTermKey]", $(item)).val();
+            AcademicTermKey = parseInt(AcademicTermKey) ? parseInt(AcademicTermKey) : 0;
+
+            var AcademicTermSemester = parseInt(Resources.AcademicTermSemester) ? parseInt(Resources.AcademicTermSemester) : 0;
+            CourseDuration = AcademicTermKey == AcademicTermSemester ? CourseDuration / 6 : CourseDuration / 12;
+
+            if (CourseDuration <= currentYear) {
+                $("select[name*=PromotionStatusKey]", $(item)).val("@DbConstants.PromotionStatus.Completed");
+                $("select[name*=PromotedClassDetailsKey]", $(item)).hide();
+                $("#spnPromotedYear", $(item)).hide();
+
+            }
+            else {
+                currentYear = $("input[name*=CurrentYear]", $(item)).val()
+                promotedYear = parseInt(currentYear) + 1;
+                $("select[name*=PromotedClassDetailsKey]", $(item)).show();
+                $(".div_promoteddivision", $(item)).show();
+            }
+        }
+        else if (PromotionStatusKey == "@DbConstants.PromotionStatus.Completed") {
+            currentYear = $("input[name*=CurrentYear]", $(item)).val()
+            promotedYear = parseInt(currentYear) + 1;
+
+            $("select[name*=PromotedClassDetailsKey]", $(item)).hide();
+            $("#spnPromotedYear", $(item)).hide();
+            $(".div_promoteddivision", $(item)).hide();
+
+        }
+        else {
+            currentYear = $("input[name*=CurrentYear]", $(item)).val()
+            promotedYear = parseInt(currentYear) + 1;
+            $("select[name*=PromotedClassDetailsKey]", $(item)).hide();
+            $("#spnPromotedYear", $(item)).hide();
+            $(".div_promoteddivision", $(item)).hide();
+        }
+        var yeartext = AppCommon.GetYearDescriptionByCodeDetails(CourseDuration, promotedYear, AcademicTermKey)
+        $("#spnPromotedYear", $(item)).html(yeartext);
+        $("input[name*=PromotedYear]", $(item)).val(promotedYear);
+    };
+
+
+
+
+    function ChangePromotionStatusAll(_this) {
+        
+        var promotedYear = currentYear = 0;
+        var PromotionStatusKey = $(_this).val() != "" ? $(_this).val() : 0;
+
+        $("#dvStudentsList [data-repeater-item]").each(function (i) {
+            var item = $(this).closest("[data-repeater-item]");
+            $("select[name*=PromotionStatusKey]", $(item)).val(PromotionStatusKey)
+            if (PromotionStatusKey == "@DbConstants.PromotionStatus.Promoted") {
+                $(".div_promoteddivision", $(item)).show();
+                $("select[name*=PromotedClassDetailsKey]", $(item)).show();
+                $("#spnPromotedYear", $(item)).show();
+
+                currentYear = $("input[name*=CurrentYear]", $(item)).val();
+                currentYear = parseInt(currentYear) ? parseInt(currentYear) : 0;
+                var CourseDuration = $("input[name*=CourseDuration]", $(item)).val();
+
+                CourseDuration = parseInt(CourseDuration) ? parseInt(CourseDuration) : 0;
+                var AcademicTermKey = $("input[name*=AcademicTermKey]", $(item)).val();
+                AcademicTermKey = parseInt(AcademicTermKey) ? parseInt(AcademicTermKey) : 0;
+                var AcademicTermSemester = parseInt(Resources.AcademicTermSemester) ? parseInt(Resources.AcademicTermSemester) : 0;
+                CourseDuration = AcademicTermKey == AcademicTermSemester ? CourseDuration / 6 : CourseDuration / 12;
+
+
+
+                if (CourseDuration <= currentYear) {
+                    $("select[name*=PromotionStatusKey]", $(item)).val("@DbConstants.PromotionStatus.Completed");
+                    $("select[name*=PromotedClassDetailsKey]", $(item)).hide();
+                    $("#spnPromotedYear", $(item)).hide();
+                    promotedYear = parseInt(currentYear);
+                }
+                else {
+                    currentYear = $("input[name*=CurrentYear]", $(item)).val()
+                    promotedYear = parseInt(currentYear) + 1;
+
+                }
+            }
+            else if (PromotionStatusKey == "@DbConstants.PromotionStatus.Completed") {
+                currentYear = $("input[name*=CurrentYear]", $(item)).val()
+                promotedYear = parseInt(currentYear) + 1;
+
+                $("select[name*=PromotedClassDetailsKey]", $(item)).hide();
+                $("#spnPromotedYear", $(item)).hide();
+                $(".div_promoteddivision", $(item)).hide();
+            }
+            else {
+                $("select[name*=PromotedClassDetailsKey]", $(item)).hide();
+                $("#spnPromotedYear", $(item)).hide();
+                $(".div_promoteddivision", $(item)).hide();
+            }
+            var yeartext = AppCommon.GetYearDescriptionByCodeDetails(CourseDuration, promotedYear, AcademicTermKey)
+            $("#spnPromotedYear", $(item)).html(yeartext);
+            $("input[name*=PromotedYear]", $(item)).val(promotedYear);
+        });
+    };
+
+    function ChangePromotedDivisionAll(_this) {
+        
+        var PromotionDivisionKey = $(_this).val() != "" ? $(_this).val() : 0;
+
+        $("#dvStudentsList [data-repeater-item]").each(function (i) {
+            var item = $(this).closest("[data-repeater-item]");
+            $("select[name*=PromotedClassDetailsKey]", $(item)).val(PromotionDivisionKey)
+        });
+    };
+
+    function GetYearDescriptionByCodeDetails(Duration, Year, AcademicTermKey) {
+        Duration = AcademicTermKey == Resources.AcademicTermSemester ? Duration / 6 : Duration / 12;
+        var YearText = AcademicTermKey == Resources.AcademicTermSemester ? " Semester" : " Year";
+        var result;
+        switch (parseInt(Year)) {
+            case 1:
+                if (Duration < 1) {
+                    result = "Short Term";
+                    break;
+                }
+                else {
+                    result = Year + "st " + YearText;
+                    break;
+                }
+            case 2:
+                result = Year + "nd " + YearText;
+                break;
+            case 3:
+                result = Year + "rd " + YearText;
+                break;
+            default:
+                result = Year + "th " + YearText;
+                break;
+
+
+        }
+        return result;
+    }
+
+</script>

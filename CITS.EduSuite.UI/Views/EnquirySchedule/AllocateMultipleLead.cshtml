@@ -1,0 +1,172 @@
+﻿
+@model CITS.EduSuite.Business.Models.ViewModels.EnquiryScheduleViewModel
+
+
+<div class="modal-header">
+    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+    <h4 class="modal-title" id="myModalLabel"> @EduSuiteUIResources.AllocateSelectedLead</h4>
+</div>
+
+@using (Html.BeginForm("AllocateMultipleLead", "EnquirySchedule", FormMethod.Post, htmlAttributes: new { @id = "frmAllocateMultipleLead" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(m => m.ScheduleSelectTypeKey)
+    <div class="modal-body">
+        <div class="form-master">
+            <div class="form-row">
+                <span class="ValidateDataMsg"> @Html.ValidationMessage("error_msg")  </span>
+            </div>
+            <div class="form-row">
+
+                <div class="col-lg-4 col-6 d-none">
+                    <div class="form-group ">
+                        @Html.Label(EduSuiteUIResources.Lead, htmlAttributes: new { @id = "lblCallType", @class = "form-label" })
+                        <select id="EnquiryScheduleKeys" name="EnquiryScheduleKeys" multiple></select>
+
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-6">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.Branch, htmlAttributes: new { @id = "lblCallType", @class = "form-label" })
+                        @Html.DropDownListFor(m => m.SearchBranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Branch, new { @class = "input-control form-control form-control-sm form-control-sm", @InputFor = "lblBranch" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.SearchBranchKey)
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-6">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.Employee, htmlAttributes: new { @id = "lblCallType", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                        @Html.DropDownListFor(m => m.EmployeeKey, new SelectList(Model.Employees, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Employee, new { @class = "input-control form-control form-control-sm form-control-sm", @InputFor = "lblBranch" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.EmployeeKey)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-4">
+                    <fieldset class="form-group ">
+                        @Html.Label(EduSuiteUIResources.Generate + @EduSuiteUIResources.BlankSpace + @EduSuiteUIResources.Schedule, new { @class = "form-label" })
+                        <div class="switch-check my-2">
+                            @Html.CheckBoxFor(m => m.IfFeedback, new { @class = "switch-input" })
+                            <div class="switch-label redgreen" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                            <div class="switch-handle"></div>
+                        </div>
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.IfFeedback)
+                        </span>
+                    </fieldset>
+                </div>
+
+
+
+            </div>
+
+            <div class="form-row" id="dvFeedback">
+
+                <div class="col-4 form-col">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.Enquiry + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Status, htmlAttributes: new { @id = "lblEnquiryLeadCallStatus", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                        @Html.DropDownListFor(m => m.FHEnquiryStatusKey, new SelectList(Model.FHEnquiryStatuses, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Status, new { @class = "form-control input-control" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.FHEnquiryStatusKey)
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-4 form-col">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.CallStatus, htmlAttributes: new { @id = "lblEnquiryLeadCallStatus", @class = "form-label" })
+                        <div class="required-icon"><div class="text">*</div></div>
+                        @Html.DropDownListFor(m => m.FHCallStatusKey, new SelectList(Model.FHCallStatuses, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.CallStatus, new { @class = "form-control input-control" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.FHCallStatusKey)
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-4 form-col">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.NextCallSchedule, htmlAttributes: new { @id = "lblNextCallSchedule", @class = "form-label" })
+                        @if (Model.EnquiryStatusKey == 4)
+                        {
+                            @Html.TextBoxFor(m => m.FHNextCallScheduleDate, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_input_type = "date", @InputFor = "lblNextCallSchedule", @data_inputmask = "'alias': 'dd/mm/yyyy'", @Disabled = "Disabled" })
+                        }
+                        else
+                        {
+                            @Html.TextBoxFor(m => m.FHNextCallScheduleDate, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_input_type = "date", @InputFor = "lblNextCallSchedule", @data_inputmask = "'alias': 'dd/mm/yyyy'" })
+                        }
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.FHNextCallScheduleDate)
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="col-12">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.Remarks, htmlAttributes: new { @id = "lblNextCallSchedule", @class = "form-label" })
+                        <div class="required-icon"><div class="text">*</div></div>
+                        @Html.TextAreaFor(m => m.FHRemarks, new { @class = "form-control input-control" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.FHRemarks)
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer justify-content-start">
+        <div class="form-group">
+            <button type="submit" id="btnSave" class="btn btn-sm btn-success mx-1"><i class="fa fa-save"></i> @EduSuiteUIResources.Save</button>
+
+            <button type="button" data-dismiss="modal" class="btn btn-sm btn-danger mx-1">@EduSuiteUIResources.Cancel</button>
+
+        </div>
+    </div>
+}
+
+
+<script>
+    $(document).ready(function () {
+        AppCommon.FormatDateInput();
+        selection.AppendList("#EnquiryScheduleKeys");
+        $("#SearchBranchKey", $("#frmAllocateMultipleLead")).on("change", function () {
+            EnquirySchedule.GetEmployeesByBranchId($(this).val(), $("#EmployeeKey"));
+        });
+
+        $('#FHNextCallScheduleDate').datepicker('setEndDate', '');
+        $('#FHNextCallScheduleDate').datepicker('setStartDate', new Date());
+
+        EnquirySchedule.CheckIsFeedback($("#IfFeedback", $("#frmAllocateMultipleLead"))[0]);
+
+
+        $("#IfFeedback", $("#frmAllocateMultipleLead")).on("change", function () {
+            EnquirySchedule.CheckIsFeedback($("#IfFeedback", $("#frmAllocateMultipleLead"))[0]);
+        });
+
+        $("#FHEnquiryStatusKey", $("#frmAllocateMultipleLead")).on("change", function () {
+            if (this.value == "4") {
+                $("#FHNextCallScheduleDate").val("");
+                $("#FHNextCallScheduleDate").attr("disabled", true)
+            }
+            else {
+                $("#FHNextCallScheduleDate").removeAttr("disabled");
+            }
+            var validator = $($(this).closest("form")).validate();
+            validator.element("#FHNextCallScheduleDate");
+
+            var obj = {};
+            obj.EnquiryStatusKey = $("#FHEnquiryStatusKey").val();
+            AppCommon.BindDropDownbyId(obj, $("#hdnGetCallStatusByFHEnquiryStatus").val(), $("#FHCallStatusKey", $("#frmAllocateMultipleLead")), Resources.CallStatus);
+        });
+
+    });
+
+
+
+</script>
+

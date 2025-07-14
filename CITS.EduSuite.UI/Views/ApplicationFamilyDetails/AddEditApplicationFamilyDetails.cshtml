@@ -1,0 +1,214 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.ApplicationFamilyDetailsViewModel
+
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+
+    @Scripts.Render("~/Content/JqueryRepeater")
+    @Scripts.Render("~/Scripts/ApplicationFamilyDetails")
+
+}
+
+<input type="hidden" id="hdnDeleteApplicationFamiliyDetails" value="@Url.Action("DeleteApplicationFamiliyDetails", "ApplicationFamilyDetails")" />
+@using (Html.BeginForm("AddEditApplicationFamilyDetails", "ApplicationFamilyDetails", FormMethod.Post, new { @id = "frmApplicationFamilyDetails" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.ApplicationKey)
+    @Html.ValidationSummary(true)
+
+
+    <div class="box-typical box-typical-padding">
+        <div id="dynamicRepeater" class="repeater mb-2 overflow-auto">
+            <table data-repeater-list class="table fixed-table-body-columns">
+                <thead class="thead-light">
+                    <tr>
+                        <th></th>
+                        <th class="mw-sm-150">@EduSuiteUIResources.MemberType</th>
+                        <th class="mw-sm-150">@EduSuiteUIResources.Name</th>
+                        <th class="mw-sm-150">@EduSuiteUIResources.Phone</th>
+                        <th class="mw-sm-150">@EduSuiteUIResources.Email</th>
+                        <th>@EduSuiteUIResources.Occupation</th>
+                        <th class="d-none">@EduSuiteUIResources.SendEmail</th>
+                        <th class="d-none">@EduSuiteUIResources.SendSms</th>
+                        <th class="d-none">@EduSuiteUIResources.Status</th>
+
+
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.FamilyDetailsModel.Count(); i++)
+                    {
+                        <tr data-repeater-item>
+                            <td class="px-1">
+                                @if (Model.FamilyDetailsModel[i].RowKey != null && Model.FamilyDetailsModel[i].RowKey != 0)
+                                {
+                                    <span data-repeater-delete="" class="btn btn-danger btn-sm">
+                                        <span class="fa fa-remove"></span>
+                                    </span>
+                                }
+                            </td>
+                            <td class="px-1 mw">
+                                @Html.TextBoxFor(m => Model.FamilyDetailsModel[i].FamilymemberTypeName, new { @class = "form-control input-control", @InputFor = "lblCourseName", @readonly = "readonly" })
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => Model.FamilyDetailsModel[i].FamilymemberTypeName)
+                                </span>
+                                @Html.HiddenFor(m => Model.FamilyDetailsModel[i].RowKey)
+                                @Html.HiddenFor(m => Model.FamilyDetailsModel[i].FamilyMemberTypeKey)
+                            </td>
+                            <td class="px-1">
+                                @Html.TextBoxFor(m => Model.FamilyDetailsModel[i].Name, new { @class = "form-control input-control", @InputFor = "LblUniversity" })
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => Model.FamilyDetailsModel[i].Name)
+                                </span>
+                            </td>
+                            <td class="px-1">
+                                @Html.TextBoxFor(m => Model.FamilyDetailsModel[i].Phone, new { @class = "form-control input-control", @InputFor = "lblCompletedYear", @type = "tel" })
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => Model.FamilyDetailsModel[i].Phone)
+                                </span>
+                            </td>
+                            <td class="px-1">
+                                @Html.TextBoxFor(m => Model.FamilyDetailsModel[i].Email, new { @class = "form-control input-control", @InputFor = "lblmark", @type = "email" })
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => Model.FamilyDetailsModel[i].Email)
+                                </span>
+                            </td>
+                            <td class="px-1">
+                                @Html.TextBoxFor(m => Model.FamilyDetailsModel[i].Occupation, new { @class = "form-control input-control" })
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => Model.FamilyDetailsModel[i].Occupation)
+                                </span>
+                            </td>
+                            <td class="px-1 text-center d-none">
+                                <div class="checkbox-bird green inline-block">
+                                    @Html.CheckBoxFor(m => m.FamilyDetailsModel[i].SendMail, new { @InputFor = "SendMail", @class = "custom-control-input" })
+                                    <label for="SendMail" class="label-for-check form-label">
+                                    </label>
+                                </div>
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => Model.FamilyDetailsModel[i].SendMail)
+                                </span>
+
+                            </td>
+                            <td class="px-1 text-center d-none">
+                                <div class="checkbox-bird green inline-block">
+                                    @Html.CheckBoxFor(m => m.FamilyDetailsModel[i].sendSMS, new { @InputFor = "sendSMS", @class = "custom-control-input" })
+                                    <label for="sendSMS" class="label-for-check form-label">
+                                    </label>
+                                </div>
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => Model.FamilyDetailsModel[i].sendSMS)
+                                </span>
+                            </td>
+                            <td class="px-1 text-center d-none">
+                                <div class="checkbox-bird green inline-block">
+                                    @Html.CheckBoxFor(m => m.FamilyDetailsModel[i].IfLogin, new { @InputFor = "IfLogin", @class = "custom-control-input" })
+                                    <label for="IfLogin" class="label-for-check form-label">
+                                    </label>
+                                </div>
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => Model.FamilyDetailsModel[i].IfLogin)
+                                </span>
+
+                            </td>
+                        </tr>
+
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="form-row mx-2 d-none">
+            <div class="col-sm-3 col-6">
+                <fieldset class="form-group">
+                    @Html.Label(EduSuiteUIResources.UserName, htmlAttributes: new { @id = "lblUserName", @class = "form-label" })
+                    @Html.TextBoxFor(m => Model.UserName, new { @class = "form-control input-control", @InputFor = "lblUserName", @data_convert = "none", @autocomplete = "false" })
+                    <span class="form-control-error-text">
+                        @Html.ValidationMessageFor(m => Model.UserName)
+                    </span>
+                    @Html.HiddenFor(m => Model.IfchkLogin)
+
+                </fieldset>
+            </div>
+            <div class="col-sm-3 col-6">
+                <fieldset class="form-group">
+                    @Html.Label(EduSuiteUIResources.Password, htmlAttributes: new { @id = "lblPassword", @class = "form-label" })
+                    <div class="input-group-transparent">
+                        @Html.TextBoxFor(m => Model.Password, new { @class = "form-control input-control", @InputFor = "lblPassword", @type = "password", @data_convert = "none" })
+                        <span class="input-group-addon-end"><i class="fa fa-eye"></i></span>
+                    </div>
+                    <span class="form-control-error-text">
+                        @Html.ValidationMessageFor(m => Model.Password)
+                    </span>
+                </fieldset>
+            </div>
+            <div class="col-sm-3 col-6">
+                <fieldset class="form-group">
+                    @Html.Label(EduSuiteUIResources.Confirm + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Password, htmlAttributes: new { @id = "lblConfirmPassword", @class = "form-label", @data_convert = "none" })
+                    <div class="input-group-transparent">
+                        @Html.TextBoxFor(m => Model.ConfirmPassword, new { @class = "form-control input-control", @InputFor = "lblConfirmPassword", @type = "password", @data_convert = "none" })
+                        <span class="input-group-addon-end"><i class="fa fa-eye"></i></span>
+                    </div>
+                    <span class="form-control-error-text">
+                        @Html.ValidationMessageFor(m => Model.ConfirmPassword)
+                    </span>
+                </fieldset>
+            </div>
+            <div class="col-sm-3 col-6">
+                <fieldset class="form-group">
+                    @Html.Label(EduSuiteUIResources.PasswordHint, htmlAttributes: new { @id = "lblPasswordHint", @class = "form-label" })
+                    @Html.TextBoxFor(m => Model.PasswordHint, new { @class = "form-control input-control", @InputFor = "lblPasswordHint" })
+
+                    <span class="form-control-error-text">
+                        @Html.ValidationMessageFor(m => Model.PasswordHint)
+                    </span>
+                </fieldset>
+            </div>
+
+        </div>
+        <div class="row  mt-2">
+            <div class="col-10">
+                <fieldset class="form-group">
+                    <input type="button" value="@EduSuiteUIResources.Save" id="btnSave" class="btn btn-sm btn-success mx-1" />
+                    <input type="button" value="@EduSuiteUIResources.Skip" id="btnSkip" onclick="  $('#tab-application  li a.active').parent().nextAll('li:visible').first().find('a').trigger('click');" class="btnForm btnSubmit btn btn-sm btn-danger " />
+                    <a id="btnFinish" class="btn btn-sm btn-success mx-1" onclick="location.href='@Url.Action("ApplicationList", "Application")'">@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Finish</a>
+
+                </fieldset>
+                <div class="col-1 px-12 paddingNone">
+                    <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+
+}
+
+<script>
+    var jsonData=@(Html.Raw(Json.Encode(Model)));
+
+
+    $(document).ready(function () {
+
+        //FamilyDetailsModel.GetFamilyDetailsModel(jsonData);
+        ApplicationFamilyDetails.GetApplicationFamilyDetails(jsonData);
+
+        AppCommon.CustomRepeaterRemoteMethod();
+
+        $(".chkIfLogin").change(function(){
+
+
+            $(".chkIfLogin").not(this).prop('checked',false)
+            if ($(".chkIfLogin").prop('checked')==true){
+
+                $("#IfchkLogin").val(true);
+            }
+        });
+    });
+
+
+</script>

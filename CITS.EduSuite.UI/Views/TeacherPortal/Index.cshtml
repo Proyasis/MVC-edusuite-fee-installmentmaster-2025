@@ -1,0 +1,94 @@
+﻿@using CITS.EduSuite.Business.Models.ViewModels
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/CitsValidation")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Content/JqueryRepeater")
+    @Scripts.Render("~/Content/momentJS")
+    @Scripts.Render("~/Scripts/TeacherPortal")
+    @Scripts.Render("~/Scripts/Attendance")
+    @Scripts.Render("~/Scripts/WorkSchedule")
+    @Scripts.Render("~/Scripts/UnitTestSchedule")
+    @Scripts.Render("~/Scripts/StudentDiary")
+    @Scripts.Render("~/Scripts/Application")
+    @Scripts.Render("~/Scripts/ApplicationFeePayment")
+    @Scripts.Render("~/Scripts/AttendanceReport")
+    @Scripts.Render("~/Scripts/ChartJS")
+    @Scripts.Render("~/Content/BootstrapTableJS")
+    @Scripts.Render("~/bundles/lightbox")
+}
+<input type="hidden" id="hdnClassesPath" value=@Url.Content("~/Templates/TeacherPortal/Classes.html") />
+<input type="hidden" id="hdnMenuPath" value=@Url.Content("~/Templates/TeacherPortal/Menu.html") />
+<input type="hidden" id="hdnFillClasses" value="@Url.Action("FillClasses", "SelectList")" />
+<input type="hidden" id="hdnAttendance" value="@Url.Action("Attendance", "TeacherPortal")" />
+<input type="hidden" id="hdnUnitTest" value="@Url.Action("UnitTest", "TeacherPortal")" />
+<input type="hidden" id="hdnGetStudents" value="@Url.Action("GetStudents", "TeacherPortal")" />
+<input type="hidden" id="hdnViewStudent" value="@Url.Action("ViewStudent", "TeacherPortal")" />
+<input type="hidden" id="hdnAttendancePath" value=@Url.Content("~/Templates/TeacherPortal/Attendance.html") />
+<input type="hidden" id="hdnCheckAttendanceBlocked" value="@Url.Action("CheckAttendanceBlocked", "Attendance")" />
+<input type="hidden" id="hdnAddEditWorkSchedule" value="@Url.Action("AddEditWorkSchedule", "WorkSchedule")" />
+<input type="hidden" id="hdnFillTeachersByClass" value="@Url.Action("FillTeachersByClass", "SelectList")" />
+<input type="hidden" id="hdnTeachersPath" value=@Url.Content("~/Templates/TeacherPortal/Teachers.html") />
+<input type="hidden" id="hdnStudentsFilePath" value=@Url.Content("~/Templates/TeacherPortal/Students.html") />
+<input type="hidden" id="hdnAddEditStudentDiary" value="@Url.Action("AddEditStudentDiary", "StudentDiary")" />
+<input type="hidden" id="hdnAbsentListFilePath" value=@Url.Content("~/Templates/TeacherPortal/AbsentList.html") />
+<input type="hidden" id="hdnViewProgressCard" value="@Url.Action("ViewProgressCard", "TeacherPortal")" />
+<input type="hidden" id="hdnProgressCardFilePath" value=@Url.Content("~/Templates/TeacherPortal/ProgressCard.html") />
+<input type="hidden" id="hdnAddEditParentsMeetDetails" value=@Url.Action("AddEditParentsMeetDetails", "ParentsMeet") />
+<input type="hidden" id="hdnGetParentsMeetSchedule" value=@Url.Action("GetParentsMeetSchedule", "TeacherPortal") />
+<input type="hidden" id="hdnGetParentsMeetScheduleFilePath" value=@Url.Content("~/Templates/TeacherPortal/ParentsMeetSchedule.html") />
+<input type="hidden" id="hdnGetStudentsForParentsMeet" value="@Url.Action("GetStudentsForParentsMeet", "TeacherPortal")" />
+<input type="hidden" id="hdnParentsMeetStudentsFilePath" value=@Url.Content("~/Templates/TeacherPortal/ParentsMeetStudents.html") />
+<input type="hidden" id="hdnEmployeeTimeTable" value="@Url.Action("ViewTimeTableEmployee", "TimeTableTemp")" />
+<input type="hidden" id="hdnEventsScheduledList" value="@Url.Action("EventsScheduledList", "TeacherPortal")" />
+<input type="hidden" id="hdnWorkUpdates" value="@Url.Action("WorkUpdates", "TeacherPortal")" />
+
+
+
+<input type="hidden" id="IsTeacherPortal" value=true />
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-sm-6 col-12">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.TeacherPortal<span id="spnClassName"></span></h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-12 text-right">
+            <a id="lnkBackToPortal" href="#" class="btn btn-danger btn-sm"><i class="fa fa-arrow-circle-left"></i> <span>@EduSuiteUIResources.Backto <strong id="spnBackToPortal"></strong></span></a>
+        </div>
+    </div>
+</header>
+<section class="section-content mx-sm-3 mx-0">
+    <div class="form-master">
+        <div class="form-row">
+
+            @if (((List<SelectListModel>)ViewBag.Branches).Count > 1)
+            {
+                <div class="col-lg-2 col-md-3 col-6">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.Branch, htmlAttributes: new { @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                        @Html.DropDownList("BranchKey", new SelectList(ViewBag.Branches, "RowKey", "Text"), new { @class = "form-control input-control" })
+
+                    </fieldset>
+                </div>
+            }
+            else
+            {
+                @Html.Hidden("BranchKey", (short)((List<SelectListModel>)ViewBag.Branches).Select(x => x.RowKey).FirstOrDefault())
+            }
+        </div>
+        <div id="dvContent" class="teacher-portal">
+        </div>
+    </div>
+</section>
+<script>
+    var attStatusItem=@(Html.Raw(Json.Encode(new AttendanceStatusDetailsViewModel())));
+    $(document).ready(function () {
+
+        TeacherPortal.GetClasses();
+    });
+</script>

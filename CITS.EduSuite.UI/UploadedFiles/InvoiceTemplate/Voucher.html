@@ -1,0 +1,464 @@
+﻿
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script src="/EduSuiteScripts/Common/AppCommon.js"></script>
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Voucher</title>
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
+</head>
+
+<body>
+    <div id="dvPrintReciept" class="PrintReciept" style=" height: 750px; overflow: hidden;">
+
+
+
+
+        <style>
+
+            body {
+                /*font-family: 'Oswald', sans-serif !important;*/
+            }
+
+            .invoice-box {
+                max-width: 100%;
+                margin: auto;
+                padding: 30px;
+                border: 1px solid #eee;
+                box-shadow: 0 0 10px rgba(0, 0, 0, .15);
+                font-size: 16px;
+                line-height: 24px;
+                font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+                color: #555;
+                margin-top: 14px;
+                float: left;
+                /*min-height: 97vh !important;*/
+                /*padding-top: 90px;*/
+            }
+
+                .invoice-box table {
+                    width: 100%;
+                    line-height: inherit;
+                    text-align: left;
+                    border: 0px !important;
+                    border-collapse: initial;
+                }
+
+                    .invoice-box table.InvTable td {
+                        padding: 5px;
+                        vertical-align: top;
+                        padding: 9px 18px;
+                    }
+
+                    .invoice-box table tr td:nth-child(2) {
+                        text-align: right;
+                    }
+
+                    .invoice-box table tr.top table td {
+                        padding-bottom: 20px;
+                    }
+
+                        .invoice-box table tr.top table td.title {
+                            font-size: 45px;
+                            line-height: 45px;
+                            color: #333;
+                        }
+
+                    .invoice-box table tr.information table td {
+                    }
+
+                    .invoice-box table tr.heading td {
+                        background: #c9ddf5;
+                        border-bottom: 0px solid #ddd;
+                        font-weight: bold;
+                        -webkit-print-color-adjust: exact;
+                    }
+
+                    .invoice-box table tr td {
+                        text-align: left !important;
+                    }
+
+                    .invoice-box table tr.details td {
+                        padding-bottom: 20px;
+                    }
+
+
+
+                    .invoice-box table tr.item.last td {
+                        border-bottom: none;
+                    }
+
+                    .invoice-box table tr.total td:nth-child(2) {
+                        border-top: 2px solid #eee;
+                        font-weight: bold;
+                    }
+
+            @media only screen and (max-width: 600px) {
+                .invoice-box table tr.top table td {
+                    width: 100%;
+                    display: block;
+                    text-align: center;
+                }
+
+                .invoice-box table tr.information table td {
+                    width: 100%;
+                    display: block;
+                    text-align: center;
+                }
+            }
+
+            /** RTL **/
+            .rtl {
+                direction: rtl;
+                font-family: Tahoma, 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+            }
+
+                .rtl table {
+                    text-align: right;
+                }
+
+                    .rtl table tr td:nth-child(2) {
+                        text-align: left;
+                    }
+
+            .table tr.heading td {
+                background: #cdd7ec;
+            }
+
+            span.Price {
+                color: #cc0f0f;
+                font-weight: bolder;
+                -webkit-print-color-adjust: exact !important;
+            }
+        </style>
+
+        <style type="text/css">
+            @media print {
+
+                td {
+                    -webkit-print-color-adjust: exact !important;
+                }
+
+                .invoice-box table tr.heading td {
+                    background: #c9ddf5 !important;
+                    border-bottom: 0px solid #ddd !important;
+                    font-weight: bold !important;
+                    -webkit-print-color-adjust: exact !important;
+                }
+
+                @page {
+                    margin-bottom: 0;
+                    margin-top: 0px;
+                    margin-left: 0px;
+                    margin-right: 0px;
+                }
+
+                a[href]:after {
+                    content: none !important;
+                }
+
+                span.Price {
+                    color: #cc0f0f !important;
+                    font-weight: bolder !important;
+                    -webkit-print-color-adjust: exact !important;
+                }
+
+                .row.InvoivedTo {
+                    background: #e0e0e0;
+                    margin-bottom: 12px;
+                    margin-top: 10px;
+                    padding-left: 15px;
+                    padding-top: 10px;
+                    padding-bottom: 10px;
+                    width: 100%;
+                    -webkit-print-color-adjust: exact !important;
+                }
+
+                .HeaderMaster {
+                    z-index: 999;
+                    text-align: center;
+                    margin-top: -4px;
+                    top: -26px;
+                    color: #17b5c5;
+                    -webkit-print-color-adjust: exact !important;
+                    margin-left: -30px;
+                    width: 108.2%;
+                    border-bottom: solid #f9f6f1 0px !important;
+                }
+
+                .invoice-box {
+                    max-width: 100%;
+                    margin: auto;
+                    padding: 30px;
+                    border: 1px solid #eee;
+                    box-shadow: 0 0 10px rgba(0, 0, 0, .15);
+                    font-size: 16px;
+                    line-height: 24px;
+                    font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+                    color: #555;
+                    margin-top: 14px;
+                    -webkit-print-color-adjust: exact !important;
+                    float: left;
+                    /*height: 97vh !important;*/
+                }
+
+                span.InvoiceDetails {
+                    float: left;
+                    margin-right: 105px;
+                    margin-top: 15px;
+                    margin-bottom: 9px;
+                }
+
+                .invoice-box {
+                   /* padding-top: 90px !important;*/
+                }
+            }
+
+
+            .row.InvoivedTo {
+                background: #e0e0e0 !important;
+                margin-bottom: 12px;
+                margin-top: 10px;
+                padding-left: 15px;
+                padding-top: 10px;
+                padding-bottom: 10px;
+                width: 100%;
+                -webkit-print-color-adjust: exact !important;
+            }
+
+            .HeaderMaster {
+                z-index: 999;
+                text-align: center;
+                margin-top: -4px;
+                top: -26px;
+                color: white;
+                -webkit-print-color-adjust: exact !important;
+                margin-left: -30px;
+                width: 100%;
+                color: #17b5c5;
+            }
+
+            tr.total {
+                background: #f1f1f1 !important;
+            }
+
+            tr.amountInWords {
+                background: #dee4ea !important;
+            }
+
+            span.InvoiceDetails {
+                float: left;
+                margin-right: 105px;
+                margin-top: 15px;
+                margin-bottom: 9px;
+            }
+
+            .Signature {
+                float: right;
+                margin-top: 11px;
+                width: 200px;
+                text-align: center;
+                border-top: solid black 5px;
+                padding-top: 10px;
+                margin-top: 75px;
+                -webkit-print-color-adjust: exact !important;
+                display: none;
+            }
+        </style>
+
+        <div class="col-xs-12 PrintMaster">
+
+            <div class="col-xs-12">
+                <div class="row">
+                    <div class="col-xs-6">
+
+                        <img src="../../UploadFiles/Company/Logo/logo.png" style=" width: 230px; max-width: 250px; position: absolute; top: 20px;" />
+                    </div>
+                    <div class="col-xs-6">
+                        <span class="pull-right">
+
+
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div style="width:100%" id="invoiceBox" class="invoice-box">
+                <div class="HeaderMaster col-sm-12">
+
+                    <h2 style="top: 20px; position: relative;">{{CompanyName}}</h2>
+                    <h4 style="margin-top: 35px !important">{{CompanySubName}}</h4>
+                    <span>{{CompanyAddress}}</span><br />
+                    <span>Ph :{{Phone}},{{Phone2}}</span>
+                    <span>Email :{{CompanyEmailId}}</span>
+
+                    <h4>Voucher</h4>
+                </div>
+
+
+
+
+                <!--<div class="col-xs-12">
+                    <div class="row">
+                        <div style="padding:0px !important" class="col-xs-12">
+                            <span>{{CompanyName}}</span><br />
+                            <span>{{CompanyAddress}}</span><br />
+                            <span>{{Phone}}</span>
+                        </div>
+
+                    </div>
+                </div>-->
+
+
+                <div style="padding-right:0px !important" class="col-xs-12">
+
+                    <div class="row">
+                        <span class="InvoiceDetails">
+                            <b> Voucher No : {{ReceiptNumber}}<br></b>
+                            <b>  Paid To : {{ReceivedBy}}</b>
+                        </span>
+                        <span style="float: right; margin-right: 23px; margin-top: 15px; margin-bottom: 9px; ">
+                            <b>  Date : {{PaymentDate}}<br></b>
+                            <b>  Paid By : {{PaidBy}}</b>
+                        </span>
+                    </div>
+
+
+
+                </div>
+
+                <table class="InvTable" style="margin-top :21px !important;  float: left;width:100% !important">
+                    <tr class="heading">
+                        <td>
+                            Purpose
+                        </td>
+                        <td>
+                            Payment Method
+                        </td>
+                        <td>
+                            Amount
+                        </td>
+                    </tr>
+
+                    <tr class="item">
+                        <td>
+                            {{Purpose}}
+                        </td>
+                        <td>
+                            {{PaymentModeName}}
+                        </td>
+                        <td>
+                            ₹<span class="Price">{{PaidAmount}}</span>
+                        </td>
+                    </tr>
+
+
+
+
+
+                    <tr class="total">
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <b> Total: ₹</b> <span id="totalAmount" class="Price">{{PaidAmount}}</span>
+                        </td>
+                    </tr>
+
+                    <tr class="amountInWords">
+                        <td><b> Amount in Words</b></td>
+                        <td colspan="2">
+
+                            <div style="text-align:left;font-weight:bolder" class="content-divright" id="amountWords">
+                                {{AmountInWords}} Rupees only
+                            </div>
+
+                        </td>
+                    </tr>
+                </table>
+                <div class="Signature" style="float:left !important">
+                    Approved By <br />
+                    {{AuthorizedBy}}
+                </div>
+                <div class="Signature" style="float:left !important">
+                    Received By <br />
+                    {{ReceivedBy}}
+                </div>
+                <div class="Signature">
+                    Authorized signatory
+                </div>
+                <table style="margin-top: 68px; float: inherit;" width="100%">
+                    <tr>
+                        <td style="text-align: center !important; width: 33%; ">
+                            Approved By
+
+                        </td>
+                        <td style="text-align: center !important; width: 33%;">
+                            Received By
+
+                        </td>
+                        <td style="text-align: center !important; width: 33%;"> Authorized signatory</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center !important; width: 33%;">
+
+                            {{AuthorizedBy}}
+                        </td>
+                        <td style="text-align: center !important; width: 33%;">
+
+                            {{ReceivedBy}}
+                        </td>
+                        <td style="text-align: center !important; width: 33%;"> </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+
+    </div>
+    <script>
+
+
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById("invoiceBox").style.width = "100%";
+            //window.print();
+
+            //setTimeout(function ()
+            //{
+            //    document.getElementById("invoiceBox").style.width = "60%";
+            //}, 500)
+
+
+        }, false);
+
+        $(document).ready(function () {
+
+            $("#amountWords").html(AppCommon.AmounToWords($("#totalAmount").html()))
+            window.print();
+            setTimeout(function () {
+                //printDiv()
+            }, 500)
+            $("#btnPrintReceipt").on("click", function () {
+                printDiv()
+            })
+
+        });
+
+    </script>
+
+    <script type="text/javascript">
+
+
+
+
+
+    </script>
+
+
+</body>
+</html>

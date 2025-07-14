@@ -1,0 +1,112 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.BankReconciliationViewModel
+@using CITS.EduSuite.Business.Models.ViewModels;
+
+
+<div class="modal-header">
+    <i data-dismiss="modal" class="fa fa-remove close"></i>
+    <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.Select @EduSuiteUIResources.BlankSpace @EduSuiteUIResources.MatchItem</h4>
+</div>
+
+<div class="modal-body bottomLine">
+    <div class="topMarginSpace  form-master fnone">
+
+        <div id="bankStatementRepeater" class="repeater row paddingNone">
+            <div class="row bottomLine tableHead Margin_None" style=" margin: 0px;">
+                <div class="form-group">
+                    <div class="col-sm-2 form-col bankStatement-header">
+                        @Html.Label(EduSuiteUIResources.Reference + EduSuiteUIResources.Sla + EduSuiteUIResources.Cheque + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Number, htmlAttributes: new { @id = "lblOrderNumber", @class = "form-label" })
+                    </div>
+                    <div class="col-sm-2 form-col bankStatement-header">
+                        @Html.Label(EduSuiteUIResources.TransactionDate, htmlAttributes: new { @id = "lblOrderNumber", @class = "form-label" })
+                    </div>
+                    <div class="col-sm-2 form-col bankStatement-header">
+                        @Html.Label(EduSuiteUIResources.Particulars, htmlAttributes: new { @class = "form-label" })
+                    </div>
+                    <div class="col-sm-1 form-col bankStatement-header">
+                        @Html.Label(EduSuiteUIResources.Amount, htmlAttributes: new { @class = "form-label" })
+                    </div>
+
+                    <div class="col-sm-2 form-col bankStatement-header">
+                        @Html.Label(EduSuiteUIResources.TransactionType, htmlAttributes: new { @class = "form-label" })
+                    </div>
+                    <div class="col-sm-2 form-col bankStatement-header">
+                        @Html.Label(EduSuiteUIResources.Amount + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Type, htmlAttributes: new { @class = "form-label" })
+                    </div>
+                    <div class="col-sm-1 form-col bankStatement-header">
+                    </div>
+                </div>
+            </div>
+            <div class="Margin_BottomNone col-sm-12">
+                @for (int i = 0; i < Model.BankStatementDetails.Count(); i++)
+                {
+                    <div>
+                        @Html.HiddenFor(m => Model.BankStatementDetails[i].ReferenceKey)
+                        @Html.HiddenFor(m => Model.BankStatementDetails[i].Particulars)
+                        @Html.HiddenFor(m => Model.BankStatementDetails[i].TransactionDate)
+                        @Html.HiddenFor(m => Model.BankStatementDetails[i].BankStatementKey)
+                        @Html.HiddenFor(m => Model.BankStatementDetails[i].Amount)
+                        @Html.HiddenFor(m => Model.BankStatementDetails[i].BankTransactionTypeKey)
+                        @Html.HiddenFor(m => Model.BankStatementDetails[i].CashFlowTypeKey)
+                        @Html.HiddenFor(m => Model.BankStatementDetails[i].TransactionTypeKey)
+                        @Html.HiddenFor(m => Model.BankStatementDetails[i].TransactionKey)
+                        @Html.HiddenFor(m => Model.BankStatementDetails[i].ProcessStatusKey)
+                        <div class=" Margin_BottomNone row bottomLine paddingNone white-bg" style=" margin-top: -1px;">
+                            <div class="form-group">
+                                <div class="col-sm-2 form-col text-center SearchDropDown">
+                                    <div class="form-group">
+                                        @Model.BankStatementDetails[i].ReferenceKey
+                                    </div>
+                                </div>
+                                <div class="col-sm-2 form-col text-center SearchDropDown">
+                                    <div class="form-group">
+                                        @string.Format("{0:dd/MM/yyyy}", Model.BankStatementDetails[i].TransactionDate)
+                                    </div>
+                                </div>
+                                <div class="col-sm-2 form-col text-center SearchDropDown">
+                                    <div class="form-group">
+                                        @Model.BankStatementDetails[i].Particulars
+                                    </div>
+                                </div>
+                                <div class="col-sm-1 form-col text-center SearchDropDown">
+                                    <div class="form-group">
+                                        @string.Format("{0:G29}", Model.BankStatementDetails[i].Amount)
+                                    </div>
+                                </div>
+                                <div class="col-sm-2 form-col text-center SearchDropDown">
+                                    <div class="form-group">
+                                        @Model.BankStatementDetails[i].CashFlowTypeName
+                                    </div>
+                                </div>
+                                <div class="col-sm-2 form-col text-center SearchDropDown">
+                                    <div class="form-group">
+                                        @Model.BankStatementDetails[i].BankTransactionTypeName
+                                    </div>
+                                </div>
+                                <div class="col-sm-1 form-col paddingNone SearchDropDown text-center white-bg">
+                                    <span class=" btnDeleteRow" onclick="BankReconciliation.SelectItem(@Model.BankStatementDetails[i].BankStatementKey)">
+                                        <span class="fa fa-arrow-right" style="color: red;text-align: center;font-size: 15px;padding-top: 7px;"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        var jsonData=@(Html.Raw(Json.Encode(Model)));
+        AppCommon.FormatDateInput();
+        //$(".btn-xs").on("click",function(){
+        //    var item=$(this).closest("[data-repeater-item]")
+        //    $(".panel-default",item).show("slide", { direction: "left" }, 1000);
+        //})
+
+    });
+
+</script>
+

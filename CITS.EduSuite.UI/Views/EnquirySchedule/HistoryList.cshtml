@@ -1,0 +1,53 @@
+﻿
+<style>
+    .modal-dialog.modal-md {
+    width: 69%;
+}
+</style>
+<input type="hidden" id="hdnGetClosedHistory" value="@Url.Action("GetHistoryList", "EnquirySchedule")" />
+
+<script>
+    $(document).ready(function () {
+        $("#btnSearchClosedHistory").click(function () {
+            var Obj = {};
+            Obj.MobileNumber = $("#txtMobileNumber").val();
+            EnquirySchedule.GetHistory(Obj)
+
+        });
+    });
+</script>
+
+
+<div class="modal-header">
+    <i data-dismiss="modal" class="fa fa-remove close"></i>
+    <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.ClosedHistory</h4>
+</div>
+
+<div class="modal-body bottomLine">
+    <div class="topMarginSpace  form-master fnone">
+        <div class="formMaster paddingNone">
+            <div class="row">
+                <div class="col-sm-12 form-col">
+                    <div class="form-group">
+                        <div class="col-sm-4 paddingNone">
+                            <input type="text" id="txtMobileNumber" placeholder="@EduSuiteUIResources.Search@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.MobileNumber" class="form-control" />
+                           
+                        </div>
+                        <div class="col-sm-3">
+
+                            <button class="btnForm btnSubmit btn btn-sm btn-default pull-left" id="btnSearchClosedHistory">Search</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 form-col paddingNone">
+                    <div class="form-group">
+                        <div id="ClosedFeedbackList" class="col-sm-12">
+
+                        </div>
+                    </div>
+                </div>
+                    </div>
+                </div>
+            </div>

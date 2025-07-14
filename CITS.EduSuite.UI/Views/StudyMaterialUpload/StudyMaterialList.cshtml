@@ -1,0 +1,98 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.StudentStudyMaterialViewModel
+@using CITS.EduSuite.Business.Models.Common
+
+@using System.Web.Mvc
+
+@section scripts{
+
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/CitsValidation")
+    @Scripts.Render("~/Scripts/StudyMaterialUpload")
+    @Scripts.Render("~/Content/MultiSelectJs")
+    @Scripts.Render("~/Content/momentJS")
+
+}
+
+<input type="hidden" id="hdnGetStudyMaterial" value="@Url.Action("GetStudyMaterials", "StudyMaterialUpload")" />
+<input type="hidden" id="hdnAddEditStudyMaterial" value="@Url.Action("AddEditStudyMaterialUpload", "StudyMaterialUpload")" />
+<input type="hidden" id="hdnGetStudyMaterialsByStudyMaterialId" value="@Url.Action("GetStudyMaterialsByStudyMaterialId", "StudyMaterialUpload")" />
+<input type="hidden" id="hdnDeleteStudyMaterial" value="@Url.Action("DeleteStudyMaterial", "StudyMaterialUpload")" />
+
+
+
+<input type="hidden" id="hdnStudyMaterialUrlconst" value="/UploadFiles/StudyMaterialUpload/" />
+
+@*<div class="col-12 Page_Head_Master">
+        <div class="col-6 Text_Left">
+            <label class="Page_Heading  ">@EduSuiteUIResources.Application</label>
+        </div>
+
+        <div class="col-6 Text_Right">
+            <a href="@Url.Action("AddEditApplication", "Application")" class="btn btn-sm btnBack">
+                <i class="fa fa-plus" aria-hidden="true"></i>   @EduSuiteUIResources.AddNewApplication
+            </a>
+        </div>
+    </div>*@
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-sm-6 col-12">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.StudyMaterialUpload</h3>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-12 text-right">
+
+            <a href="@Url.Action("AddEditStudyMaterialUpload", "StudyMaterialUpload")" class="btn btn-success btn-sm"><i class="fa fa-plus-square-o"></i> <span>@EduSuiteUIResources.New@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.StudyMaterials</span></a>
+        </div>
+    </div>
+</header>
+<section class="section-content mx-sm-3 mx-0">
+    <div class="GridBody">
+
+        <div class="grid-nav-bar">
+            <div class=" form-row justify-content-between">
+
+                <div class="col-lg-2 col-sm-3 col-6">
+                    <div class="form-group">
+                        <input id="SearchText" type="text" name="focus" class="input-control form-control form-control-sm" placeholder="@EduSuiteUIResources.Search" /> @* Change Search TextBox Placeholder*@
+                        <span id="iconSpan" class="iconSpan"><i class="fa fa-times-circle" aria-hidden="true"></i></span>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-sm-3 col-6">
+                    <a class="btn btn-info btn-sm float-right " onclick='StudyMaterialUpload.GetStudyMaterials()'>
+                        <i class="fa fa-refresh"></i>  Refresh
+                    </a>
+                </div>
+            </div>
+
+        </div>
+        <div class="table-wrapper">
+
+            <div class="jqGrid_wrapper overflow-auto">
+                <table id="grid"></table>
+                <div id="pager"></div>
+            </div>
+        </div>
+
+
+
+    </div>
+</section>
+
+
+<script>
+        var jsonData=@(Html.Raw(Json.Encode(Model)));
+    $(document).ready(function () {
+        StudyMaterialUpload.GetStudyMaterials();
+        });
+
+
+
+</script>
+

@@ -1,0 +1,49 @@
+﻿<div class="table-responsive">
+    <table class="table verticle-middle h-100" id="divInstallmentFeeDetails">
+
+        <thead>
+            <tr>
+                <th class="text-center">
+                    Nature Of Enquiry
+                </th>
+                <th class="text-center">
+                    Total
+                </th>
+
+                <th class="text-center">
+                    This Month
+                </th>
+                <th class="text-center">
+                    Pre Month
+                </th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {{#LeadSource}}
+
+            <tr data-repeater-item>
+                <td class="text-center">
+                    {{NatureOfEnquiryName}}
+                </td>
+
+                <td class="text-center">
+                    {{TotalCount}}
+                </td>
+
+                <td class="text-center">
+                    {{ThisMonth}}
+
+                </td>
+                <td class="text-center">
+                    {{PreMonth}}
+
+                </td>
+
+            </tr>
+            {{/LeadSource}}
+        </tbody>
+
+
+    </table>
+</div>

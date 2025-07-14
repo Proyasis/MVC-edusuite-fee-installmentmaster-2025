@@ -1,0 +1,209 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.MailMessagesViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+
+
+<link href="~/Content/typeahead.css" rel="stylesheet" />
+<div class="modal-header">
+    <i data-dismiss="modal" class="fa fa-remove close"></i>
+    <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.ComposeMessage</h4>
+</div>
+
+
+<style>
+    .AutoCompleteList {
+        background: white;
+        border: solid #dad4d4 1px;
+        border-bottom-right-radius: 2px;
+        border-bottom-left-radius: 3px;
+        position: absolute;
+        width: 99%;
+        padding: 0px;
+        z-index: 99;
+        height: 300px;
+        overflow: auto;
+    }
+
+
+        .AutoCompleteList li {
+            list-style-type: none;
+            padding: 1px;
+            display: block;
+            padding-left: 7px;
+            min-height: 23px;
+            cursor: pointer;
+            word-break: break-all;
+        }
+
+            .AutoCompleteList li:hover {
+                background: #f6ffaf;
+            }
+
+    a.TagData {
+        background: #b71010;
+        padding: 0px 9px;
+        text-decoration: none;
+        color: white;
+        margin-right: 4px;
+        padding-right: 18px;
+        display: inline-block;
+        margin-bottom: 4px;
+        border-radius: 3px;
+    }
+
+    .SendersList {
+        float: left;
+        width: 100%;
+        overflow: auto;
+    }
+
+    i.RemoveTag.fa.fa-remove {
+        position: absolute;
+        margin-left: -15px;
+        color: white;
+        margin-top: -6px;
+        background: #e60e5e;
+        width: 16px;
+        text-align: center;
+        border-radius: 50%;
+        height: 15px;
+        font-size: 12px;
+        padding-top: 1px;
+    }
+
+    .btnForm {
+        margin-left: 4px;
+    }
+
+    .MessageSubject {
+        font-weight: bold;
+        color: black;
+        overflow: hidden;
+        padding: 0px;
+    }
+</style>
+
+
+
+
+@using (Html.BeginForm("ComposeMailMessage", "MailMessages", FormMethod.Post, htmlAttributes: new { @id = "frmComposeMessage" }))
+{
+    @Html.HiddenFor(m => m.RowKey)
+    @Html.HiddenFor(m => m.MailMessageKey)
+    @Html.HiddenFor(m => m.ActiveTabKey)
+    <div class="modal-body bottomLine">
+        <div class="topMarginSpace  form-master fnone">
+            <div class="paddingNone">
+                <span class="ValidateDataMsg"> @Html.ValidationMessage("error_msg")  </span>
+            </div>
+
+            <div class="formMaster paddingNone">
+                <div class="row">
+                    <div class="col-sm-12 mandatoryHead ">
+                        <span>@EduSuiteUIResources.FieldsMarkedAs<span class="mandatoryStar"> * </span>@EduSuiteUIResources.AreMandatory</span>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-sm-12 form-col">
+                        <div class="form-group">
+                            @Html.ListBoxFor(m => m.MailToUserKeys, new SelectList(Model.ToEmployees, "RowKey", "Text"), new { @class = "input-control full-width", @data_plugin_type = "select2", @multiple = "multiple", @placeholder = EduSuiteUIResources.To })
+                             <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.MailToUserKeys)
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 form-col">
+                        <div class="form-group">
+                            @Html.TextBoxFor(m => m.MessageSubject, new { @class = "input-control form-control form-control-sm", @placeholder = EduSuiteUIResources.Subject })
+                             <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.MessageSubject)
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 form-col">
+                        <div class="form-group">
+                            @Html.TextAreaFor(m => m.MessageContent, new { @class = "input-control form-control form-control-sm", @Height = "500px", @placeholder = EduSuiteUIResources.Message })
+                             <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.MessageContent)
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 form-col">
+                        <div id="mailContentData"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 form-col">
+                        <div class="form-group col-sm-12 paddingNone">
+                            <input type="button" value="@EduSuiteUIResources.Send" id="btnSaveCopy" class="btnForm btnSubmit btn btn-sm btn-default pull-left " />
+                            <input type="button" value="@EduSuiteUIResources.Save @EduSuiteUIResources.Draft" id="btnSaveDraft" class="btnForm btnSubmit btn btn-sm btn-default pull-left " />
+                            <button type="button" id="btnCancel" data-dismiss="modal" class="btnForm btnCancel btn btn-sm btn-default pull-left">@EduSuiteUIResources.Cancel</button>
+
+                        </div>
+                        <div class="col-sm-12 paddingNone">
+                            <span class="ValidateDataMsg"> @Html.ValidationMessage("error_msg")  </span>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+}
+
+<script>
+
+
+
+    $(document).ready(function () {
+        var jsonData=@(Html.Raw(Json.Encode(Model)));
+        $.validator.unobtrusive.parse($("#frmComposeMessage")[0]);
+        AppCommon.FormatDateInput();
+        AppCommon.FormatTimeInput();
+        AppCommon.FormatInputCase();
+        AppCommon.FormatSelect2();
+
+
+        $("#btnSaveCopy").click(function () {
+            MailMessage.ComposeFormSubmitWithData(jsonData, 0);
+
+        });
+
+
+        $("#btnSaveDraft").click(function () {
+            MailMessage.ComposeFormSubmitWithData(jsonData, 1);
+        });
+
+
+    });
+
+
+</script>
+
+<style>
+    .textBoxStyle {
+        background: white;
+        outline: none;
+        min-height: 29px;
+        border: solid #c3c1bd 1px;
+        outline: none !important;
+        box-shadow: inset 0 0 1px 1px #888;
+        border: solid #e3e3e3 1px;
+        padding: 3px 4px;
+        font-size: 12px;
+    }
+</style>
+

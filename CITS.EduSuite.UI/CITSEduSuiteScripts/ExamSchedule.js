@@ -1,0 +1,841 @@
+﻿var ExamSchedule = (function () {
+    var getExamSchedule = function () {
+        $("#grid").jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+        $("#grid").jqGrid({
+            url: $("#hdnGetExamScheduleListdetails").val(),
+            datatype: 'json',
+            mtype: 'POST',
+            postData: {
+                SearchText: function () {
+                    return $('#txtsearch').val()
+                },
+                BranchKey: function () {
+                    return $('#BranchKey').val()
+                },
+                BatchKey: function () {
+                    return $('#BatchKey').val()
+                }
+
+            },
+            colNames: [
+                Resources.BlankSpace, Resources.BlankSpace, Resources.BlankSpace, Resources.BlankSpace, Resources.BlankSpace,
+                Resources.BlankSpace, Resources.BlankSpace, Resources.BlankSpace, Resources.BlankSpace,
+                Resources.Branch, Resources.Course, Resources.YearOrSem, Resources.Batch,
+                Resources.Subject, Resources.ExamDate, Resources.ExamTerm, Resources.NoOfStudents, Resources.Action],
+            colModel: [
+
+                { key: false, hidden: true, name: 'CourseKey', index: 'CourseKey', editable: true },
+                { key: false, hidden: true, name: 'UniversityMasterKey', index: 'UniversityMasterKey', editable: true },
+                { key: false, hidden: true, name: 'AcademicTermKey', index: 'AcademicTermKey', editable: true },
+                { key: false, hidden: true, name: 'BatchKey', index: 'BatchKey', editable: true },
+                { key: false, hidden: true, name: 'CurrentYear', index: 'CurrentYear', editable: true },
+                { key: false, hidden: true, name: 'BranchKey', index: 'BranchKey', editable: true },
+                { key: false, hidden: true, name: 'SubjectKey', index: 'SubjectKey', editable: true },
+                { key: false, hidden: true, name: 'CourseDuration', index: 'CourseDuration', editable: true },
+                { key: false, hidden: true, name: 'ExamTermKey', index: 'ExamTermKey', editable: true },
+                { key: false, name: 'BranchName', index: 'BranchName', editable: true, cellEdit: true, sortable: true, resizable: false },
+                { key: false, name: 'CourseName', index: 'CourseName', editable: true, cellEdit: true, sortable: true, resizable: false, formatter: formatCourseUniversityYear, width: 250 },
+                { key: false, name: 'CurrentYearText', index: 'CurrentYearText', editable: true, cellEdit: true, formatter: formatCurrentYear, sortable: true, resizable: false },
+                { key: false, name: 'BatchName', index: 'BatchName', editable: true, cellEdit: true, sortable: true, resizable: false },
+                { key: false, name: 'SubjectName', index: 'SubjectName', editable: true, cellEdit: true, sortable: true, resizable: false },
+                { key: false, name: 'ExamDate', index: 'ExamDate', editable: true, cellEdit: true, sortable: true, resizable: false, formatter: 'date', formatoptions: { newformat: 'd/m/Y' } },
+                { key: false, name: 'ExamTermName', index: 'ExamTermName', editable: true, cellEdit: true, sortable: true, resizable: false },
+                { key: false, name: 'NoOfStudents', index: 'NoOfStudents', editable: true, cellEdit: true, sortable: true, resizable: false },
+                { name: 'edit', search: false, index: 'RowKey', sortable: false, formatter: editLink, resizable: false },
+            ],
+            pager: jQuery('#pager'),
+            rowNum: 10,
+            rowList: [5, 10, 15, 20],
+            hidegrid: false,
+            height: '100%',
+            viewrecords: true,
+            emptyrecords: Resources.NoRecordsToDisplay,
+            jsonReader: {
+                root: "rows",
+                page: "page",
+                total: "total",
+                records: "records",
+                repeatitems: false,
+                Id: "0"
+            },
+            multiselect: false,
+            loadonce: false,
+            ignoreCase: true,
+            sortname: 'BranchKey',
+            sortorder: 'desc',
+            altRows: true,
+            altclass: 'jqgrid-altrow',
+
+        })
+
+        $("#grid").jqGrid("setLabel", "ExamSchedule", "", "thStudentsPromotion");
+    }
+
+    var getApplication = function () {
+        $("#grid").jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+        $("#grid").jqGrid({
+            url: $("#hdnGetApplications").val(),
+            datatype: 'json',
+            mtype: 'Get',
+            postData: {
+
+                ApplicantName: function () {
+                    return $('#txtSearchApplicantName').val()
+                },
+                MobileNumber: function () {
+                    return $('#txtSearchMobileNumber').val()
+                },
+                BranchKey: function () {
+                    return $('#BranchKey').val()
+                },
+                BatchKey: function () {
+                    return $('#BatchKey').val()
+                },
+                CourseKey: function () {
+                    return $('#CourseKey').val()
+                },
+                UniversityKey: function () {
+                    return $('#UniversityKey').val()
+                }
+
+            },
+            colNames: [Resources.RowKey, Resources.Blankspace, Resources.Blankspace, Resources.Blankspace,
+            Resources.AdmissionNo, Resources.Name, Resources.MobileNo, Resources.Course, Resources.CurrentYear, Resources.Batch,
+            Resources.NoOfSubjects, Resources.Action],
+            colModel: [
+                { key: true, hidden: true, name: 'RowKey', index: 'RowKey', editable: true },
+                { key: false, hidden: true, name: 'AcademicTermKey', index: 'AcademicTermKey', editable: true },
+                { key: false, hidden: true, name: 'CurrentYear', index: 'CurrentYear', editable: true },
+                { key: false, hidden: true, name: 'CourseDuration', index: 'CourseDuration', editable: true },
+                { key: false, name: 'AdmissionNo', index: 'AdmissionNo', editable: true, cellEdit: true, sortable: true, resizable: false },
+                { key: false, name: 'ApplicantName', index: 'ApplicantName', editable: true, cellEdit: true, sortable: true, resizable: false },
+                { key: false, name: 'MobileNumber', index: 'MobileNumber', editable: true, cellEdit: true, sortable: true, resizable: false },
+                { key: false, name: 'CourseName', index: 'CourseName', editable: true, cellEdit: true, sortable: true, resizable: false, formatter: formatCourseUniversityYear, width: 250 },
+                { key: false, name: 'CurrentYearText', index: 'CurrentYearText', editable: true, cellEdit: true, formatter: formatCurrentYear, sortable: true, resizable: false },
+                { key: false, name: 'BatchName', index: 'BatchName', editable: true, cellEdit: true, sortable: true, resizable: false },
+                { key: false, name: 'NoOfCertificate', index: 'NoOfCertificate', editable: true, cellEdit: true, sortable: true, resizable: false },
+
+                { name: 'edit', search: false, index: 'RowKey', sortable: false, formatter: editindivitualLink, resizable: false, width: 250 },
+            ],
+            pager: jQuery('#pager'),
+            rowNum: 10,
+            rowList: [5, 10, 15, 20],
+            hidegrid: false,
+            height: '100%',
+            viewrecords: true,
+            emptyrecords: Resources.NoRecordsToDisplay,
+            jsonReader: {
+                root: "rows",
+                page: "page",
+                total: "total",
+                records: "records",
+                repeatitems: false,
+                Id: "0"
+            },
+            multiselect: false,
+            loadonce: false,
+            ignoreCase: true,
+            sortname: 'RowKey',
+            sortorder: 'desc',
+            altRows: true,
+            altclass: 'jqgrid-altrow',
+            loadComplete: function (data) {
+
+                $("#grid a[data-modal='']").each(function () {
+                    AppCommon.EditGridPopup($(this), StudentCertificateReturnLoad)
+                });
+
+            },
+            gridComplete: function () {
+                $(".jqgrow:odd").hover(
+                    function () { $(this).removeClass("oddRow"); },
+                    function (event) { $(this).addClass("oddRow"); }
+                );
+            }
+        });
+
+        $("#grid").jqGrid("setLabel", "ApplicationName", "", "thApplicationName");
+    }
+
+    function editLink(cellValue, options, rowdata, action) {
+        var objDelete = [rowdata.CourseKey, rowdata.UniversityMasterKey, rowdata.BatchKey, rowdata.CourseYear, rowdata.AcademicTermKey, rowdata.BranchKey, rowdata.ExamTermKey, rowdata.SubjectKey];
+        var obj = {};
+        obj.BranchKey = rowdata.BranchKey;
+        obj.AcademicTermKey = rowdata.AcademicTermKey;
+        obj.CourseKey = rowdata.CourseKey;
+        obj.UniversityMasterKey = rowdata.UniversityMasterKey;
+        obj.BatchKey = rowdata.BatchKey;
+        obj.ExamYear = rowdata.CurrentYear;
+        obj.ExamTermKey = rowdata.ExamTermKey;
+        obj.SubjectKey = rowdata.SubjectKey;
+        return '<div class="divEditDelete"><a class="btn btn-outline-primary btn-sm mr-2" href="' + $("#hdnAddEditExamSchedule").val() + '?' + $.param(obj) + '"><i class="fa fa-pencil" aria-hidden="true"></i></a>' + '<a class="btn btn-outline-danger btn-sm" href="#"   onclick="javascript:deleteExamSchedule(' + objDelete.join(",") + ');return false;"><i class="fa fa-trash" aria-hidden="true"></i></a></div>';
+    }
+
+    function editindivitualLink(cellValue, options, rowdata, action) {
+
+        return '<div class="divEditDelete"><a class="btn btn-outline-primary btn-sm" href="' + $("#hdnAddEditExamScheduleIndividual").val() + '/' + rowdata.RowKey + '"><i class="fa fa-pencil" aria-hidden="true"></i></a></div>';
+    }
+    function formatCourseUniversityYear(cellValue, options, rowdata, action) {
+        var Coursetext = rowdata.CourseName + " - " + rowdata.UniversityName //+ " - " + yeartext
+        return Coursetext;
+    }
+    function formatCurrentYear(cellValue, options, rowdata, action) {
+
+        return yeartext = AppCommon.GetYearDescriptionByCodeDetails(rowdata.CourseDuration, rowdata.CurrentYear, rowdata.AcademicTermKey)
+    }
+
+    function formSubmit(data) {
+
+        var $form = $("#frmExamSchedule")
+        var JsonData = [];
+        $("[disabled]", $($form)).removeAttr("disabled");
+        var formData = $form.serializeArray();
+        var TimeKeys = ["ExamStartTime", "ExamEndTime"]
+        var checkdata = $("[name*=IsActive]:checked")
+
+        if ($form.valid()) {
+
+            if (checkdata.length > 0) {
+
+                $(".section-content").mLoading();
+
+                $(formData).each(function (i) {
+                    if (formData[i]) {
+                        var name = formData[i]['name'];
+                        var keyName = name.match(/\].*/) ? name.match(/\].*/)[0].replace("].", "") : name;
+
+                        if (TimeKeys.indexOf(keyName) > -1) {
+                            formData[i]['value'] = (formData[i]['value'] != "" ? moment(formData[i]['value'].toUpperCase(), ["hh:mm A"]).format("HH:mm") : null);
+                        }
+
+                    }
+                })
+
+                var dataurl = $form.attr("action");
+                var response = [];
+
+                $.ajax({
+                    url: dataurl,
+                    datatype: "json",
+                    type: "POST",
+                    contenttype: 'application/json; charset=utf-8',
+                    async: false,
+                    //data: $form.serializeArray(),
+                    data: formData,
+                    success: function (data) {
+                        if (typeof response == "string") {
+                            $("[data-valmsg-for=error_msg]").html(response);
+                        }
+                        else if (data.IsSuccessful) {
+                            $.alert({
+                                type: 'green',
+                                title: Resources.Success,
+                                content: data.Message,
+                                icon: 'fa fa-check-circle-o-',
+                                buttons: {
+                                    Ok: {
+                                        text: Resources.Ok,
+                                        btnClass: 'btn-success',
+                                        action: function () {
+                                            $(".section-content").mLoading("destroy");
+                                            window.location.href = $("#hdnStudentPromotionList").val();
+
+                                        }
+                                    }
+                                }
+                            })
+
+                        }
+                    },
+                    error: function (xhr) {
+                        $(".section-content").mLoading("destroy");
+                    }
+                });
+            }
+            else {
+                $.alert({
+                    type: 'orange',
+                    title: Resources.Warning,
+                    content: 'Please Select atleast One !',
+                    icon: 'fa fa-exclamation-circle',
+                    buttons: {
+                        Ok: {
+                            text: Resources.Ok,
+                            btnClass: 'btn-warning',
+
+                        }
+                    }
+                })
+
+            }
+
+        }
+    }
+
+
+    var loadData = function (json) {
+        var model = json;
+
+        model.AcademicTermKey = $("#AcademicTermKey").val();
+        model.CourseKey = $("#CourseKey").val();
+        model.UniversityMasterKey = $("#UniversityMasterKey").val();
+        model.BatchKey = $("#BatchKey").val();
+        model.CourseYear = $("#CourseYear").val();
+        model.BranchKey = $("#BranchKey").val();
+        model.ExamTermKey = $("#ExamTermKey").val();
+        model.SubjectKey = $("#SubjectKey").val();
+        model.RowKey = $("#RowKey").val();
+        $(".section-content").mLoading();
+        $.ajax({
+            type: "POST",
+            url: $("#hdnUrl").val(),
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(model),
+            success: function (result) {
+                if (result.IsSuccessful == false) {
+                    $("[data-valmsg-for=error_msg]").html(result.Message);
+
+                }
+                $("#dvStudentsList").html("")
+                $("#dvStudentsList").html(result);
+                $(".section-content").mLoading("destroy");
+            },
+            error: function (request, status, error) {
+                $(".section-content").mLoading("destroy");
+            }
+        });
+      
+    }
+    var getIndividualdata = function (json) {
+        var model = json;
+
+        model.AcademicTermKey = $("#AcademicTermKey").val();
+        model.CourseKey = $("#CourseKey").val();
+        model.UniversityMasterKey = $("#UniversityMasterKey").val();
+        model.BatchKey = $("#BatchKey").val();
+        model.CourseYear = $("#CourseYear").val();
+        model.BranchKey = $("#BranchKey").val();
+        model.ExamTermKey = $("#ExamTermKey").val();
+        model.SubjectKey = $("#SubjectKey").val();
+        model.ApplicationKey = $("#ApplicationKey").val();
+        $(".section-content").mLoading();
+        $.ajax({
+            type: "POST",
+            url: $("#hdnGetExamScheduleIndividual").val(),
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(model),
+            success: function (result) {
+                if (result.IsSuccessful == false) {
+                    $("[data-valmsg-for=error_msg]").html(result.Message);
+
+                }
+                $("#dvStudentsList").html("")
+                $("#dvStudentsList").html(result);
+                $(".section-content").mLoading("destroy");
+            },
+            error: function (request, status, error) {
+                $(".section-content").mLoading("destroy");
+            }
+        });
+       
+    }
+    var resetExamSchedule = function (rowkey, IsMultipleExamSchedule) {
+        var obj = {};
+        obj.RowKey = rowkey;
+
+        var result = EduSuite.Confirm2({
+            title: Resources.Confirmation,
+            content: Resources.Delete_Confirm_Enquiry,
+            actionUrl: $("#hdnResetExamSchedule").val(),
+            parameters: obj,
+            //actionValue: rowkey,
+            dataRefresh: function () {
+
+                if (IsMultipleExamSchedule == true) {
+                    ExamSchedule.LoadData(jsonData);
+                }
+                else {
+                    ExamSchedule.GetIndividualdata(jsonData);
+                }
+
+            }
+        });
+
+    }
+
+    var getBatchByClass = function (obj, ddl) {
+        $(ddl).html("");
+        $(ddl).append($('<option></option>').val("").html(Resources.Batch));
+        $.ajax({
+            url: $("#hdnFillBatch").val(),
+            type: "GET",
+            dataType: "JSON",
+            data: obj,
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                $.each(result.Batches, function (i, Batch) {
+                    $(ddl).append(
+                        $('<option></option>').val(Batch.RowKey).html(Batch.Text));
+                });
+            }
+        });
+
+    }
+
+    var getclassDetails = function (obj, ddl) {
+        $(ddl).html("");
+        $.ajax(
+            {
+                url: $("#hdnFillSubjects").val(),
+                type: "GET",
+                dataType: "JSON",
+                data: obj,
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+
+                    $.each(result.Subjects, function (i, Subjects) {
+                        $(ddl).append(
+                            $('<option></option>').val(Subjects.RowKey).html(Subjects.Text));
+                    });
+
+
+                    //$(ddl).selectpicker('refresh');
+
+                }
+            });
+    }
+    return {
+        FormSubmit: formSubmit,
+        GetExamSchedule: getExamSchedule,
+        ResetExamSchedule: resetExamSchedule,
+        LoadData: loadData,
+        GetBatchByClass: getBatchByClass,
+        GetclassDetails: getclassDetails,
+        GetApplication: getApplication,
+        GetIndividualdata: getIndividualdata
+    }
+
+
+
+}());
+
+function deleteExamSchedule(CourseKey, UniversityMasterKey, BatchKey, CourseYear, AcademicTermKey, BranchKey, ExamTermKey, SubjectKey) {
+
+
+    var obj = {};
+    obj.BranchKey = BranchKey;
+    obj.AcademicTermKey = AcademicTermKey;
+    obj.CourseKey = CourseKey;
+    obj.UniversityMasterKey = UniversityMasterKey;
+    obj.BatchKey = BatchKey;
+    obj.CourseYear = CourseYear;
+    obj.ExamTermKey = ExamTermKey;
+    obj.SubjectKey = SubjectKey;
+
+
+    var result = EduSuite.Confirm2({
+        title: Resources.Confirmation,
+        content: Resources.Delete_Confirm_Attendance,
+        actionUrl: $("#hdnDeleteExamSchedule").val(),
+        parameters: obj,
+        dataRefresh: function () {
+            $("#grid").jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+        }
+
+    });
+}
+
+function objectifyForm(formArray, returnArray) {//serialize data function
+
+    for (var i = 1; i < formArray.length; i++) {
+
+        var subModelName = '', index = 0, keyName = ''
+        var name = formArray[i]['name'];
+        var tempName = name.match(/^[^\]}),]*/) ? name.match(/^[^\]}),]*/)[0] : name;
+        keyName = name.match(/\].*/) ? name.match(/\].*/)[0].replace("].", "") : name;
+        var arr = tempName.split('[');
+        if (arr.length == 2) {
+            subModelName = arr[0];
+            index = arr[1];
+        }
+        else {
+            keyName = arr[0];
+        }
+        if (subModelName == "") {
+            returnArray[name] = formArray[i]['value'];
+        }
+        else {
+
+            if (!returnArray[subModelName]) {
+                returnArray[subModelName] = [];
+            }
+            if (!returnArray[subModelName][index]) {
+                returnArray[subModelName][index] = $.extend(true, {}, returnArray[subModelName][0]) || {};
+            }
+            if ($("input[name='" + name + "']")[0] && $($("input[name='" + name + "']")[0]).is(':checkbox')) {
+                returnArray[subModelName][index][keyName] = $($("input[name='" + name + "']")[0]).prop('checked');
+            }
+            else {
+                returnArray[subModelName][index][keyName] = formArray[i]['value'];
+            }
+        }
+
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// #region Old query
+//var jsonData = [], request = null;
+//$(".TableHeadId").hide();
+//var ExamSchedule = (function ()
+//{
+
+
+//    var getExamScheduleStudents = function (json, pageIndex, resetPagination)
+//    {
+//        $(".TableHeadId").hide();
+//        if ($("#SearchExamSubjectKey").val() != "")
+//        {          
+//            JsonData = json;
+//            JsonData["SearchAcademicTermKey"] = $("#SearchAcademicTermKey").val();
+//            JsonData["SearchCourseTypeKey"] = $("#SearchCourseTypeKey").val();
+//            JsonData["SearchCourseKey"] = $("#SearchCourseKey").val();
+//            JsonData["SearchUniversityKey"] = $("#SearchUniversityKey").val();
+//            JsonData["SearchExamYearKey"] = $("#SearchExamYearKey").val();
+//            JsonData["SearchExamSubjectKey"] = $("#SearchExamSubjectKey").val();
+//            JsonData["SearchBatchKey"] = $("#SearchBatchKey").val();
+//            JsonData["PageIndex"] = pageIndex ? pageIndex : 1;
+//            JsonData["PageSize"] = 10;
+//            $("#dvRepeaterList").empty();
+//            $("#dvScheduleContainer").mLoading();
+
+//            request = $.ajax({
+//                url: $("#hdnGetExamScheduleStudentsList").val(),
+//                data: JsonData,
+//                datatype: "json",
+//                type: "post",
+//                contenttype: 'application/json; charset=utf-8',
+//                async: true,
+//                beforeSend: function ()
+//                {
+//                    if (request != null)
+//                    {
+//                        request.abort();
+//                    }
+//                },
+//                success: function (data)
+//                {
+//                    $("#dvRepeaterList").html(data);
+
+//                    $(".TableHeadId").show();
+
+//                    $("form").removeData("validator");
+//                    $("form").removeData("unobtrusiveValidation");
+//                    $.validator.unobtrusive.parse("form");
+
+//                    ExamSchedule.CheckIsApplied();
+
+//                    if (resetPagination)
+//                    {
+//                        ExamSchedulePagination();
+//                        $('.pagination  li').removeClass("active");
+//                        $('[data-lp="' + JsonData["PageIndex"] + '"]').addClass("active");
+//                        $('.pagination  li.next').removeClass("active");
+//                    }
+
+//                    $("#dvScheduleContainer").mLoading("destroy");
+//                },
+//                error: function (error) {
+//                    console.log(JSON.stringify(error));
+//                    // $("#dvScheduleContainer").mLoading("destroy");
+//                }
+//            });
+//        }
+//    }
+
+
+
+//    var getCourseTypeBySyllabus = function (obj, ddl)
+//    {
+//        $(ddl).html("");
+//        $(ddl).append($('<option></option>').val("").html(Resources.CourseType));
+//        $.ajax({
+//            url: $("#hdnGetCourseTypeBySyllabus").val(),
+//            type: "GET",
+//            data: obj,
+//            dataType: "JSON",
+//            contentType: "application/json; charset=utf-8",
+//            success: function (result) {
+//                $.each(result.CourseTypes, function (i, CourseType)
+//                {
+//                    $(ddl).append(
+//                        $('<option></option>').val(CourseType.RowKey).html(CourseType.Text));
+//                });
+//            }
+//        });
+//    }
+
+//    var getCourseByCourseType = function (obj, ddl)
+//    {
+//        $(ddl).html("");
+//        $(ddl).append($('<option></option>').val("").html(Resources.Course));
+//        $.ajax(
+//            {
+//                url: $("#hdnGetCourseByCourseType").val(),
+//                type: "GET",
+//                dataType: "JSON",
+//                data: obj,
+//                contentType: "application/json; charset=utf-8",
+//                success: function (result) {
+//                    $.each(result.Courses, function (i, Course)
+//                    {
+//                        $(ddl).append(
+//                            $('<option></option>').val(Course.RowKey).html(Course.Text));
+//                    });
+//                }
+//            });
+//    }
+
+//    var getUniversityByCourse = function (obj, ddl)
+//    {
+//        $(ddl).html("");
+//        $(ddl).append($('<option></option>').val("").html(Resources.University));
+//        $.ajax({
+//            url: $("#hdnUniversityByCourse").val(),
+//            type: "GET",
+//            dataType: "JSON",
+//            data: obj,
+//            contentType: "application/json; charset=utf-8",
+//            success: function (result) {
+//                $.each(result.Universities, function (i, University) {
+//                    $(ddl).append(
+//                        $('<option></option>').val(University.RowKey).html(University.Text));
+//                });
+//            }
+//        });
+
+//    }
+
+
+
+//    var getYearsBySyllabus = function (obj, ddl)
+//    {
+//        $(ddl).html("");
+//        $(ddl).append($('<option></option>').val("").html(Resources.Year));
+//        $.ajax({
+//            url: $("#hdnGetYearsBySyllabus").val(),
+//            type: "GET",
+//            dataType: "JSON",
+//            data: obj,
+//            contentType: "application/json; charset=utf-8",
+//            success: function (result)
+//            {
+//                $.each(result.CourseYears, function (i, CourseYears)
+//                {
+//                    $(ddl).append($('<option></option>').val(CourseYears.RowKey).html(CourseYears.Text));
+//                });
+//            }
+//        });
+//    }
+
+//    var getExamSubjects = function (obj, ddl)
+//    {
+//        $(ddl).html("");
+//        $(ddl).append($('<option></option>').val("").html(Resources.Subject));
+//        $.ajax({
+//            url: $("#hdnGetExamSubjects").val(),
+//            type: "GET",
+//            dataType: "JSON",
+//            data: obj,
+//            contentType: "application/json; charset=utf-8",
+//            success: function (result)
+//            {
+//                $.each(result.ExamSubjects, function (i, ExamSubjects) {
+//                    $(ddl).append($('<option></option>').val(ExamSubjects.RowKey).html(ExamSubjects.Text));
+//                });
+//            }
+//        });
+//    }
+
+//    var deleteExamSchedule = function (rowkey)
+//    {
+//        var result = EduSuite.Confirm({
+//            title: Resources.Confirmation,
+//            content: Resources.Delete_Confirm_ExamSchedule,
+//            actionUrl: $("#hdnDeleteExamSchedule").val(),
+//            actionValue: rowkey,
+//            dataRefresh: function (Result)
+//            {
+//                $('[key="' + rowkey + '"] .examCentreClassDisabled').addClass("examCentreClass");
+//                $('[key="' + rowkey + '"] .examTermClassDisabled').addClass("examTermClass");
+
+//                $('[key="' + rowkey + '"] .examCentreClass').removeClass("examCentreClassDisabled");
+//                $('[key="' + rowkey + '"] .examTermClass').addClass("examTermClassDisabled");
+
+//                $('[key="' + rowkey + '"] .examAppliedDateClassDisabled').addClass("examAppliedDateClass");
+//                $('[key="' + rowkey + '"] .examAppliedDateClass').removeClass("examCentreClassDisabled");
+
+//                $('[key="' + rowkey + '"] input').removeAttr("disabled");
+//                $('[key="' + rowkey + '"] select').removeAttr("disabled");
+
+//                $('[key="' + rowkey + '"] input[type="text"]').val("");
+//                $('[key="' + rowkey + '"] select').val("");
+//                $('[key="' + rowkey + '"] .rowKeyClass').val(0);
+//                $('[key="' + rowkey + '"] .ScheduleStatusClass').val("False");
+
+//                $('[key="' + rowkey + '"] .ChkIsAppliedDisabledClass').prop('checked', false);
+//                $('[key="' + rowkey + '"] .ChkIsAppliedDisabledClass').addClass("ChkIsAppliedClass");
+//                $('[key="' + rowkey + '"] .ChkIsAppliedClass').removeClass("ChkIsAppliedDisabledClass");
+
+//                $('[deleteKey="' + rowkey + '"]').remove();
+
+//                ExamSchedule.CheckIsApplied();
+//            }
+//        });
+//    }
+
+
+
+//    var checkIsApplied = function ()
+//    {
+//        var Status = false;
+//        var Count = 0;
+//        $("#IsAppliedCount").html("");
+//        $(".ChkIsApplied").each(function ()
+//        {           
+//            if(this.checked==false)
+//            {
+//                Status = true;
+
+//            }
+//            else
+//            {
+//                if($(this).hasClass("ChkIsAppliedClass"))
+//                {
+//                    Count = Count + 1;
+//                }
+//            }
+
+//        });
+
+//        if(Status==false)
+//        {
+//            $("#IsApplied").prop('checked', true);
+//        }
+//        else
+//        {
+//            $("#IsApplied").prop('checked', false);
+//        }
+
+//        if( Count>0)
+//        {
+//            $("#IsAppliedCount").html("("+Count+")");
+//        }
+
+//    }
+
+
+//    //var deleteExamSchedule = function (rowkey)
+//    //{
+//    //    var result = confirm(Resources.Delete_Confirm_EnquiryFeedback);
+//    //    if (result == true) {
+//    //        var response = AjaxHelper.ajax("POST", $("#hdnDeleteExamSchedule").val(),
+//    //                    {
+//    //                        id: rowkey
+//    //                    });
+
+//    //        if (response.Message === Resources.Success)
+//    //        {
+//    //            $("#grid").jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+//    //        }
+//    //        else
+//    //            alert(response.Message);
+//    //        event.preventDefault();
+//    //    }
+//    //}
+
+
+
+
+//    return {
+//        GetExamScheduleStudents:getExamScheduleStudents,
+//        GetCourseTypeBySyllabus:getCourseTypeBySyllabus,
+//        GetCourseByCourseType: getCourseByCourseType,
+//        GetUniversityByCourse: getUniversityByCourse,
+//        GetYearsBySyllabus: getYearsBySyllabus,
+//        GetExamSubjects: getExamSubjects,
+//        DeleteExamSchedule: deleteExamSchedule,
+//        CheckIsApplied: checkIsApplied
+//    }
+
+//}());
+
+//function ExamSchedulePagination()
+//{
+
+//    $('#page-selection-down').empty();
+//    var totalRecords = $("#hdnTotalRecords").val();
+//    totalRecords = $("#hdnTotalRecords").val();
+//    var Size = JsonData["PageSize"];
+//    var totalPages = Math.floor(totalRecords % Size == 0 ? totalRecords / Size : (totalRecords / Size) + 1);
+
+//    $('#page-selection-down').bootpag({
+//        total: totalPages,
+//        page: 1,
+//        maxVisible: 10
+//    });
+
+//    $('#page-selection-down').on("page", function (event, num)
+//    {
+//        ExamSchedule.GetExamScheduleStudents(JsonData, num, false);
+//    });
+
+//}
+
+// #endregion Old query

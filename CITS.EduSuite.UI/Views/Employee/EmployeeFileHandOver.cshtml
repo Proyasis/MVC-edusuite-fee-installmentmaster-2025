@@ -1,0 +1,160 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.EmployeeFileHandOverViewModel
+
+@using System.Web.Mvc
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+
+    @Scripts.Render("~/Scripts/Employee")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Content/Select2JS")
+}
+
+<input type="hidden" id="hdnGetEmployeeFileHandoverById" value="@Url.Action("GetEmployeeFileHandoverById", "Employee")" />
+<input type="hidden" id="hdnResetHandover" value="@Url.Action("ResetHandover", "Employee")" />
+
+
+<div class="navbar navbar-default navbar-component navbar-xs">
+    <div class="col-12 Page_Head_Master">
+        <div class="col-6 Text_Left">
+            <label class="Page_Heading  ">@EduSuiteUIResources.FileHandOver</label>
+        </div>
+
+        <div class="col-6 Text_Right">
+            <a onclick="location.href='@Url.Action("EmployeeList", "Employee")' " class="btn btn-sm btnBack">
+                <i class="fa fa-arrow-left" aria-hidden="true"></i>  @EduSuiteUIResources.Backto @EduSuiteUIResources.Employee@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Details
+            </a>
+        </div>
+
+
+    </div>
+    <ul class="nav navbar-nav visible-xs-block">
+        <li class="full-width text-center">
+            <a data-target="#navbar-filter1" data-toggle="collapse" class="collapsed" aria-expanded="false">
+                <i class="icon-menu7"></i>
+            </a>
+        </li>
+    </ul>
+    @using (Html.BeginForm("AddEditEmployeeFileHandover", "Employee", FormMethod.Post, new { @id = "frmHandOover" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.EmployeeFromKey)
+        @Html.ValidationSummary(true)
+        <div class="grid-nav-bar form-row justify-content-between">
+
+            <div class="col">
+                @Html.Label(EduSuiteUIResources.FileHandOver + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.To, htmlAttributes: new { @id = "lblEmployee", @class = "form-label" })
+                <div class="required-icon"><div class="text">*</div></div>
+                @Html.DropDownListFor(m => m.EmployeeToKey, new SelectList(Model.Employees, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Employee, new { @class = "form-control input-control", @data_plugin_type = "select2", @InputFor = "lblEmployee" })
+                <span class="form-control-error-text">
+                    @Html.ValidationMessageFor(m => m.EmployeeToKey)
+                </span>
+            </div>
+            <div class="col">
+                @Html.Label(EduSuiteUIResources.FileHandOver + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Type, htmlAttributes: new { @id = "lblFileHandoverType", @class = "form-label" })
+                @Html.DropDownListFor(m => m.FileHandoverTypeKey, new SelectList(Model.FileHandoverTypes, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.FileHandOver + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Type, new { @class = "form-control input-control", @InputFor = "lblFileHandoverType" })
+                <span class="form-control-error-text">
+                    @Html.ValidationMessageFor(m => m.FileHandoverTypeKey)
+                </span>
+            </div>
+            <div id="dvHandoverSubmitButtons">
+                <div class="col-2">
+                    <br />
+                    <a id="btnHandoverSelected" class="btn btn-sm btn-success mx-1float-right"><i class="fa fa-handshake-o"></i>@EduSuiteUIResources.HandOver@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Selected </a>
+
+                </div>
+                <div class="col-2">
+                    <br />
+                    <a id="btnHandoverAll" class="btnForm btnSubmit btn btn-sm btn-primary float-right"><i class="fa fa-handshake-o"></i>@EduSuiteUIResources.HandOver@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.All </a>
+
+                </div>
+            </div>
+            <div id="dvHandoverResetButtons">
+                <div class="col-2">
+                    <br />
+                    <a id="btnResetHandoverSelected" class="btn btn-sm btn-danger float-right"><i class="fa fa-undo"></i>@EduSuiteUIResources.Reset@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Selected </a>
+
+                </div>
+                <div class="col-2">
+                    <br />
+                    <a id="btnResetHandoverAll" class="btn btn-sm btn-danger float-right"><i class="fa fa-undo"></i>@EduSuiteUIResources.Reset@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.All </a>
+
+                </div>
+            </div>
+            <div class="col-2 float-right">
+                <a class="btn btn-info btn-sm float-right " onclick='window.location.reload()'>
+                    <i class="fa fa-refresh"></i>   @EduSuiteUIResources.Refresh
+                </a>
+            </div>
+
+        </div>
+
+        <div class="col-12">
+            <div id="tab-filehandover" class="navbar-collapse collapse">
+                <ul class="nav nav-tabs MyTab">
+                    <li><a data-toggle="tab" data-val="1" href="#filehandover" aria-expanded="true">@EduSuiteUIResources.FileHandOver</a></li>
+                    <li><a data-toggle="tab" data-val="2" href="#filehandoverhistory" aria-expanded="true">@EduSuiteUIResources.FileHandOverHistory</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="tabContent" class="tab-content min-content-height">
+
+
+
+
+            <div class="GridBody">
+
+
+
+                <div class="portlet-body" id="portletBody">
+                    <div class='table-scrollable'>
+                        <table id="gridHandover"></table>
+                        <div id="pagerHandover"></div>
+                    </div>
+                </div>
+
+
+
+            </div>
+
+
+
+
+        </div>
+    }
+</div>
+
+
+
+
+<script>
+    $(document).ready(function () {
+        $("#tab-filehandover li:first-child").addClass('active');
+        Employee.HideAndShowHandoverButtons();
+        Employee.GetEmployeeFileHandover();
+        AppCommon.FormatSelect2();
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            Employee.HideAndShowHandoverButtons();
+            Employee.GetEmployeeFileHandover();
+        });
+        $("#EmployeeToKey,#FileHandoverTypeKey").on("change", function () {
+            Employee.GetEmployeeFileHandover();
+        });
+        $("#btnHandoverSelected").on("click", function () {
+            Employee.MultipleHandoverSelectedClickEvent();
+        });
+        $("#btnHandoverAll").on("click", function () {
+            Employee.MultipleHandoverAllClickEvent();
+        });
+        $("#btnResetHandoverSelected").on("click", function () {
+            Employee.MultipleHandoverResetSelectedClickEvent();
+        });
+        $("#btnResetHandoverAll").on("click", function () {
+            Employee.MultipleHandoverResetAllClickEvent();
+        });
+
+      
+    });
+
+</script>

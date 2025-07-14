@@ -1,0 +1,115 @@
+﻿@model List<CITS.EduSuite.Business.Models.ViewModels.UniversityPaymentDetailsmodel>
+@using CITS.EduSuite.Business.Models.ViewModels
+
+
+
+
+<div class="card-body p-0">
+    <table class="table table-sm" id="divCourseFeeDetails">
+
+        <thead>
+            <tr>
+
+                <th class="bg-secondary text-white align-middle text-center">
+                    @Html.Label(EduSuiteUIResources.FeeType, htmlAttributes: new { @class = "form-label" })
+                </th>
+                <th class="bg-primary text-white text-center  border-right  border-primary">
+                    @Html.Label(EduSuiteUIResources.Fee + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Amount, htmlAttributes: new { @class = "form-label" })
+                </th>
+
+                <th class="bg-success text-white text-center  border-right  border-success">
+                    @Html.Label(EduSuiteUIResources.Fee + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Paid, htmlAttributes: new { @class = "form-label" })
+                </th>
+
+                <th class="bg-danger text-white text-center  border-right  border-danger">
+                    @Html.Label(EduSuiteUIResources.Balance + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Fee, htmlAttributes: new { @class = "form-label" })
+                </th>
+
+
+
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                if (i == 0 || (i != 0 && Model[i].UniversityPaymentYear != Model[i - 1].UniversityPaymentYear))
+                {
+                    if (Model[i].FeeYearText != "")
+                    {
+                        <tr class="w3-light-grey">
+                            <th colspan="7">
+                                @Model[i].FeeYearText
+                            </th>
+                        </tr>
+                    }
+                }
+
+                <tr data-repeater-item data-type="@Model[i].FeeTypeKey" data-year="@Model[i].UniversityPaymentYear">
+                    <td class="bg-info text-white align-middle text-center">
+                        <dt> @Model[i].FeeTypeName</dt>
+                        @*<dd> @Model[i].FeeYearText</dd>*@
+                        @Html.HiddenFor(m => m[i].TotalAmount)
+                        @Html.HiddenFor(m => m[i].UniversityPaymentAmount)
+                        @Html.HiddenFor(m => m[i].BalanceAmount)
+                    </td>
+
+                    <td class="text-primary align-middle text-center font-weight-bold border-right border-primary" total-amount>
+                        @String.Format("{0:G29}", Model[i].TotalAmount)
+
+                    </td>
+                    <td class="text-success align-middle text-center font-weight-bold border-right border-success" paid-amount>
+                        @String.Format("{0:G29}", Model[i].FeePaid)
+
+                    </td>
+                    <td class="text-danger align-middle text-center font-weight-bold border-right border-danger" balance-amount>
+
+                        @*@Html.TextBox("TotalFeeAmount" + i.ToString(), "", new { @class = "form-control input-control", @InputFor = "lblAge", @readonly = "readonly" })*@
+                        @String.Format("{0:G29}", Model[i].BalanceAmount)
+
+                    </td>
+
+
+
+                </tr>
+
+
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <th class="bg-secondary text-white text-center">
+                    @Html.Label(EduSuiteUIResources.Total, htmlAttributes: new { @class = "form-label" })
+                </th>
+                <th class="bg-primary text-white text-center border-right  border-primary">
+                    @String.Format("{0:G29}", Model.Sum(row => row.TotalAmount ?? 0))
+                </th>
+
+                <th class="bg-success text-white text-center border-right  border-success">
+                    @String.Format("{0:G29}", Model.Sum(row => row.FeePaid ?? 0))
+                    @Html.Hidden("TotalPaid", Model.Sum(row => row.FeePaid ?? 0))
+                </th>
+
+                <th class="bg-danger text-white text-center border-right  border-danger">
+                    @String.Format("{0:G29}", Model.Sum(row => row.BalanceAmount ?? 0))
+                </th>
+
+            </tr>
+        </tfoot>
+    </table>
+</div>
+<script>
+    $(document).ready(function () {
+
+        var IsTax = $("#IsTax").val();
+        if (IsTax == false) {
+
+            $(".divTax").hide();
+        }
+    })
+
+</script>
+
+
+
+
+

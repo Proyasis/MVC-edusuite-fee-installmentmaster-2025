@@ -1,0 +1,41 @@
+<div class="text-center"><img src="http://proyasis.com/images/Proyasis_Logo.png" style="width: auto; height: 94px;" />
+<h4 style="margin: 5px 0px;"></h4>
+<p>Dear Student</p>
+<p>Our Institution Conduct {{InternalExamTermName}} Exam for {{CourseName}} - {{UniversityMasterName}}, - {{BatchName}} batch</p>
+<p>We have attached Time Table.</p>
+<p>Regards,</p>
+</div>
+
+<table id="dvSalesOrderDetails" class="table table-responsive table-condensed table-bordered table-sales" style="border-width: 2px; border-style: solid; border-color: #000000;">
+<thead class="w3-khaki">
+<tr style="border-width: 2px; border-color: #000000;"><th class="text-center w3-col s1">Sl.No</th><th class="text-center w3-col s1">Subject</th><th class="text-center w3-col s1">Exam Date</th><th class="text-center  w3-col s1">Exam Start Time</th><th class="text-center  w3-col s1">Exam End Time</th></tr>
+</thead>
+    {{#InternalExamDetails}}
+<tbody data-salesorder-item="">
+<tr data-salesdetails-item="" class="w3-border-brown" style="border-width: 2px; border-style: solid;">
+<td class="w3-border-bottom text-center">{{RowKey}}</td>
+<td class="w3-border-bottom text-center">{{SubjectName}}</td>
+<td class="w3-border-bottom text-center">{{ExamDate}}</td>
+<td class="w3-border-bottom text-center">{{ExamStartTime}}</td>
+<td class="w3-border-bottom text-center">{{ExamEndTime}}</td>
+</tr>
+</tbody>
+    {{/InternalExamDetails}}
+</table>
+<p>
+<script type="text/javascript">// <![CDATA[
+    $(document).ready(function () {
+        $("#amountWords").html(AppCommon.AmounToWords($("#totalAmount").html()))
+
+
+    });
+
+
+    //function printDiv(div) {
+    //    var mode = 'iframe'; //popup
+    //    var close = mode == "popup";
+    //    var options = { mode: mode, popClose: close };
+    //    $(div).printArea(options);
+    //}
+// ]]></script>
+</p>

@@ -1,0 +1,159 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.ApplicationEducationDetailsViewModel
+
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+
+    @Scripts.Render("~/Content/JqueryRepeater")
+    @Scripts.Render("~/Scripts/ApplicationEducationalDetails")
+
+}
+
+<input type="hidden" id="hdnDeleteApplicationDocument" value="@Url.Action("DeleteApplicationDocument", "ApplicationEducationalDetails")" />
+@using (Html.BeginForm("AddEditApplicationEducationalDetails", "ApplicationEducationalDetails", FormMethod.Post, new AjaxOptions { UpdateTargetId = "Rules", OnBegin = "onBegin", OnComplete = "onComplete" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.ApplicationKey)
+    @Html.ValidationSummary(true)
+
+
+    <div class="box-typical box-typical-padding">
+        <div class="repeater overflow-auto">
+            <table class="table table-stripped">
+                <thead class="thead-light">
+                    <tr>
+                        <th></th>
+                        <th class="mw-sm-150">@EduSuiteUIResources.Course@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Name</th>
+                        <th class="mw-sm-150">@EduSuiteUIResources.Board@EduSuiteUIResources.Sla@EduSuiteUIResources.University</th>
+                        <th>@EduSuiteUIResources.CompletedYear</th>
+                        <th>@EduSuiteUIResources.Mark@EduSuiteUIResources.OpenBracket@EduSuiteUIResources.InPercentage@EduSuiteUIResources.CloseBracket</th>
+                        <th>@EduSuiteUIResources.Date</th>
+                        <th>@EduSuiteUIResources.Original</th>
+                        <th>@EduSuiteUIResources.Copy</th>
+                        <th>@EduSuiteUIResources.Attachment</th>
+                    </tr>
+                </thead>
+                <tbody data-repeater-list>
+                    @for (int i = 0; i < Model.ApplicationEducationalDetails.Count(); i++)
+                    {
+                        <tr data-repeater-item>
+                            <td class="p-1">
+                                <span data-repeater-delete="" class="btn btn-danger btn-sm btnDeleteRow">
+                                    <span class=" fa fa-remove"></span>
+                                </span>
+                            </td>
+                            <td class="p-1">
+                                @Html.TextBoxFor(m => Model.ApplicationEducationalDetails[i].EducationQualificationCourse, new { @class = "form-control input-control", @InputFor = "lblCourseName" })
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => Model.ApplicationEducationalDetails[i].EducationQualificationCourse)
+                                </span>
+                                @Html.HiddenFor(m => Model.ApplicationEducationalDetails[i].RowKey)
+
+                            </td>
+                            <td class="p-1">
+                                @Html.TextBoxFor(m => Model.ApplicationEducationalDetails[i].EducationQualificationUniversity, new { @class = "form-control input-control", @InputFor = "LblUniversity" })
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => Model.ApplicationEducationalDetails[i].EducationQualificationUniversity)
+                                </span>
+                            </td>
+                            <td class="p-1">
+                                @Html.TextBoxFor(m => Model.ApplicationEducationalDetails[i].EducationQualificationYear, new { @class = "form-control input-control", @InputFor = "lblCompletedYear" })
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => Model.ApplicationEducationalDetails[i].EducationQualificationYear)
+                                </span>
+                            </td>
+                            <td class="p-1">
+                                @Html.TextBoxFor(m => Model.ApplicationEducationalDetails[i].EducationQualificationPercentage, new { @class = "form-control input-control", @InputFor = "lblmark" })
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => Model.ApplicationEducationalDetails[i].EducationQualificationPercentage)
+                                </span>
+                            </td>
+                            <td class="p-1">
+                                @Html.TextBoxFor(m => Model.ApplicationEducationalDetails[i].OriginalIssuedDate, new { @class = "form-control input-control", @data_input_type = "date", @InputFor = "lblReceivedDate", @data_inputmask = "'alias': 'dd/mm/yyyy'" })
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => Model.ApplicationEducationalDetails[i].OriginalIssuedDate)
+                                </span>
+                            </td>
+                            <td class="p-1 text-center">
+                                <div class="checkbox-bird green inline-block mt-2">
+                                    @Html.CheckBoxFor(m => m.ApplicationEducationalDetails[i].IsOriginalIssued, new { @InputFor = "lblIsOriginal", @class = "custom-control-input" })
+                                    <label for="IsOriginalIssued" class="label-for-check form-label">
+                                    </label>
+                                </div>
+
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => Model.ApplicationEducationalDetails[i].IsOriginalIssued)
+                                </span>
+
+                            </td>
+                            <td class="p-1 text-center">
+                                <div class="checkbox-bird green inline-block mt-2">
+                                    @Html.CheckBoxFor(m => m.ApplicationEducationalDetails[i].IsCopyIssued, new { @InputFor = "lblIsOriginal", @class = "custom-control-input" })
+                                    <label for="IsCopyIssued" class="label-for-check form-label">
+                                    </label>
+                                </div>
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => Model.ApplicationEducationalDetails[i].IsCopyIssued)
+                                </span>
+                            </td>
+
+                            <td class="p-1">
+                                <div class="custom-file">
+                                    @Html.TextBoxFor(m => m.ApplicationEducationalDetails[i].DocumentFile, new { type = "file", @class = "custom-file-input" })
+                                    <label class="custom-file-label" for="DocumentFile">Choose file</label>
+                                </div>
+                                @if (Model.ApplicationEducationalDetails[i].EducationQualificationCertificatePathText != null)
+                                {
+                                    <a href=@Url.Action("DownloadFile", "ApplicationEducationalDetails", new { filename = Model.ApplicationEducationalDetails[i].EducationQualificationCertificatePath })>@EduSuiteUIResources.Download</a>
+                                }
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => m.ApplicationEducationalDetails[i].EducationQualificationCertificatePath)
+                                </span>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th class="px-1" colspan="9">
+                            <span data-repeater-create class="btn btn-info btn-sm">
+                                <span class="fa fa-plus"></span>
+                            </span>
+                        </th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <div class="row mt-2">
+            <div class="col-10 form-col">
+                <div class="form-group">
+                    <input type="button" value="@EduSuiteUIResources.Save" id="btnSave" class="btn btn-sm btn-success mx-1" />
+                    <input type="button" value="@EduSuiteUIResources.Skip" id="btnSkip" onclick="  $('#tab-application  li a.active').parent().nextAll('li:visible').first().find('a').trigger('click');" class="btnForm btnSubmit btn btn-sm btn-danger " />
+                    <a id="btnFinish" class="btn btn-sm btn-success mx-1" onclick="location.href='@Url.Action("ApplicationList", "Application")'">@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Finish</a>
+
+                 </div>
+                <div class="col-12 paddingNone">
+                    <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+}
+
+<script>
+    var jsonData=@(Html.Raw(Json.Encode(Model)));
+
+
+    $(document).ready(function () {
+
+        //ApplicationEducationalDetails.GetApplicationDocuments(jsonData);
+        ApplicationEducationalDetails.GetApplicationEducationalDetails(jsonData);
+
+        AppCommon.CustomRepeaterRemoteMethod();
+    });
+</script>
+
+

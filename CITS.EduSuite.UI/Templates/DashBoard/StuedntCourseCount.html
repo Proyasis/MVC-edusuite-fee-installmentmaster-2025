@@ -1,0 +1,71 @@
+﻿<div class="table-responsive">
+    <table class="table verticle-middle h-100 fixed" id="divInstallmentFeeDetails">
+
+        <thead>
+            <tr>
+                <th class="text-center w-25">
+                    Course
+                </th>
+                <th class="text-center">
+                    T
+                </th>
+
+                <th class="text-center">
+                    OG
+                </th>
+                <th class="text-center">
+                    C
+                </th>
+                <th class="text-center">
+                    D
+                </th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {{#CourseDetails}}
+
+            <tr data-repeater-item>
+                <td class="text-center">
+                    {{CourseName}}
+                </td>
+
+                <td class="text-center">
+                    <span class="badge badge-pill badge-primary">{{Total}}</span>
+
+                </td>
+
+                <td class="text-center">
+
+                    <span class="badge badge-pill badge-info"> {{OnGoing}}</span>
+
+                </td>
+                <td class="text-center">
+
+                    <span class="badge badge-pill badge-success">{{Completed}}</span>
+
+                </td>
+                <td class="text-center">
+
+
+                    <span class="badge badge-pill badge-danger">{{Droped}}</span>
+
+                </td>
+
+            </tr>
+            {{/CourseDetails}}
+        </tbody>
+
+
+    </table>
+</div>
+
+<style>
+    table.fixed {
+        table-layout: fixed;
+    }
+
+        table.fixed td {
+            overflow: hidden;
+        }
+</style>

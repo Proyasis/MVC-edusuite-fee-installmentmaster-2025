@@ -1,0 +1,25 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "provider": "cdnjs",
+      "library": "d3@3.5.6",
+      "destination": "Content/d3/"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "c3@0.4.11",
+      "destination": "Content/c3/"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "bootstrap-daterangepicker@3.0.5",
+      "destination": "Content/bootstrap-daterangepicker/"
+    },
+    {
+      "library": "moment-timezone@0.5.32",
+      "destination": "Scripts/moment-timezone/"
+    }
+  ]
+}

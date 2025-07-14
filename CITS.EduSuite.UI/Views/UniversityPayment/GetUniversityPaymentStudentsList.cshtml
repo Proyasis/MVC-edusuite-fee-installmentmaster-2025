@@ -1,0 +1,300 @@
+﻿@model List<CITS.EduSuite.Business.Models.ViewModels.UniversityPaymentBulklist>
+
+@using CITS.EduSuite.Business.Models.ViewModels
+
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Content/JqueryRepeater")
+    @Scripts.Render("~/bundles/CitsValidation")
+}
+
+
+<div class="col-12">
+    <div id="dynamicRepeater" class="repeater">
+        <div data-repeater-list class="form-row">
+            @for (int i = 0; i < Model.Count(); i++)
+            {
+                Model[i].IsActive = Model[i].IsActive;
+                <div class="col-lg-4 col-md-6 col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            @Html.DisplayFor(m => m[i].StudentName, new { @class = "form-control input-control" })
+                            @EduSuiteUIResources.OpenBracket
+                            @Html.DisplayFor(m => m[i].AdmissionNo, new { @class = "form-control input-control smallFont" })
+                            @EduSuiteUIResources.CloseBracket
+                            <div class="checkbox-bird green inline-block float-right">
+                                @Html.CheckBoxFor(m => m[i].IsActive, new { @class = "switch-input ChkIsAppliedClass chkIsActive", @onChange = "UniversityPaymentBulk.CalculateFee(this)" })
+                                <label for="UniversityPaymentBulklist[@i].IsActive"></label>
+
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div key="@Model[i].UniversityPaymentDetailsKey" data-repeater-item>
+                                <div class="form-row">
+
+                                    <div class="col-6 col-sm-4 col-lg-6">
+                                        <fieldset class="form-group">
+                                            @Html.Label(EduSuiteUIResources.Applied + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Date, htmlAttributes: new { @class = "form-label" })
+                                            @if (Model[i].IsActive == true)
+                                            {
+                                                @Html.TextBoxFor(m => m[i].UniversityPaymentDate, "{0:dd/MM/yyyy}", new { @class = "form-control input-control examAppliedDateClassDisabled", @data_input_type = "date", @InputFor = "lblEnquiryDateOfAdmission", @data_inputmask = "'alias': 'dd/mm/yyyy'", @disabled = "disabled" })
+                                            }
+                                            else
+                                            {
+                                                @Html.TextBoxFor(m => m[i].UniversityPaymentDate, "{0:dd/MM/yyyy}", new { @class = "form-control input-control paymentAppliedDateClass", @data_input_type = "date", @InputFor = "lblEnquiryDateOfAdmission", @data_inputmask = "'alias': 'dd/mm/yyyy'" })
+                                            }
+                                            <span class="form-control-error-text">    @Html.ValidationMessageFor(m => m[i].UniversityPaymentDate)</span>
+                                            @Html.HiddenFor(m => m[i].Rowkey)
+                                            @Html.HiddenFor(m => m[i].UniversiyPaymentMasterKey, new { @class = "rowKeyClass" })
+                                            @Html.HiddenFor(m => m[i].ApplicationKey)
+                                            @Html.HiddenFor(m => m[i].BranchKey)
+
+
+                                            @Html.HiddenFor(m => m[i].DataPageIndex)
+                                        </fieldset>
+                                    </div>
+
+                                    <div class="col-6 col-sm-4 col-lg-6">
+                                        <fieldset class="form-group">
+                                            @Html.Label(EduSuiteUIResources.Amount, htmlAttributes: new { @class = "form-label" })
+                                            @if (Model[i].IsActive == true)
+                                            {
+                                                @Html.TextBoxFor(m => m[i].UniversityPaymentAmount, new { @class = "form-control input-control ", @disabled = "disabled", @placeholder = EduSuiteUIResources.Amount, @oninput = "UniversityPaymentBulk.CalculateFee(this)" })
+                                            }
+                                            else
+                                            {
+                                                @Html.TextBoxFor(m => m[i].UniversityPaymentAmount, new { @class = "form-control input-control amountClass", @placeholder = EduSuiteUIResources.Amount, @oninput = "UniversityPaymentBulk.CalculateFee(this)" })
+                                            }
+                                            <span class="form-control-error-text">@Html.ValidationMessageFor(m => m[i].UniversityPaymentAmount)</span>
+                                        </fieldset>
+
+                                    </div>
+                                </div>
+                                <div class="form-row dvPaymentMode">
+                                    <div class="col-12">
+                                        <fieldset class="form-group">
+                                            <div class="btn-group" data-toggle="buttons">
+                                                @foreach (var PaymentMode in Model[i].PaymentModes)
+                                                {
+                                                    if (PaymentMode.RowKey == Model[i].PaymentModeKey)
+                                                    {
+                                                        <label class="btn btn-danger active">
+                                                            @Html.RadioButtonFor(m => Model[i].PaymentModeKey, PaymentMode.RowKey)@PaymentMode.Text
+                                                        </label>
+                                                    }
+                                                    else
+                                                    {
+                                                        <label class="btn btn-danger">
+                                                            @Html.RadioButtonFor(m => Model[i].PaymentModeKey, PaymentMode.RowKey)@PaymentMode.Text
+                                                        </label>
+                                                    }
+                                                }
+                                            </div>
+                                            <span class="form-control-error-text">
+                                                @Html.ValidationMessageFor(m => Model[i].PaymentModeKey)
+                                            </span>
+
+                                        </fieldset>
+                                    </div>
+                                </div>
+                                <div class="dvPaymentModeSub">
+                                    <div class="col-12">
+                                        <fieldset class="form-group">
+                                            @Html.Label(EduSuiteUIResources.BankTransaction, htmlAttributes: new { @id = "lblCardNumber", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                                            @Html.DropDownListFor(m => m[i].PaymentModeSubKey, new SelectList(Model[i].PaymentModeSub, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.BankTransaction, new { @class = "dropdownStyle form-control", @onchange = "UniversityPaymentBulk.CheckPaymentModeSubItem(this)" })
+
+                                            <span class="form-control-error-text">
+                                                @Html.ValidationMessageFor(m => m[i].PaymentModeSubKey)
+                                            </span>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                                <div class="row dvPaymentModes">
+                                    <div class="divBankAccount col-lg-4 col-12 p-0">
+                                        <div class="col-12">
+                                            <fieldset class="form-group">
+
+                                                @Html.Label(EduSuiteUIResources.BankAccount, htmlAttributes: new { @id = "lblBankAccount", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+
+                                                @Html.DropDownListFor(m => m[i].BankAccountKey, new SelectList(Model[i].BankAccounts, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.BankAccount, new { @class = "dropdownStyle form-control input-control", @InputFor = "lblBankAccount" })
+                                                <span class="form-control-error-text">
+                                                    @Html.ValidationMessageFor(m => m[i].BankAccountKey)
+                                                </span>
+                                            </fieldset>
+
+                                        </div>
+
+                                    </div>
+                                    <div class="divCardDetails">
+                                        <div class="col-12">
+                                            <fieldset class="form-group">
+                                                @Html.Label(EduSuiteUIResources.CardNumber, htmlAttributes: new { @id = "lblCardNumber", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                                                @Html.TextBoxFor(m => Model[i].CardNumber, new { @class = "form-control border-radius", @InputFor = "lblCardNumber" })
+                                                <span class="form-control-error-text">
+                                                    @Html.ValidationMessageFor(m => Model[i].CardNumber)
+                                                </span>
+                                            </fieldset>
+                                        </div>
+                                    </div>
+                                    <div class="divReferenceNo">
+                                        <div class="col-12">
+                                            <fieldset class="form-group">
+                                                @Html.Label(EduSuiteUIResources.ReferenceNo, htmlAttributes: new { @id = "lblCardNumber", @class = "form-label" })
+                                                @Html.TextBoxFor(m => Model[i].ReferenceNumber, new { @class = "form-control border-radius", @InputFor = "lblCardNumber" })
+                                                <span class="form-control-error-text">
+                                                    @Html.ValidationMessageFor(m => Model[i].ReferenceNumber)
+                                                </span>
+                                            </fieldset>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="divChequeDetails  col-lg-8 col-12">
+                                        <div class="form-row">
+                                            <div class="col-6">
+                                                <fieldset class="form-group">
+                                                    @Html.Label(EduSuiteUIResources.ChequeOrDDNumber, htmlAttributes: new { @id = "lblChequeOrDDNumber", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                                                    @Html.TextBoxFor(m => m[i].ChequeOrDDNumber, new { @class = "form-control border-radius", @InputFor = "lblChequeOrDDNumber" })
+                                                    <span class="form-control-error-text">
+                                                        @Html.ValidationMessageFor(m => m[i].ChequeOrDDNumber)
+                                                    </span>
+                                                </fieldset>
+                                            </div>
+
+                                            <div class="col-6">
+                                                <fieldset class="form-group ">
+                                                    @Html.Label(EduSuiteUIResources.ChequeOrDDDate, htmlAttributes: new { @id = "lblChequeOrDDDate", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                                                    @Html.TextBoxFor(m => m[i].ChequeClearanceDate, "{0:dd/MM/yyyy}", new { @class = "form-control border-radius datetimepicker", @data_input_type = "date", @data_inputmask = "'alias': 'dd/mm/yyyy'", @InputFor = "lblChequeOrDDDate" })
+
+                                                    <span class="form-control-error-text">
+                                                        @Html.ValidationMessageFor(m => m[i].ChequeClearanceDate)
+                                                    </span>
+                                                </fieldset>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="form-row">
+                                    <div class="col-lg-12">
+                                        <fieldset class="form-group">
+                                            @Html.Label(EduSuiteUIResources.Remarks, htmlAttributes: new { @class = "form-label" })
+                                            @if (Model[i].IsActive == true)
+                                            {
+                                                @Html.TextBoxFor(m => m[i].UniversityPaymentNote, new { @class = "form-control input-control ", @disabled = "disabled", @placeholder = EduSuiteUIResources.Remarks })
+                                            }
+                                            else
+                                            {
+                                                @Html.TextBoxFor(m => m[i].UniversityPaymentNote, new { @class = "form-control input-control ", @placeholder = EduSuiteUIResources.Remarks })
+                                            }
+                                        </fieldset>
+
+                                    </div>
+
+
+
+                                    @if (Model[i].UniversityPaymentDetailsKey > 0)
+                                    {
+                                        <div class="px-1">
+                                            <span deletekey="@Model[i].UniversityPaymentDetailsKey" onclick="UniversityPaymentBulk.DeleteUniversityFeeOneByOneBulk(@Model[i].UniversityPaymentDetailsKey)" class="btn btn-danger btn-sm btnDeleteRow">
+                                                <span class="glyphicon glyphicon-remove"></span> @EduSuiteUIResources.Delete
+                                            </span>
+                                        </div>
+                                    }
+                                </div>
+
+                            </div>
+                        </div>
+                        @*<div class="card-footer">Footer</div>*@
+                    </div>
+                </div>
+
+            }
+        </div>
+
+        @Html.Hidden("TotalUniversityFee", Model.Select(x => x.UniversityPaymentAmount).DefaultIfEmpty().Sum())
+        @Html.Hidden("OldAmount", Model.Select(x => x.UniversityPaymentAmount).DefaultIfEmpty().Sum())
+    </div>
+</div>
+
+<script>
+    var jsonDataList=@(Html.Raw(Json.Encode(Model)));
+
+    $(document).ready(function ()
+    {
+
+        AppCommon.FormatDateInput();
+        AppCommon.FormatSelect2();
+
+        $("[data-repeater-list]").find("input,select,textarea").each(function ()
+        {
+            $(this).attr("name", "UniversityPaymentBulklist" + $(this).attr("name"));
+            $(this).attr("id", $(this).attr("name"));
+        });
+
+        $("[data-repeater-list] [data-valmsg-for]").each(function ()
+        {
+            $(this).attr("data-valmsg-for", "UniversityPaymentBulklist" + $(this).attr("data-valmsg-for"));
+            //$(this).attr("id", $(this).attr("data-valmsg-for"));
+        });
+
+       
+
+        $("form").removeData("validator");
+        $("form").removeData("unobtrusiveValidation");
+        $.validator.unobtrusive.parse("form");
+
+        AppCommon.CustomRepeaterRemoteMethod();
+
+        //$.each(jsonDataList, function(key,value)
+        //{
+        //    alert(key);
+        //    $('#ExamScheduleList['+key+'].ExamCentreKey').val(value.ExamCentreKey);
+        //});
+
+
+        //$(".PaymentBankClassDisabled,.paymentBankClass").each(function (index)
+        //{
+        //    $(this).val(jsonDataList[index]["BankKey"]);
+        //});
+
+
+
+
+        $(".ChkIsApplied").on("change", function ()
+        {
+
+            UniversityPaymentBulk.CheckIsApplied();
+
+        });
+
+
+        $("[data-repeater-item]").each(function () {
+
+            var item = $(this);
+
+            UniversityPaymentBulk.CheckPaymentModeItem($("[id*=PaymentModeKey]", $(item)));
+        })
+        $("[id*=PaymentModeKey]", $(".dvPaymentMode")).change(function () {
+
+            if(!$(this).is(":checked"))
+            {
+                $(this).prop("checked",true);
+            }
+
+            $("#BankAccountKey,#ChequeOrDDNumber,#ChequeOrDDDate,#BankAccountKey").each(function () {
+                $(this).val("")
+
+            });
+            //$("#BankAccountBalance").html("");
+
+            //UniversityPaymentBulk.CheckPaymentMode($(this).val());
+            UniversityPaymentBulk.CheckPaymentModeItem(this)
+        })
+
+
+
+
+    });
+</script>

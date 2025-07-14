@@ -1,0 +1,123 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.EmployeeAttendanceViewModel
+
+
+<div class="modal-header">
+    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+    <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.Add @EduSuiteUIResources.Sla @EduSuiteUIResources.Edit @EduSuiteUIResources.EmployeeAttendance</h4>
+</div>
+@using (Html.BeginForm("AddEditEmployeeAttendance", "EmployeeAttendance", FormMethod.Post, htmlAttributes: new { @id = "frmEmployeeAttendance" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.RowKey)
+    @Html.HiddenFor(m => m.AttendanceConfigType)
+    @Html.HiddenFor(m => m.AttendancePresentStatusKey)
+    @Html.ValidationSummary(true)
+
+
+    <div class="modal-body">
+
+
+        <div class="form-master">
+            <div class="paddingNone">
+                <span class="ValidateDataMsg"> @Html.ValidationMessage("error_msg")  </span>
+            </div>
+
+            <div class="form-row">
+                <div class="col-sm-4 col-6">
+                    <div class="form-group ">
+                        @Html.Label(EduSuiteUIResources.Branch, htmlAttributes: new { @id = "lblBranch", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                        @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Branch, new { @class = "input-control form-control form-control-sm form-control-sm", @InputFor = "lblBranch" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.BranchKey)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-6">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Employee, htmlAttributes: new { @id = "lblEmployee", @class = "form-label" })
+                        <div class="required-icon"><div class="text">*</div></div>
+                        @Html.DropDownListFor(m => m.EmployeeKey, new SelectList(Model.Employees, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Employee, new { @class = "input-control form-control form-control-sm", @data_plugin_type = "select2", @InputFor = "lblEmployee" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.EmployeeKey)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-6">
+                    <div class="form-group ">
+                        @Html.Label(EduSuiteUIResources.AttendanceDate, htmlAttributes: new { @id = "lblAttendanceDate", @class = "form-label" })
+                        @Html.TextBoxFor(m => m.AttendanceDate, "{0:dd/MM/yyyy}", new { @class = "input-control form-control form-control-sm", @InputFor = "lblAttendanceDate", @data_input_type = "date", @data_inputmask = "'alias': 'dd/mm/yyyy'" })
+
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.AttendanceDate)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-6">
+                    <div class="form-group ">
+                        @Html.Label(EduSuiteUIResources.AttendanceStatus, htmlAttributes: new { @id = "lblAttendanceStatus", @class = "form-label" })
+                        @Html.DropDownListFor(m => m.AttendanceStatusKey, new SelectList(Model.AttendanceStatuses, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.AttendanceStatus, new { @class = "input-control form-control form-control-sm", @InputFor = "lblAttendanceStatus" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.AttendanceStatusKey)
+                        </span>
+                    </div>
+                </div>
+                <div id="dvLeaveType" class="col-sm-4 col-6">
+                    <div class="form-group ">
+                        @Html.Label(EduSuiteUIResources.LeaveTypeName, htmlAttributes: new { @id = "lblLeaveType", @class = "form-label" })
+                        @Html.DropDownListFor(m => m.LeaveTypeKey, new SelectList(Model.LeaveTypes, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.AttendanceStatus, new { @class = "input-control form-control form-control-sm", @InputFor = "lblLeaveType" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.LeaveTypeKey)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-6 dvInOut d-none">
+                    <div class="form-group ">
+                        @Html.Label(EduSuiteUIResources.InTime, htmlAttributes: new { @id = "lblInTime", @class = "form-label" })
+                        @Html.TextBoxFor(m => m.InDateTime, "{0:dd/MM/yyyy HH:mm:ss tt}", new { @class = "input-control form-control form-control-sm", @data_input_type = "datetime", @data_inputmask = "'alias': 'datetime12'", @InputFor = "lblInTime" })
+
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.InDateTime)
+                        </span>
+                    </div>
+
+                </div>
+
+                <div class="col-sm-4 col-6 dvInOut d-none">
+                    <div class="form-group ">
+                        @Html.Label(EduSuiteUIResources.OutTime, htmlAttributes: new { @id = "lblOutTime", @class = "form-label" })
+                        @Html.TextBoxFor(m => m.OutDateTime, "{0:dd/MM/yyyy HH:mm:ss tt}", new { @class = "input-control form-control form-control-sm", @data_input_type = "datetime", @data_inputmask = "'alias': 'datetime12'", @InputFor = "lblOutTime" })
+
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.OutDateTime)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-sm-8 col-12">
+                    <div class="form-group ">
+                        @Html.Label(EduSuiteUIResources.Remarks, htmlAttributes: new { @id = "lblRemarks", @class = "form-label" })
+                        @Html.TextAreaFor(m => m.Remarks, new { @class = "input-control form-control form-control-sm", @InputFor = "lblRemarks" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.Remarks)
+                        </span>
+
+                    </div>
+                </div>
+
+            </div>
+
+
+
+        </div>
+    </div>
+    <div class="modal-footer justify-content-start">
+        <div class="form-group">
+            <button type="submit" id="btnSave" class="btn btn-sm btn-success mx-1"><i class="fa fa-save"></i> @EduSuiteUIResources.Save</button>
+            <button type="button" data-dismiss="modal" class="btn btn-sm btn-danger mx-1"><i class="fa fa-close"></i>@EduSuiteUIResources.Cancel</button>
+
+        </div>
+    </div>
+
+}
+
+
+

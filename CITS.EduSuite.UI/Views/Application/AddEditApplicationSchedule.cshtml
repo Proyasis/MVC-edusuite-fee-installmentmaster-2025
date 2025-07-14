@@ -1,0 +1,248 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.ApplicationScheduleViewModel
+@using CITS.EduSuite.UI.Resources
+
+
+<div class="modal-header">
+    <i data-dismiss="modal" class="fa fa-remove close"></i>
+    <h4 class="modal-title" id="myModalLabel">@CITSEduSuiteUIResources.Add @CITSEduSuiteUIResources.Sla @CITSEduSuiteUIResources.Edit@CITSEduSuiteUIResources.BlankSpace @CITSEduSuiteUIResources.Application @EduSuiteUIResources.Schedule</h4>
+</div>
+@using (Html.BeginForm("AddEditApplicationSchedule", "Application", FormMethod.Post, new { @id = "frmApplicationSchedule" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.RowKey)
+    @Html.ValidationSummary(true)
+
+   
+
+    @*<div class="modal-body bottomLine">
+        <div class="topMarginSpace  form-master fnone">
+            <div class="row">
+                <div class="paddingNone">
+                    <span class="ValidateDataMsg"> @Html.ValidationMessage("error_msg")  </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 mandatoryHead ">
+                    <span>@EduSuiteUIResources.FieldsMarkedAs<span class="mandatoryStar"> * </span>@EduSuiteUIResources.AreMandatory</span>
+
+                </div>
+            </div>
+            <div class="row ">
+                <div class="col-sm-4 form-col">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.CallType, htmlAttributes: new { @id = "lblCountry", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                        @Html.DropDownListFor(m => m.CallTypeKey, new SelectList(Model.CallTypes, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.CallType, new { @class = "form-control input-control", @InputFor = "lblCountry", @id = "ddlCountry" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.CallTypeKey)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-sm-4 form-col">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.CallStatus, htmlAttributes: new { @id = "lblLanguage", @class = "form-label" })
+                        <div class="required-icon"><div class="text">*</div></div>
+                        @Html.DropDownListFor(m => m.EnquiryCallStatusKey, new SelectList(Model.EnquiryCallStatuses, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.CallStatus, new { @class = "form-control input-control", @InputFor = "lblProvince", @id = "ddlProvince" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.EnquiryCallStatusKey)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-sm-4 form-col">
+                    <div class="form-group ">
+                        @Html.Label(EduSuiteUIResources.Duration, htmlAttributes: new { @id = "lblApplicationScheduleName", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                        @Html.TextBoxFor(m => m.CallDuration, new { @class = "form-control input-control", @InputFor = "lblApplicationScheduleName" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.CallDuration)
+                        </span>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row ">
+                <div class="col-sm-4 form-col">
+                    <div class="form-group ">
+                        @Html.Label(EduSuiteUIResources.NextCallSchedule, htmlAttributes: new { @id = "lblApplicationScheduleCode", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                        @Html.TextBoxFor(m => m.NextCallSchedule, new { @class = "form-control input-control", @InputFor = "lblApplicationScheduleCode" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.NextCallSchedule)
+                        </span>
+                    </div>
+
+                </div>
+                <div class="col-sm-4 form-col">
+                    <div class="form-group ">
+                        @Html.Label(EduSuiteUIResources.Feedback , htmlAttributes: new { @id = "lblApplicationScheduleName", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                        @Html.TextBoxFor(m => m.Feedback, new { @class = "form-control input-control", @InputFor = "lblApplicationScheduleName" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.Feedback)
+                        </span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>*@
+
+    <div class="modal-body bottomLine">
+        <div class="topMarginSpace  form-master fnone">
+            <div class="paddingNone">
+                <span class="ValidateDataMsg"> @Html.ValidationMessage("error_msg")  </span>
+            </div>
+            <div class="formMaster paddingNone">
+                <div class="row">
+                    <div class="col-sm-12 mandatoryHead ">
+                        <span>@EduSuiteUIResources.FieldsMarkedAs<span class="mandatoryStar"> * </span>@EduSuiteUIResources.AreMandatory</span>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-sm-4 form-col">
+                        <div class="form-group">
+                            @Html.Label(EduSuiteUIResources.CallType, htmlAttributes: new { @id = "lblCallType", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                            @Html.DropDownListFor(m => m.CallTypeKey, new SelectList(Model.CallTypes, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.CallType, new { @class = "form-control input-control", @InputFor = "lblCallType" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.CallTypeKey)
+                            </span>
+                        </div>
+                    </div>
+                    @*<div class="col-sm-4 form-col">
+                        <div class="form-group">
+                            @Html.Label(EduSuiteUIResources.Enquiry + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Status, htmlAttributes: new { @id = "lblEnquiryLeadCallStatus", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                            @Html.DropDownListFor(m => m.EnquiryStatusKey, new SelectList(Model.EnquiryStatuses, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Status, new { @class = "form-control input-control" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.EnquiryStatusKey)
+                            </span>
+                        </div>
+                    </div>*@
+                    <div class="col-sm-4 form-col">
+                        <div class="form-group">
+                            @Html.Label(EduSuiteUIResources.CallStatus, htmlAttributes: new { @id = "lblEnquiryLeadCallStatus", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                            @Html.DropDownListFor(m => m.EnquiryCallStatusKey, new SelectList(Model.EnquiryCallStatuses, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.CallStatus, new { @class = "form-control input-control", @InputFor = "lblEnquiryLeadCallStatus" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.EnquiryCallStatusKey)
+                            </span>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6 form-col">
+                        <div class="form-group">
+                            @Html.Label(EduSuiteUIResources.Duration, htmlAttributes: new { @id = "lblCallDuration", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                            @Html.TextBoxFor(m => m.CallDuration, new { @class = "form-control input-control", @data_input_type = "time", @data_inputmask = "'alias':'hh:mm:ss','hourFormat': '24'", @InputFor = "lblCallDuration" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.CallDuration)
+                            </span>
+                        </div>
+                    </div>
+
+
+                    <div class="col-sm-6 form-col">
+                        <div class="form-group">
+                            @Html.Label(EduSuiteUIResources.NextCallSchedule, htmlAttributes: new { @id = "lblNextCallSchedule", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                            @Html.TextBoxFor(m => m.NextCallSchedule, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_input_type = "date", @InputFor = "lblNextCallSchedule", @data_inputmask = "'alias': 'date'" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.NextCallSchedule)
+                            </span>
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+                <div class="row">
+                    <div class="col-sm-12 form-col">
+                        <div class="form-group">
+                            @Html.Label(EduSuiteUIResources.Feedback, htmlAttributes: new { @id = "lblNextCallSchedule", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                            @Html.TextAreaFor(m => m.Feedback, new { @class = "form-control input-control" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.Feedback)
+                            </span>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="row">
+                    <div class="col-sm-6 form-col">
+                        <div class="form-group col-sm-12 paddingNone">
+                            <input type="submit" value="@EduSuiteUIResources.Save" id="btnSaveCopy" class="btnForm btnSubmit btn btn-sm btn-default pull-left " />
+                            &nbsp;&nbsp;
+                            @if (Model.RowKey != 0)
+                            {
+
+                                <button type="button" id="btnCancel" class="btnForm btnCancel btn btn-sm btn-default pull-left">@EduSuiteUIResources.Cancel</button>
+                            }
+                        </div>
+                        <div class="col-sm-12 paddingNone">
+                            <span class="ValidateDataMsg"> @Html.ValidationMessage("error_msg")  </span>
+                        </div>
+                    </div>
+
+                </div>
+
+                
+            </div>
+        </div>
+    </div>
+
+    @*<div class="modal-footer">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <input type="submit" value="@EduSuiteUIResources.Save" id="btnSave" class="btnForm btnSubmit btn btn-sm btn-default pull-left " />
+                <button type="button" data-dismiss="modal" class="btnForm btnCancel btn btn-sm btn-default pull-left">@EduSuiteUIResources.Cancel</button>
+
+            </div>
+        </div>
+    </div>*@
+}
+<script>
+    $(document).ready(function () {
+        $.validator.unobtrusive.parse($("#frmApplicationSchedule")[0]);
+        AppCommon.FormatDateInput();
+        AppCommon.FormatTimeInput();
+        AppCommon.FormatInputCase();
+        //$("#frmEnquiryLeadFeedback").submit(function (e) {
+        //    EnquiryLead.FormSubmitLeadFeedback();
+        //    e.preventDefault();
+        //})
+        $("#btnCancel").on("click", function () {
+            $("#frmApplicationSchedule").find("input:not(:submit):not(:button),select,textarea").each(function () {
+                $(this).val("");
+            });
+            $(this).remove();
+        })
+    })
+
+    //$(document).ready(function () {
+    //    $("#EnquiryStatusKey").change(function () {
+    //        if (this.value == "4") {
+    //            $("#txtStartDate").val("");
+    //            $("#txtStartDate").attr("Disabled", "Disabled")
+    //        }
+    //        else {
+    //            $("#txtStartDate").removeAttr("Disabled");
+    //        }
+
+    //    });
+
+
+    //    $("#EnquiryStatusKey").on("change", function () {
+    //        var obj = {};
+    //        obj.EnquiryStatusKey = $("#EnquiryStatusKey").val();
+    //        Enquiry.GetCallStatusByEnquiryStatus(obj, $("#EnquiryCallStatusKey"));
+    //    });
+
+
+    //});
+
+
+
+</script>
+
+

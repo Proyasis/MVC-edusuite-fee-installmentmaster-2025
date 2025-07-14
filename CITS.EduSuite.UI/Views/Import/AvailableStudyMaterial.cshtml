@@ -1,0 +1,116 @@
+﻿
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Content/ExcelSheetJS")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Content/momentJS")
+    @Scripts.Render("~/Scripts/Import")
+
+}
+
+<input type="hidden" id="hdnFillCourseTypesById" value="@Url.Action("FillCourseTypesById", "SelectList")" />
+<input type="hidden" id="hdnFillCoursesById" value="@Url.Action("FillCoursesById", "SelectList")" />
+<input type="hidden" id="hdnFillUniversitiesById" value="@Url.Action("FillUniversitiesById", "SelectList")" />
+<input type="hidden" id="hdnFillYearsById" value="@Url.Action("FillYearsById", "SelectList")" />
+<input type="hidden" id="hdnFillAvailableStudyMaterialDropdowns" value="@Url.Action("FillAvailableStudyMaterialDropdowns", "Import")" />
+<input type="hidden" id="hdnStudyMaterialList" value="@Url.Action("StudyMaterialList", "StudyMaterial")" />
+<input type="hidden" id="hdnImportJSONPath" value="@Url.Content("~/Templates/ImportTemplate/Import.json")" />
+
+@using (Html.BeginForm("AvailableStudyMaterial", "Import", FormMethod.Post))
+{
+
+    <header class="section-header">
+        <div class="row justify-content-between px-1">
+            <div class="col-12">
+                <div class="tbl">
+                    <div class="tbl-row  px-1">
+                        <div class="tbl-cell">
+                            <h3>@EduSuiteUIResources.Bulk@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Available@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.StudyMaterial</h3>
+                            <ol class="breadcrumb breadcrumb-simple mb-2 float-sm-right">
+                                <li><a href="#" onclick="location.href='@Url.Action("StudyMaterialList", "StudyMaterial")' ">@EduSuiteUIResources.StudyMaterial</a></li>
+                                <li class="active">@EduSuiteUIResources.Bulk@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Available@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.StudyMaterial</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="section-content mx-sm-3 mx-0">
+        <div class="card">
+            <div class="card-header">
+              @Html.Action("SearchDropdownList", "Import")
+
+            </div>
+            <div class="card-header dvExcelSheet" data-hidden>
+                <div class="form-row justify-content-between">
+                    <div class="col-sm-4 col-6">
+                        <fieldset class="form-group">
+                            @Html.Label(EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.ExcelSheet, htmlAttributes: new { @id = "lblExcelFile", @class = "form-label" })
+                            <div class="custom-file">
+                                @Html.TextBox("ExcelFile", "", new { @type = "file", @class = "custom-file-input", @onchange = "Import.FileUploadChange(event)" })
+                                <label class="custom-file-label" for="ExcelFile">Choose file</label>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class=" col-sm-4 col-6">
+                        <fieldset class="form-group">
+                            <label class="form-label"></label>
+                            <br />
+                            <a id="btnDownload" class="btn btn-primary btn-sm float-right" onclick="Import.DownloadExcel()">
+                                <i class="fa fa-download" aria-hidden="true"></i>@EduSuiteUIResources.Download@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.ExcelSheet
+                            </a>
+                        </fieldset>
+                    </div>
+                    <div class="col-lg-2 col-sm-4 col-6 float-right">
+                        <fieldset class="form-group">
+                            <label class="form-label"></label>
+                            <br />
+                            <a class="btn btn-info btn-sm float-right " onclick='window.location.reload()'>
+                                <i class="fa fa-refresh"></i>   Refresh
+                            </a>
+                        </fieldset>
+                    </div>
+                   
+
+                </div>
+            </div>
+            <div class="card-body p-0 dvExcelSheet" data-hidden>
+                <div id="Excel" class="jexcel-grid overflow-x-auto"></div>
+            </div>
+            
+        </div>
+
+
+
+
+   
+        <div class="row mt-2">
+            <div class="col-12">
+                <div class="form-group">
+                    <input type="button" value="@EduSuiteUIResources.Save" id="btnSave" class="btn btn-sm btn-success mx-1" onclick="Import.UpdateAvailableStudyMaterials()" />
+                </div>
+            </div>
+            <div class="col-12">
+                <span class="ValidateDataMsg"> @Html.ValidationMessage("error_msg")  </span>
+            </div>
+        </div>
+    </section>
+}
+
+<script>
+    $(document).ready(function () {
+        Import.GetTemplateData('AvailableStudyMaterial');
+        Import.FillCourseTypesById();
+        $("#BranchKey,#BatchKey,#UniversityKey,#CurrentYear").on("change", function () {
+            Import.FillExcelSheetDropdowns($("#hdnFillAvailableStudyMaterialDropdowns").val(), modifyFilterValues)
+        })
+    });
+    function modifyFilterValues() {
+        var obj = this;
+        obj.IsValid = obj.AcademicTermKey && obj.CourseKey && obj.UniversityKey;
+
+    }
+
+</script>

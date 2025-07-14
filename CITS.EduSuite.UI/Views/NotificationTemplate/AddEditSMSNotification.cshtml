@@ -1,0 +1,184 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.NotificationTemplateViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/bundles/tinyMCEJS")
+
+}
+@{
+    ViewBag.Title = EduSuiteUIResources.Add + EduSuiteUIResources.Sla + EduSuiteUIResources.Edit + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.NotificationTemplate;
+}
+
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-12">
+            <div class="tbl">
+                <div class="tbl-row  px-1">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.Add@EduSuiteUIResources.Hyphen@EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.NotificationTemplate</h3>
+                        <ol class="breadcrumb breadcrumb-simple mb-2 float-sm-right">
+                            <li><a href="#" onclick="location.href='@Url.Action("NotificationTemplateList", "NotificationTemplate")' ">@EduSuiteUIResources.NotificationTemplate</a></li>
+                            <li class="active">@EduSuiteUIResources.Add@EduSuiteUIResources.Hyphen@EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.NotificationTemplate</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="section-content mx-sm-3 mx-0">
+    <div class="form-master">
+
+        @using (Html.BeginForm("AddEditSMSNotification", "NotificationTemplate", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            @Html.HiddenFor(m => m.RowKey)
+            <div class="form-row ">
+                <div class=" col-12">
+                    <div class="card mb-2">
+                        <div class="card-header w3-teal">
+                            @Model.NotificationTemplateName
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="form-row">
+
+                <div class="col-lg-6 col-sm-6 col-x-12">
+
+
+                    <div class="card">
+                        <div class="card-header w3-teal">
+                            @EduSuiteUIResources.SMS@EduSuiteUIResources.Template
+                        </div>
+                        <div class="card-body">
+                            <div class="form-row">
+                                <div class="col-lg-4 col-md-6  col-sm-6 col-12">
+                                    @Html.Label(EduSuiteUIResources.Status, htmlAttributes: new { @class = "form-label" })
+                                    @Html.DropDownListFor(m => m.AutoSMSValue, new SelectList(Model.NotificationStatuses, "RowKey", "Text"), new { @class = "form-control input-control" })
+                                    <span class="red">
+                                        @Html.ValidationMessageFor(m => m.AutoSMSValue)
+                                    </span>
+                                </div>
+                                <div class="col-lg-4 col-md-6  col-sm-6 col-12">
+                                    @Html.Label(EduSuiteUIResources.SMSTemplateID, htmlAttributes: new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.SMSTemplateID, new { @class = "form-control input-control " })
+                                    <span class="red">
+                                        @Html.ValidationMessageFor(m => m.SMSTemplateID)
+                                    </span>
+                                </div>
+                                <div class="col-lg-4 col-md-6  col-sm-6 col-12">
+                                    @Html.Label(EduSuiteUIResources.SMSTemplateContent, htmlAttributes: new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.SMSTemplateContent, new { @class = "form-control input-control " })
+                                    <span class="red">
+                                        @Html.ValidationMessageFor(m => m.SMSTemplateContent)
+                                    </span>
+                                </div>
+
+                            </div>
+                            <div class="form-row mt-4">
+                                <div class="col-12  col-lg-12">
+                                    @Html.Label(EduSuiteUIResources.SMSTemplate, htmlAttributes: new { @class = "form-label" })
+                                    @Html.TextAreaFor(m => m.SMSTemplate, 6, 10, new { @class = "form-control input-control", @InputFor = "lblCallDuration" })
+                                    <span class="red">
+                                        @Html.ValidationMessageFor(m => m.SMSTemplate)
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="col-lg-6 col-sm-6 col-x-12">
+
+                    <div class="card">
+                        <div class="card-header w3-teal">
+                            @EduSuiteUIResources.GuardianSMS@EduSuiteUIResources.Template
+                        </div>
+                        <div class="card-body">
+                            <div class="form-row">
+                                <div class="col-lg-4 col-md-6  col-sm-6 col-12">
+                                    @Html.Label(EduSuiteUIResources.Status, htmlAttributes: new { @class = "form-label" })
+                                    @Html.DropDownListFor(m => m.GuardianSMSValue, new SelectList(Model.NotificationStatuses, "RowKey", "Text"), new { @class = "form-control input-control" })
+                                    <span class="red">
+                                        @Html.ValidationMessageFor(m => m.GuardianSMSValue)
+                                    </span>
+                                </div>
+
+
+                            </div>
+                            <div class="form-row mt-4">
+                                <div class="col-12  col-lg-12">
+                                    @Html.Label(EduSuiteUIResources.SMSContent, htmlAttributes: new { @class = "form-label" })
+                                    @Html.TextAreaFor(m => m.GuardianSMSTemplate, 6, 10, new { @class = "form-control input-control", @InputFor = "lblCallDuration" })
+                                    <span class="red">
+                                        @Html.ValidationMessageFor(m => m.GuardianSMSTemplate)
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div id="keywords">
+
+                        @for (var i = 0; i < Model.NotificationColumns.Count; i++)
+                        {
+                            if (i == 0 || Model.NotificationColumns[i].NotificationColumnGroupKey != Model.NotificationColumns[i - 1].NotificationColumnGroupKey)
+                            {
+                                <div>
+                                    <h3 class="Margin_TopNone">@Model.NotificationColumns[i].NotificationColumnGroupName</h3>
+                                </div>
+
+                            }
+                            <div style="margin-bottom:5px;display:inline-block">
+                                <a class="btn btn-primary btn-xs" data-val="{{@Model.NotificationColumns[i].NotificationColumnKey}}">@Model.NotificationColumns[i].NotificationColumnName</a>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+            </div>
+            <div class="form-row">
+                <div class="col-sm-12">
+                    <input type="submit" value="@EduSuiteUIResources.Save" id="btnsave" class="btn btn-sm btn-success mx-1 mt-3 " />
+                </div>
+
+            </div>
+
+        }
+    </div>
+</section>
+
+
+<script>
+
+    $(document).ready(function () {
+
+         // Initialize your tinyMCE Editor with your preferred options
+
+        //tinyMCE.init({
+        //    // General options
+        //    mode: "textareas",
+        //    theme: "simple",
+        //});
+
+
+        $("#keywords a").on("dblclick", function () {
+            
+            $('#SMSTemplate').tinymce().execCommand('mceInsertContent', false, "<span contenteditable='false'>" + $(this).data("val") + "</span>");
+        })
+       
+    });
+</script>
+
+

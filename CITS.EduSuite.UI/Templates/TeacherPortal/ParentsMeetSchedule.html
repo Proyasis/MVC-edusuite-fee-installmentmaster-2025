@@ -1,0 +1,30 @@
+﻿<div class="w-100 mt-30">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 mb-3">
+                <div class="heading_view">
+                    <h2>Parents Meets</h2>
+                </div>
+            </div>
+            <div class="col-12 col-md-8 col-md-10 d-flex flex-wrap plr">
+                {{#ParentsMeetSchedules}}
+                <div class="col-6 col-md-4 col-lg-3  mb-3">
+                    <div class="class_box">
+                        <a href="#" onclick="TeacherPortal.GetStudentsForParentsMeet('{{BranchKey}}', '{{RowKey}}', '{{ClassDetailsKey}}', '{{ClassName}}', 3)">
+                            <div class="icon_relative" style="line-height: 10px;font-size: .875em;">
+                                <i class="fa  fa-pencil-square-o" aria-hidden="true"></i>
+                                Title<span>{{MeettingTitle}}</span>
+                                Date<span>{{MeettingDate}}</span>
+                                Time<span>{{MeettingTime}}</span>
+                                Signed Parents<span>{{SignedParents}}</span>
+                                Unsigned Parents<span>{{UnSignedParents}}</span>
+                            </div>
+
+                        </a>
+                    </div>
+                </div>
+                {{/ParentsMeetSchedules}}
+            </div>
+        </div>
+    </div>
+</div>

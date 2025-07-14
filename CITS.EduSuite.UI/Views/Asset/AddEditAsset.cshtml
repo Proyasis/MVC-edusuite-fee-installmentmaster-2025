@@ -1,0 +1,264 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.AssetViewModel
+
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Content/JqueryRepeater")
+    @Scripts.Render("~/Scripts/Asset")
+    @Scripts.Render("~/Content/Select2JS")
+    @Scripts.Render("~/Scripts/AssetType")
+
+}
+@Styles.Render("~/Styles/CITSPrintcss")
+@{
+    ViewBag.Title = EduSuiteUIResources.Add + EduSuiteUIResources.Sla + EduSuiteUIResources.Edit + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Asset;
+}
+<input type="hidden" id="hdnAssetList" value="@Url.Action("AssetList", "Asset")" />
+<input type="hidden" id="hdnDeleteAssetDetails" value="@Url.Action("DeleteAssetDetails", "Asset")" />
+<input type="hidden" id="hdnAddEditAsset" value="@Url.Action("AddEditAsset", "Asset", new { id = "" })" />
+<input type="hidden" id="hdnGetAccountHead" value="@Url.Action("GetAccountHead", "Asset")" />
+<input type="hidden" id="hdnGetHSNCodeDetails" value="@Url.Action("GetHSNCodeDetails", "AssetType")" />
+
+
+@using (Html.BeginForm("AddEditAsset", "Asset", FormMethod.Post, new { @id = "frmAsset" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.MasterKey)
+    @Html.ValidationSummary(true)
+
+    <div class="row bottomLine">
+        <div class="col-sm-12 Page_Head_Master">
+            <div class="col-sm-6 Text_Left">
+                <label class="Page_Heading  ">@EduSuiteUIResources.Add @EduSuiteUIResources.Sla @EduSuiteUIResources.Edit @EduSuiteUIResources.Asset</label>
+            </div>
+
+            <div class="col-sm-6 Page_Url Text_Right">
+
+                <a onclick="location.href='@Url.Action("AssetList", "Asset")' " class="btn btn-sm btnBack">
+                    <i class="fa fa-arrow-left" aria-hidden="true"></i>  @EduSuiteUIResources.Backto @EduSuiteUIResources.Asset
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col-sm-12">
+        <div class="form-master border_fieldset">
+            <div class="row">
+                <div class="paddingNone">
+                    <span class="ValidateDataMsg"> @Html.ValidationMessage("error_msg")  </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 mandatoryHead ">
+                    <span>@EduSuiteUIResources.FieldsMarkedAs<span class="mandatoryStar"> * </span>@EduSuiteUIResources.AreMandatory</span>
+
+                </div>
+            </div>
+            <div class="row ">
+                <div class="col-sm-3 form-col">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.AccountHead, htmlAttributes: new { @id = "lblAssetType", @class = "lblControlHead" })
+                        <span class="spnStar">*</span>
+                        <div class="form-group">
+                            <div class="col-sm-8 form-col">
+                                @Html.DropDownListFor(m => m.AssetTypeKey, new SelectList(Model.AssetTypes, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.AccountHead, new { @class = "form-control input-control", @InputFor = "lblAssetType" })
+                                <span class="red">
+                                    @Html.ValidationMessageFor(m => m.AssetTypeKey)
+                                </span>
+                            </div>
+                            <a id="addEditAccountHead" data-modal="" data-href="@Url.Action("AddEditAssetType", "AssetType")" class="btn-sm btnBack">
+                                <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <fieldset style="  border: solid 1px white;">
+                <div class="row bottomLine tableHead">
+                    <div class="form-group">
+                        <div class="col-sm-2 form-col">
+                            @Html.Label(EduSuiteUIResources.Name, htmlAttributes: new { @class = "lblControlHead" })<span class="spnStar">*</span>
+                        </div>
+                        <div class="col-sm-2 form-col">
+                            @Html.Label(EduSuiteUIResources.Code, htmlAttributes: new { @class = "lblControlHead" })<span class="spnStar">*</span>
+                        </div>
+
+                        <div class="col-sm-1 form-col ">
+                            @Html.Label(EduSuiteUIResources.Life + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Period, htmlAttributes: new { @class = "lblControlHead" })<span class="spnStar">*</span>
+
+                        </div>
+                        <div class="col-sm-2 form-col">
+                            @Html.Label(EduSuiteUIResources.Period + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Type, htmlAttributes: new { @class = "lblControlHead" })
+                            <span class="spnStar">*</span>
+                        </div>
+                        <div class="col-sm-2 form-col ">
+                            @Html.Label(EduSuiteUIResources.Purchase + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Date, htmlAttributes: new { @class = "lblControlHead" })<span class="spnStar">*</span>
+
+                        </div>
+                        <div class="col-sm-1 form-col ">
+                            @Html.Label(EduSuiteUIResources.Amount, htmlAttributes: new { @class = "lblControlHead" })<span class="spnStar">*</span>
+
+                        </div>
+                        <div class="col-sm-1 form-col ">
+                            @Html.Label(EduSuiteUIResources.IsActive, new { @class = "lblControlHead" })
+                        </div>
+
+                    </div>
+                </div>
+
+                <div id="dynamicRepeater" class="repeater col-sm-12">
+                    <div data-repeater-list>
+                        @for (int i = 0; i < Model.AssetDetailList.Count(); i++)
+                        {
+                            <div data-repeater-item>
+                                <div class="row bottomLine">
+                                    <div class="form-group">
+                                        <div class="col-sm-2 form-col">
+                                            <div class="form-group ">
+
+                                                @Html.TextBoxFor(m => m.AssetDetailList[i].AssetDetailName, new { @class = "form-control input-control" })
+                                                <span class="red">
+                                                    @Html.ValidationMessageFor(m => m.AssetDetailList[i].AssetDetailName)
+                                                </span>
+                                                @Html.HiddenFor(m => m.AssetDetailList[i].RowKey)
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-2 form-col">
+                                            <div class="form-group ">
+
+                                                @Html.TextBoxFor(m => m.AssetDetailList[i].AssetDetailCode, new { @class = "form-control input-control" })
+                                                <span class="red">
+                                                    @Html.ValidationMessageFor(m => m.AssetDetailList[i].AssetDetailCode)
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-1 form-col">
+                                            <div class="form-group ">
+
+                                                @Html.TextBoxFor(m => m.AssetDetailList[i].LifePeriod, new { @class = "form-control input-control" })
+                                                <span class="red">
+                                                    @Html.ValidationMessageFor(m => m.AssetDetailList[i].LifePeriod)
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-2 form-col">
+                                            <div class="form-group">
+                                                @Html.DropDownListFor(m => m.AssetDetailList[i].PeriodTypeKey, new SelectList(Model.AssetDetailList[i].PeriodType, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Period + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Type, new { @class = "form-control input-control" })
+                                                <span class="red">
+                                                    @Html.ValidationMessageFor(m => m.AssetDetailList[i].PeriodTypeKey)
+                                                </span>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-sm-2 form-col">
+                                            <div class="form-group ">
+
+                                                @Html.TextBoxFor(m => m.AssetDetailList[i].PurchasingDate, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_inputmask = "'alias': 'date'", @data_input_type = "date" })
+                                                <span class="red">
+                                                    @Html.ValidationMessageFor(m => m.AssetDetailList[i].PurchasingDate)
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-1 form-col">
+                                            <div class="form-group ">
+
+                                                @Html.TextBoxFor(m => m.AssetDetailList[i].Amount, "{0:G29}", new { @class = "form-control input-control" })
+                                                <span class="red">
+                                                    @Html.ValidationMessageFor(m => m.AssetDetailList[i].Amount)
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-1 form-col">
+                                            <div class="form-group ">
+                                                <div class="switch-check">
+                                                    @Html.CheckBoxFor(m => m.AssetDetailList[i].IsActive, new { @class = "switch-input" })
+                                                    <div class="switch-label yesno" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                                                    <div class="switch-handle"></div>
+                                                </div>
+                                                <span class="red">
+                                                    @Html.ValidationMessageFor(m => m.AssetDetailList[i].IsActive)
+                                                </span>
+                                            </div>
+
+                                        </div>
+
+
+                                        <div class="pull-left">
+
+                                            <span data-repeater-delete="" class="btn btn-danger btn-sm btnDeleteRow">
+                                                <span class="glyphicon glyphicon-remove"></span> @EduSuiteUIResources.Delete
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="  pull-left">
+
+                        <span data-repeater-create class="btn btn-info btn-sm  btnadd pull-left btnadd">
+                            <span class="glyphicon glyphicon-plus"></span> @EduSuiteUIResources.Add
+                        </span>
+                    </div>
+
+                </div>
+            </fieldset>
+
+            <div class="row bottomLine">
+                <div class="col-sm-6 form-col">
+                    <div class="form-group col-sm-12 paddingNone">
+                        <input type="button" value="@EduSuiteUIResources.Save" id="btnSave" class="btnForm btnSubmit btn btn-sm btn-default " />
+                        <input type="button" value="@EduSuiteUIResources.Cancel" onclick="location.href='@Url.Action("AssetList", "Asset")' " class="btnForm btnCancel btn btn-sm btn-default " />
+                    </div>
+                    <div class="col-sm-12 paddingNone">
+                        <span class="ValidateDataMsg"> @Html.ValidationMessage("error_msg")  </span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+}
+
+<style>
+    .datepicker {
+        z-index: 9999 !important;
+    }
+</style>
+
+<script>
+    var jsonData=@(Html.Raw(Json.Encode(Model)));
+    $(document).ready(function () {
+        AppCommon.FormatDateInput();
+        AppCommon.FormatInputCase();
+        AppCommon.CustomRepeaterRemoteMethod();
+        Asset.GetAssetDetail(jsonData);
+
+        $("#addEditAccountHead").attr("data-href","@Url.Action("AddEditAssetType", "AssetType")")
+        $("#AssetTypeKey").on("change",function(){
+            window.location.href = $("#hdnAddEditAsset").val() +"/"+"?id="+$(this).val();
+        });
+
+        $.ajaxSetup({ cache: false });
+        $("#addEditAccountHead").popupform({
+            formAction: "@Url.Action("AddEditAssetType", "AssetType")",
+            load: function () {
+                AppCommon.FormatInputCase();
+            },
+            rebind: function () {
+                Asset.GetAccountHead($("#AssetTypeKey"));
+            }
+        });
+    });
+</script>

@@ -1,0 +1,462 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.MailMessagesViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+@using System.Web.Mvc
+
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/CitsValidation")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Content/Select2JS")
+    @Scripts.Render("~/Content/SummerNoteJS")
+    @Scripts.Render("~/Scripts/MailMessage")
+
+
+}
+<!--STYLESHEET-->
+<!--=================================================-->
+<!--Open Sans Font [ OPTIONAL ]-->
+@*<link href="~/Views/MailMessages/Mailbox Responsive Template_files/css" rel="stylesheet" type="text/css">*@
+
+<!--Bootstrap Stylesheet [ REQUIRED ]-->
+@*<link href="./Mailbox Responsive Template_files/bootstrap.css" rel="stylesheet">*@
+
+<!--MailBox Stylesheet [ REQUIRED ]-->
+@*<link href="~/Views/MailMessages/Mailbox Responsive Template_files/mailbox.css" rel="stylesheet">*@
+
+@*<!-- MailBox Premium Icon -->
+    <link href="./Mailbox Responsive Template_files/mailbox-icons.css" rel="stylesheet">
+
+    <!--mailbox [ DEMONSTRATION ]-->
+    <link href="./Mailbox Responsive Template_files/mailbox(1).css" rel="stylesheet">
+
+
+    <!--Magic Checkbox [ OPTIONAL ]-->
+    <link href="./Mailbox Responsive Template_files/magic-check.css" rel="stylesheet">*@
+
+
+
+<!--JAVASCRIPT-->
+<!--=================================================-->
+@*<!--Pace - Page Load Progress Par [OPTIONAL]-->
+    <link href="./Mailbox Responsive Template_files/pace.css" rel="stylesheet">
+    <script src="./Mailbox Responsive Template_files/pace.js"></script>
+
+    <!--jQuery [ REQUIRED ]-->
+    <script src="./Mailbox Responsive Template_files/jquery.js"></script>
+
+    <!--BootstrapJS [ RECOMMENDED ]-->
+    <script src="./Mailbox Responsive Template_files/bootstrap.js"></script>
+
+    <!--MailBoxJS [ RECOMMENDED ]-->
+    <script src="./Mailbox Responsive Template_files/mailbox.js"></script>*@
+
+
+<input type="hidden" id="hdnGetMailMessages" value="@Url.Action("GetMailMessages", "MailMessages")" />
+<input type="hidden" id="hdnTrashMessage" value="@Url.Action("TrashMailMessages", "MailMessages")" />
+<input type="hidden" id="hdnDeleteMailMessages" value="@Url.Action("DeleteMailMessages", "MailMessages")" />
+<input type="hidden" id="hdnStarMailMessages" value="@Url.Action("StarMailMessages", "MailMessages")" />
+<input type="hidden" id="hdnComposeMailMessages" value="@Url.Action("ComposeMailMessage", "MailMessages")" />
+<input type="hidden" id="hdnGetAppUserByText" value="@Url.Action("GetAppUserByText", "MailMessages")" />
+<input type="hidden" id="hdnGetMessagesContent" value="@Url.Action("GetMessagesContent", "MailMessages")" />
+
+@Html.HiddenFor(m => m.PageIndex)
+@Html.HiddenFor(m => m.PageSize)
+
+<style>
+    .page-header {
+        padding-bottom: 9px;
+        margin: 40px 0 20px;
+        border-bottom: 1px solid #eee;
+        font-size: 16px;
+        margin: 0px;
+    }
+
+    .mail-list {
+        list-style-type: none;
+        padding: 0px !important;
+    }
+
+    .btn-block {
+        display: block;
+        width: 100%;
+        border-radius: 0px;
+        list-style-type: none;
+    }
+
+    .pad-hor {
+        margin-left: 0px !important;
+        margin: 0px;
+        padding: 3px 14px;
+        background: gainsboro;
+    }
+
+    .mail-control {
+        width: 10px;
+        float: left;
+        margin-right: 6px;
+    }
+
+    .mail-subject a {
+        color: #827575;
+        font-size: 12px;
+        display: contents;
+    }
+
+    .mail-time {
+        font-size: 13px;
+        /*float: right;*/
+        text-decoration: underline;
+        font-size: 12px;
+        color: #1bc156;
+        margin-top: -62px;
+    }
+
+    .mail-attach {
+        background: #ece3e3;
+        padding: 4px 10px;
+        border-radius: 2px;
+        margin-bottom: 0px;
+        border-bottom: solid #e0ded9 1px;
+        cursor: pointer;
+    }
+
+        .mail-attach:hover {
+            background: #efefef;
+            /* border-bottom: solid white 1px; */
+        }
+
+    .mail-from a:hover, .mail-subject a:hover {
+        text-decoration: none;
+    }
+
+    .panel-body {
+        padding: 5px;
+    }
+
+    span.mail-UserName {
+        color: white;
+        /* font-family: sans-serif; */
+        font-size: 12px;
+        background: #d26a8b;
+        padding: 1px 0px;
+        min-width: 61px;
+        display: inline-block;
+        text-align: center;
+        font-weight: normal;
+        border-radius: 0px;
+        height: 20px;
+    }
+
+
+    span.Maildate {
+        background: #0fab5c;
+        margin-right: 6px;
+        color: white;
+        padding: 0px 5px;
+    }
+
+    span.MailTime {
+        margin-right: 6px;
+        color: white;
+        padding: 0px 5px;
+        background: #00c195;
+    }
+
+    .messageDashboard {
+        padding: 0px;
+        background: white;
+        margin-left: -10px;
+        width: 103%;
+        border-bottom: solid #f3f1ee 1px;
+        margin-bottom: 3px;
+        padding: 4px 11px;
+    }
+
+    i.fa.fa-star, i.fa.fa-trash, i.fa.fa-mail-forward {
+        font-size: 17px;
+        /*text-shadow: 1px 1px 1px #8c8484;*/
+        padding: 1px 6px;
+        width: 28px;
+        /* height: 18px; */
+        /* border-radius: 50%; */
+        top: 0px;
+        padding: 3px 0px;
+        text-indent: -1px;
+        margin-top: 0px;
+        cursor: pointer;
+    }
+
+    i.fa.fa-star {
+        /*background: #f1f0f0;*/
+        color: #ffc116;
+    }
+
+    i.fa.fa-trash {
+        /*background: #f1f0f0;*/
+        /*color: #210101;*/
+        color: black;
+    }
+
+    i.fa.fa-trash {
+        /* background: #f1f0f0; */
+        /*color: #ffffff;*/
+        color: black;
+        /*text-shadow: 1px 1px 4px black;*/
+    }
+
+
+    i.fa-mail-forward {
+        /* background: #f1f0f0; */
+        /*color: #ffffff;*/
+        /*text-shadow: 1px 1px 4px black !important;*/
+        color: black;
+    }
+
+    span.badge.badge-success.pull-right {
+        background: #0ab8d4;
+    }
+
+    span.badge.badge-danger.pull-right {
+        background: #dc3535;
+    }
+
+        span.badge.badge-danger.pull-right span:empty {
+            display: none;
+        }
+
+    a.ComposefileAttachMent, .fileAttachMent, a.ComposefileAttachMent:hover, .fileAttachMent:hover {
+        font-size: 12px;
+        color: white;
+        background: #7b7a78;
+        padding: 1px 6px;
+        border-radius: 1px;
+        margin-top: 10px !important;
+        display: inline-block;
+        padding-right: 23px;
+    }
+
+    i.fa.fa-remove.RemoveFileAttachMent {
+        position: absolute;
+        border-radius: 50%;
+        width: 16px;
+        height: 16px;
+        text-align: center;
+        padding-top: 0px;
+        /* top: 33px; */
+        /* display: block; */
+        /* float: right; */
+        /* margin: 0px; */
+        background: #dc0c0c;
+        /* top: 26px; */
+        margin-left: -19px;
+        color: white;
+        padding-top: 2px;
+        cursor: pointer;
+        font-size: 11px;
+        margin-top: 12px;
+    }
+
+    .MessageDivList.False {
+        background: #eaf1b2;
+        border-left: solid #f9f9f9 4px;
+    }
+
+    .MessageDivList {
+        border-bottom: solid #f1f1f1 1px;
+        font-size: 12px;
+        padding: 1px 0px;
+        cursor: pointer;
+    }
+
+        .MessageDivList.True {
+            background: #f9f9f9 !important;
+            border-left: solid #f9f9f9 4px;
+        }
+
+        .MessageDivList:hover {
+            background: #e6e5e2 !important;
+            border-bottom: solid #e6e5e2 1px;
+            border-left: solid #ea0b0b 4px;
+        }
+
+    .MailUserName {
+        color: #048c02;
+        font-weight: bold;
+        font-size: 11px;
+    }
+
+    .MessageSubject {
+        font-weight: bold;
+        font-size: 10px;
+        overflow: hidden;
+        height: 17px;
+    }
+
+    .MessageDate {
+        color: #13b509;
+    }
+
+    .MessageClick {
+        padding: 5px 0;
+    }
+
+    .panel.messageBody p {
+        line-height: 26px;
+        text-align: justify;
+        width: 94%;
+    }
+
+    .MailFolderIcon {
+        background: none !important;
+        box-shadow: none !important;
+        color: black !important;
+        margin: 0px;
+        position: absolute;
+        left: -7px;
+        font-size: 14px !important;
+        top: 5px;
+    }
+
+    .MailFolderIcon {
+        background: none !important;
+        box-shadow: none !important;
+        color: black !important;
+        margin: 0px;
+        position: absolute;
+        left: -7px;
+        font-size: 14px !important;
+        top: 5px !important;
+        left: 7px !important;
+        width: initial !important;
+        padding: 0px !important;
+    }
+
+    .list-group-item {
+        position: relative;
+        display: block;
+        padding: 6px 47px;
+        margin-bottom: -1px;
+        background-color: #fff;
+        border: 1px solid #efefef;
+    }
+</style>
+
+
+<style></style>
+
+
+
+
+
+<div class="pace  pace-inactive">
+    <div class="pace-progress" data-progress-text="100%" data-progress="99" style="width: 100%;">
+        <div class="pace-progress-inner"></div>
+    </div>
+    <div class="pace-activity"></div>
+</div>
+<div id="container" class="effect aside-float aside-bright mainnav-lg">
+
+
+    <div class="boxed">
+        <div style="padding-top: 40px;">
+            <div id="page-content">
+                <div class="col-sm-3">
+                    <div class="panel">
+                        <div class="pad-all bord-btm">
+                            <button data-modal="" data-url="@Url.Action("ComposeMail", "MailMessages")" id="BtnComposeEmail" class="btn btn-block btn-success">Compose Mail</button>
+                        </div>
+
+
+
+                        <p class="pad-hor mar-top text-main text-bold">Folders</p>
+                        <div class="list-group bg-trans pad-btm bord-btm">
+                            <a onclick='MailMessage.GetMailMessages(jsonData,1,true,1,1)' id="TabInbox" data-name="Inbox" href="#" class="list-group-item text-semibold text-main">
+                                <span id="InboxEmail" class="badge badge-success pull-right"> </span>
+                                <span id="InboxNewEmail" class="badge badge-danger pull-right"></span>
+                                <span class="text-main"><i class="fa fa-inbox MailFolderIcon"></i> Inbox</span>
+                            </a>
+
+                            <a onclick='MailMessage.GetMailMessages(jsonData,1,true,2,2)' id="TabSent" data-name="Sent" href="#" class="list-group-item text-semibold text-main">
+                                <span id="SentEmail" class="badge badge-success pull-right"></span>
+                                <span class="text-main"><i class="fa fa-mail-forward MailFolderIcon"></i> Sent</span>
+                            </a>
+
+                            <a onclick='MailMessage.GetMailMessages(jsonData,1,true,3,3)' id="TabDraft" data-name="Draft" href="#" class="list-group-item text-semibold text-main">
+                                <span id="DraftEmail" class="badge badge-success pull-right"></span>
+                                <span class="text-main"><i class="fa fa-save MailFolderIcon"></i>Draft</span>
+                            </a>
+
+                            <a onclick='MailMessage.GetMailMessages(jsonData,1,true,4,4)' id="TabDraft" data-name="Trash" href="#" class="list-group-item text-semibold text-main">
+                                <span id="TrashEmail" class="badge badge-success pull-right"></span>
+                                <span class="text-main"><i class="fa fa-trash MailFolderIcon"></i> Trash</span>
+                            </a>
+
+                            <a onclick='MailMessage.GetMailMessages(jsonData,1,true,5,5)' id="TabDraft" data-name="Trash" href="#" class="list-group-item text-semibold text-main">
+                                <span id="StaredEmail" class="badge badge-success pull-right"></span>
+                                <span class="text-main"><i class="fa fa-star MailFolderIcon"></i>Stared</span>
+                            </a>
+
+
+                        </div>
+
+
+
+                    </div>
+                </div>
+
+
+                <div class="col-sm-9">
+
+                    <div style="display:none" class="col-md-5 pull-right">
+                        <div id="page-selection-up" class="pull-right"></div>
+                    </div>
+                    @*@Html.Partial("GetMailMessages", "MailMessages")*@
+                    <div id="divMessagesContainer">
+                        <div id="dvRepeaterList" class="row"></div>
+                    </div>
+
+                    <div class="panel-header  transparent-bg Border_None">
+                        <div class="row">
+                            <div class="col-md-5 pull-right">
+                                <div id="page-selection-down" class="pull-right"></div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script type="text/javascript">
+    var jsonData=@(Html.Raw(Json.Encode(Model)));
+    $(document).ready(function ()
+    {
+        MailMessage.GetMailMessages(jsonData,1,true,1,1);
+    });
+
+</script>
+
+<script>
+    $(document).ready(function ()
+    {
+        $("button[data-modal]").off("click").on("click", function () {
+            MailMessage.EditComposePopUp($(this))
+        });
+    })
+
+</script>

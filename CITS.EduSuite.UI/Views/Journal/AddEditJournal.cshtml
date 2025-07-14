@@ -1,0 +1,238 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.JournalViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+
+
+
+<div class="modal-header">
+    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+    <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.Add @EduSuiteUIResources.Sla @EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace @EduSuiteUIResources.Journal</h4>
+</div>
+@using (Html.BeginForm("AddEditJournal", "Journal", FormMethod.Post, new { @id = "frmJournal" }))
+{
+    <input type="hidden" id="hdnFillAccountHead" value="@Url.Action("FillAccountHead", "Journal")" />
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.RowKey)
+    @Html.ValidationSummary(true)
+
+    <div class="modal-body">
+        <div class="form-master">
+            
+            <div class="form-row">
+               @if (Model.Branches.Count == 1)
+               {
+                   {
+                       Model.BranchKey = Model.BranchKey == 0 ? (short)Model.Branches.Select(x => x.RowKey).FirstOrDefault() : Model.BranchKey;
+                   }
+                @Html.HiddenFor(m => m.BranchKey)
+               }
+               else
+               {
+                   if (DbConstants.Role.AdminUserTypes.Contains(DbConstants.User.RoleKey))
+                   {
+                    <div class="col-12 col-sm-4 col-lg-4">
+                        <fieldset class="form-group">
+                            @Html.Label(EduSuiteUIResources.Branch, htmlAttributes: new { @id = "lblBranch", @class = "form-label" })
+                            <div class="required-icon"><div class="text">*</div></div>
+                            @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Branch, new { @class = "form-control input-control", @InputFor = "lblBranch", @data_live_search = "true" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.BranchKey)
+                            </span>
+                        </fieldset>
+                    </div>
+
+                   }
+                   else
+                   {
+                    <div class="col-12 col-sm-4 col-lg-4">
+                        <fieldset class="form-group">
+                            @Html.Label(EduSuiteUIResources.Branch, htmlAttributes: new { @id = "lblBranch", @class = "form-label" })
+                            <div class="required-icon"><div class="text">*</div></div>
+                            @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), new { @class = "form-control input-control", @InputFor = "lblBranch" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.BranchKey)
+                            </span>
+                        </fieldset>
+                    </div>
+                   }
+
+               }
+                <div class="col-lg-4 col-6">
+                    <div class="form-group ">
+                        @Html.Label(EduSuiteUIResources.Date, htmlAttributes: new { @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                        @Html.TextBoxFor(m => m.JournalDate, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_inputmask = "'alias': 'dd/mm/yyyy'", @data_input_type = "date" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.JournalDate)
+                        </span>
+                    </div>
+
+                </div>
+                <div class="col-lg-4 col-6">
+                    <fieldset class="form-group">
+
+                        @Html.Label(EduSuiteUIResources.Remarks, htmlAttributes: new { @id = "lblRemarks", @class = "form-label" })
+                        @Html.TextAreaFor(m => m.Remark, new { @class = "input-control form-control full-width", @InputFor = "lblRemarks" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.Remark)
+                        </span>
+                    </fieldset>
+
+                </div>
+            </div>
+
+
+
+            <div id="dynamicRepeater" class="repeater">
+                <table class="table table-bordered table-responsive-sm">
+                    <thead class="form-group">
+                        <tr>
+                            <th></th>
+                            <th>
+                                @Html.Label(EduSuiteUIResources.Group, htmlAttributes: new { @class = "form-label" })
+                            </th>
+
+                            <th>
+                                @Html.Label(EduSuiteUIResources.AccountHead, htmlAttributes: new { @class = "form-label" })
+                            </th>
+
+                            <th>
+                                @Html.Label(EduSuiteUIResources.Remarks, htmlAttributes: new { @class = "form-label" })
+                            </th>
+                            <th>
+                                @Html.Label(EduSuiteUIResources.Debit, htmlAttributes: new { @class = "form-label" })
+                            </th>
+                            <th>
+                                @Html.Label(EduSuiteUIResources.Credit, htmlAttributes: new { @class = "form-label" })
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody data-repeater-list>
+                        @for (int i = 0; i < Model.JournalDetails.Count(); i++)
+                        {
+                        <tr data-repeater-item>
+                            <td class="px-1">
+                                @*<label class="form-label" style="visibility:hidden">NothingToDisplay</label>*@
+                                <span data-repeater-delete="" class="btn btn-danger btn-sm">
+                                    <span class="fa fa-remove "></span>
+                                </span>
+
+                            </td>
+                            <td class="px-1">
+                                <fieldset class="form-group">
+                                    @Html.DropDownListFor(m => m.JournalDetails[i].AccountGroupKey, new SelectList(Model.JournalDetails[i].AccountGroups, "RowKey", "Text", Model.JournalDetails[i].AccountGroupKey), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Group, new { @class = "form-control input-control ", @onchange = "Journal.GetAccountHeadById(this)" })
+                                    <span class="form-control-error-text">
+                                        @Html.ValidationMessageFor(m => m.JournalDetails[i].AccountGroupKey)
+                                    </span>
+                                </fieldset>
+                            </td>
+                            <td class="px-1">
+                                <fieldset class="form-group">
+                                    @Html.DropDownListFor(m => m.JournalDetails[i].AccountHeadKey, new SelectList(Model.JournalDetails[i].AccountHeads, "RowKey", "Text", Model.JournalDetails[i].AccountHeadKey), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.AccountHead, new { @class = "form-control input-control " })
+                                    <span class="form-control-error-text">
+                                        @Html.ValidationMessageFor(m => m.JournalDetails[i].AccountHeadKey)
+                                    </span>
+                                </fieldset>
+                            </td>
+                            <td class="px-1">
+                                <fieldset class="form-group">
+                                    @Html.TextBoxFor(m => m.JournalDetails[i].Remark, new { @class = "form-control input-control" })
+                                    @Html.HiddenFor(m => m.JournalDetails[i].RowKey)
+                                </fieldset>
+
+                            </td>
+
+                            <td class="px-1 text-center">
+                                <fieldset class="form-group">
+                                    @Html.TextBoxFor(m => m.JournalDetails[i].Debit, "{0:G29}", new { @class = "form-control input-control", @InputFor = "lblFeeAmount" })
+                                    <span class="form-control-error-text">
+                                        @Html.ValidationMessageFor(m => m.JournalDetails[i].Debit)
+                                    </span>
+
+                                </fieldset>
+                            </td>
+                            <td class="px-1 text-center">
+                                <fieldset class="form-group">
+                                    @Html.TextBoxFor(m => m.JournalDetails[i].Credit, "{0:G29}", new { @class = "form-control input-control", @InputFor = "lblFeeAmount" })
+                                    <span class="form-control-error-text">
+                                        @Html.ValidationMessageFor(m => m.JournalDetails[i].Credit)
+                                    </span>
+                                </fieldset>
+                            </td>
+
+                        </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td class="px-1">
+                                <span data-repeater-create class="btn btn-info btn-sm">
+                                    <span class="fa fa-plus"></span>
+                                </span>
+                            </td>
+                            <td class="px-1" colspan="3">
+                                @Html.TextBox("lblTotal", EduSuiteUIResources.Total, htmlAttributes: new { @class = "form-control input-control", @readonly = "readonly" })
+
+
+                            </td>
+
+
+                            <td class="px-1">
+                                @Html.TextBox("lblTotalDebit", Model.JournalDetails.Select(x => x.Debit).DefaultIfEmpty().Sum(), "{0:G29}", htmlAttributes: new { @class = "form-control input-control text-right-decimal", @readonly = "readonly" })
+
+                            </td>
+                            <td class="px-1">
+                                @Html.TextBox("lblTotalCredit", Model.JournalDetails.Select(x => x.Credit).DefaultIfEmpty().Sum(), "{0:G29}", htmlAttributes: new { @class = "form-control input-control text-right-decimal", @readonly = "readonly" })
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+
+            <div class="form-row">
+                <div class="col-12">
+                    <span class="text-danger" id="spnerr"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer justify-content-start">
+        <div class="form-group">
+           
+            <input type="button" value="@EduSuiteUIResources.Save" id="btnSave" class="btn btn-sm btn-success mx-1" />
+            <button type="button" data-dismiss="modal" class="btn btn-sm btn-danger mx-1">@EduSuiteUIResources.Cancel</button>
+
+        </div>
+    </div>
+}
+
+<script>
+    var jsonData=@(Html.Raw(Json.Encode(Model)));
+    $(document).ready(function () {
+
+        AppCommon.FormatDateInput();
+        AppCommon.FormatInputCase()
+        AppCommon.EnterKeyToTab($("form"));
+        Journal.GetJournalDetail(jsonData);
+        AppCommon.CustomRepeaterRemoteMethod();
+        Journal.GetAccountHeadById()
+        //AppCommon.FormatSelect2();
+        $("[id*=Debit]").on("input", function () {
+            item = $(this).closest("[data-repeater-item]")
+            credit = $("[id*=Credit]", item)
+            credit.val("")
+            Journal.DebitCreditTotalCalc();
+        })
+        $("[id*=Credit]").on("input", function () {
+            item = $(this).closest("[data-repeater-item]")
+            debit = $("[id*=Debit]", item)
+            debit.val("")
+            Journal.DebitCreditTotalCalc()
+        });
+        $("#btnSave").on("click",function(){
+            Journal.JournalSubmit(this);
+        })
+    });
+</script>

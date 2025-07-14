@@ -1,0 +1,197 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.AssetTypeViewModel
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/Scripts/AssetType")
+}
+<div class="modal-header">
+    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+    <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.Add @EduSuiteUIResources.Sla @EduSuiteUIResources.Edit @EduSuiteUIResources.AssetType</h4>
+</div>
+@using (Html.BeginForm("AddEditAssetType", "AssetType", FormMethod.Post, new { @id = "frmAssetType" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.RowKey)
+    @Html.ValidationSummary(true)
+
+    <div class="modal-body bottomLine">
+        <div class="topMarginSpace  form-master fnone">
+            <div class="form-row">
+                <div class="paddingNone">
+                    <span class="ValidateDataMsg"> @Html.ValidationMessage("error_msg")  </span>
+                </div>
+            </div>
+            <div class="form-row ">
+                <div class="col-sm-5">
+                    <div class="form-group ">
+                        @Html.Label(EduSuiteUIResources.AssetType + @EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Name, htmlAttributes: new { @class = "lblControlHead" })
+                        <div class="required-icon"><div class="text">*</div></div>
+                        @Html.TextBoxFor(m => m.AssetTypeName, new { @class = "form-control input-control" })
+                        <span class="red">
+                            @Html.ValidationMessageFor(m => m.AssetTypeName)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    @Html.Label(EduSuiteUIResources.IsActive + "?", htmlAttributes: new { @class = "lblControlHead" })
+                    <div class="switch-check">
+                        @Html.CheckBoxFor(m => m.IsActive, new { @class = "switch-input" })
+                        <div class="switch-label" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                        <div class="switch-handle"></div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    @Html.Label(EduSuiteUIResources.Have + @EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Depreciation + "?", htmlAttributes: new { @class = "lblControlHead" })
+                    <div class="switch-check">
+                        @Html.CheckBoxFor(m => m.HaveDepreciation, new { @class = "switch-input" })
+                        <div class="switch-label" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                        <div class="switch-handle"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row ">
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.Depreciation + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Method, htmlAttributes: new { @class = "lblControlHead" })
+                        @Html.DropDownListFor(m => m.DepreciationMethodKey, new SelectList(Model.DepreciationMethods, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Depreciation + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Method, new { @class = "input-control form-control form-control-sm" })
+                        <span class="red">
+                            @Html.ValidationMessageFor(m => m.DepreciationMethodKey)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    @Html.Label(EduSuiteUIResources.Is + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Taxable + "?", htmlAttributes: new { @class = "lblControlHead" })
+                    <div class="switch-check">
+                        @Html.CheckBoxFor(m => m.IsTax, new { @class = "switch-input" })
+                        <div class="switch-label" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                        <div class="switch-handle"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="divTax">
+                <div class="form-row">
+                    <div class="col-sm-3">
+                        <div class="form-group ">
+                            @Html.Label(EduSuiteUIResources.HSN + @EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Code, htmlAttributes: new { @class = "lblControlHead" })<div class="required-icon"><div class="text">*</div></div>
+                            @Html.TextBoxFor(m => m.HSNCode, new { @class = "form-control input-control" })
+                            <span class="red">
+                                @Html.ValidationMessageFor(m => m.HSNCode)
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group ">
+                            @Html.Label(EduSuiteUIResources.CGSTPer, htmlAttributes: new { @class = "lblControlHead" })<div class="required-icon"><div class="text">*</div></div>
+                            @Html.TextBoxFor(m => m.CGSTPer, "{0:G29}", new { @class = "form-control input-control text-right-decimal", @onClick = "this.setSelectionRange(0, this.value.length)", @id = "CGSTAssetTypePer" })
+                            <span class="red">
+                                @Html.ValidationMessageFor(m => m.CGSTPer)
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group ">
+                            @Html.Label(EduSuiteUIResources.SGSTPer, htmlAttributes: new { @class = "lblControlHead" })<div class="required-icon"><div class="text">*</div></div>
+                            @Html.TextBoxFor(m => m.SGSTPer, "{0:G29}", new { @class = "form-control input-control text-right-decimal", @onClick = "this.setSelectionRange(0, this.value.length)", @id = "SGSTAssetTypePer" })
+                            <span class="red">
+                                @Html.ValidationMessageFor(m => m.SGSTPer)
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group ">
+                            @Html.Label(EduSuiteUIResources.IGST + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.PercentageSymbol, htmlAttributes: new { @class = "lblControlHead" })<div class="required-icon"><div class="text">*</div></div>
+                            @Html.TextBoxFor(m => m.IGSTPer, "{0:G29}", new { @class = "form-control input-control text-right-decimal", @onClick = "this.setSelectionRange(0, this.value.length)", @readonly = true, @id = "IGSTAssetTypePer" })
+                            <span class="red">
+                                @Html.ValidationMessageFor(m => m.IGSTPer)
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-sm-5">
+                        <div class="form-group">
+                            @Html.Label(EduSuiteUIResources.HSN + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Code + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Category, htmlAttributes: new { @class = "lblControlHead" })
+                            @Html.DropDownListFor(m => m.HSNCodeKey, new SelectList(Model.HSNCodes, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.HSN + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Code + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Category, new { @class = "form-control input-control", @data_live_search = "true" })
+                            <span class="red">
+                                @Html.ValidationMessageFor(m => m.HSNCodeKey)
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal-footer justify-content-start">
+        <div class="form-group">
+            <button type="submit" id="btnSave" class="btn btn-sm btn-success mx-1"><i class="fa fa-save"></i> @EduSuiteUIResources.Save</button>
+            <button type="button" data-dismiss="modal" class="btn btn-sm btn-danger mx-1"><i class="fa fa-close"></i>@EduSuiteUIResources.Cancel</button>
+
+        </div>
+    </div>
+}
+
+<script>
+    //Script to Remove space on Input in textbox
+
+    $(document).ready(function () {
+
+        AppCommon.FormatSelect2();
+
+        $("#IsTax").on("click", function () {
+            if (this.checked == true) {
+                $("#divTax").show();
+            } else {
+                $("#divTax").hide();
+                $("#divTax").find('select, input, textarea').val("");
+            }
+        });
+
+
+        if (@Model.IsTax.ToString().ToLower() == true) {
+            $("#divTax").show();
+        } else {
+            $("#divTax").hide();
+        }
+
+        $('input[CharSpace="RemoveSpace"]').on("input", function () {
+
+            var start = this.selectionStart
+            $(this).val($(this).val().toUpperCase())
+            var test = /^[\s]/;
+            if (test.test($(this).val())) {
+                var newVal = $(this).val().replace(/[\s *0-]/g, "");
+                $(this).val(newVal);
+            }
+            document.getElementById(this.id).value = document.getElementById(this.id).value.trim();
+            this.selectionStart = this.selectionEnd = start;
+
+        });
+
+        $('input,textarea,select').click(function (e) {
+            $('input[type="text"],textarea').each(function () {
+                $(this).val($(this).val().trim())
+            });
+        });
+
+        $("#CGSTAssetTypePer,#SGSTAssetTypePer").on("input change", function () {
+            CalculateIGST();
+        });
+
+        $("#HSNCodeKey").on("change", function () {
+            AssetType.HSNCodeDetails(this);
+        });
+    });
+
+    function CalculateIGST() {
+        var CGSTPer = $("#CGSTAssetTypePer").val();
+        CGSTPer = parseFloat(CGSTPer) ? parseFloat(CGSTPer) : 0;
+        var SGSTPer = $("#SGSTAssetTypePer").val();
+        SGSTPer = parseFloat(SGSTPer) ? parseFloat(SGSTPer) : 0;
+        var IGSTPer = CGSTPer + SGSTPer
+        $("#IGSTAssetTypePer").val((IGSTPer != 0 ? IGSTPer : ""))
+    }
+</script>
+

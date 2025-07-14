@@ -1,0 +1,259 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.BankReconciliationViewModel
+@using CITS.EduSuite.Business.Models.ViewModels;
+
+
+@using (Html.BeginForm("AddEditBankReconciliation", "BankReconciliation", FormMethod.Post))
+{
+    @Html.HiddenFor(m => Model.BankAccountKey)
+    @Html.HiddenFor(m => Model.BranchKey)
+    @Html.HiddenFor(m => Model.FromDate)
+    @Html.HiddenFor(m => Model.ToDate)
+    <div id="bankStatementRepeater" class="repeater">
+        <input type="hidden" id="searchTag" />
+        <div data-repeater-list>
+            @for (int i = 0; i < (Model.BankStatementDetails.Count() > Model.DefaultBankPaymentDetails.Count() ? Model.BankStatementDetails.Count() : Model.DefaultBankPaymentDetails.Count()); i++)
+            {
+                <div data-index="2" data-repeater-item class="form-row">
+                    @if ((i + 1) <= Model.BankStatementDetails.Count())
+                    {
+                        <div leftitem class="col-5">
+                            <div bank-statement-panel>
+                                <div class="card ">
+                                    @Html.HiddenFor(m => Model.BankStatementDetails[i].ReferenceKey)
+                                    @Html.HiddenFor(m => Model.BankStatementDetails[i].Particulars)
+                                    @Html.HiddenFor(m => Model.BankStatementDetails[i].TransactionDate)
+                                    @Html.HiddenFor(m => Model.BankStatementDetails[i].BankStatementKey)
+                                    @Html.HiddenFor(m => Model.BankStatementDetails[i].Amount)
+                                    @Html.HiddenFor(m => Model.BankStatementDetails[i].BankTransactionTypeKey)
+                                    @Html.HiddenFor(m => Model.BankStatementDetails[i].CashFlowTypeKey)
+                                    @Html.HiddenFor(m => Model.BankStatementDetails[i].TransactionTypeKey)
+                                    @Html.HiddenFor(m => Model.BankStatementDetails[i].TransactionKey)
+                                    @Html.HiddenFor(m => Model.BankStatementDetails[i].ProcessStatusKey)
+                                    @Html.HiddenFor(m => Model.BankStatementDetails[i].IsReconcile)
+                                    @Html.HiddenFor(m => Model.BankStatementDetails[i].PaymentModeKey)
+                                    @Html.HiddenFor(m => Model.BankStatementDetails[i].IsAdvance)
+                                    @Html.HiddenFor(m => Model.BankStatementDetails[i].IsOrderPayment)
+                                    <div class="card-heading bg-primary text-white p-2">
+                                        <div class="row">
+                                            <div class="col-8">
+                                                @Model.BankStatementDetails[i].Particulars
+                                            </div>
+                                            <div class="col-4">
+                                                @Html.DropDownListFor(m => Model.BankStatementDetails[i].AccountHeadKey, new SelectList(Model.AccountHeads, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.AccountHead, new { @class = "form-control input-control selectpicker", @data_live_search = "true" })
+                                                <br />
+                                                <span class="red">
+                                                    @Html.ValidationMessageFor(m => Model.BankStatementDetails[i].AccountHeadKey)
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="form-row">
+                                            <div class="col-3">
+                                                @Html.Label(EduSuiteUIResources.Reference + EduSuiteUIResources.Sla + EduSuiteUIResources.Cheque + EduSuiteUIResources.FullColon, htmlAttributes: new { @id = "lblOrderNumber", @class = "form-label" })
+                                            </div>
+                                            <div class="col-3">
+                                                @Model.BankStatementDetails[i].ReferenceKey
+                                            </div>
+                                            <div class="col-2">
+                                                @Html.Label(EduSuiteUIResources.Date + EduSuiteUIResources.FullColon, htmlAttributes: new { @id = "lblOrderNumber", @class = "form-label" })
+                                            </div>
+                                            <div class="col-4">
+                                                @string.Format("{0:dd/MM/yyyy}", Model.BankStatementDetails[i].TransactionDate)
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="col-3">
+                                                @Html.Label(EduSuiteUIResources.Amount + EduSuiteUIResources.FullColon, htmlAttributes: new { @id = "lblOrderNumber", @class = "form-label" })
+                                            </div>
+                                            <div class="col-3">
+                                                @string.Format("{0:G29}", Model.BankStatementDetails[i].Amount)@EduSuiteUIResources.OpenBracket@Model.BankStatementDetails[i].CashFlowTypeName@EduSuiteUIResources.CloseBracket
+                                            </div>
+                                            <div class="col-2">
+                                                <div class="form-group">
+                                                    @Html.Label(EduSuiteUIResources.Type + EduSuiteUIResources.FullColon, htmlAttributes: new { @id = "lblOrderNumber", @class = "form-label" })
+                                                </div>
+                                            </div>
+                                            <div class="col-4">
+                                                @Model.BankStatementDetails[i].BankTransactionTypeName
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div leftitem class="col-5">
+                            <div bank-statement-panel >
+                            </div>
+                        </div>
+                        <div event class="col-1" style="text-align: center; padding-top: 50px;">
+                            <a remove href="javascript:" class="btn btn-danger btn-xs" onclick="BankReconciliation.RemoveItem($(this))">
+                                <span class="fa fa-remove"></span>
+                            </a>
+                        </div>
+                    }
+                    @if ((i + 1) <= Model.BankStatementDetails.Count() && (i + 1) <= Model.DefaultBankPaymentDetails.Count())
+                    {
+                        <div event class="col-1 text-center">
+                            <a match href="javascript:" class="btn btn-success btn-xs" onclick="BankReconciliation.MatchItem($(this))">
+                                <span class="fa fa-check"></span>
+                            </a>
+                        </div>
+                    }
+                    @if ((i + 1) <= Model.DefaultBankPaymentDetails.Count())
+                    {
+                        <div rightitem class="col-5">
+                            <div default-bankdetails-panel >
+                                <div class="card">
+                                    @Html.HiddenFor(m => Model.DefaultBankPaymentDetails[i].ReferenceKey)
+                                    @Html.HiddenFor(m => Model.DefaultBankPaymentDetails[i].Particulars)
+                                    @Html.HiddenFor(m => Model.DefaultBankPaymentDetails[i].TransactionDate)
+                                    @Html.HiddenFor(m => Model.DefaultBankPaymentDetails[i].BankStatementKey)
+                                    @Html.HiddenFor(m => Model.DefaultBankPaymentDetails[i].Amount)
+                                    @Html.HiddenFor(m => Model.DefaultBankPaymentDetails[i].BankTransactionTypeKey)
+                                    @Html.HiddenFor(m => Model.DefaultBankPaymentDetails[i].CashFlowTypeKey)
+                                    @Html.HiddenFor(m => Model.DefaultBankPaymentDetails[i].TransactionTypeKey)
+                                    @Html.HiddenFor(m => Model.DefaultBankPaymentDetails[i].TransactionKey)
+                                    @Html.HiddenFor(m => Model.DefaultBankPaymentDetails[i].ProcessStatusKey)
+                                    @Html.HiddenFor(m => Model.DefaultBankPaymentDetails[i].IsReconcile)
+                                    @Html.HiddenFor(m => Model.DefaultBankPaymentDetails[i].PaymentModeKey)
+                                    @Html.HiddenFor(m => Model.DefaultBankPaymentDetails[i].IsAdvance)
+                                    @Html.HiddenFor(m => Model.DefaultBankPaymentDetails[i].IsOrderPayment)
+                                    @Html.HiddenFor(m => Model.DefaultBankPaymentDetails[i].AccountHeadKey)
+                                    <div class="card-heading bg-primary text-white p-2">
+                                        <div class="row">
+                                            <div class="col-8">
+                                                @Model.DefaultBankPaymentDetails[i].Particulars
+                                            </div>
+                                            <div class="col-4">
+                                                @Html.DropDownListFor(m => Model.DefaultBankPaymentDetails[i].AccountHeadKey, new SelectList(Model.AccountHeads, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.AccountHead, new { @class = "form-control input-control selectpicker", @data_live_search = "true" })
+                                            </div>
+                                            @if ((Model.BankStatementDetails.Any(x => x.TransactionDate.Date == Model.DefaultBankPaymentDetails[i].TransactionDate.Date)) && (Model.BankStatementDetails.Any(x => x.Amount == Model.DefaultBankPaymentDetails[i].Amount)) && (Model.BankStatementDetails.Any(x => x.CashFlowTypeKey == Model.DefaultBankPaymentDetails[i].CashFlowTypeKey)))
+                                            {
+                                                <div class="col-1 pull-right">
+                                                    <a href="javascript:" search searchindex=@i class="btn btn-primary btn-xs" onclick="searchMatchItem(this)">
+                                                        <span class="fa fa-search"></span>
+                                                    </a>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="form-row">
+                                            <div class="col-3">
+                                                @Html.Label(EduSuiteUIResources.Reference + EduSuiteUIResources.Sla + EduSuiteUIResources.Cheque + EduSuiteUIResources.FullColon, htmlAttributes: new { @id = "lblOrderNumber", @class = "form-label" })
+                                            </div>
+                                            <div class="col-3">
+                                                @Model.DefaultBankPaymentDetails[i].ReferenceKey
+                                            </div>
+                                            <div class="col-2">
+                                                @Html.Label(EduSuiteUIResources.Date + EduSuiteUIResources.FullColon, htmlAttributes: new { @id = "lblOrderNumber", @class = "form-label" })
+                                            </div>
+                                            <div class="col-4">
+                                                @string.Format("{0:dd/MM/yyyy}", Model.DefaultBankPaymentDetails[i].TransactionDate)
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="col-3">
+                                                @Html.Label(EduSuiteUIResources.Amount + EduSuiteUIResources.FullColon, htmlAttributes: new { @id = "lblOrderNumber", @class = "form-label" })
+                                            </div>
+                                            <div class="col-3">
+                                                @string.Format("{0:G29}", Model.DefaultBankPaymentDetails[i].Amount)@EduSuiteUIResources.OpenBracket@Model.DefaultBankPaymentDetails[i].CashFlowTypeName@EduSuiteUIResources.CloseBracket
+                                            </div>
+                                            <div class="col-2">
+                                                <div class="form-group">
+                                                    @Html.Label(EduSuiteUIResources.Type + EduSuiteUIResources.FullColon, htmlAttributes: new { @id = "lblOrderNumber", @class = "form-label" })
+                                                </div>
+                                            </div>
+                                            <div class="col-4">
+                                                @Model.DefaultBankPaymentDetails[i].BankTransactionTypeName
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div event class="col-1" style="text-align: center; padding-top: 50px;">
+                            <a move class="btn btn-info btn-xs" onclick="BankReconciliation.MoveItem($(this))">
+                                <span class="fa fa-arrow-right"></span>
+                            </a>
+                        </div>
+                        <div rightitem class="col-5">
+                            <div default-bankdetails-panel >
+                            </div>
+                        </div>
+
+                    }
+                </div>
+            }
+
+        </div>
+        <div class="form-row">
+            <div class="col-6" style=" padding-top: 20px;">
+                <div class="form-group col-12">
+                    <input type="submit" value="@EduSuiteUIResources.Save" id="btnSave" class="btnForm btnSubmit btn btn-sm btn-default " />
+                    @*<button type="button" data-dismiss="modal" class="btnForm btnCancel btn btn-sm btn-default ">@EduSuiteUIResources.Cancel</button>*@
+                </div>
+                <div class="col-12">
+                    <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+}
+
+
+<style>
+    [data-repeater-item] .card-body {
+        font-size: 13px;
+    }
+
+
+    [data-repeater-item] .btn-danger {
+        border-radius: 3px !important;
+        border: 1px solid transparent;
+    }
+
+    [data-repeater-item] .btn-primary {
+        border-radius: 3px !important;
+        border: 1px solid transparent;
+    }
+
+    .disablePanel.card-body {
+        background-color: #cdcdcd !important;
+    }
+</style>
+
+<script>
+    @{
+    var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+    serializer.MaxJsonLength = Int32.MaxValue;
+    var jsonModel = serializer.Serialize(Model);
+}
+    $(document).ready(function () {
+        AppCommon.FormatDateInput();
+        //$(".btn-xs").on("click",function(){
+        //    var item=$(this).closest("[data-repeater-item]")
+        //    $(".card-default",item).show("slide", { direction: "left" }, 1000);
+        //})
+        $("#reconcileCount").html(@Model.ReconcileCount)
+    });
+
+    function searchMatchItem(_this){
+        var listItem = $(_this).closest("[data-repeater-item]")
+        var rightitem = $("[rightitem]", listItem)
+        var obj={}
+        obj.Amount=$("[id*=Amount]", rightitem).val()
+        obj.TransactionDate=$("[id*=TransactionDate]", rightitem).val()
+        obj.CashFlowType = $("[id*=CashFlowTypeKey]", rightitem).val()
+        var jsonData = @Html.Raw(jsonModel);
+        BankReconciliation.MatchStatementPopup($(_this),obj,jsonData)
+    }
+</script>

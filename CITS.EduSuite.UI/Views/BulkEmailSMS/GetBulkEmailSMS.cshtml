@@ -1,0 +1,126 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.BulkEmailSmsViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+
+<input type="hidden" id="hdnTotalRecords" value="@Model.TotalRecords" />
+<h6>
+    @EduSuiteUIResources.TotalRecords  <span id="TotalRecords" class="badge badge-info">@Model.TotalRecords</span>
+
+</h6>
+
+<table class="table table-stripped BulkEmailSMS">
+    <thead class="thead-light">
+        <tr>
+            <th>
+                @Html.Label(EduSuiteUIResources.Name, htmlAttributes: new { @class = "form-label" })
+            </th>
+            <th>
+                @Html.Label(EduSuiteUIResources.Email, htmlAttributes: new { @class = "form-label" })
+            </th>
+            <th>
+                @Html.Label(EduSuiteUIResources.MobileNumber, htmlAttributes: new { @class = "form-label" })
+            </th>
+            <th>
+                @Html.Label(EduSuiteUIResources.Select, htmlAttributes: new { @class = "form-label" })
+                <div class="checkbox my-2">
+                    @Html.CheckBox("ChkSelectAll", new { @onchange = "CheckboxAllChange(this, 'IsSelected')" })
+                    <label for="ChkSelectAll" class="label-for-check form-label">
+                        <span id="SelectedRowCount"></span>
+                    </label>
+                </div>
+            </th>
+
+        </tr>
+    </thead>
+
+
+    <tbody>
+        @for (int i = 0; i < Model.BulkEmailSMSList.Count; i++)
+        {
+            <tr Bulk-SMS-Data>
+                <td class="px-1">
+                    @Model.BulkEmailSMSList[i].Name
+                    <strong>
+                        @if (@Model.BulkEmailSMSList[i].RoleKey == DbConstants.Role.Staff)
+                        {
+                            @EduSuiteUIResources.OpenBracketWithSpace @Model.BulkEmailSMSList[i].DesignationName @EduSuiteUIResources.ClosingBracketWithSpace
+                        }
+                        else
+                        {
+                            @EduSuiteUIResources.OpenBracketWithSpace @Model.BulkEmailSMSList[i].CourseName @EduSuiteUIResources.Hyphen @Model.BulkEmailSMSList[i].UniversityMasterName @EduSuiteUIResources.Hyphen @Model.BulkEmailSMSList[i].BatchName @EduSuiteUIResources.CloseBracket
+                        }
+                    </strong>
+                </td>
+                <td class="px-1">
+                    @Model.BulkEmailSMSList[i].EmailAddress
+                </td>
+                <td class="px-1">
+                    @Model.BulkEmailSMSList[i].MobileNumber
+                </td>
+                <td class="px-1">
+                    <input class="IsSelect" datakey="@Model.BulkEmailSMSList[i].RowKey@EduSuiteUIResources.Underscore@Model.BulkEmailSMSList[i].RoleKey" id="IsSelected" name="IsSelected" onchange="AddSelectedRecord(@i,this,@Model.BulkEmailSMSList[i].RowKey,'@Model.BulkEmailSMSList[i].Name','@Model.BulkEmailSMSList[i].MobileNumber','@Model.BulkEmailSMSList[i].EmailAddress', '@Model.BulkEmailSMSList[i].RoleKey')" type="checkbox">
+                    @*@Html.CheckBoxFor(m => m.IsSelected, new { datakey = Model.BulkEmailSMSList[i].RowKey+',' + Model.BulkEmailSMSList[i].RoleKey, onchange = "AddSelectedRecord(" + i + ",this," + Model.BulkEmailSMSList[i].RowKey + ",'" + Model.BulkEmailSMSList[i].Name + "','" + Model.BulkEmailSMSList[i].MobileNumber + ' ' + Model.BulkEmailSMSList[i].EmailAddress + "', '" + Model.BulkEmailSMSList[i].RoleKey + "')" })*@
+                </td>
+            </tr>
+        }
+        <tr>
+            <td colspan="4"></td>
+
+        </tr>
+    </tbody>
+</table>
+
+<script>
+
+    $(document).ready(function () {
+        $(".IsSelect").change(function () {
+            CheckSelectedAllCount();
+        });
+    });
+
+    function CheckboxAllChange(chk, name) {
+        
+        $("[Bulk-SMS-Data]").each(function (index) {
+
+            var Object = $('input[name*=' + name + ']', $(this))[0];
+            if (Object != undefined) {
+                if (!Object.disabled) {
+                    Object.checked = chk.checked
+
+                    $(Object).trigger("change");
+                }
+
+            }
+        });
+        CheckSelectedAllCount();
+    }
+
+    function CheckSelectedAllCount() {
+        var SelectedRowCount = 0;
+        var CheckedAll = true;
+
+        $(".IsSelect").each(function (index) {
+            if (this.checked == true) {
+                SelectedRowCount = SelectedRowCount + 1;
+            }
+            else {
+                CheckedAll = false;
+            }
+        });
+
+        $("#SelectedRowCount").html("");
+        if (SelectedRowCount != 0) {
+            $("#SelectedRowCount").html("(" + SelectedRowCount + ")");
+
+            //if (CheckedAll == true) {
+            //    $("#ChkSelectAll").prop("checked", true);
+            //}
+            //else {
+            //    $("#ChkSelectAll").prop("checked", false);
+            //}
+        }
+
+
+
+    }
+</script>

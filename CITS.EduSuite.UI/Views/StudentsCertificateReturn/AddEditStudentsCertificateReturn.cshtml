@@ -1,0 +1,138 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.StudentsCertificateReturnViewModel
+
+@using CITS.EduSuite.Business.Models.ViewModels
+
+
+
+<input type="hidden" id="hdnResetStudentsCertificateReturn" value="@Url.Action("ResetStudentsCertificateReturn", "StudentsCertificateReturn")" />
+<div class="modal-header">
+    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+    <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.Add @EduSuiteUIResources.Sla @EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace @EduSuiteUIResources.CertificateDetails</h4>
+</div>
+@using (Html.BeginForm("AddEditStudentsCertificateReturn", "StudentsCertificateReturn", FormMethod.Post, new { @id = "frmStudentsCertificateReturn" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.ApplicationKey)
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(m => m.CertificateStatusKey)
+
+
+<div class="modal-body">
+    @if ((Model.ApplicationKey != 0) )
+    {
+        @Html.Action("StudentDetail", "Shared", new { id = Model.ApplicationKey , AdmissionNo = "" })
+    }
+    <div class="form-master">
+        <div class="form-row">
+            <div class="paddingNone">
+                <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col-lg-3 col-6">
+                <fieldset class="form-group">
+                    @Html.Label(EduSuiteUIResources.Date, htmlAttributes: new { @id = "lblFeeDate", @class = "form-label" })
+
+                    @Html.TextBoxFor(m => m.CommonDate, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_input_type = "date", @data_inputmask = "'alias': 'dd/mm/yyyy'" })
+                    <span class="form-control-error-text">
+                        @Html.ValidationMessageFor(m => m.CommonDate)
+                    </span>
+                </fieldset>
+            </div>
+            @if (Model.CertificateStatusKey == DbConstants.CertificateProcessType.Returned)
+            {
+            <div class="col-lg-3 col-6">
+                <div class="checkbox-bird green inline-block mt-4">
+                    @Html.CheckBoxFor(m => m.IsPermenant, new { @InputFor = "lblIsPermenant", @class = "switch-input", @onclick = "StudentsCertificateReturn.CheckVerify(this)" })
+                    <label for="IsPermenant">@EduSuiteUIResources.PermenantReturn</label>
+                </div>
+            </div>
+            }
+        </div>
+        <div id="dynamicRepeater" class="repeater">
+            <table class="table table-responsive table-stripped">
+                <thead class="form-group">
+                    <tr>
+                        <th></th>
+                        <th>
+                            @Html.Label(EduSuiteUIResources.Course, htmlAttributes: new { @class = "form-label" })
+                        </th>
+
+                        <th>
+                            @Html.Label(EduSuiteUIResources.AffiliationsTieUps, htmlAttributes: new { @class = "form-label" })
+                        </th>
+
+                        <th>
+                            @Html.Label(EduSuiteUIResources.Status, htmlAttributes: new { @class = "form-label" })
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody data-repeater-list>
+                    @for (int i = 0; i < Model.StudentCertificatedetails.Count(); i++)
+                    {
+                        <tr data-repeater-item>
+                            <td class="px-1">
+                                @if (Model.StudentCertificatedetails[i].RowKey != null && Model.StudentCertificatedetails[i].RowKey != 0)
+                                {
+
+                                    <span onclick="StudentsCertificateReturn.ResetStudentsCertificateReturn(@Model.StudentCertificatedetails[i].EducationQualificationKey,@Model.ApplicationKey,this)" class="btn btn-danger btn-sm">
+                                        <span class="fa fa-remove"></span>
+                                    </span>
+
+                                }
+                            </td>
+                            <td class="px-1">
+                                @Html.DisplayFor(m => m.StudentCertificatedetails[i].EducationQualificationName, new { @class = "form-control input-control" })
+                            </td>
+                            <td class="px-1">
+                                @Html.DisplayFor(m => m.StudentCertificatedetails[i].EducationQualificationUniversity, new { @class = "form-control input-control" })
+                                @Html.HiddenFor(m => m.StudentCertificatedetails[i].RowKey)
+                                @Html.HiddenFor(m => m.StudentCertificatedetails[i].EducationQualificationKey)
+                                @Html.HiddenFor(m => m.StudentCertificatedetails[i].IsVerified)
+
+
+                            </td>
+
+                            <td class="px-1 text-center">
+                                <div class="checkbox-bird green inline-block mt-2">
+                                    @Html.CheckBoxFor(m => m.StudentCertificatedetails[i].CertificateStatus, new { @class = "custom-control-input", @onchange = "CheckReturn(this)" })
+                                    <label for="IsVerified" class="label-for-check form-label">
+                                    </label>
+                                </div>
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => m.StudentCertificatedetails[i].CertificateStatus)
+                                </span>
+                            </td>
+                            @*<td class="px-1 text-center">
+                                    <div class=" checkbox-bird green inline-block mt-2">
+                                        @Html.CheckBoxFor(m => m.StudentCertificatedetails[i].IsReturn, new { @class = "custom-control-input", @onchange = "CheckVerify(this)" })
+                                        <label for="IsOriginalReturn" class="label-for-check form-label">
+                                        </label>
+                                    </div>
+                                    <span class="form-control-error-text">
+                                        @Html.ValidationMessageFor(m => m.StudentCertificatedetails[i].IsReturn)
+                                    </span>
+                                </td>*@
+
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+
+
+    </div>
+</div>
+
+
+    <div class="modal-footer justify-content-start">
+        <div class="form-group">
+            <input type="submit" value="@EduSuiteUIResources.Save" id="btnSave" class="btn btn-sm btn-success mx-1" />
+            <button type="button" data-dismiss="modal" class="btn btn-sm btn-danger mx-1">@EduSuiteUIResources.Cancel</button>
+
+        </div>
+    </div>
+}

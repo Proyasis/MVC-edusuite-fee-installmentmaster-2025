@@ -1,0 +1,127 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.FieldValidationViewModel
+
+
+
+<input type="hidden" id="hdnFieldValidationList" value="@Url.Action("FieldValidationList", "FieldValidation")" />
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/Scripts/FieldValidation")
+    @Scripts.Render("~/Content/JqueryRepeater")
+    @Scripts.Render("~/Scripts/Common")
+    @Scripts.Render("~/bundles/CitsValidation")
+}
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-12">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.Add@EduSuiteUIResources.Hyphen@EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.FieldValidation</h3>
+                        <ol class="breadcrumb breadcrumb-simple mb-2 float-sm-right">
+                            <li><a href="#" onclick="location.href='@Url.Action("FieldValidationList", "FieldValidation")' ">@EduSuiteUIResources.FieldValidation</a></li>
+                            <li class="active">@EduSuiteUIResources.Add@EduSuiteUIResources.Hyphen@EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.FieldValidation</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+@using (Html.BeginForm("AddEditFieldValidation", "FieldValidation", FormMethod.Post, new { @id = "frmFieldValidationAmount" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.FieldType)
+    @Html.ValidationSummary(true)
+
+    <div class="modal-body">
+        <div class="form-master">
+
+            <div id="dynamicRepeater" class="repeater ">
+                <table class="table  table-bordered">
+                    <thead class="w3-light-blue">
+                        <tr>
+                            <th class="w-50 text-center">
+                                @Html.Label(EduSuiteUIResources.Name, htmlAttributes: new { @class = "form-label" })
+                            </th>
+
+                            <th class="w-25 text-center">
+                                <div class="checkbox-bird green inline-block">
+                                    <input type="checkbox" id="chekAll" onchange="CheckboxAllChange(this, 'IsActive')" class="switch-input chkIsActive" />
+                                    <label for="chekAll">@EduSuiteUIResources.Active </label>
+
+                                </div>
+                                <span id="CheckedAllCount"></span>
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody data-repeater-list id="DivFieldValidationAmount">
+                        @for (int i = 0; i < Model.FieldItems.Count(); i++)
+                        {
+                            <tr data-repeater-item>
+                                <td class="px-1 text-center">
+                                    @Model.FieldItems[i].Name
+                                    @Html.HiddenFor(m => m.FieldItems[i].RowKey, new { @class = "rowKeyClass" })
+
+                                </td>
+
+                                <td class="px-1 text-center">
+                                    <div class="switch-check switch">
+                                        @Html.CheckBoxFor(m => m.FieldItems[i].IsActive, new { @class = "switch-input", @onclick = "IsCenterShare(this)" })
+                                        <div class="switch-label redgreen" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                                        <div class="switch-handle"></div>
+                                    </div>
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="form-row">
+                <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-2">
+        <div class="form-group">
+            <div class="col-12">
+                <fieldset class="form-group">
+                    <input type="submit" value="@EduSuiteUIResources.Save" id="btnSave" class="btn btn-sm btn-success mx-1" />
+                    <input type="button" value="@EduSuiteUIResources.Cancel" onclick="location.href='@Url.Action("FieldValidationList", "FieldValidation")' " class="btn btn-sm btn-danger mx-1" />
+                </fieldset>
+                <div class="col-12 paddingNone">
+                    <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var jsonData=@(Html.Raw(Json.Encode(Model)));
+
+        function CheckboxAllChange(chk, name) {
+
+            $("[data-repeater-item]").each(function (index) {
+
+                var Object = $('input[name*=' + name + ']', $(this))[0];
+                if (Object != undefined) {
+                    if (!Object.disabled) {
+                        Object.checked = chk.checked
+                    }
+                }
+            });
+        }
+
+
+    </script>
+}
+
+
+
+
+

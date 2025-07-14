@@ -1,0 +1,150 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.ApplicationViewModel
+
+@using System.Web.Mvc
+
+@section scripts{
+
+    @Scripts.Render("~/Scripts/StudentTC")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/CitsValidation")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Content/Select2JS")
+    @Scripts.Render("~/Content/JqueryRepeater")
+}
+
+<input type="hidden" id="hdnGetApplications" value="@Url.Action("GetApplications", "StudentTC")" />
+<input type="hidden" id="hdnAddEditStudentTC" value="@Url.Action("AddEditStudentTC", "StudentTC")" />
+<input type="hidden" id="hdnFillBatch" value="@Url.Action("FillBatch", "StudentTC")" />
+<input type="hidden" id="hdnStudentTCList" value="@Url.Action("StudentTCList", "StudentTC")" />
+<input type="hidden" id="hdnIssueStudentTC" value="@Url.Action("IssueStudentTC", "StudentTC")" />
+<input type="hidden" id="hdnDeleteStuentTC" value="@Url.Action("DeleteStuentTC", "StudentTC")" />
+<input type="hidden" id="hdnStudentTCDefaultPath" value=@Url.Content("~/Templates/Student/TCDefault.html") />
+<input type="hidden" id="hdnFetchTCDetails" value="@Url.Action("FetchTCDetails","StudentTC")" />
+<div class="card-header">
+    <header class="section-header">
+        <div class="row justify-content-between px-1">
+            <div class="col-12">
+                <div class="tbl">
+                    <div class="tbl-row">
+                        <div class="tbl-cell">
+                            <h3>@EduSuiteUIResources.StudentTC</h3>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </header>
+</div>
+<div class="card-body">
+    <section class="section-content mx-sm-3 mx-0">
+        <div class="GridBody">
+
+            <div class="grid-nav-bar form-row">
+                @if (Model.Branches.Count == 1)
+                {
+                    {
+                        Model.BranchKey = (Model.BranchKey == 0 || Model.BranchKey == null) ? (short)Model.Branches.Select(x => x.RowKey).FirstOrDefault() : Model.BranchKey;
+                    }
+                    @Html.HiddenFor(m => m.BranchKey)
+                }
+                else
+                {
+                    <div class="col-lg-2 col-sm-4 col-6">
+                        <fieldset class="form-group">
+                            @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.Branch, new { @class = "form-control input-control ", @data_live_search = "true" })
+                        </fieldset>
+                    </div>
+                }
+                <div class="col-lg-2 col-sm-4 col-6">
+                    <div class="form-group">
+                        @Html.DropDownListFor(m => m.CourseKey, new SelectList(Model.Courses, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Course, new { @class = "form-control input-control autohide-select", @data_plugin_type = "select2", @data_live_search = "true" })
+                    </div>
+                </div>
+                @if (Model.Universities.Count == 1)
+                {
+                    {
+                        Model.UniversityKey = (Model.UniversityKey == 0) ? (short)Model.Universities.Select(x => x.RowKey).FirstOrDefault() : Model.UniversityKey;
+                    }
+                    @Html.HiddenFor(m => m.UniversityKey)
+                    @Html.Hidden("UniversityCount", 1)
+                }
+                else
+                {
+                    <div class="col-lg-2 col-sm-4 col-6">
+                        <div class="form-group">
+                            @Html.DropDownListFor(m => m.UniversityKey, new SelectList(Model.Universities, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.AffiliationsTieUps, new { @class = "form-control input-control autohide-select", @data_plugin_type = "select2", @InputFor = "lblBranch", @data_live_search = "true" })
+                        </div>
+                    </div>
+                }
+                <div class="col-lg-2 col-sm-4 col-6">
+                    <div class="form-group">
+                        @Html.DropDownListFor(m => m.BatchKey, new SelectList(Model.Batches, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Batch, new { @class = "form-control input-control autohide-select", @data_plugin_type = "select2", @data_live_search = "true" })
+                    </div>
+                </div>
+                <div class="col-lg-2 col-sm-4 col-6">
+                    <div class="form-group">
+                        <input id="txtSearchApplicantName" type="text" name="focus" class="form-control gridSearchTextBox" placeholder="@EduSuiteUIResources.Search@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Name@EduSuiteUIResources.Coma@EduSuiteUIResources.AdmissionNo" /> @* Change Search TextBox Placeholder*@
+                        <span id="iconSpanName" class="iconSpan"><i class="fa fa-times-circle" aria-hidden="true"></i></span>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-sm-4 col-6">
+                    <input id="txtSearchMobileNumber" type="text" name="focus" class="form-control gridSearchTextBox" placeholder="@EduSuiteUIResources.Search@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.MobileNumber" />
+                    <span id="iconSpanMobileNumber" class="iconSpan"><i class="fa fa-times-circle" aria-hidden="true"></i></span>
+                </div>
+                <div class="col-lg-2 col-sm-4 col-6 float-right d-none">
+                    <a class="btn btn-info btn-sm float-right " onclick='window.location.reload()'>
+                        <i class="fa fa-refresh"></i>   Refresh
+                    </a>
+                </div>
+
+            </div>
+            <div class="table-wrapper">
+
+                <div class="jqGrid_wrapper overflow-auto">
+                    <table id="grid"></table>
+                    <div id="pager"></div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#txtSearchApplicantName").on("input", function () {
+            StudentTC.GetApplication();
+        });
+        $("#txtSearchMobileNumber").on("input", function () {
+            StudentTC.GetApplication();
+        });
+
+        $("#iconSpanMobileNumber").click(function () {
+            $('#txtSearchMobileNumber').val('');
+            StudentTC.GetApplication();
+        });
+        $("#iconSpanName").click(function () {
+            $('#txtSearchApplicantName').val('');
+            StudentTC.GetApplication();
+        });
+        $("#BranchKey").change(function () {
+            var obj = {};
+            obj.BranchKey = $(this).val() != "" ? $(this).val() : 0;
+            AppCommon.BindDropDownbyId(obj, $("#hdnFillBatch").val(), $("#BatchKey"), Resources.Batch);
+            StudentTC.GetApplication();
+        });
+
+        $("#BatchKey").change(function () {
+            StudentTC.GetApplication();
+        });
+        $("#CourseKey").change(function () {
+            StudentTC.GetApplication();
+        });
+        $("#UniversityKey").change(function () {
+            StudentTC.GetApplication();
+        });
+        StudentTC.GetApplication();
+
+    });
+</script>

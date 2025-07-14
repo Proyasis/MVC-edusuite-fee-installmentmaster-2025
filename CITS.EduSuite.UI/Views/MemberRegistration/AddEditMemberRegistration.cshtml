@@ -1,0 +1,378 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.MemberRegistrationViewModel
+
+@using CITS.EduSuite.Business.Models.ViewModels
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/CitsValidation")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/Content/DatePickerJS")
+}
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-12">
+            <div class="tbl">
+                <div class="tbl-row  px-1">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.Add@EduSuiteUIResources.Hyphen@EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.MemberRegistration</h3>
+                        <ol class="breadcrumb breadcrumb-simple mb-2 float-sm-right">
+                            <li><a href="#" onclick="location.href='@Url.Action("MemberRegistrationList", "MemberRegistration")' ">@EduSuiteUIResources.MemberRegistration</a></li>
+                            <li class="active">@EduSuiteUIResources.Add@EduSuiteUIResources.Hyphen@EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.MemberRegistration</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="section-content mx-sm-3 mx-0">
+    <div class="form-master">
+        @using (Html.BeginForm("AddEditMemberRegistration", "MemberRegistration", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.RowKey)
+            @Html.ValidationSummary(true)
+            @Html.HiddenFor(m => m.CardId)
+            @Html.HiddenFor(m => m.MemberPhotoUrl)
+
+            <input type="hidden" id="hdnGetFeesById" value="@Url.Action("GetFeesById", "MemberRegistration")" />
+            <div class="form-row">
+
+                <div class="col-12 col-sm-4 col-lg-2 pull-right">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.CardNumber, htmlAttributes: new { @id = "lblAdmissionNo", @class = "form-label" })
+                        <div class="required-icon"><div class="text">*</div></div>
+                        @Html.TextBoxFor(m => m.CardId, new { @class = "form-control input-control", @InputFor = "lblAdmissionNo", @readonly = "readonly" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.CardId)
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="card mt-2">
+                <div class="card-header">@EduSuiteUIResources.Personal@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Details</div>
+                <div class="card-body">
+                    <div class="form-row">
+                        <div class="col-lg-10 col-12">
+
+                            <div class="form-row">
+                                <div class="col-lg-2 col-sm-2 col-3">
+                                    <div class="form-group">
+                                        @Html.Label(EduSuiteUIResources.Salutation + EduSuiteUIResources.BlankSpace, htmlAttributes: new { @id = "lblSalutation", @class = "form-label" })
+                                        <div class="required-icon"><div class="text">*</div></div>
+                                        @Html.DropDownListFor(m => m.MemberTitleKey, new SelectList(Model.MemberTitle, "RowKey", "Text"), new { @class = "form-control input-control", @InputFor = "lblSalutation" })
+                                        <span class="form-control-error-text">
+                                            @Html.ValidationMessageFor(m => m.MemberTitleKey)
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-9 col-sm-3 col-lg-2">
+                                    <div class="form-group">
+                                        @Html.Label(EduSuiteUIResources.FirstName, htmlAttributes: new { @id = "lblFirstName", @class = "form-label" })
+                                        <div class="required-icon"><div class="text">*</div></div>
+                                        @Html.TextBoxFor(m => m.MemberFirstName, new { @class = "form-control input-control", @InputFor = "lblFirstName" })
+
+                                        <span class="form-control-error-text">
+                                            @Html.ValidationMessageFor(m => m.MemberFirstName)
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-3 col-lg-2" data-customise>
+                                    <div class="form-group">
+                                        @Html.Label(EduSuiteUIResources.LastName, htmlAttributes: new { @id = "lblLastName", @class = "form-label" })
+
+                                        @Html.TextBoxFor(m => m.MemberLastName, new { @class = "form-control input-control", @InputFor = "lblLastName" })
+                                        <span class="form-control-error-text">
+                                            @Html.ValidationMessageFor(m => m.MemberLastName)
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-3 col-lg-2" data-customise>
+                                    <div class="form-group">
+                                        @Html.Label(EduSuiteUIResources.DOB, htmlAttributes: new { @id = "lblMemberDOB", @class = "form-label" })
+                                        @Html.TextBoxFor(m => m.MemberDOB, "{0:dd/MM/yyyy}", new { @class = "form-control border-radius datetimepicker", @data_input_type = "date", @data_inputmask = "'alias': 'dd/mm/yyyy'" })
+                                        <span class="form-control-error-text">
+                                            @Html.ValidationMessageFor(m => m.MemberDOB)
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-sm-3 col-lg-2">
+                                    <fieldset class="form-group">
+                                        @Html.Label(EduSuiteUIResources.Gender, new { @class = "form-label" })
+                                        <div class="required-icon"><div class="text">*</div></div>
+                                        <div class="form-control text-center">
+                                            <div class="radio inline-block mr-2">
+                                                @Html.RadioButtonFor(m => m.Gender, 1, new { @id = "rbMale" })
+                                                @Html.Label("rbMale", EduSuiteUIResources.Male)
+                                            </div>
+                                            <div class="radio inline-block">
+                                                @Html.RadioButtonFor(m => m.Gender, 2, new { @id = "rbFemale" })
+                                                @Html.Label("rbFemale", EduSuiteUIResources.Female)
+                                            </div>
+                                        </div>
+                                        <span class="form-control-error-text">
+                                            @Html.ValidationMessageFor(m => m.Gender)
+                                        </span>
+
+
+                                    </fieldset>
+                                </div>
+                                <div class="col-12 col-sm-3 col-lg-2" data-customise>
+                                    <div class="form-group">
+                                        @Html.Label(EduSuiteUIResources.IdentificationType, htmlAttributes: new { @id = "lblIdentificationType", @class = "form-label" })
+                                        @Html.DropDownListFor(m => m.IdentificationTypeKey, new SelectList(Model.IdentificationType, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.IdentificationType, new { @class = "form-control border-radius input-control", @InputFor = "lblIdentificationType" })
+                                        <span class="form-control-error-text">
+                                            @Html.ValidationMessageFor(m => m.IdentificationTypeKey)
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-3 col-lg-2" data-customise>
+                                    <div class="form-group">
+                                        @Html.Label(EduSuiteUIResources.IdentificationNumber, htmlAttributes: new { @id = "lblIdentificationNumber", @class = "form-label" })
+                                        @Html.TextBoxFor(m => m.IdentificationNumber, new { @class = "form-control input-control", @InputFor = "lblIdentificationNumber" })
+                                        <span class="form-control-error-text">
+                                            @Html.ValidationMessageFor(m => m.IdentificationNumber)
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-3 col-lg-2" data-customise>
+                                    <div class="form-group">
+                                        @Html.Label(EduSuiteUIResources.Street, htmlAttributes: new { @id = "lblStreet", @class = "form-label" })
+                                        @Html.TextBoxFor(m => m.StreetName, new { @class = "form-control input-control", @InputFor = "lblStreet" })
+                                        <span class="form-control-error-text">
+                                            @Html.ValidationMessageFor(m => m.StreetName)
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-3 col-lg-2" data-customise>
+                                    <div class="form-group">
+                                        @Html.Label(EduSuiteUIResources.City, htmlAttributes: new { @id = "lblCity", @class = "form-label" })
+                                        @Html.TextBoxFor(m => m.CityName, new { @class = "form-control input-control text-uppercase", @InputFor = "lblCity" })
+                                        <span class="form-control-error-text">
+                                            @Html.ValidationMessageFor(m => m.CityName)
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-3 col-lg-2" data-customise>
+                                    <div class="form-group">
+                                        @Html.Label(EduSuiteUIResources.State, new { @id = "lblRole", @class = "form-label" })
+                                        @Html.DropDownListFor(m => m.StateKey, new SelectList(Model.State, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.State, new { @class = "form-control border-radius input-control", @InputFor = "lblState" })
+                                        <span class="form-control-error-text">
+                                            @Html.ValidationMessageFor(m => m.StateKey)
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-3 col-lg-2" data-customise>
+                                    <div class="form-group">
+                                        @Html.Label(EduSuiteUIResources.ZipCode, htmlAttributes: new { @id = "lblZipCode", @class = "form-label" })
+                                        @Html.TextBoxFor(m => m.ZipCode, new { @class = "form-control input-control", @InputFor = "lblZipCode" })
+                                        <span class="form-control-error-text">
+                                            @Html.ValidationMessageFor(m => m.ZipCode)
+                                        </span>
+
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-3 col-lg-2" data-customise>
+                                    <div class="form-group">
+                                        @Html.Label(EduSuiteUIResources.Phone, htmlAttributes: new { @id = "lblPhone", @class = "form-label" })
+                                        @Html.TextBoxFor(m => m.PhoneNo, new { @class = "form-control input-control", @InputFor = "lblPhone" })
+                                        <span class="form-control-error-text">
+                                            @Html.ValidationMessageFor(m => m.PhoneNo)
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-3 col-lg-2" data-customise>
+                                    <div class="form-group">
+                                        @Html.Label(EduSuiteUIResources.Email, htmlAttributes: new { @id = "lblEmailAddress", @class = "form-label" })
+                                        @Html.TextBoxFor(m => m.EmailAddress, new { @class = "form-control input-control", @InputFor = "lblEmailAddress" })
+                                        <span class="form-control-error-text">
+                                            @Html.ValidationMessageFor(m => m.EmailAddress)
+                                        </span>
+                                    </div>
+                                </div>
+
+                                @if (DbConstants.Role.AdminUserTypes.Contains(DbConstants.User.RoleKey))
+                                {
+                                    <div class="col-12 col-sm-3 col-lg-2">
+                                        <fieldset class="form-group">
+                                            @Html.Label(EduSuiteUIResources.Branch, htmlAttributes: new { @id = "lblBranch", @class = "form-label" })
+                                            <div class="required-icon"><div class="text">*</div></div>
+                                            @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Branch, new { @class = "form-control input-control", @InputFor = "lblBranch", @data_live_search = "true" })
+                                            <span class="form-control-error-text">
+                                                @Html.ValidationMessageFor(m => m.BranchKey)
+                                            </span>
+                                        </fieldset>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-12 col-sm-3 col-lg-2">
+                                        <fieldset class="form-group">
+                                            @Html.Label(EduSuiteUIResources.Branch, htmlAttributes: new { @id = "lblBranch", @class = "form-label" })
+                                            <div class="required-icon"><div class="text">*</div></div>
+                                            @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), new { @class = "form-control input-control", @InputFor = "lblBranch" })
+                                            <span class="form-control-error-text">
+                                                @Html.ValidationMessageFor(m => m.BranchKey)
+                                            </span>
+                                        </fieldset>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-12">
+                            <div class="form-group MemberPhotoUpload" style="width: 150px; height: 200px;">
+                                @*<img src="~/@Model.MemberPhotoUrl" id="MemberPhoto" class="img-thumbnail">*@
+                                @if (Model.MemberPhotoUrl != null)
+                                {
+                                    <img id="MemberPhoto" src="@Url.Content(Model.MemberPhotoUrl)" alt="Image" class="img-thumbnail" />
+                                }
+
+
+                                <div class="custom-file">
+                                    @Html.TextBoxFor(m => m.MFile, new { type = "file", @class = "custom-file-input" })
+                                    <label class="custom-file-label" for="MFile">Choose file</label>
+                                </div>
+
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => m.MFile)
+                                </span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card mt-2">
+                <div class="card-header">@EduSuiteUIResources.Personal@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Details</div>
+                <div class="card-body">
+                    <div class="form-row">
+                        <div class="col-12 col-sm-3 col-lg-2">
+                            <div class="form-group">
+                                @Html.Label(EduSuiteUIResources.MemberType, new { @id = "lblMemberType", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                                @Html.DropDownListFor(m => m.MemberTypeKey, new SelectList(Model.MemberType, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.MemberType, new { @class = "form-control border-radius input-control", @InputFor = "lblMemberType" })
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => m.MemberTypeKey)
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-sm-3 col-lg-2">
+                            <div class="form-group">
+                                @Html.Label(EduSuiteUIResources.RegistrationFee, htmlAttributes: new { @id = "lblRegistrationFee", @class = "form-label" })
+                                @Html.TextBoxFor(m => m.RegistrationFee, "{0:G29}", new { @class = "form-control input-control", @InputFor = "lblRegistrationFee", @readonly = "readonly" })
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => m.RegistrationFee)
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-3 col-lg-2">
+                            <div class="form-group">
+                                @Html.Label(EduSuiteUIResources.MembershipFee, htmlAttributes: new { @id = "lblMembershipFee", @class = "form-label" })
+                                @Html.TextBoxFor(m => m.MemberShipFee, "{0:G29}", new { @class = "form-control input-control", @InputFor = "lblMembershipFee", @readonly = "readonly" })
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => m.MemberShipFee)
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-3 col-lg-2">
+                            <div class="form-group">
+                                @Html.Label(EduSuiteUIResources.BorrowerType, new { @id = "lblBorrowerType", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                                @Html.DropDownListFor(m => m.BorrowerTypeKey, new SelectList(Model.BorrowerType, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.BorrowerType, new { @class = "form-control border-radius input-control", @InputFor = "lblBorrowerType" })
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => m.BorrowerTypeKey)
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-3 col-lg-2">
+                            <div class="form-group">
+                                @Html.Label(EduSuiteUIResources.RegistrationDate, htmlAttributes: new { @id = "lblRegistrationDate", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                                @Html.TextBoxFor(m => m.RegistrationDate, "{0:dd/MM/yyyy}", new { @class = "form-control border-radius datetimepicker", @data_input_type = "date", @data_inputmask = "'alias': 'dd/mm/yyyy'" })
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => m.RegistrationDate)
+                                </span>
+
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-sm-3 col-lg-2">
+                            <div class="form-group">
+                                @Html.Label(EduSuiteUIResources.IsBlockMember, htmlAttributes: new { @id = "lbIsBlockMember", @class = "form-label" })
+                                <div class="switch-check my-2">
+                                    @Html.CheckBoxFor(m => m.IsBlockMember, new { @class = "switch-input" })
+                                    <div class="switch-label redgreen" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                                    <div class="switch-handle"></div>
+                                </div>
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => m.IsBlockMember)
+                                </span>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row mt-2">
+                <div class="col-12">
+                    <div class="form-group">
+                        <input type="submit" value="@EduSuiteUIResources.Save" id="btnSave" class="btn btn-sm btn-success mx-1" />
+                        <input type="button" value="@EduSuiteUIResources.Cancel" onclick="location.href='@Url.Action("MemberRegistrationList", "MemberRegistration")' " class="btn btn-sm btn-danger mx-1" />
+                    </div>
+                </div>
+                <div class="col-12">
+                    <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+                </div>
+            </div>
+
+
+        }
+    </div>
+
+</section>
+
+<script>
+    $(document).ready(function () {
+        AppCommon.FormatDateInput();
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $("#MFile").change(function () {
+            if (this.files && this.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#MemberPhoto').attr('src', e.target.result);
+
+                }
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+
+        if ($("#IdentificationTypeKey").val() == "2") {
+            $("#IdentificationNumber").inputmask("9999 9999 9999");
+        }
+        else {
+            $("#IdentificationNumber").inputmask("remove");
+        }
+
+        $("#IdentificationTypeKey").change(function () {
+            if ($(this).val() == "2") {
+                $("#IdentificationNumber").inputmask("9999 9999 9999");
+            }
+            else {
+                $("#IdentificationNumber").inputmask("remove");
+            }
+        });
+
+        $("#MemberTypeKey").on("change", function () {
+            var response = AjaxHelper.ajax("GET", $("#hdnGetFeesById").val() + "?memberTypeKey=" + $(this).val())
+            $("#RegistrationFee").val(response["RegistrationFee"])
+            $("#MemberShipFee").val(response["MemberShipFee"])
+        });
+
+    });
+</script>

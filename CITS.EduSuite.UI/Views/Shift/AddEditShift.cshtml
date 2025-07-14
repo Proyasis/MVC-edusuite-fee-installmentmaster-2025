@@ -1,0 +1,231 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.ShiftViewModel
+
+<div class="modal-header">
+    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+    <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.Add @EduSuiteUIResources.Sla @EduSuiteUIResources.Edit @EduSuiteUIResources.Shift</h4>
+</div>
+@using (Html.BeginForm("AddEditShift", "Shift", FormMethod.Post, htmlAttributes: new { @id = "frmShift" }))
+{
+    @Html.HiddenFor(m => m.MasterRowKey, new { @class = "hidShiftKey" })
+    @Html.ValidationSummary(true)
+    <input type="hidden" id="hdnGetDepartmentByBranchId" value="@Url.Action("GetDepartmentByBranchId", "Shift")" />
+    <input type="hidden" id="hdnDeleteShiftBreak" value="@Url.Action("DeleteShiftBreak", "Shift")" />
+
+    <div class="modal-body">
+        <div class="form-master">
+            <div class="form-row">
+                <div class="col-12">
+                    <span class="ValidateDataMsg"> @Html.ValidationMessage("error_msg")  </span>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="col-sm-3 col-5">
+                    <div class="form-group ">
+                        @Html.Label(EduSuiteUIResources.Shift + @EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Code, htmlAttributes: new { @class = "form-label", @id = "lblShiftCode" })
+                        <div class="required-icon"><div class="text">*</div></div>
+                        @Html.TextBoxFor(m => m.ShiftCode, new { @class = "input-control form-control form-control-sm form-control-sm", @InputFor = "lblShiftCode", @data_convert = "uppercase", @data_unique = true })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.ShiftCode)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-sm-1 d-sm-inline-block d-none">
+                </div>
+                <div class="col-sm-7 col-6">
+                    <div class="form-group ">
+                        @Html.Label(EduSuiteUIResources.Shift + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Name, htmlAttributes: new { @class = "form-label" })
+                        <div class="required-icon"><div class="text">*</div></div>
+                        @Html.TextBoxFor(m => m.ShiftName, new { @class = "input-control form-control form-control-sm" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.ShiftName)
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-sm-5 col-6">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.BeginTime, htmlAttributes: new { @id = "lblInTime", @class = "form-label" })
+                        <div class="required-icon"><div class="text">*</div></div>
+                        @Html.TextBoxFor(m => m.BeginTime, new { @class = "input-control form-control form-control-sm form-control-sm", @data_input_type = "time", @data_inputmask = "'alias':'hh:mm t','hourFormat': '12'", @InputFor = "lblInTime" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.BeginTime)
+                        </span>
+
+                    </div>
+                </div>
+                <div class="col-sm-1 d-sm-inline-block d-none">
+                </div>
+                <div class="col-sm-5 col-6">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.EndTime, htmlAttributes: new { @id = "lblOutTime", @class = "form-label" })
+                        <div class="required-icon"><div class="text">*</div></div>
+                        @Html.TextBoxFor(m => m.EndTime, new { @class = "input-control form-control form-control-sm", @data_input_type = "time", @data_inputmask = "'alias':'hh:mm t','hourFormat': '12'", @InputFor = "lblOutTime" })
+
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.EndTime)
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <fieldset class="mt-2">
+                <legend class="border-bottom">Breaks</legend>
+                <div id="dvBreakRepeater" class="repeater">
+                    <div data-repeater-list>
+                        @for (int i = 0; i < Model.ShiftBreaks.Count(); i++)
+                        {
+                            <div data-repeater-item class="mb-2">
+                                <div class="form-row">
+
+                                    <div class="col-sm-4 col-4">
+                                        <div class="form-group">
+                                            @Html.Label(EduSuiteUIResources.BreakName, new { @id = "lblBreakName", @class = "form-label" })
+                                            @Html.TextBoxFor(m => m.ShiftBreaks[i].BreakName, new { @class = "input-control form-control form-control-sm form-control-sm", @InputFor = "lblBreakName" })
+                                            <span class="form-control-error-text">
+                                                @Html.ValidationMessageFor(m => m.ShiftBreaks[i].BreakName)
+                                            </span>
+                                            @Html.HiddenFor(m => m.ShiftBreaks[i].RowKey)
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3 col-4">
+                                        <div class="form-group">
+                                            @Html.Label(EduSuiteUIResources.BeginTime, new { @id = "lblBreakInTime", @class = "form-label" })
+                                            @Html.TextBoxFor(m => m.ShiftBreaks[i].BreakBeginTime, new { @class = "input-control form-control form-control-sm form-control-sm", @data_input_type = "time", @data_inputmask = "'alias':'hh:mm t','hourFormat': '12'", @InputFor = "lblBreakInTime" })
+                                            <span class="form-control-error-text">
+                                                @Html.ValidationMessageFor(m => m.ShiftBreaks[i].BreakBeginTime)
+                                            </span>
+                                            @Html.HiddenFor(m => m.ShiftBreaks[i].RowKey)
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3 col-4">
+                                        <fieldset class="form-group">
+                                            @Html.Label(EduSuiteUIResources.EndTime, htmlAttributes: new { @id = "lblBreakOutTime", @class = "form-label" })
+                                            @Html.TextBoxFor(m => m.ShiftBreaks[i].BreakEndTime, new { @class = "input-control form-control form-control-sm", @data_input_type = "time", @data_inputmask = "'alias':'hh:mm t','hourFormat': '12'", @InputFor = "lblBreakOutTime" })
+                                            <span class="form-control-error-text">
+                                                @Html.ValidationMessageFor(m => m.ShiftBreaks[i].BreakEndTime)
+                                            </span>
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-1">
+                                        <fieldset class="form-group">
+                                            <span data-repeater-delete="" class="btn btn-danger btn-sm mt-4">
+                                                <span class="fa fa-remove "></span>
+                                            </span>
+                                        </fieldset>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        }
+                    </div>
+                    <div class="form-row">
+                        <div class="col-11">
+                            <fieldset class="form-group">
+                                <span data-repeater-create class="btn btn-info btn-sm float-right">
+                                    <span class="fa fa-plus"></span>
+                                </span>
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+
+            <div class="form-row">
+                <div class="col-sm-5 col-6">
+                    <div class="form-group">
+                        @Html.Label("Punch Begin Before", htmlAttributes: new { @class = "form-label" }) <div class="input-group">
+                            @Html.TextBoxFor(m => m.PunchBeginBefore, new { @class = "input-control form-control form-control-sm form-control-sm" })
+
+
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.PunchBeginBefore)
+                            </span>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-1 d-sm-inline-block d-none">
+                </div>
+                <div class="col-sm-5 col-6">
+                    <div class="form-group">
+                        @Html.Label("Punch End After", htmlAttributes: new { @class = "form-label" })
+
+                        @Html.TextBoxFor(m => m.PunchEndAfter, new { @class = "input-control form-control form-control-sm" })
+
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.PunchEndAfter)
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row" data-disable="PartialDay">
+                <div class="col-3">
+                    <div class="form-group ">
+                        <div class="custom-control custom-checkbox mt-4">
+                            @Html.CheckBoxFor(m => m.PartialDay, new { @class = "custom-control-input", @onchange = "Shift.EnableDisableControls(this)" })
+                            <label class="custom-control-label" for="PartialDay">Partial Day </label>
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group mt-4">
+                        @Html.DropDownListFor(m => m.PartialDayKey, new SelectList(Model.WeekDays, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Day, new { @class = "input-control form-control form-control-sm" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.PartialDayKey)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-sm-3 form-col">
+                    <div class="form-group ">
+                        @Html.Label("Begins At", htmlAttributes: new { @class = "form-label" })
+                        @Html.TextBoxFor(m => m.PartialDayBeginTime, new { @class = "input-control form-control form-control-sm", @data_input_type = "time", @data_inputmask = "'alias':'hh:mm t','hourFormat': '12'", @InputFor = "lblInTime" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.PartialDayBeginTime)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-sm-3 form-col">
+                    <div class="form-group ">
+                        @Html.Label("End At", htmlAttributes: new { @class = "form-label" })
+                        @Html.TextBoxFor(m => m.PartialDayEndTime, new { @class = "input-control form-control form-control-sm", @data_input_type = "time", @data_inputmask = "'alias':'hh:mm t','hourFormat': '12'", @InputFor = "lblOutTime" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.PartialDayEndTime)
+                        </span>
+                    </div>
+                </div>
+                @*<div class="col-sm-2 form-col">
+                        <div class="form-group ">
+                            @Html.Label("HH:MM 24 hr frmt", htmlAttributes: new { @class = "form-label" })
+                        </div>
+                    </div>*@
+            </div>
+            <div class="form-row">
+
+                <div class="col-sm-4  col-6">
+                    <div class="form-group ">
+                        @Html.Label(EduSuiteUIResources.IsActive, htmlAttributes: new { @class = "form-label" })<br />
+                        <div class="switch-check">
+                            @Html.CheckBoxFor(m => m.IsActive, new { @class = "switch-input" })
+                            <div class="switch-label redgreen" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                            <div class="switch-handle"></div>
+                        </div>
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.IsActive)
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer justify-content-start">
+        <div class="form-group">
+            <button type="submit" id="btnSave" class="btn btn-sm btn-success mx-1"><i class="fa fa-save"></i> @EduSuiteUIResources.Save</button>
+            <button type="button" data-dismiss="modal" class="btn btn-sm btn-danger mx-1">@EduSuiteUIResources.Cancel</button>
+
+        </div>
+    </div>
+}

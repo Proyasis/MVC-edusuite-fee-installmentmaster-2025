@@ -1,0 +1,147 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.EmployeeEnquiryTargetViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+<div class="modal-header">
+    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+    <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.Add @EduSuiteUIResources.Sla @EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace @EduSuiteUIResources.EmployeeEnquiryTarget</h4>
+</div>
+<input type="hidden" id="hdnDeleteEnquiryTargetDetails" value="@Url.Action("DeleteEnquiryTargetDetails", "EmployeeEnquiryTarget")" />
+
+@using (Html.BeginForm("AddEditEmployeeEnquiryTarget", "EmployeeEnquiryTarget", FormMethod.Post, new { @id = "frmAddEditEmployeeEnquiryTarget" }))
+{
+
+@Html.HiddenFor(m => m.RowKey)
+                @Html.HiddenFor(m => m.EmployeeKey) if ((Model.EmployeeKey != 0))
+                {
+@Html.Action("EmployeeDetail", "Shared", new { id = Model.EmployeeKey, EmployeeCode = "" }) }
+@Html.ValidationSummary(true)
+
+                <div class="modal-body bottomLine">
+                    <div class="form-master">
+                        <div class="form-row">
+                            <div class="col-12 col-sm-4 col-lg-4">
+                                <fieldset class="form-group ">
+
+                                    @Html.Label(EduSuiteUIResources.CommonTarget, htmlAttributes: new { @class = "form-label" })
+
+                                    @Html.TextBoxFor(m => m.CommonTarget, new { @class = "form-control input-control" })
+                                    <span class="form-control-error-text">
+                                        @Html.ValidationMessageFor(m => m.CommonTarget)
+                                    </span>
+                                </fieldset>
+                            </div>
+
+                            <div class="col-12 col-sm-4 col-lg-4">
+                                <fieldset class="form-group ">
+                                    @Html.Label(EduSuiteUIResources.AllowMonthlyTarget, new { @class = "form-label" })
+                                    <div class="switch-check my-2">
+                                        @Html.CheckBoxFor(m => m.AllowMonthlyTarget, new { @class = "switch-input", @onchange = "EmployeeEnquiryTarget.CheckMonthlyTarget(this)" })
+                                        <div class="switch-label redgreen" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                                        <div class="switch-handle"></div>
+                                    </div>
+                                    <span class="form-control-error-text">
+                                        @Html.ValidationMessageFor(m => m.AllowMonthlyTarget)
+                                    </span>
+
+                                </fieldset>
+                            </div>
+                            <div class="col-12 col-sm-4 col-lg-4">
+                                <fieldset class="form-group ">
+                                    @Html.Label(EduSuiteUIResources.IsActive, new { @class = "form-label" })
+                                    <div class="switch-check my-2">
+                                        @Html.CheckBoxFor(m => m.IsActive, new { @class = "switch-input" })
+                                        <div class="switch-label redgreen" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                                        <div class="switch-handle"></div>
+                                    </div>
+                                    <span class="form-control-error-text">
+                                        @Html.ValidationMessageFor(m => m.IsActive)
+                                    </span>
+
+                                </fieldset>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div id="dynamicRepeater" class="repeater" data-hidden>
+                                <table class="table table-responsive table-stripped">
+                                    <thead class="form-group">
+                                        <tr>
+                                            <th></th>
+                                            <th>
+                                                @Html.Label(EduSuiteUIResources.Month, htmlAttributes: new { @class = "form-label" })
+                                            </th>
+                                            <th>
+                                                @Html.Label(EduSuiteUIResources.MonthlyTarget, htmlAttributes: new { @class = "form-label" })
+                                            </th>
+                                            <th>
+                                                @Html.Label(EduSuiteUIResources.Remarks, htmlAttributes: new { @class = "form-label" })
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody data-repeater-list>
+                                        @for (int i = 0; i < Model.EmployeeEnquiryTargetDetailsViewModel.Count(); i++)
+                                        {
+                        <tr data-repeater-item>
+                            <td class="p-1">
+
+                                <span data-repeater-delete="" class="btn btn-danger btn-sm">
+                                    <span class="fa fa-remove "></span>
+                                </span>
+
+                            </td>
+                            <td class="p-1">
+                                @Html.DropDownListFor(m => m.EmployeeEnquiryTargetDetailsViewModel[i].TargetYearMonth, new SelectList(Model.TargetMonth, "ValueText", "Text", Model.EmployeeEnquiryTargetDetailsViewModel[i].TargetYearMonth), EduSuiteUIResources.Select, new { @onchange = "EmployeeEnquiryTarget.MonthOrYearChanged(this)", @class = "form-control input-control" })
+
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => Model.EmployeeEnquiryTargetDetailsViewModel[i].TargetYearMonth)
+                                </span>
+                                @Html.HiddenFor(m => Model.EmployeeEnquiryTargetDetailsViewModel[i].RowKey)
+                                @Html.HiddenFor(m => Model.EmployeeEnquiryTargetDetailsViewModel[i].TargetYear)
+                                @Html.HiddenFor(m => Model.EmployeeEnquiryTargetDetailsViewModel[i].TargetMonth)
+                                @Html.HiddenFor(m => m.EmployeeEnquiryTargetDetailsViewModel[i].EnquiryTargetKey)
+                            </td>
+                            <td class="p-1">
+                                @Html.TextBoxFor(m => m.EmployeeEnquiryTargetDetailsViewModel[i].MonthlyTarget, new { @class = "form-control input-control" })
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => m.EmployeeEnquiryTargetDetailsViewModel[i].MonthlyTarget)
+                                </span>
+
+                            </td>
+                            <td class="p-1">
+                                @Html.TextBoxFor(m => m.EmployeeEnquiryTargetDetailsViewModel[i].Remarks, new { @class = "form-control input-control" })
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => m.EmployeeEnquiryTargetDetailsViewModel[i].Remarks)
+                                </span>
+                            </td>
+
+                        </tr>}
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th class="px-1" colspan="4">
+                                                <span data-repeater-create class="btn btn-info btn-sm">
+                                                    <span class="fa fa-plus"></span>
+                                                </span>
+                                            </th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                                <div class="col-12">
+                                    <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+                                </div>
+                                                <div class="modal-footer justify-content-start">
+                                                    <div class="form-group">
+                                                        <input type="button" value="@EduSuiteUIResources.Submit" id="btnSave" onclick="EmployeeEnquiryTarget.FormSubmit()" class="btn btn-sm btn-success mx-1" />
+                                                        <button type="button" data-dismiss="modal" class="btn btn-sm btn-danger mx-1">@EduSuiteUIResources.Cancel</button>
+
+                                                    </div>
+                                                </div>}
+
+
+
+<script>
+       var jsonData=@(Html.Raw(Json.Encode(Model)));
+</script>

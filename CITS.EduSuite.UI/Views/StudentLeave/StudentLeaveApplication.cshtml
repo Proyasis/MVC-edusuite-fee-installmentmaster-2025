@@ -1,0 +1,52 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.ApplicationPersonalViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+@using CITS.EduSuite.UI
+<input type="hidden" id="hdnAddEditStudentLeave" value="@Url.Action("AddEditStudentLeave", "StudentLeave", new { id = "" })" />
+<input type="hidden" id="hdnBindStudentLeaveDetails" value="@Url.Action("BindStudentLeaveDetails", "StudentLeave", new { id = Model.ApplicationKey })" />
+
+<div class="form-row">
+
+  
+    <div class="col-sm-5 col-lg-4 col-12">
+        <div id="dvFeeDetails">
+
+        </div>
+
+
+    </div>
+    <div class="col-sm-7 col-lg-8  col-12">
+        @if ((Model.ApplicationKey != 0) || !String.IsNullOrEmpty(Model.AdmissionNo))
+        {
+            @Html.Action("StudentDetail", "Shared", new { id = (Model.ApplicationKey ?? 0), AdmissionNo = Model.AdmissionNo })
+        }
+        <div id="dvInstallmentDetails">
+
+        </div>
+
+
+    </div>
+
+
+
+
+
+
+</div>
+
+<div class="col-12">
+    <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+</div>
+<script>
+    $(document).ready(function () {
+        setTimeout(function(){
+            if (@Model.ApplicationKey != 0 && @Model.ApplicationKey != null)
+            {
+                StudentLeave.BindStudentLeaveDetails();
+                StudentLeave.AddEditStudentLeave(null, @Model.ApplicationKey);
+            }
+
+        },500)
+
+    })
+</script>
+

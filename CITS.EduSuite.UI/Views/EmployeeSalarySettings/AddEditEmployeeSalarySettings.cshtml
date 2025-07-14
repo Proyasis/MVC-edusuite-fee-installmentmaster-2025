@@ -1,0 +1,192 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.EmployeeSalaryMasterViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+
+
+@Html.HiddenFor(m => m.SalaryMonthKey)
+@Html.HiddenFor(m => m.SalaryYearKey)
+@Html.HiddenFor(m => m.SalaryMasterKey)
+@Html.HiddenFor(m => m.SalaryTypeKey)
+@Html.HiddenFor(m => m.DaysInMonth)
+
+
+<table id="tblSalaryDetails" class="table tbSalaryAdvance">
+    <thead>
+        <tr>
+            <th>Earning</th>
+            <th>Deductions</th>
+
+        </tr>
+
+    </thead>
+    <tbody>
+        <tr>
+            <td class="col-sm-6" style="vertical-align:top">
+
+                <ul class="list-group list-group-flush  Margin_None">
+                    @for (var i = 0; i < Model.EmployeeSalaryEarnings.Count; i++)
+                    {
+
+
+                        <li class="list-group-item  row" data-code="@Model.EmployeeSalaryEarnings[i].SalaryHeadCode" data-fixed="@Model.EmployeeSalaryDeductions[i].IsFixed">
+                            <div class="col-sm-8 form-col">
+                                @Model.EmployeeSalaryEarnings[i].SalaryHeadName
+                                @Html.HiddenFor(m => m.EmployeeSalaryEarnings[i].SalaryHeadKey)
+                                @Html.HiddenFor(m => m.EmployeeSalaryEarnings[i].Formula)
+                            </div>
+
+                            <div class="col-sm-4 form-col text-right">
+                                @Html.TextBoxFor(m => m.EmployeeSalaryEarnings[i].Amount, new { @class = "input-control Border_None  text-right full-width transparent-bg", @disabled = true, @data_earnings = "true" })
+                            </div>
+                        </li>
+                    }
+                    @if (Model.SalaryTypeKey == DbConstants.SalaryType.Hourly || Model.SalaryTypeKey == DbConstants.SalaryType.Daily)
+                    {
+                        <li class="list-group-item  row">
+                            <div class="col-sm-8 form-col">
+                                @EduSuiteUIResources.HourlyWage
+                            </div>
+
+                            <div class="col-sm-4 form-col text-right">
+                                @Html.TextBox("GrossSalary", Model.MonthlySalary, "{0:G29}", new { @class = "input-control Border_None  text-right full-width transparent-bg", @disabled = true, @data_earnings = "true" })
+                            </div>
+                        </li>
+                    }
+
+                </ul>
+
+            </td>
+            <td class="col-sm-6" style="vertical-align:top">
+                <ul class="list-group list-group-flush  Margin_None">
+                    @for (var i = 0; i < Model.EmployeeSalaryDeductions.Count; i++)
+                    {
+
+
+
+                        <li class="list-group-item  row" data-code="@Model.EmployeeSalaryDeductions[i].SalaryHeadCode">
+                            <div class="col-sm-8 form-col">
+                                @Model.EmployeeSalaryDeductions[i].SalaryHeadName
+                                @Html.HiddenFor(m => m.EmployeeSalaryDeductions[i].SalaryHeadKey)
+                                @Html.HiddenFor(m => m.EmployeeSalaryDeductions[i].Formula)
+                            </div>
+
+                            <div class="col-sm-4 form-col text-right">
+                                @Html.TextBoxFor(m => m.EmployeeSalaryDeductions[i].Amount, new { @class = "input-control  Border_None  text-right full-width transparent-bg", @disabled = true, @data_deductions = "true" })
+
+                            </div>
+                        </li>
+                    }
+
+
+                </ul>
+
+            </td>
+
+        </tr>
+        <tr>
+            <th class="text-right">
+                @Html.TextBox("TotalEarnings", "0", new { @class = "input-control text-green  Border_None  text-right full-width transparent-bg", @disabled = true })
+            </th>
+            <th class="text-right">
+                @Html.TextBox("TotalDeductions", "0", new { @class = "input-control text-red  Border_None  text-right full-width transparent-bg", @disabled = true })
+
+            </th>
+
+        </tr>
+    </tbody>
+    <tfoot id="dvSalaryDetails">
+        <tr data-code="TSLR">
+            <th>
+                @if (Model.SalaryTypeKey == DbConstants.SalaryType.Monthly)
+                {
+                    @Html.Label(EduSuiteUIResources.MonthlySalary, htmlAttributes: new { @id = "lblLoan", @class = "text-green" })
+                }
+                else if (Model.SalaryTypeKey == DbConstants.SalaryType.Daily)
+                {
+                    @Html.Label(EduSuiteUIResources.DailyWage, htmlAttributes: new { @id = "lblLoan", @class = "text-green" })
+                }
+                else
+                {
+                    @Html.Label(EduSuiteUIResources.HourlyWage, htmlAttributes: new { @id = "lblLoan", @class = "text-green" })
+                }
+            </th>
+            <th>
+                @Html.TextBox("MonthlySalary", Model.MonthlySalary, "{0:G29}", new { @class = "input-control text-green Border_None text-right full-width transparent-bg", @disabled = true, @monthlysalary = "true" })
+
+            </th>
+        </tr>
+
+    </tfoot>
+</table>
+<style>
+
+
+    .tbSalaryAdvance li.row {
+        margin-bottom: 0;
+        padding: 5px 3px;
+        border: 1px solid #f5f2f2;
+    }
+
+    .tbSalaryAdvance {
+        font-size: 13px;
+        width: 100%;
+    }
+
+        .tbSalaryAdvance thead tr {
+            background: #c7c7c7;
+            border-bottom: solid 2px #36ad81;
+        }
+
+        .tbSalaryAdvance tbody tr:last-child {
+            background: #c7c7c7;
+            border-top: solid 2px #36ad81;
+        }
+
+        .tbSalaryAdvance thead tr th, .tbSalaryAdvance tbody tr th {
+            border-bottom: none;
+            padding: 3px;
+        }
+
+        .tbSalaryAdvance tbody tr > td {
+            vertical-align: top;
+            background: #fff;
+            padding-right: 15px;
+            padding-left: 15px;
+            padding-top: 0;
+        }
+
+            .tbSalaryAdvance tbody tr > td .list-group .fa {
+                background: none;
+                border: solid 1px;
+                width: 20px;
+                height: 20px;
+                cursor: pointer;
+            }
+
+            .tbSalaryAdvance tbody tr > td:nth-child(1), .tbSalaryAdvance tbody tr > td:nth-child(1) .form-control {
+                color: green;
+            }
+
+            .tbSalaryAdvance tbody tr > td:nth-child(2), .tbSalaryAdvance tbody tr > td:nth-child(2) .form-control {
+                color: red;
+            }
+</style>
+<script>
+
+
+    $(document).ready(function () {
+        $("li[data-code]").each(function () {
+            AppCommon.CalculateRowAmount(this);
+        })
+        var Earnings = $("[data-earnings]").toArray().reduce(function (sum, element) {
+            if (isNaN(sum)) sum = 0;
+            return sum + Number(element.value);
+        }, 0);
+        var Deductions = $("[data-deductions]").toArray().reduce(function (sum, element) {
+            if (isNaN(sum)) sum = 0;
+            return sum + Number(element.value);
+        }, 0);
+        $("#TotalEarnings").val(Earnings);
+        $("#TotalDeductions").val(Deductions);
+    });
+</script>

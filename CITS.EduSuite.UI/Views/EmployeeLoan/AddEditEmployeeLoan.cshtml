@@ -1,0 +1,158 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.EmployeeLoanViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+
+<div class="modal-header">
+    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+    <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.Add @EduSuiteUIResources.Sla @EduSuiteUIResources.Edit @EduSuiteUIResources.EmployeeLoan</h4>
+</div>
+
+@using (Html.BeginForm("AddEditEmployeeLoan", "EmployeeLoan", FormMethod.Post, htmlAttributes: new { @id = "frmEmployeeLoan" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.RowKey, new { @class = "hidEmployeeLoan" })
+    @Html.ValidationSummary(true)
+
+    <div class="modal-body">
+        <div class="topMarginSpace  form-master">
+            <div class="form-row">
+                <div class="paddingNone">
+                    <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+                </div>
+
+            </div>
+
+            <div class="form-row">
+                <div class="col-12 mandatoryHead ">
+                    <span>@EduSuiteUIResources.FieldsMarkedAs<span class="mandatoryStar"> * </span>@EduSuiteUIResources.AreMandatory</span>
+
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-6 form-col">
+                    <div class="form-group ">
+                        @Html.Label(EduSuiteUIResources.Branch, htmlAttributes: new { @id = "lblBranch", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                        @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Branch, new { @class = "form-control input-control ", @InputFor = "lblBranch" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.BranchKey)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-6 form-col">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Employee, htmlAttributes: new { @id = "lblEmployee", @class = "form-label" })
+                        <div class="required-icon"><div class="text">*</div></div>
+                        @Html.DropDownListFor(m => m.EmployeeKey, new SelectList(Model.Employees, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Employee, new { @class = "form-control input-control", @data_plugin_type = "select2", @InputFor = "lblEmployee" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.EmployeeKey)
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-6 form-col">
+                    <div class="form-group ">
+                        @Html.Label(EduSuiteUIResources.Amount, htmlAttributes: new { @id = "lblAmount", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                        @Html.TextBoxFor(m => m.Amount, "{0:G29}", new { @class = "form-control input-control", @InputFor = "lblAmount" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.Amount)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-6 form-col">
+                    <div class="form-group ">
+                        @Html.Label(EduSuiteUIResources.LoanDate, htmlAttributes: new { @id = "lblLoanDate", @class = "form-label" })
+                        @Html.TextBoxFor(m => m.LoanDate, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_input_type = "date", @InputFor = "lblLoanDate", @data_inputmask = "'alias': 'dd/mm/yyyy'" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.LoanDate)
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-6 form-col">
+                    <div class="form-group ">
+                        @Html.Label(EduSuiteUIResources.MonthlyRepaymentAmount, htmlAttributes: new { @id = "lblMonthlyRepaymentAmount", @class = "form-label" })
+                        @Html.TextBoxFor(m => m.MonthlyRepaymentAmount, "{0:G29}", new { @class = "form-control input-control", @InputFor = "lblMonthlyRepaymentAmount" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.MonthlyRepaymentAmount)
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-6 form-col">
+                    <div class="form-group ">
+                        @Html.Label(EduSuiteUIResources.RepaymentStartDate, htmlAttributes: new { @id = "lblRepaymentStartDate", @class = "form-label" })
+                        @Html.TextBoxFor(m => m.RepaymentStartDate, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_input_type = "date", @InputFor = "lblMonthlyRepaymentAmount", @data_inputmask = "'alias': 'dd/mm/yyyy'" })
+
+
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.RepaymentStartDate)
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+            <div class="form-row">
+                <div class="col-12">
+                    <div class="form-group ">
+                        @Html.Label(EduSuiteUIResources.LoanPayInSlip, htmlAttributes: new { @id = "lblLoanInPaySlip", @class = "form-label" })
+                        <div class="switch-check my-2">
+                            @Html.CheckBoxFor(m => m.LoanInPaySlip, new { @InputFor = "lblLoanInPaySlip", @class = "switch-input" })
+                            <div class="switch-label yesno" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                            <div class="switch-handle"></div>
+                        </div>
+
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.LoanInPaySlip)
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-12">
+                    <div class="form-group ">
+                        @Html.Label(EduSuiteUIResources.Remarks, htmlAttributes: new { @id = "lblRemarks", @class = "form-label" })<span class="spnStar"></span>
+                        @Html.TextAreaFor(m => m.Remarks, new { @class = "form-control input-control", @InputFor = "lblRemarks" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.Remarks)
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="col-12">
+            <div class="form-group">
+                <input type="submit" value="@EduSuiteUIResources.Save" id="btnSaveCopy" class="btn btn-sm btn-success mx-1pull-left " />
+                @if (Model.RowKey != 0 && Model.LoanStatusKey == DbConstants.ProcessStatus.Approved)
+                {
+                    <input type="button" value="@EduSuiteUIResources.Payment" id="btnPaymentWindow" class="btnForm btn btn-sm btn-warning pull-left" data-href="@Url.Action("AddEditEmployeeLoanPayment", "EmployeeLoan", new { id = Model.RowKey })" />
+                }
+                <button type="button" data-dismiss="modal" class="btnForm btnCancel btn btn-sm btn-default pull-left ">@EduSuiteUIResources.Cancel</button>
+            </div>
+        </div>
+    </div>
+}
+
+<script>
+    $(document).ready(function () {
+        AppCommon.AutoHideDropdown();
+        if(@Model.RowKey==0)
+        {
+            EmployeeLoan.GetEmployeesByBranchId($("#BranchKey").val(), $("#EmployeeKey"));
+        }
+        AppCommon.FormatSelect2();
+        AppCommon.FormatDateInput();
+        AppCommon.PaymentPopupWindow($("#btnPaymentWindow"), $("#hdnAddEditEmployeeLoanPayment").val(), "@EduSuiteUIResources.Add @EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Loan@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Payment");
+
+        //$("#btnPaymentWindow").on("click", function () {
+        //    EmployeeLoan.PaymentPopupWindow($("#RowKey").val());
+        //})
+        $("#BranchKey").on("change", function () {
+            EmployeeLoan.GetEmployeesByBranchId($(this).val(),$("#EmployeeKey"));
+        });
+    });
+</script>
+

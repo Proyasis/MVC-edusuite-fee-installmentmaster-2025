@@ -1,0 +1,51 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.DivisionAllocationViewModel
+
+
+<div class="modal-header">
+    
+    <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.Add @EduSuiteUIResources.Sla @EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace @EduSuiteUIResources.GenerateRollNo</h4>
+</div>
+@using (Html.BeginForm("AddEditDivisionAllocationSubmit", "DivisionAllocation", FormMethod.Post, new { @id = "frmGenerateRollnumber" }))
+{
+
+    <input type="hidden" id="hdnGetRollNumberList" value="@Url.Action("GetRollNumberList", "DivisionAllocation")" />
+    <input type="hidden" id="hdnAddEditDivisionAllocationSubmit" value="@Url.Action("AddEditDivisionAllocationSubmit", "DivisionAllocation")" />
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(m => m.ApplicationKeys)
+    @Html.HiddenFor(m => m.IfResetRollNo)
+
+
+    @Html.ValidationSummary(true)
+
+    <div class="modal-body ">
+        <div class="GridBody" style="float:none">
+            <div class="form-master">
+                <div class="table-wrapper">
+
+                    <div class="jqGrid_wrapper overflow-auto">
+                        <table id="gridRollNumber"></table>
+                        <div id="pagerRollNumber"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer justify-content-start">
+        <div class="form-group">
+            <input type="button" value="@EduSuiteUIResources.Save" id="btnSave" class="btn btn-sm btn-success mx-1" />
+            <button type="button" data-dismiss="modal" class="btn btn-sm btn-danger mx-1" onclick="DivisionAllocation.Reloaddata()" >@EduSuiteUIResources.Cancel</button>
+            @if (Model.IfResetRollNo == true)
+            {
+                @*<input type="button" value="@EduSuiteUIResources.Reset" id="btnResetRollNo" onclick="javascript:DivisionAllocation.EditRollNoPopUp('@Model.ApplicationKeys','@Model.IfResetRollNo');" class="btn btn-sm btn-warning mx-1pull-left " />*@
+    <button type="button" data-dismiss="modal" class="btn btn-sm btn-warning mx-1" onclick="javascript:DivisionAllocation.EditRollNoPopUp('@Model.ApplicationKeys',true);"><i class="fa fa-refresh" aria-hidden="true">@EduSuiteUIResources.Reset@EduSuiteUIResources.RollNo</i></button>
+
+            }
+        </div>
+    </div>
+    <script>
+        var jsonData=@(Html.Raw(Json.Encode(Model)));
+
+    </script>
+
+}

@@ -1,0 +1,680 @@
+﻿
+@using System.Web.Mvc
+@model CITS.EduSuite.Business.Models.ViewModels.EnquiryScheduleViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/CitsValidation")
+    @Scripts.Render("~/Content/DatePickerJS")
+
+    @Scripts.Render("~/Content/momentJS")
+    @Scripts.Render("~/Scripts/EnquiryLead")
+    @Scripts.Render("~/Scripts/Enquiry")
+    @Scripts.Render("~/Scripts/EnquiryLeadSchedule")
+    @*@Scripts.Render("~/Scripts/MailMessage")*@
+
+}
+<script src="~/CITSEduSuiteScripts/selection.js"></script>
+<input type="hidden" id="hdnGetEnquirySchedules" value="@Url.Action("EnquiryLeadScheduleList", "EnquirySchedule")" />
+<input type="hidden" id="hdnGetEmployeeByBranchId" value="@Url.Action("GetEmployeeByBranchId", "EnquiryLead")" />
+<input type="hidden" id="hdnAddEditEnquiryLeadFeedback" value="@Url.Action("AddEditEnquiryLeadFeedback", "EnquiryLead")" />
+<input type="hidden" id="hdnAddEditEnquiryFeedback" value="@Url.Action("AddEditEnquiryFeedback", "Enquiry")" />
+<input type="hidden" id="hdnLogin" value="@Url.Action("LogOut","Login")" />
+<input type="hidden" id="hdnGetScheduleSummary" value="@Url.Action("GetScheduleSummary", "EnquirySchedule")" />
+<input type="hidden" id="hdnComposeMailWithData" value="@Url.Action("ComposeMailWithData", "MailMessages")" />
+<input type="hidden" id="hdnGetCallStatusByFHEnquiryStatus" value="@Url.Action("GetCallStatusByFHEnquiryStatus", "EnquirySchedule")" />
+<input type="hidden" id="hdnGetScheduleCallStatusByEnquiryStatus" value="@Url.Action("GetCallStatusByEnquiryScheduleStatus", "EnquirySchedule")" />
+<input type="hidden" id="hdnGetCallStatusByEnquiryStatus" value="@Url.Action("GetCallStatusByEnquiryStatus", "EnquirySchedule")" />
+<input type="hidden" id="hdnGetCallStatusByEnquiryLeadStatus" value="@Url.Action("GetCallStatusByEnquiryStatus", "EnquiryLead")" />
+<input type="hidden" id="hdnAllocateMultipleLead" value="@Url.Action("AllocateMultipleLead", "EnquirySchedule")" />
+<input type="hidden" id="hdnGetCallStatusByEnquiryStatus" value="@Url.Action("GetCallStatusByEnquiryStatus", "Enquiry")" />
+<input type="hidden" id="hdnAddEditEnquiry" value="@Url.Action("AddEditEnquiry", "Enquiry")" />
+<input type="hidden" id="hdnAddEditEnquiryLead" value="@Url.Action("AddEditEnquiryLead", "EnquiryLead")" />
+<input type="hidden" id="hdnDateToday" value="@DateTimeUTC.Now.ToString("dd/MM/yyyy")" />
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-sm-6 col-12">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.Counselling@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Call@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Schedule</h3>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</header>
+<section class="section-content mx-sm-3 mx-0">
+    <div class="GridBody">
+
+
+        @{
+            Model.PageIndex = 1;           
+            Model.ScheduleStatusKey = Model.ScheduleStatusKey == 0 ? DbConstants.ScheduleStatus.Today : Model.ScheduleStatusKey;
+
+        }
+        @Html.HiddenFor(m => m.PageIndex)
+        @*@Html.HiddenFor(m => m.PageSize)*@
+        @Html.HiddenFor(m => m.ScheduleStatusKey)
+        @Html.HiddenFor(x => x.ModuleKey)
+
+        <div class="grid-nav-bar form-row mb-2">
+
+            <div class="col-lg-2 col-sm-3 col-4">
+                <fieldset class="form-group">
+                    @Html.TextBoxFor(m => m.SearchName, new { @class = "form-control input-control", @placeholder = EduSuiteUIResources.Name })
+                </fieldset>
+            </div>
+            <div class="col-lg-2 col-sm-3 col-4">
+                <fieldset class="form-group">
+                    @Html.TextBoxFor(m => m.SearchPhone, new { @class = "form-control input-control", @placeholder = EduSuiteUIResources.Phone })
+                </fieldset>
+            </div>
+            <div class="col-lg-2 col-sm-3 col-4">
+                <fieldset class="form-group">
+                    @Html.TextBoxFor(m => m.SearchEmail, new { @class = "form-control input-control", @placeholder = EduSuiteUIResources.Email })
+                </fieldset>
+            </div>
+            <div class="col-lg-2 col-sm-3 col-4">
+                <fieldset class="form-group">
+                    @Html.TextBoxFor(m => m.SearchFromDate, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_input_type = "date", @data_inputmask = "'alias': 'dd/mm/yyyy'", @placeholder = EduSuiteUIResources.ScheduleDateFrom })
+                </fieldset>
+            </div>
+            <div class="col-lg-2 col-sm-3 col-4">
+                <fieldset class="form-group">
+                    @Html.TextBoxFor(m => m.SearchToDate, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_input_type = "date", @data_inputmask = "'alias': 'dd/mm/yyyy'", @placeholder = EduSuiteUIResources.ScheduleDateTo })
+                </fieldset>
+            </div>
+
+            @*@if (DbConstants.Role.AdminUserTypes.Contains(DbConstants.User.RoleKey))
+            {*@
+
+                @if (Model.Branches.Count == 1)
+                {
+                    {
+                        Model.SearchBranchKey = (Model.SearchBranchKey == 0 || Model.SearchBranchKey == null) ? (short)Model.Branches.Select(x => x.RowKey).FirstOrDefault() : Model.SearchBranchKey;
+                    }
+                    @Html.HiddenFor(m => m.SearchBranchKey)
+                }
+                else
+                {
+                    <div class="col-lg-2 col-sm-4 col-6">
+                        <fieldset class="form-group">
+                            @Html.DropDownListFor(m => m.SearchBranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.Branch, new { @class = "form-control input-control ", @data_live_search = "true" })
+                        </fieldset>
+                    </div>
+                }
+                <div class="col-lg-2 col-sm-3 col-4">
+                    <fieldset class="form-group">
+                        @Html.DropDownListFor(m => m.SearchEmployeeKey, new SelectList(Model.Employees, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Employee, new { @class = "form-control input-control  selectpicker", @data_live_search = "true", @InputFor = "lblEmployee" })
+                    </fieldset>
+                </div>
+
+            @*}
+            else
+            {
+                if (Model.Branches.Count == 1)
+                {
+                    {
+                        Model.SearchBranchKey = (Model.SearchBranchKey == 0 || Model.SearchBranchKey == null) ? (short)Model.Branches.Select(x => x.RowKey).FirstOrDefault() : Model.SearchBranchKey;
+                    }
+                    @Html.HiddenFor(m => m.SearchBranchKey)
+                }
+                <div class="col-lg-2 col-sm-4 col-6">
+                    <fieldset class="form-group">
+                        @Html.DropDownListFor(m => m.SearchEmployeeKey, new SelectList(Model.Employees, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Employee, new { @class = "form-control input-control  selectpicker", @data_live_search = "true", @InputFor = "lblEmployee" })
+
+                    </fieldset>
+                </div>
+            }*@
+
+
+
+            <div class="col-lg-2 col-sm-3 col-4">
+                <fieldset class="form-group">
+                    @Html.DropDownListFor(m => m.SearchScheduleStatusKey, new SelectList(Model.ScheduleStatuses, "RowKey", "Text"), EduSuiteUIResources.Schedule + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Status, new { @class = "form-control input-control selectpicker" })
+                </fieldset>
+            </div>
+            <div class="col-lg-2 col-sm-3 col-4 d-none">
+                <fieldset class="form-group">
+                    @Html.DropDownListFor(m => m.SearchCallStatusKey, new SelectList(Model.ScheduleCallStatuses, "RowKey", "Text"), EduSuiteUIResources.CallStatus, new { @class = "form-control input-control selectpicker" })
+                </fieldset>
+            </div>
+            <div class="col-lg-2 col-sm-3 col-4">
+                <fieldset class="form-group">
+                    @Html.DropDownListFor(m => m.SearchCallTypeKey, new SelectList(Model.CallTypes, "RowKey", "Text"), EduSuiteUIResources.CallType, new { @class = "form-control input-control selectpicker" })
+                </fieldset>
+            </div>
+
+            <div class="col-lg-2 col-sm-3 col-4">
+                <fieldset class="form-group">
+                    @Html.TextBoxFor(m => m.SearchLocation, new { @class = "form-control input-control selectpicker", @placeholder = EduSuiteUIResources.District + "," + EduSuiteUIResources.Location })
+                </fieldset>
+            </div>
+            <div class="col-lg-2 col-sm-3 col-4">
+                <fieldset class="form-group">
+                    @Html.CheckBox("IsShortListed2") <label for="IsShortListed2" style="display:inline;font-weight:bold">Is ShortListed</label>
+                </fieldset>
+            </div>
+
+            <div class="col-lg-6 col-sm-6 col-6">
+
+                <span status="@DbConstants.ScheduleStatus.Shortlisted" class="shortList" id="shortList">Short listed <span id="shortListCount"></span>  </span>
+                <span status="@DbConstants.ScheduleStatus.ShortlistPending" class="shortList" id="shortListPending">Short Pending <span id="shortListPendingCount"></span>  </span>
+
+            </div>
+            @*<div class="col-1">
+                    <button onclick="SearchEnquiryLeads()" type="button" class="btn btn-default btn-sm">
+                        <span class="glyphicon glyphicon-search"></span>
+                    </button>
+                </div>
+                <div class="col-1">
+                    <button type="button" class="btn btn-default btn-sm" onclick='EnquiryLead.GetEnquirySchedules()'>
+                        <span class="glyphicon glyphicon-refresh"></span>
+                    </button>
+                </div>*@
+        </div>
+
+
+        <div class="tabs-section mb-2">
+            <div class="tabs-section-nav position-relative">
+                <ul class="nav ScheduleTab1" role="tablist">
+                    <li class="nav-item d-none">
+                        <a class="nav-link " href="#tabs-2-tab-1" role="tab" data-toggle="tab" value="0">
+                            <span class="nav-link-in">
+                                All
+                            </span>
+                        </a>
+                    </li>
+                    <li class="nav-item d-none">
+                        <a class="nav-link" href="#tabs-2-tab-2" role="tab" data-toggle="tab" value="1">
+                            <span class="nav-link-in">
+                                Lead
+                            </span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#tabs-2-tab-3" role="tab" data-toggle="tab" value="2">
+                            <span class="nav-link-in">
+                                Enquiry
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+                <div class="button-group export-buttons">
+                    @*<button id="btnPrint" type="button" class="btn btn-primary btn-sm"><i class="fa fa-print btn-blue" aria-hidden="true"></i></button>*@
+                    <button id="btnExport" type="button" class="btn btn-success btn-sm"><i class="fa fa-file-excel-o fa-align-right" aria-hidden="true"></i></button>
+                </div>
+            </div>
+
+
+            <div class="form-row tabs-section">
+                <div class="tabs-section-nav">
+                    <ul class="nav ScheduleTab" role="tablist">
+                        <li class="nav-item d-none">
+                            <a class="nav-link @(Model.ScheduleStatusKey == @DbConstants.ScheduleStatus.NewLead ? "active" : "")" href="#tabs-2-tab-1" role="tab" data-toggle="tab" value="@DbConstants.ScheduleStatus.NewLead">
+                                <span class="nav-link-in">
+                                    New Lead
+                                    <span id="Count1" class="badge font-16 w3-pink">0</span>
+                                </span>
+                            </a>
+                        </li>
+                        <li style="display:none" class="nav-item">
+                            <a class="nav-link @(Model.ScheduleStatusKey == @DbConstants.ScheduleStatus.Shortlisted ? "active" : "")" href="#tabs-2-tab-2" role="tab" data-toggle="tab" value="@DbConstants.ScheduleStatus.Shortlisted">
+                                <span class="nav-link-in">
+                                    Shortlisted
+                                    <span id="Count1" class="badge font-16 w3-deep-purple">0</span>
+                                </span>
+                            </a>
+                        </li>
+                        <li style="display:none" class="nav-item">
+                            <a class="nav-link @(Model.ScheduleStatusKey == @DbConstants.ScheduleStatus.ShortlistPending ? "active" : "")" href="#tabs-2-tab-2" role="tab" data-toggle="tab" value="@DbConstants.ScheduleStatus.ShortlistPending">
+                                <span class="nav-link-in">
+                                    Shortlist Pending
+                                    <span id="Count1" class="badge font-16 w3-orange">0</span>
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @(Model.ScheduleStatusKey == @DbConstants.ScheduleStatus.Today ? "active" : "")" href="#tabs-2-tab-2" role="tab" data-toggle="tab" value="@DbConstants.ScheduleStatus.Today">
+                                <span class="nav-link-in">
+                                    Todays Schedule
+                                    <span id="Count1" class="badge font-16 w3-green">0</span>
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item d-none">
+                            <a class="nav-link @(Model.ScheduleStatusKey == @DbConstants.ScheduleStatus.CounsellingSchedule ? "active" : "")" href="#tabs-2-tab-3" role="tab" data-toggle="tab" value="@DbConstants.ScheduleStatus.CounsellingSchedule">
+                                <span class="nav-link-in">
+                                    Today's Counselling Schedule
+                                    <span id="Count2" class="badge font-16 w3-yellow">0</span>
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @(Model.ScheduleStatusKey == @DbConstants.ScheduleStatus.Tomorrow ? "active" : "")" href="#tabs-2-tab-4" role="tab" data-toggle="tab" value="@DbConstants.ScheduleStatus.Tomorrow">
+                                <span class="nav-link-in">
+                                    Tomorrow's Schedule
+                                    <span id="Count2" class="badge font-16 w3-orange">0</span>
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @(Model.ScheduleStatusKey == @DbConstants.ScheduleStatus.Pending ? "active" : "")" href="#tabs-2-tab-5" role="tab" data-toggle="tab" value="@DbConstants.ScheduleStatus.Pending">
+                                <span class="nav-link-in">
+                                    Pending Schedule
+                                    <span id="Count3" class="badge font-16 w3-red">0</span>
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @(Model.ScheduleStatusKey == @DbConstants.ScheduleStatus.Upcoming ? "active" : "")" href="#tabs-2-tab-6" role="tab" data-toggle="tab" value="@DbConstants.ScheduleStatus.Upcoming">
+                                <span class="nav-link-in">
+                                    Upcoming Schedule
+                                    <span id="Count4" class="badge font-16 w3-brown">0</span>
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @(Model.ScheduleStatusKey == @DbConstants.ScheduleStatus.History ? "active" : "")" href="#tabs-2-tab-7" role="tab" data-toggle="tab" value="@DbConstants.ScheduleStatus.History">
+                                <span class="nav-link-in">
+                                    History
+                                    <span id="Count5" class="badge font-16 w3-white">0</span>
+                                </span>
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+            <div class="form-row mt-2">
+                @if (DbConstants.Role.AdminUserTypes.Contains(DbConstants.User.RoleKey))
+                {
+                    <div class="col-lg-4 col-sm-5 col-6" data-hidden id="unAllocatedLead">
+                        <div class="btn-group btn-group-toggle ">
+
+                            <label class="btn btn-outline-primary btn-sm" id="btnUnAllocatedLead" value="8" data-toggle="button">
+                                Unallocated Leads  <span class="badge font-16 w3-blue">0</span>
+
+                            </label>
+                            <button type="button" class="btn btn-success btn-sm mx-1" data-hidden id="btnAllocateLead">Allocate Lead</button>
+                        </div>
+                    </div>
+
+                }
+                <div class="col-lg-4 col-6">
+                    <button type="button" class="btn btn-default-outline font-14" tabvalue="@DbConstants.ScheduleStatus.TodayReshceduled" id="todaysRescheduleCount">
+                        Today's Reschedule Count : <span class="badge font-16 w3-blue">0</span>
+                    </button>
+                </div>
+                @*<div class="col-lg-4 col-6">
+                        <button type="button" class="btn btn-default-outline font-14" tabvalue="@DbConstants.ScheduleStatus.CounsellingSchedule" id="todaysCouncelling">
+                            Today's Councelling Count : <span class="badge font-16 badge font-16-info">0</span>
+                        </button>
+                    </div>*@
+                <div class="col-lg-4 col-6 float-right d-none">
+                    <a id="callHistoryReport" class=" btn btn-primary btn-sm ">
+                        <i class="fa fa-file-o" aria-hidden="true"></i>  @EduSuiteUIResources.CallHistoryReport
+                    </a>
+                    <br />
+                </div>
+            </div>
+            <br class="float-left" />
+            <div class="form-row mt-2">
+                <div class="col-md-2">
+                    <span style="float: left; padding-right: 10px;">
+                        @Html.DropDownListFor(m => m.PageSize, new List<SelectListItem>{
+                           new SelectListItem{ Text="10", Value = "10" },
+                           new SelectListItem{ Text="50", Value = "50" },
+                           new SelectListItem{ Text="100", Value = "100" },
+                           new SelectListItem{ Text="250", Value = "250" },
+                           new SelectListItem{ Text="500", Value = "500" }
+                   }, new { @class = "ui-pg-selbox" })
+                    </span>
+                    <h6>
+                        @EduSuiteUIResources.TotalRecords  <span id="TotalRecords" class="badge badge-info">0</span>
+                    </h6>
+                </div>
+
+                <div class="col-md-10">
+                    <div id="page-selection" class="float-right"></div>
+                </div>
+            </div>
+            <div id="dvScheduleContainer" class="table-responsive">
+                <table class="table table-bordered table-sm text-center">
+                    <thead class="thead-light">
+                        <tr>
+                            <th class="checkboxColumn">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="chkCheckAll">
+                                    <label class="custom-control-label" for="chkCheckAll"></label>
+                                </div>
+
+                            </th>
+                            <th>@EduSuiteUIResources.SlNo</th>
+                            <th>@EduSuiteUIResources.Action</th>
+                            <th>@EduSuiteUIResources.Name</th>
+                            <th>@EduSuiteUIResources.Phone</th>
+                            <th>@EduSuiteUIResources.CallType</th>
+                            <th>@EduSuiteUIResources.CallStatus</th>
+                            <th>@EduSuiteUIResources.Duration</th>
+                            <th>@EduSuiteUIResources.Date</th>
+                            <th>@EduSuiteUIResources.NextCallSchedule</th>
+                            <th>@EduSuiteUIResources.CounsellingTime</th>
+                            <th>@EduSuiteUIResources.Feedback</th>
+                            <th>@EduSuiteUIResources.CounsellingBy</th>
+                            <th>@EduSuiteUIResources.PostedBy</th>
+                        </tr>
+                    </thead>
+                    <tbody id="dvRepeaterList"></tbody>
+                </table>
+            </div>
+
+        </div>
+
+
+        @*<div class="form-row mt-2">
+                <div class="col-md-5">
+                    <h6>
+                        @EduSuiteUIResources.TotalRecords  <span id="TotalRecords" class="label label-info">0</span>
+
+                    </h6>
+                </div>
+                <div class="col-md-7">
+                    <div id="page-selection" class="float-right"></div>
+                </div>
+            </div>*@
+    </div>
+</section>
+
+<div style="display: none; left: 900.038px; top: 720.625px;" id="selection">
+    <a id="addEditTransferlead" onclick="EnquirySchedule.AllocateMultipleLeadPopup()" class="btn btn-success btn-sm "><i class="fa fa-plus-square-o"></i> <span>Allocate Leads</span></a>
+    <button type="button" onclick="$('#selection').hide()" class="btn btn-sm btn-danger mx-1">Close</button>
+    <ul id="selectionList"></ul>
+    <style>
+        #selection {
+            position: fixed;
+            z-index: 122;
+            right: 11%;
+            background: white;
+            width: 300px;
+            padding: 8px 18px;
+            margin-top: -29%;
+            box-shadow: 0px 0px 8px #babaca;
+            height: 50%;
+            overflow: auto;
+            border-radius: 8px;
+        }
+
+        ul#selectionList li {
+            background: white;
+            width: 100%;
+            float: left;
+            border-bottom: solid #d4e3fd 1px;
+            padding: 5px 3px;
+            font-size: 13px;
+        }
+
+        @@media (max-width: 716px) {
+            #selection {
+                border-radius: 8px;
+                left: initial !important;
+                right: 0px !important;
+                width: 232px;
+                margin-top: -110% !important;
+                height: 250px;
+            }
+        }
+    </style>
+
+</div>
+<script type="text/javascript">
+    var jsonData=@(Html.Raw(Json.Encode(Model)));
+
+    $(document).ready(function () {
+
+        AppCommon.FormatDateInput();
+        //AppCommon.FormatSelect2();
+        // EnquirySchedule.GetEmployeesByBranchId( $("#SearchBranchKey").val(), $("#SearchEmployeeKey"));
+
+        EnquirySchedule.GetEnquirySchedules(jsonData,1,true,0);
+
+        //Export To Excel
+        var obj = { HtmlCntrl: $("#dvRepeaterList") };
+        $("#btnExport").on("click", function () {
+            //obj.ContainerId = $('#GridBody'),
+            //    setExportTitle(obj)
+            //AppCommon.ExportTableToExcel(obj);
+
+            EnquirySchedule.ExportEnquirySchedules(jsonData, 1, true, 0);
+        });
+        $("#btnPrint").on("click", function () {
+            obj.ContainerId = $('#GridBody'),
+                setExportTitle(obj)
+            AppCommon.PrintHtml(obj);
+        });
+
+        $('a[data-modal="history"]').on("click", function ()
+        {
+            EnquirySchedule.EditFeedbackPopUp($(this))
+        });
+
+
+        $("#SearchBranchKey").on("change", function ()
+        {
+            EnquirySchedule.GetEmployeesByBranchId($(this).val(), $("#SearchEmployeeKey"));
+        });
+        $("#SearchName,#SearchPhone,#SearchEmail,#SearchLocation,#IsShortListed2").on("input change", function () {
+            EnquirySchedule.GetEnquirySchedules(jsonData,1,true,0);
+        });
+
+        $("#SearchFromDate,#SearchToDate").on("changeDate",function(){
+            EnquirySchedule.GetEnquirySchedules(jsonData,1,true,0);
+        });
+
+        $("#SearchFromDate,#SearchToDate").on("change",function()
+        {
+            if($(this).val()=="")
+            {
+                EnquirySchedule.GetEnquirySchedules(jsonData,1,true,0);
+            }
+        });
+
+
+        $("#SearchCallStatusKey,#SearchBranchKey,#SearchEmployeeKey,#SearchCallTypeKey,#PageSize").on("change",function()
+        {
+            EnquirySchedule.GetEnquirySchedules(jsonData,1,true,0);
+        })
+
+        $("#SearchScheduleStatusKey").on("change", function ()
+        {
+            var obj = {};
+            obj.EnquiryStatusKey = $(this).val();
+            EnquirySchedule.GetCallStatusByEnquiryStatus(obj, $("#SearchCallStatusKey"));
+            EnquirySchedule.GetEnquirySchedules(jsonData,1,true,0);
+        });
+
+        $("#callHistoryReport").click(function()
+        {
+            EnquirySchedule.CallHistoryReportPopup();
+        });
+        $("#callHistoryReport").hide();
+
+        $(".ScheduleTab li a").on('shown.bs.tab', function (e)
+        {
+            if( $(".ScheduleTab .active").attr("value")=="@DbConstants.ScheduleStatus.NewLead")
+            {
+
+                $("#unAllocatedLead").show();
+
+            }
+            else
+            {
+
+                $("#unAllocatedLead").hide();
+                $("#unAllocatedLead input[type=checkbox]").prop("checked", false);
+                $("#unAllocatedLead [data-toggle=buttons]").removeClass("active")
+            }
+            if( $(".ScheduleTab .active").attr("value")=="@DbConstants.ScheduleStatus.History")
+            {
+                $("#SearchFromDate,#SearchToDate").val(new moment().format("DD/MM/YYYY"))
+                $("#callHistoryReport").show();
+            }
+            else{
+                $("#SearchFromDate,#SearchToDate").val("")
+                $("#callHistoryReport").hide();
+            }
+
+
+                $("#ScheduleStatusKey").val($(".ScheduleTab .active").attr("value"));
+            setTimeout(function(){ EnquirySchedule.GetEnquirySchedules(jsonData,1,true,0); }, 100);
+        });
+        $(".ScheduleTab1 li a").on('shown.bs.tab', function (e) {
+            setTimeout(function () { EnquirySchedule.GetEnquirySchedules(jsonData, 1, true, 0); }, 100);
+            $("#selectionList").empty()
+            $("#chkCheckAll").prop("checked", false).trigger("change");
+            $('[id*=checkmark][type=checkbox]').prop('checked', false).trigger("change");
+        });
+
+        $("#todaysRescheduleCount").click(function(){
+            setTimeout(function(){ EnquirySchedule.GetEnquirySchedules(jsonData,1,true,@DbConstants.ScheduleStatus.TodayReshceduled); }, 100);
+        });
+
+
+
+        $("#todaysCouncelling").click(function(){
+            setTimeout(function(){ EnquirySchedule.GetEnquirySchedules(jsonData,1,true,@DbConstants.ScheduleStatus.CounsellingSchedule); }, 100);
+        });
+        $("#btnUnAllocatedLead").on("click",function()
+        {
+            var action = !$(this).hasClass("active") ?@DbConstants.ScheduleStatus.Unallocated: 0;
+            EnquirySchedule.GetEnquirySchedules(jsonData, null, true, action);
+
+        });
+        $("#btnCopyReport").on("click",function(){
+            EnquirySchedule.CopyCallHistoryReport();
+        });
+
+
+        //$("td.timespan,strong.timespan").each(function () {
+        //    var ticks = $(this).html();
+        //    ticks = ticks != "" ? parseInt(ticks) : ticks;
+        //    $(this).html(displayTime(ticks));
+        //})
+
+        //function displayTime(ticksInSecs) {
+        //    var ticks = ticksInSecs;
+        //    var hh = Math.floor(ticks / 3600);
+        //    var mm = Math.floor((ticks % 3600) / 60);
+        //    var ss = ticks % 60;
+
+        //    alert(pad(hh, 2) + ":" + pad(mm, 2) + ":" + pad(ss, 2));
+        //}
+
+        //function pad(n, width) {
+        //    var n = n + '';
+        //    return n.length >= width ? n : new Array(width - n.length + 1).join('0') + n;
+        //}
+        $("#chkCheckAll").on("change", function () {
+            $('[id*=checkmark][type=checkbox]').prop('checked', this.checked).trigger("change");
+            EnquirySchedule.CheckAllocatedCount();
+        })
+
+
+    });
+
+    function setExportTitle(obj) {
+        obj.Title = '@EduSuiteUIResources.Schedule' + ($("#BranchKey").find("option:selected").text() ? ' - ' + $("#BranchKey").find("option:selected").text() : "");
+        obj.SubTitle = $("#FromDate").val() === $("#ToDate").val() ? $("#FromDate").val() : $("#FromDate").val() + " - " + $("#ToDate").val();
+        obj.FileName = (obj.Title + "_" + obj.SubTitle).replace(/-/g, '_')
+    }
+
+    $(document).on('change', '.addLead', function () {
+        debugger
+        EnquirySchedule.CheckAllocatedCount();
+        if ($(this).prop("checked") == true) {
+            selection.NewSelection($(this).attr("selection_value"), $(this).attr("text"));
+        }
+        else {
+            selection.RemoveSelection($(this).attr("selection_value"));
+        }
+    });
+
+</script>
+
+
+@if (!DbConstants.Role.AdminUserTypes.Contains(DbConstants.User.RoleKey))
+{
+    <script>
+        var DefaultBranchKey = jsonData["SearchBranchKey"];
+        var DefaultEmployeeKey = jsonData["SearchEmployeeKey"];
+    </script>
+
+}
+else
+{
+    <script>
+        var DefaultBranchKey = false;
+        var DefaultEmployeeKey = false;
+    </script>
+}
+
+
+
+<script>
+
+    function LoadHistory(obj) {
+        $("#ClosedFeedbackList").empty();
+        $("#txtMobileNumber").val(obj.id.substring(2));
+
+        var Obj = {};
+        Obj.TelephoneCodeKey = $("#SearchHistoryTelephoneCodeKey").val();
+        Obj.MobileNumber = $("#txtMobileNumber").val();
+        EnquiryScheduleHistory.GetAllHistoryByMobileNumber(Obj);
+    }
+</script>
+
+
+<style>
+    .shortList {
+        background: #1632b9;
+        padding: 5px 15px;
+        border-radius: 0px;
+        font-size: 11px;
+        font-weight: bold;
+        min-width: 129px;
+        display: inline-block;
+        text-align: center;
+        color: white;
+        min-height: 38px;
+        padding-top: 8px;
+        box-shadow: 2px 3px 8px #cac6c6;
+        cursor: pointer;
+        float: left;
+        margin-right: 5px;
+    }
+
+        .shortList span {
+            background: #e69721;
+            min-width: 32px;
+            display: inline-block;
+            padding: 0px 5px;
+            height: 21px;
+            padding-top: 0px;
+            border-radius: 10px;
+            font-size: 13px;
+            background: #fbf53d;
+            color: #000000;
+        }
+
+
+        .shortList.active {
+            background: #2f67a0;
+        }
+</style>

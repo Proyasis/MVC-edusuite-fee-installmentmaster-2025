@@ -1,0 +1,183 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.ApplicationViewModel
+
+@using System.Web.Mvc
+@using CITS.EduSuite.Business.Models.ViewModels
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/Scripts/FeeRefund")
+    @Scripts.Render("~/Content/DatePickerJS")
+
+
+}
+<input type="hidden" id="hdnGetStudentFeeRefund" value="@Url.Action("GetStudentFeeRefund", "FeeRefund")" />
+<input type="hidden" id="hdnDeleteFeeRefund" value="@Url.Action("DeleteFeeRefund", "FeeRefund")" />
+<input type="hidden" id="hdnStudentFeeRefundList" value="@Url.Action("StudentFeeRefundList", "FeeRefund")" />
+<input type="hidden" id="hdnFillSearchBatch" value="@Url.Action("FillSearchBatch", "FeeRefund")" />
+<input type="hidden" id="hdnApproveFeeRefund" value="@Url.Action("ApproveFeeRefund", "FeeRefund")" />
+<input type="hidden" id="hdnViewFeePrint" value="@Url.Action("FeeRefundPrint", "FeeRefund", new { id = "" })" />
+
+
+<div class="card-header">
+    <header class="section-header">
+        <div class="row justify-content-between px-1">
+            <div class="col-sm-6 col-12">
+                <div class="tbl">
+                    <div class="tbl-row">
+                        <div class="tbl-cell">
+                            <h3>@EduSuiteUIResources.StudentFeeRefund</h3>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 text-right">
+                <a href="@Url.Action("StudentFeeRefundList", "FeeRefund")" class="btn btn-success btn-sm "><i class="fa fa-plus-square-o"></i> <span>@EduSuiteUIResources.New @EduSuiteUIResources.BlankSpace @EduSuiteUIResources.StudentFeeRefund</span></a>
+            </div>
+        </div>
+    </header>
+</div>
+<div class="card-body">
+    <section class="section-content mx-sm-3 mx-0">
+        <div class="GridBody">
+
+            <div class="grid-nav-bar  form-row">
+
+                @if (Model.Branches.Count == 1)
+                {
+                    {
+                        Model.BranchKey = (Model.BranchKey ?? 0) == 0 ? (short)Model.Branches.Select(x => x.RowKey).FirstOrDefault() : Model.BranchKey;
+                    }
+                    @Html.HiddenFor(m => m.BranchKey)
+                }
+                else
+                {
+
+                    if (DbConstants.Role.AdminUserTypes.Contains(DbConstants.User.RoleKey))
+                    {
+                        <div class="col-lg-2 col-sm-4 col-6">
+                            <div class="form-group">
+                                @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Branch, new { @class = "form-control input-control autohide-select", @data_plugin_type = "select2", @InputFor = "lblBranch", @data_live_search = "true" })
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-lg-2 col-sm-4 col-6">
+                            <div class="form-group">
+                                @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), new { @class = "form-control input-control autohide-select", @data_plugin_type = "select2", @InputFor = "lblBranch" })
+                            </div>
+                        </div>
+                    }
+
+                }
+
+                <div class="col-lg-2 col-sm-4 col-6">
+                    <div class="form-group">
+                        @Html.DropDownListFor(m => m.CourseKey, new SelectList(Model.Courses, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Course, new { @class = "form-control input-control autohide-select", @data_plugin_type = "select2", @data_live_search = "true" })
+                    </div>
+                </div>
+                @if (Model.Universities.Count == 1)
+                {
+                    {
+                        Model.UniversityKey = (Model.UniversityKey == 0) ? (short)Model.Universities.Select(x => x.RowKey).FirstOrDefault() : Model.UniversityKey;
+                    }
+                    @Html.HiddenFor(m => m.UniversityKey)
+                    @Html.Hidden("UniversityCount", 1)
+                }
+                else
+                {
+                    <div class="col-lg-2 col-sm-4 col-6">
+                        <div class="form-group">
+                            @Html.DropDownListFor(m => m.UniversityKey, new SelectList(Model.Universities, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.AffiliationsTieUps, new { @class = "form-control input-control autohide-select", @data_plugin_type = "select2", @InputFor = "lblBranch", @data_live_search = "true" })
+                        </div>
+                    </div>
+                }
+                <div class="col-lg-2 col-sm-4 col-6">
+                    <div class="form-group">
+                        @Html.DropDownListFor(m => m.BatchKey, new SelectList(Model.Batches, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Batch, new { @class = "form-control input-control autohide-select", @data_plugin_type = "select2", @data_live_search = "true" })
+                    </div>
+                </div>
+                <div class="col-lg-2 col-sm-4 col-6">
+                    <div class="form-group">
+                        @Html.TextBox("txtSearchFromDate", "", new { @class = "input-control form-control form-control-sm", @data_inputmask = "'alias': 'dd/mm/yyyy'", @data_input_type = "date", @placeholder = EduSuiteUIResources.FromDate })
+
+                    </div>
+                </div>
+                <div class="col-lg-2 col-sm-4 col-6">
+                    <div class="form-group">
+
+                        @Html.TextBox("txtSearchToDate", "", new { @class = "input-control form-control form-control-sm", @data_inputmask = "'alias': 'dd/mm/yyyy'", @data_input_type = "date", @placeholder = EduSuiteUIResources.ToDate })
+
+                    </div>
+                </div>
+                <div class="col-lg-2 col-sm-4 col-6">
+                    <input id="txtsearch" type="text" name="focus" class="form-control gridSearchTextBox" placeholder="@EduSuiteUIResources.Search@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Name@EduSuiteUIResources.Coma@EduSuiteUIResources.AdmissionNo" />
+
+                    <span id="iconSpan" class="iconSpan"><i class="fa fa-times-circle" aria-hidden="true"></i></span>
+                </div>
+                <div class="col-lg-2 col-sm-4 col-6 float-right">
+                    <a class="btn btn-info btn-sm float-right " onclick='window.location.reload()'>
+                        <i class="fa fa-refresh"></i>   Refresh
+                    </a>
+                </div>
+
+            </div>
+
+            <div class="table-wrapper">
+
+                <div class="jqGrid_wrapper overflow-auto">
+                    <table id="grid"></table>
+                    <div id="pager"></div>
+                </div>
+            </div>
+
+
+        </div>
+    </section>
+</div>
+<script>
+    $(document).ready(function () {
+
+        AppCommon.FormatDateInput();
+        //$("#txtsearchDate").datepicker("setDate", new Date());
+
+        $("#txtsearch").on("input", function () {
+            FeeRefund.GetFeeRefundDetails();
+        });
+        $("#BranchKey").change(function () {
+            var obj = {};
+            obj.BranchKey = $(this).val() != "" ? $(this).val() : 0;
+            AppCommon.BindDropDownbyId(obj, $("#hdnFillSearchBatch").val(), $("#BatchKey"), Resources.Batch);
+            FeeRefund.GetFeeRefundDetails();
+        });
+
+        $("#BatchKey").change(function () {
+            FeeRefund.GetFeeRefundDetails();
+        });
+        $("#CourseKey").change(function () {
+            FeeRefund.GetFeeRefundDetails();
+        });
+        $("#UniversityKey").change(function () {
+            FeeRefund.GetFeeRefundDetails();
+        });
+
+        $("#iconSpan").click(function () {
+            $('#txtsearch').val('');
+            //$('#txtsearchDate').val('');
+
+            FeeRefund.GetFeeRefundDetails();
+        });
+
+        $("#txtSearchFromDate,#txtSearchToDate").on("changeDate", function (e) {
+            FeeRefund.GetFeeRefundDetails();
+        }).on("change", function () {
+            FeeRefund.GetFeeRefundDetails();
+        });
+
+        FeeRefund.GetFeeRefundDetails();
+
+
+
+    });
+</script>

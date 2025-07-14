@@ -1,0 +1,44 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.FeeRefundViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+@using CITS.EduSuite.UI
+<input type="hidden" id="hdnAddEditStudentLate" value="@Url.Action("AddEditStudentLate", "StudentsLate", new { id = "" })" />
+<input type="hidden" id="hdnBindStudentLateDetails" value="@Url.Action("BindStudentLateDetails", "StudentsLate", new { id = Model.ApplicationKey })" />
+<input type="hidden" id="hdnAddEditFeeRefund" value="@Url.Action("AddEditFeeRefund", "FeeRefund")" />
+
+<div class="form-row">   
+
+    <div class="col-sm-12 col-lg-12  col-12">
+        @if ((Model.ApplicationKey != 0) || !String.IsNullOrEmpty(Model.AdmissionNo))
+        {
+            @Html.Action("StudentDetail", "Shared", new { id = (Model.ApplicationKey), AdmissionNo = Model.AdmissionNo })
+        }
+        
+    </div>
+</div>
+
+<div class="form-row">
+    <div class="col-sm-12 col-lg-12 col-12">
+        <div id="dvAddEditFeeRefund">
+
+        </div>
+    </div>
+</div>
+
+
+<div class="col-12">
+    <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+</div>
+<script>
+    $(document).ready(function () {
+        setTimeout(function(){
+            if (@Model.ApplicationKey != 0 && @Model.ApplicationKey != null)
+            {
+                //StudentLate.BindStudentLateDetails();
+                FeeRefund.AddEditFeeRefund(@Model.RowKey, @Model.ApplicationKey);
+            }
+
+        },500)
+
+    })
+</script>
+

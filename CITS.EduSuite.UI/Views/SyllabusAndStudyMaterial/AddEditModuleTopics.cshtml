@@ -1,0 +1,87 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.SubjectModulesModel
+
+
+
+@using (Html.BeginForm("GetModuleTopics", "SyllabusAndStudyMaterial", FormMethod.Post, new { @id = "frmSModulesTopic" }))
+{
+    @Html.Hidden("index", (int)ViewBag.Index)
+    <div class="modal-header">
+        <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+        <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.Add @EduSuiteUIResources.Sla @EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace @EduSuiteUIResources.Edit @EduSuiteUIResources.BlankSpace @EduSuiteUIResources.Topics</h4>
+    </div>
+    <div class="modal-body">
+        <div class="form-master">
+
+            <div class="repeater" id="dynamicRepeaterModuleTopics">
+                <table class="table table-bordered">
+                    <thead class="form-group">
+                        <tr>
+                            <th></th>
+                            <th>
+                                @Html.Label(EduSuiteUIResources.Topic, htmlAttributes: new { @class = "form-label" })
+                                <div class="input-group-transparent">
+                                    <span class="input-group-addon-end" style="left: 29px; color: red; top: -32px; font-size: 22px;" data-gap="18">*</span>
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody data-repeater-list>
+                        @for (int i = 0; i < Model.ModulesTopicModel.Count(); i++)
+                        {
+                            <tr data-repeater-item>
+
+                                <td class="px-1">
+                                    <span data-repeater-delete="" class="btn btn-danger btn-sm pull-right">
+                                        <span class="fa fa-remove"></span>
+                                    </span>
+                                </td>
+                                <td class="px-1">
+                                    <fieldset class="form-group">
+                                        @Html.TextBoxFor(m => m.ModulesTopicModel[i].TopicName, new { @class = "form-control input-control text-right-decimal", @CharSpace = "RemoveSpace", @data_unique = true })
+                                        <span class="form-control-error-text">
+                                            @Html.ValidationMessageFor(m => m.ModulesTopicModel[i].TopicName)
+                                        </span>
+                                        @Html.HiddenFor(m => m.ModulesTopicModel[i].RowKey)
+                                        @Html.HiddenFor(m => m.ModulesTopicModel[i].SubjectModuleKey)
+                                    </fieldset>
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th class="px-1" colspan="4">
+                                <span data-repeater-create class="btn btn-info btn-sm">
+                                    <span class="fa fa-plus"></span>
+                                </span>
+                            </th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+        </div>
+
+
+    </div>
+    <div class="modal-footer justify-content-start">
+
+        <div class="form-group">
+            <input type="submit" value="@EduSuiteUIResources.Add" id="btnAddDealer" class="btn btn-sm btn-success mx-1" />
+            <button type="button" data-dismiss="modal" class="btn btn-sm btn-danger mx-1">@EduSuiteUIResources.Cancel</button>
+        </div>
+
+    </div>
+
+    <style>
+        .select2-container {
+            width: 100% !important;
+        }
+    </style>
+}
+
+
+
+

@@ -1,0 +1,141 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.EmployeeAttendanceViewModel
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Content/momentJS")
+    @Scripts.Render("~/Content/JqueryRepeater")
+    @Scripts.Render("~/Scripts/Common")
+    @Scripts.Render("~/Scripts/EmployeeAttendance")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Content/Select2JS")
+}
+
+
+<input type="hidden" id="hdnDeleteAttendanceItem" value="@Url.Action("DeleteAttendance", "EmployeeAttendance")" />
+<input type="hidden" id="hdnEmployeeAttendanceList" value="@Url.Action("EmployeeAttendanceList", "EmployeeAttendance")" />
+<input type="hidden" id="hdnUrl" value="@Url.Action("GetMultipleEmployees", "EmployeeAttendance", new { id = "" })" />
+<input type="hidden" id="hdnGetEmployeesByBranchId" value="@Url.Action("GetEmployeesByBranchId", "EmployeeAttendance")" />
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-12">
+            <div class="tbl">
+                <div class="tbl-row  px-1">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.Add@EduSuiteUIResources.Hyphen@EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.EmployeeAttendance</h3>
+                        <ol class="breadcrumb breadcrumb-simple mb-2 float-sm-right">
+                            <li><a href="#" onclick="location.href='@Url.Action("EmployeeAttendanceList","EmployeeAttendance")' ">@EduSuiteUIResources.EmployeeAttendance</a></li>
+                            <li class="active">@EduSuiteUIResources.Add@EduSuiteUIResources.Hyphen@EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.EmployeeAttendance</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="section-content mx-sm-3 mx-0">
+
+    <div class="form-master">
+        <div class="form-row">
+            <div class="col-sm-2 form-col">
+                <div class="form-group ">
+                    @Html.Label(EduSuiteUIResources.Branch, htmlAttributes: new { @class = "lblControlHead" })<div class="required-icon"><div class="text">*</div></div>
+                    @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), new { @class = "input-control form-control form-control-sm autoselect-select" })<span class="form-control-error-text">
+
+                        @Html.ValidationMessageFor(m => m.BranchKey)
+                    </span>
+                </div>
+            </div>
+            <div class="col-sm-3 form-col">
+                <div class="form-group">
+                    @Html.Label(EduSuiteUIResources.Employee, htmlAttributes: new { @id = "lblEmployee", @class = "lblControlHead" })
+
+                    @Html.DropDownListFor(m => m.EmployeeKey, new SelectList(Model.Employees, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Employee, new { @class = "input-control form-control form-control-sm", @InputFor = "lblEmployee" })
+                    <span class="form-control-error-text">
+                        @Html.ValidationMessageFor(m => m.EmployeeKey)
+                    </span>
+                </div>
+            </div>
+            <div class="col-sm-2 form-col">
+                <div class="form-group ">
+                    @Html.Label(EduSuiteUIResources.AttendanceDate, htmlAttributes: new { @class = "lblControlHead" })<div class="required-icon"><div class="text">*</div></div>
+                    @Html.TextBoxFor(m => m.AttendanceDate, "{0:dd/MM/yyyy}", new { @class = "input-control form-control form-control-sm", @data_inputmask = "'alias': 'dd/mm/yyyy'", @data_input_type = "date" })
+                    <span class="form-control-error-text">
+                        @Html.ValidationMessageFor(m => m.AttendanceDate)
+                    </span>
+                </div>
+            </div>
+        </div>
+
+
+        @using (Html.BeginForm("AddEditEmployeeMultipleAttendance", "EmployeeAttendance", FormMethod.Post, new { @id = "frmMultipleEmployeeAttendance" }))
+        {
+            @*@Html.AntiForgeryToken()*@
+            @Html.ValidationSummary(true)
+            @*@Html.HiddenFor(m => m.IsUpdate)*@
+
+
+            <div id="dvEmployeeList" class="overflow-auto"></div>
+
+
+            <div class="form-row">
+
+                <div class="col-sm-6 col-12">
+
+                    <div class="form-group">
+                        <button type="button" id="btnSave" class="btn btn-sm btn-success mx-1"><i class="fa fa-save"></i> @EduSuiteUIResources.Save</button>
+
+                    </div>
+                    <div class="col-12">
+                        <span class="ValidateDataMsg"> @Html.ValidationMessage("error_msg")  </span>
+                    </div>
+                </div>
+
+
+            </div>
+
+        }
+    </div>
+</section>
+<script>
+
+
+    $(document).ready(function () {
+        var jsonData=@(Html.Raw(Json.Encode(Model)));
+        AppCommon.FormatInputCase();
+        AppCommon.FormatDateInput();
+        AppCommon.CustomRemoteMethod();
+        $("#btnSave").on("click",function()
+        {
+            EmployeeAttendance.FormSubmit(jsonData);
+        })
+
+
+
+        if (@Model.RowKey== 0) {
+            EmployeeAttendance.GetEmployeesByBranchId($("#BranchKey").val(), $("#EmployeeKey"));
+        }
+        else {
+            EmployeeAttendance.LoadData(jsonData);
+
+        }
+
+        $("#BranchKey").on("change", function () {
+
+            EmployeeAttendance.GetEmployeesByBranchId($(this).val(), $("#EmployeeKey"));
+            EmployeeAttendance.LoadData(jsonData);
+        });
+        $("#AttendanceDate").on("changeDate", function () {
+
+            EmployeeAttendance.LoadData(jsonData);
+        });
+        $("#EmployeeKey").on("change", function () {
+
+            EmployeeAttendance.LoadData(jsonData);
+        });
+
+    });
+
+</script>
+

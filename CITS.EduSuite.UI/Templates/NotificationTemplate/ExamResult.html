@@ -1,0 +1,38 @@
+<div class="text-center"><img src="http://proyasis.com/images/Proyasis_Logo.png" style="width: auto; height: 94px;" />
+<h4 style="margin: 5px 0px;"></h4>
+<p>Dear <strong>{{StudentName}} {{AdmissionNo}}</strong></p>
+<p>We have marked your recent University Exam . and the results are follows:</p>
+<p>Course:{{CourseName}}</p>
+<p>Class:{{ClassCode}}</p>
+<p>Batch:{{BatchName}}</p>
+<p>Regards,</p>
+</div>
+<p>{{#ExamResultList}}{{/ExamResultList}}</p>
+<table id="dvSalesOrderDetails" class="table table-responsive table-condensed table-bordered table-sales" style="border-width: 2px; border-style: solid; border-color: #000000;">
+<thead class="w3-khaki">
+<tr style="border-width: 2px; border-color: #000000;"><th class="text-center w3-col s1">Sl.No</th><th class="text-center w3-col s1">Subject</th><th class="text-center w3-col s1">Exam Term</th><th class="text-center  w3-col s1">Mark</th><th class="text-center  w3-col s1">Status</th><th class="text-center  w3-col s1">Remark</th></tr>
+</thead>
+<tbody data-salesorder-item="">
+<tr data-salesdetails-item="" class="w3-border-brown" style="border-width: 2px; border-style: solid;">
+<td class="w3-border-bottom text-center">1</td>
+<td class="w3-border-bottom text-center">{{SubjectName}} ({{SubjectCode}})</td>
+<td class="w3-border-bottom text-center">{{ExamTerm}}</td>
+<td class="w3-border-bottom text-center">{{Mark}}</td>
+<td class="w3-border-bottom text-center">{{ResultStatus}}</td>
+<td class="w3-border-bottom text-center">{{Remarks}}</td>
+</tr>
+</tbody>
+</table>
+<p>
+<script type="text/javascript">// <![CDATA[
+       
+
+
+        //function printDiv(div) {
+        //    var mode = 'iframe'; //popup
+        //    var close = mode == "popup";
+        //    var options = { mode: mode, popClose: close };
+        //    $(div).printArea(options);
+        //}
+// ]]></script>
+</p>

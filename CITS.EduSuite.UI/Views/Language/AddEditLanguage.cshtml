@@ -1,0 +1,59 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.LanguageViewModel
+
+
+<div class="modal-header">
+    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+    <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.Add @EduSuiteUIResources.Sla @EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace @EduSuiteUIResources.Language</h4>
+</div>
+@using (Html.BeginForm("AddEditLanguage", "Language", FormMethod.Post, new { @id = "frmLanguage" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.RowKey)
+    @Html.ValidationSummary(true)
+
+    <div class="modal-body">
+        <div class="form-master">
+
+
+            <div class="form-row">
+                <div class="col-lg-4">
+                    <div class="form-group ">
+                        @Html.Label(EduSuiteUIResources.Language , htmlAttributes: new { @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                        @Html.TextBoxFor(m => m.LanguageName, new { @class = "form-control input-control", @data_convert = "uppercase" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.LanguageName)
+                        </span>
+                    </div>
+
+                </div>
+
+                <div class="col-lg-4">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.IsActive, new { @class = "form-label" })
+
+                        <div class="switch-check my-2">
+                            @Html.CheckBoxFor(m => m.IsActive, new { @class = "switch-input" })
+                            <div class="switch-label redgreen" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                            <div class="switch-handle"></div>
+                        </div>
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.IsActive)
+                        </span>
+                    </fieldset>
+
+                </div>
+            </div>
+            <div class="form-row">
+                <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer justify-content-start">
+        <div class="form-group">
+            <input type="submit" value="@EduSuiteUIResources.Submit" id="btnSave" class="btn btn-sm btn-success mx-1" />
+            <button type="button" data-dismiss="modal" class="btn btn-sm btn-danger mx-1">@EduSuiteUIResources.Cancel</button>
+
+        </div>
+    </div>
+}

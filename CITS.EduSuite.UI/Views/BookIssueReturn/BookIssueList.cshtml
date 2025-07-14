@@ -1,0 +1,72 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.BookIssueReturnMasterViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+@using CITS.EduSuite.UI
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/CitsValidation")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Content/JqueryRepeater")
+    @Scripts.Render("~/Scripts/BookIssueReturn")
+}
+
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-12">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.Add@EduSuiteUIResources.Hyphen@EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.BookIssue</h3>
+                        <ol class="breadcrumb breadcrumb-simple mb-2 float-sm-right">
+                            <li><a href="#" onclick="location.href='@Url.Action("BookIssueReturnList", "BookIssueReturn")' ">@EduSuiteUIResources.BookIssue</a></li>
+                            <li class="active">@EduSuiteUIResources.Add@EduSuiteUIResources.Hyphen@EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.BookIssueReturn</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<input type="hidden" id="hdnAddEditBookIssue" value="@Url.Action("AddEditBookIssue", "BookIssueReturn")" />
+<section class="section-content mx-sm-3 mx-0">
+    <div class="form-master">
+        <div class="form-row p-3">
+            <div class="col-12 col-sm-4 col-lg-2">
+                <div class="form-group">
+                    @Html.Label(EduSuiteUIResources.CardId, htmlAttributes: new { @id = "lblAdmissionNo", @class = "form-label" })
+                    @Html.TextBoxFor(m => m.CardId, new { @class = "form-control input-control", @InputFor = "lblAdmissionNo" })
+                    <span class="form-control-error-text">
+                        @Html.ValidationMessageFor(m => m.CardId)
+                    </span>
+                    @Html.HiddenFor(m => m.RowKey)
+                </div>
+            </div>
+
+        </div>
+
+        <div id="DivIssueDetails">
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<script>
+
+
+    $(document).ready(function () {
+
+        AppCommon.FormatInputCase();
+        AppCommon.FormatDateInput();
+        AppCommon.CustomRemoteMethod();
+        BookIssueReturn.GetCardDetails();
+        $("#CardId").on("change", function () {
+            BookIssueReturn.GetCardDetails();           
+        });
+    });
+
+</script>

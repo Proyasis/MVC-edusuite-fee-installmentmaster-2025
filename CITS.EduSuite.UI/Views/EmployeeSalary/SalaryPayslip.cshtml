@@ -1,0 +1,225 @@
+﻿@model List<CITS.EduSuite.Business.Models.ViewModels.SalaryPaymentSlipViewModel>
+
+@using System.Web.Mvc
+
+
+
+
+<style>
+    @@page {
+        size: A4;
+    }
+</style>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<div id="PayslipTemplate" class="payslip">
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/Scripts/Common")
+    @Scripts.Render("~/Content/momentJS")
+    @Scripts.Render("~/Scripts/EmployeeSalary")
+
+    @for (int i = 0; i < Model.Count; i++)
+    {
+        <div class="border">
+            <div class="row">
+                <table class="table table-borderless">
+                    <tr>
+                        <td style="width:50%">
+                            <img alt="" src="@Url.Content(Model[i].CompanyLogoPath)" style="height: 90px;margin-top: 10px;" />
+                        </td>
+                        <td style="width:50%">
+                            @Html.HiddenFor(m => m[i].DaysInMonth)
+                            <h5 class="text-center">@Model[i].CompanySubName</h5>
+                            <p class="text-center" style=" padding-top: 10px;">@Model[i].CompanyAddress</p>
+                        </td>
+                        <td></td>
+                    </tr>
+                </table>
+
+
+            </div>
+            <table class="table table-borderless" style="padding:0" cellpadding="0">
+
+                <tr>
+                    <hr />
+                    <h4 class="text-center">Salary for month of : @Model[i].SalaryMonthName</h4>
+                    <hr />
+                </tr>
+
+                <tr style="display:none">
+                    <td>Employee Code</td>
+                    <td>@Model[i].EmployeeCode</td>
+                    <td>Date Of Joining</td>
+
+                    <td>@string.Format("{0:dd/MM/yyyy}", @Model[i].DateOfJoining)</td>
+                </tr>
+                <tr>
+                    <td>Employee Name</td>
+                    <td>@Model[i].EmployeeName</td>
+                    <td>Designation</td>
+                    <td>@Model[i].DesignationName</td>
+                </tr>
+                <tr>
+                    <td>Working Days</td>
+                    <td>@string.Format("{0:G29}", Model[i].BaseWorkingDays)</td>
+
+                    <td>Absent Days</td>
+                    <td>@string.Format("{0:G29}", Model[i].AbsentDays)</td>
+                </tr>
+                <tr>
+                    <td> </td>
+                    <td></td>
+
+                    <td>Voucher Number</td>
+                    <td>@Model[i].VoucherNumber</td>
+                </tr>
+                <tr style="display:none">
+                    <td>Fixed Gross</td>
+                    <td id="dvFixedGross_@i.ToString()"></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr></tr>
+            </table>
+            <table class="table table-bordered">
+                <tr>
+                    <th style="width:50%">Earnings</th>
+                    <th style="width:50%">Deductions</th>
+                </tr>
+                <tr>
+                    <td class="col-sm-6">
+                        <table class="table table-borderless full-width">
+                            @foreach (var item in Model[i].SalaryPayments)
+                            {
+                                <tr class="row"><td class="col-sm-6">@item.SalaryHeadName</td> <td class="col-sm-6 text-right" data-format="decimal"> @item.Amount</td></tr>
+                            }
+                            @*<tr class="row"><td class="col-sm-6">@EduSuiteUIResources.Overtime</td> <td class="col-sm-6 text-right" data-format="decimal"> @Model[i].OvertimeAmount</td></tr>*@
+                            @foreach (var item in Model[i].SalaryComponents.Where(row => row.OperationType == "A" && row.AmountUnit != 0))
+                            {
+                                <tr class="row"><td class="col-sm-6">@item.SalaryComponentTypeName</td><td class="col-sm-6 text-right" data-format="decimal"> @item.AmountUnit</td></tr>
+                            }
+                        </table>
+                    </td>
+                    <td class="col-sm-6">
+                        <table class="table table-borderless full-width">
+                            @foreach (var item in Model[i].SalaryDeductions)
+                            {
+                                <tr class="row"><td class="col-sm-6">@item.SalaryHeadName</td> <td class="col-sm-6 text-right" data-format="decimal"> @item.Amount</td></tr>
+                            }
+                            <tr class="row"><td class="col-sm-6">@EduSuiteUIResources.Salary@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Advance</td> <td class="col-sm-6 text-right" data-format="decimal"> @Model[i].SalaryAdvances.Select(x => x.Amount).DefaultIfEmpty().Sum()</td></tr>
+                            @foreach (var item in Model[i].SalaryComponents.Where(row => row.OperationType == "D" && row.AmountUnit != 0))
+                            {
+                                <tr class="row"><td class="col-sm-6">@item.SalaryComponentTypeName</td><td class="col-sm-6 text-right" data-format="decimal"> @item.AmountUnit</td></tr>
+                            }
+
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-sm-6 text-right" id="SalaryPaymentSum_@i.ToString()"></td>
+                    <td class="col-sm-6 text-right" id="SalaryDeductionSum_@i.ToString()"></td>
+                </tr>
+                @*<tr>
+                        <td colspan="2">
+                            <table class="full-width Border_None col-sm-6 pull-right">
+                                @foreach (var item in Model[i].SalaryComponents)
+                                {
+                                    <tr class="row"><td class="col-sm-6">@item.SalaryComponentTypeName</td><td class="col-sm-6 text-right"> @item.AmountUnit</td></tr>
+                                }
+                            </table>
+                        </td>
+                    </tr>*@
+
+
+                <tr>
+                    <td class="col-sm-6"><strong>Total: </strong></td>
+                    <td class="col-sm-6 text-right" id="TotalSalary_@i.ToString()"></td>
+                </tr>
+                @if (Model[i].AdvanceBalance != 0)
+                {
+                    <tr>
+                        <td class="col-sm-6"><strong>Advance Receivable: </strong></td>
+                        <td class="col-sm-6 text-right">
+                            @Model[i].AdvanceBalance
+                        </td>
+                    </tr>
+                }
+                <tr>
+                    <td colspan="2">
+                        <br />
+                    </td>
+
+                </tr>
+                <tr>
+                    <td class="col-sm-6" colspan="2"><strong>In Words: </strong><p id="SalaryInWords_@i.ToString()"></p></td>
+                </tr>
+
+                <tr>
+                    <td colspan="2">
+                        <p class="text-center">This document contains confidential information and should not be shared or discuss in public </p>
+                        <p class="text-center">“This is system generated printout there is no need of sign or stamp”</p>
+
+                    </td>
+
+                </tr>
+                <tr style="height:120px">
+                    <td>
+                        <span class="text-center pull-left">Authorized By</span>
+
+                    </td>
+                    <td>
+                        <span class="text-center pull-right">Received By </span>
+
+                    </td>
+
+                </tr>
+            </table>
+        </div>
+        if (i < Model.Count - 1)
+        {
+            <div class="break"></div>
+        }
+
+    }
+
+</div>
+
+<script>
+    $(document).ready(function () {
+        var jsonData=@(Html.Raw(Json.Encode(Model)));
+        EmployeeSalary.ModifyPayslip(jsonData);
+        //setTimeout(function () {
+        //    if (navigator.userAgent.toLowerCase().indexOf('chrome') > -1) {   // Chrome Browser Detected?
+        //        window.PPClose = false;                                     // Clear Close Flag
+        //        window.onbeforeunload = function () {                         // Before Window Close Event
+        //            if (window.PPClose === false) {                           // Close not OK?
+        //                return 'Leaving this page will block the parent window!\nPlease select "Stay on this Page option" and use the\nCancel button instead to close the Print Preview Window.\n';
+        //            }
+        //        }
+        //        window.print();                                             // Print preview
+        //        window.PPClose = true;                                      // Set Close Flag to OK.
+        //    } else {
+        //        window.print();
+        //        window.close();
+        //    };
+        //}, 500)
+
+        setTimeout(function () {
+            window.print();
+            window.close()
+           
+        }, 500)
+    });
+
+</script>
+<style>
+    .bootstrap-table .table, .fixed-table-body .table, .table {
+        font-size: 16px;
+    }
+</style>

@@ -1,0 +1,75 @@
+﻿@model List<CITS.EduSuite.Business.Models.ViewModels.ApplicationFeeFollowupDetailsViewModel>
+@using CITS.EduSuite.Business.Models.ViewModels
+
+
+@if (Model.Count > 0)
+{
+    <section class="card">
+        <header class="card-header  w3-indigo">
+            @EduSuiteUIResources.Fee@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Schedule
+        </header>
+        <div class="card-body p-2 overflow-auto">
+            <table class="table table-bordered table-sm" id="divInstallmentFeeDetails">
+
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.Label(EduSuiteUIResources.Date, htmlAttributes: new { @class = "form-label" })
+                        </th>
+                        <th>
+                            @Html.Label(EduSuiteUIResources.Status, htmlAttributes: new { @class = "form-label" })
+                        </th>
+                        <th>
+                            @Html.Label(EduSuiteUIResources.Remarks, htmlAttributes: new { @class = "form-label" })
+                        </th>
+                        <th>
+                            @Html.Label(EduSuiteUIResources.FeeType, htmlAttributes: new { @class = "form-label" })
+                        </th>
+
+                        <th>
+                            @Html.Label(EduSuiteUIResources.Action, htmlAttributes: new { @class = "form-label" })
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.Count; i++)
+                    {
+                        <tr>
+                            <td>
+                                @String.Format("{0:dd/MM/yyyy}", Model[i].FollowupDate)
+                                @Html.HiddenFor(m => m[i].ApplicationKey) @Html.HiddenFor(m => m[i].RowKey)
+                            </td>
+                            <td>
+                                @if (@Model[i].ProcessStatusKey == DbConstants.ProcessStatus.Pending)
+                                {
+                                    <span class="w3-text-red">Pending</span>
+                                }
+                                else
+                                {
+                                    <span class="w3-text-green">Completed</span>
+                                }
+                            </td>
+                            <td>@Model[i].Remarks</td>
+                            <td>
+                                <ul >
+                                    @foreach (var item in @Model[i].ApplicationFeeFollowupFeeTypes)
+                                    {
+                                        <li>
+                                            <p>   @item.FeeTypeName</p>
+                                        </li>
+                                    }
+                                </ul>
+                            </td>
+                            <td>
+                                <a onclick="FeeFollowUp.EditFeeFollowUpPopup(@Model[i].ApplicationKey,@Model[i].RowKey)" class="btn btn-outline-primary btn-sm mx-1"> <i class="fa fa-pencil"></i></a>
+                                <a onclick="FeeFollowUp.DeleteFeeFollowUp(@Model[i].RowKey)" class="btn btn-outline-danger btn-sm mx-1"> <i class="fa fa-trash"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+
+            </table>
+        </div>
+    </section>
+}

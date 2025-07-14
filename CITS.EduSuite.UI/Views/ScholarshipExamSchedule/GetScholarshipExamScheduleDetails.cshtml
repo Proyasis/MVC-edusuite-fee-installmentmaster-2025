@@ -1,0 +1,207 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.ScholarshipExamScheduleViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+
+<div id="dynamicRepeater" class="repeater">
+    <table class="table table-responsive table-stripped">
+        <thead>
+            <tr>
+
+                <th>
+                    @Html.Label(EduSuiteUIResources.Status, htmlAttributes: new { @class = "form-label" })
+                    <div class="checkbox-bird green inline-block mt-2">
+                        @Html.CheckBox("chekAll", new { @InputFor = "lblIsOriginal", @class = "custom-control-input", @onchange = "CheckboxAllChange(this, 'ExamStatus')" })
+                        <label for="chekAll" class="label-for-check form-label">
+                        </label>
+                    </div>
+                    <span id="CheckedAllCount"></span>
+                </th>
+                <th>
+                    @Html.Label(EduSuiteUIResources.Scholarship, htmlAttributes: new { @class = "form-label" })
+                </th>
+                <th>
+                    @Html.Label(EduSuiteUIResources.center, htmlAttributes: new { @class = "form-label" })
+
+                </th>
+                <th>
+                    @Html.Label(EduSuiteUIResources.ExamDate, htmlAttributes: new { @class = "form-label" })
+
+                </th>
+                <th>
+                    @Html.Label(EduSuiteUIResources.StartTime, htmlAttributes: new { @class = "form-label" })
+
+                </th>
+                <th>
+                    @Html.Label(EduSuiteUIResources.EndTime, htmlAttributes: new { @class = "form-label" })
+
+                </th>
+
+
+            </tr>
+        </thead>
+        <tbody data-repeater-list>
+            @for (int i = 0; i < Model.ScholarshipExamScheduleDetails.Count(); i++)
+            {
+                <tr data-repeater-item>
+
+                    <td class="px-1">
+                        <div class="checkbox-bird green inline-block mr-5">
+
+                            @Html.CheckBoxFor(m => m.ScholarshipExamScheduleDetails[i].IsActive, new { @InputFor = "lblConsession", @class = "switch-input" })
+                            <label for="IsActive">@EduSuiteUIResources.IsApplied</label>
+
+                        </div>
+                        @*<div class="switch-check my-2">
+                            @Html.CheckBoxFor(m => m.ScholarshipExamScheduleDetails[i].IsActive, new { @class = "switch-input chkIsActive" })
+                            <div class="switch-label yesno" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                            <div class="switch-handle"></div>
+                        </div>*@
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.ScholarshipExamScheduleDetails[i].IsActive)
+                        </span>
+                    </td>
+                    <td class="px-1">
+                        @Html.DisplayFor(m => m.ScholarshipExamScheduleDetails[i].ScholarShipName, new { @class = "form-control input-control" })
+                        @Html.HiddenFor(m => m.ScholarshipExamScheduleDetails[i].ScholarshipKey)
+                        @Html.HiddenFor(m => m.ScholarshipExamScheduleDetails[i].RowKey)
+                        @Html.HiddenFor(m => m.ScholarshipExamScheduleDetails[i].ScholarshipTypeKey)
+                        @Html.HiddenFor(m => m.ScholarshipExamScheduleDetails[i].BranchKey)
+
+                    </td>
+
+                    <td class="px-1">
+                        @Html.DropDownListFor(m => m.ScholarshipExamScheduleDetails[i].ExamCenterKey, new SelectList(Model.ScholarshipExamScheduleDetails[i].ExamCenters, "RowKey", "Text"), new { @class = "form-control input-control" })
+
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.ScholarshipExamScheduleDetails[i].ExamCenterKey)
+                        </span>
+                    </td>
+                    <td class="px-1">
+                        @Html.TextBoxFor(m => m.ScholarshipExamScheduleDetails[i].ExamDate, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_input_type = "date", @data_inputmask = "'alias': 'dd/mm/yyyy'" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.ScholarshipExamScheduleDetails[i].ExamDate)
+                        </span>
+                    </td>
+
+                    <td class="px-1">
+                        @Html.TextBoxFor(m => m.ScholarshipExamScheduleDetails[i].ExamStartTime, new { @class = "form-control input-control", @data_input_type = "time", @data_inputmask = "'alias':'hh:mm t','hourFormat': '12'", @InputFor = "lblCallDuration" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.ScholarshipExamScheduleDetails[i].ExamStartTime)
+                        </span>
+                    </td>
+
+                    <td class="px-1">
+                        @Html.TextBoxFor(m => m.ScholarshipExamScheduleDetails[i].ExamEndTime, new { @class = "form-control input-control", @data_input_type = "time", @data_inputmask = "'alias':'hh:mm t','hourFormat': '12'", @InputFor = "lblCallDuration" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.ScholarshipExamScheduleDetails[i].ExamEndTime)
+                        </span>
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $("#RowKey").val(@Model.RowKey)
+        $("[data-input-type=time]").each(function () {
+            
+            if ($(this).val() != "") {
+                $(this).val(moment($(this).val(), ["HH:mm:ss"]).format("hh:mm A"));
+            }
+        })
+        AppCommon.FormatDateInput();
+        AppCommon.FormatInputCase();
+        AppCommon.FormatTimeInput();
+        $("form").removeData("validator");
+        $("form").removeData("unobtrusiveValidation");
+        $.validator.unobtrusive.parse("form");
+
+
+        $(".chkIsActive").change(function () {
+            StudentsCheckedCount();
+        });
+
+
+
+        //$("[id*=ExamStartTime],[id*=ExamEndTime]").each(function () {
+        //    
+        //    if ($(this).val() != "") {
+        //        var time = $(this).val().split(":");
+        //        var date = new Date();
+        //        date.setHours(time[0])
+        //        date.setMinutes(time[1])
+        //        date.setSeconds(time[2])
+        //        $(this).val(AppCommon.TimeAMPMFromJavascriptDate(date))
+        //    }
+        //})
+    });
+
+
+
+    function ChangeMinimumMarkAll(_this) {
+
+        var MinimumMark = $(_this).val() != "" ? $(_this).val() : 0;
+
+        $("#dvStudentsList [data-repeater-item]").each(function (i) {
+            var item = $(this).closest("[data-repeater-item]");
+            $("input[name*=MinimumMark]", $(item)).val(MinimumMark)
+
+        });
+    };
+
+    function ChangeMaximumMarkAll(_this) {
+
+        var MaximumMark = $(_this).val() != "" ? $(_this).val() : 0;
+
+        $("#dvStudentsList [data-repeater-item]").each(function (i) {
+            var item = $(this).closest("[data-repeater-item]");
+            $("input[name*=MaximumMark]", $(item)).val(MaximumMark)
+        });
+    };
+
+
+    function CheckboxAllChange(chk, name) {
+
+        $("[data-repeater-item]").each(function (index) {
+
+            var Object = $('input[name*=' + name + ']', $(this))[0];
+            if (Object != undefined) {
+                if (!Object.disabled) {
+                    Object.checked = chk.checked
+
+                }
+            }
+        });
+        StudentsCheckedCount();
+    }
+
+
+    function StudentsCheckedCount() {
+
+        var CheckedCount = $("input[type=checkbox][name*=ExamStatus]:checked").length;
+        var CheckboxCount = $("input[type=checkbox][name*=ExamStatus]").length;
+        var CheckedAll = false;
+        if (parseInt(CheckboxCount) == parseInt(CheckedCount)) {
+            CheckedAll = true;
+        }
+        $("#CheckedAllCount").html("");
+        $("#NoOfStudents").val("");
+        if (CheckedCount != 0) {
+            $("#CheckedAllCount").html("(" + CheckedCount + ")");
+            $("#NoOfStudents").val(CheckedCount);
+
+            if (CheckedAll == true) {
+                $("#chekAll").prop("checked", true);
+            }
+            else {
+                $("#chekAll").prop("checked", false);
+            }
+        }
+    }
+
+
+</script>

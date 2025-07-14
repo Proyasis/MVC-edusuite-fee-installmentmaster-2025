@@ -1,0 +1,113 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.EmployeeAttendanceViewModel
+@section scripts{
+    @Scripts.Render("~/Content/momentJS")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Content/TimePickerJS")
+    @Scripts.Render("~/Scripts/EmployeeAttendance")
+}
+
+<input type="hidden" id="hdnGetQuickEmployeeAttendance" value="@Url.Action("GetQuickEmployeeAttendance", "EmployeeAttendance")" />
+<input type="hidden" id="hdnGetEmployeesAttendanceLog" value="@Url.Action("GetEmployeesAttendanceLog", "EmployeeAttendance")" />
+<input type="hidden" id="hdnAddEditQuickEmployeeAttendance" value="@Url.Action("AddEditQuickEmployeeAttendance", "EmployeeAttendance")" />
+<input type="hidden" id="hdnDeleteEmployeeAttendance" value="@Url.Action("DeleteEmployeeAttendance", "EmployeeAttendance")" />
+<input type="hidden" id="hdnDeleteEmployeeAttendanceBulk" value="@Url.Action("DeleteEmployeeAttendanceBulk", "EmployeeAttendance")" />
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-sm-6 col-12">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.QuickAttendance</h3>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 text-right">
+            <a id="addEditEmployeeAttendance" href="@Url.Action("EmployeeAttendance", "Import")" class=" btn btn-primary btn-sm">
+                <i class="fa fa-file-excel-o" aria-hidden="true"></i>  @EduSuiteUIResources.AttendanceSheet
+            </a>
+                  
+        </div>
+    </div>
+</header>
+<section class="section-content mx-sm-3 mx-0">
+    <div class="GridBody">
+
+        <div class="grid-nav-bar form-row justify-content-between">
+
+            <div class="col-2">
+                <div class="form-group">
+                    @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), new { @class = "form-control" })
+                    <span class="form-control-error-text">
+                        @Html.ValidationMessageFor(m => m.BranchKey)
+                    </span>
+                    @Html.HiddenFor(m => m.AttendanceConfigType)
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="form-group ">
+                    @Html.TextBoxFor(m => m.AttendanceDate, "{0:dd/MM/yyyy}", new { @class = "input-control form-control form-control-sm", @InputFor = "lblAttendanceDate", @data_input_type = "date", @data_inputmask = "'alias': 'dd/mm/yyyy'" })
+                    <span class="form-control-error-text">
+                        @Html.ValidationMessageFor(m => m.AttendanceDate)
+                    </span>
+                </div>
+            </div>
+
+
+
+            <div class="col-8">
+                <a class="btn btn-info btn-sm float-right " onclick='window.location.reload()'>
+                    <i class="fa fa-refresh"></i>   Refresh
+                </a>
+            </div>
+
+        </div>
+
+        <div class="table-wrapper">
+
+            <div class="jqGrid_wrapper overflow-auto">
+                <table id="gridQuick"></table>
+                <div id="pagerQuick"></div>
+            </div>
+        </div>
+
+
+    </div>
+</section>
+
+
+
+
+
+
+<script>
+    $(document).ready(function () {
+        var jsonData =@(Html.Raw(Json.Encode(Model)));
+        AppCommon.FormatDateInput();
+        if(@Model.AttendanceConfigType==Resources.AttendanceConfigTypeMarkPresent)
+        {
+            $("#AttendanceDate").attr("disabled",false);
+        }
+        else
+        {
+            $("#AttendanceDate").attr("disabled",true);
+        }
+        EmployeeAttendance.GetQuickEmployeeAttendances(jsonData);
+        $("#BranchKey").on("change", function () {
+            EmployeeAttendance.GetQuickEmployeeAttendances(jsonData);
+            AppCommon.DigitalClock();
+        });
+        $("#AttendanceDate").on("changeDate", function () {
+
+            EmployeeAttendance.GetQuickEmployeeAttendances(jsonData);
+        });
+        AppCommon.DigitalClock();
+        $("#lnkBulkDelete").on("click", function () {
+            deleteBulkEmployeeAttendance(2);
+        });
+    });
+</script>
+
+

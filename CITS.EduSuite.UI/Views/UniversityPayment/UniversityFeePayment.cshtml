@@ -1,0 +1,112 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.UniversityPaymentViewmodel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+<input type="hidden" id="hdnUniversityFeePaymentList" value="@Url.Action("UniversityFeePaymentList", "UniversityPayment",new { id= Model.ApplicationKey})" />
+<input type="hidden" id="hdnAddEditUniversityFeePayment" value="@Url.Action("AddEditUniversityFeePayment", "UniversityPayment", new { id = "" })" />
+<input type="hidden" id="hdnDeleteUniveristyFeePayment" value="@Url.Action("DeleteUniveristyFeePayment", "UniversityPayment")" />
+<input type="hidden" id="hdnViewFeePrint" value="@Url.Action("FeePrint", "UniversityPayment", new { id = "" })" />
+<input type="hidden" id="hdnUniversityTotalFeeDetails" value="@Url.Action("UniversityTotalFeeDetails", "UniversityPayment", new { id= Model.ApplicationKey})" />
+
+
+<div class="form-row">
+    <div class="col-sm-5 col-lg-4 col-12">
+        <div id="dvFeeDetails">
+        </div>
+
+    </div>
+    <div class="col-sm-7 col-lg-8  col-12">
+        @if ((Model.ApplicationKey != 0) || !String.IsNullOrEmpty(Model.AdmissionNo))
+        {
+            @Html.Action("StudentDetail", "Shared", new { id = Model.ApplicationKey, AdmissionNo = Model.AdmissionNo })
+        }
+
+        <div class="" id="dvTotalFeeDetails">
+
+        </div>
+        <div class="form-row mt-2">
+            <div id="dvFeePaymentDetails" class="col-12">
+
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        setTimeout(function () {
+            
+            UniversityPayment.EditUniversityFeePayment(null, @Model.ApplicationKey);
+            UniversityPayment.BindTotalFeeDetails();
+            UniversityPayment.BindFeePaymentDetails();
+        },500)
+
+    })
+</script>
+
+<style>
+
+    /* With arrow tabs */
+
+    .with-arrow .nav-link.active {
+        position: relative;
+    }
+
+        .with-arrow .nav-link.active::after {
+            content: '';
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 6px solid #2b90d9;
+            position: absolute;
+            bottom: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: block;
+        }
+
+    /* lined tabs */
+
+    .lined .nav-link {
+        border: none;
+        border-bottom: 3px solid transparent;
+    }
+
+        .lined .nav-link:hover {
+            border: none;
+            border-bottom: 3px solid transparent;
+        }
+
+        .lined .nav-link.active {
+            background: none;
+            color: #555;
+            border-color: #2b90d9;
+        }
+
+
+    body {
+        background: #304352;
+        background: -webkit-linear-gradient(to right, #304352, #d7d2cc);
+        background: linear-gradient(to right, #304352, #d7d2cc);
+        min-height: 100vh;
+    }
+
+    .nav-pills .nav-link {
+        color: #555;
+    }
+
+    .text-uppercase {
+        letter-spacing: 0.1em;
+    }
+
+    .tabs-section-nav .nav-link.active .nav-link-in {
+        border-bottom-color: #064475;
+    }
+
+    .tabs-section-nav .nav-link-in {
+        border-bottom: solid 4px transparent;
+        border-top: none;
+    }
+</style>

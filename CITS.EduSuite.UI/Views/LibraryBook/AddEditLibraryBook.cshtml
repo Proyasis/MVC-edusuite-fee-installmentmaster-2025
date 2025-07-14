@@ -1,0 +1,251 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.LibraryBookViewModel
+
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/Scripts/LibraryBook")
+    @Scripts.Render("~/Scripts/BookCopy")
+}
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-12">
+            <div class="tbl">
+                <div class="tbl-row  px-1">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.Add@EduSuiteUIResources.Hyphen@EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Book</h3>
+                        <ol class="breadcrumb breadcrumb-simple mb-2 float-sm-right">
+                            <li><a href="#" onclick="location.href='@Url.Action("LibraryBookList", "LibraryBook")'">@EduSuiteUIResources.Book</a></li>
+                            <li class="active">@EduSuiteUIResources.Add@EduSuiteUIResources.Hyphen@EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Book</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="section-content mx-sm-3 mx-0">
+
+    <div class="form-master">
+
+
+        @using (Html.BeginForm("AddEditLibraryBook", "LibraryBook", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.RowKey)
+            @Html.ValidationSummary(true)
+            @Html.HiddenFor(m => m.CoverPhotoPath)
+            <input type="hidden" id="hdnFillSubRack" value="@Url.Action("FillSubRack", "LibraryBook")" />
+            <input type="hidden" id="hdnFillRack" value="@Url.Action("FillRack", "LibraryBook")" />
+
+
+            <div class="form-row">
+
+                @if (Model.Branches.Count == 1)
+                {
+                    {
+                        Model.BranchKey = (Model.BranchKey == 0 || Model.BranchKey == null) ? (short)Model.Branches.Select(x => x.RowKey).FirstOrDefault() : Model.BranchKey;
+                    }
+                    @Html.HiddenFor(m => m.BranchKey)
+                }
+                else
+                {
+                    <div class="col-12 col-sm-3 col-lg-2">
+                        <fieldset class="form-group">
+                            @Html.Label(EduSuiteUIResources.Branch, htmlAttributes: new { @id = "lblBranch", @class = "form-label" })
+                            <div class="required-icon"><div class="text">*</div></div>
+                            @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Branch, new { @class = "form-control input-control", @InputFor = "lblBranch", @data_live_search = "true" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.BranchKey)
+                            </span>
+                        </fieldset>
+                    </div>
+                }
+                <div class="col-lg-3 col-sm-4 col-sm-6">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.Book + @EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Name + @EduSuiteUIResources.OpenBracketWithSpace + EduSuiteUIResources.InEnglish + EduSuiteUIResources.ClosingBracketWithSpace, htmlAttributes: new { @id = "lblBookName", @class = "form-label" })
+                        <div class="required-icon"><div class="text">*</div></div>
+                        @Html.TextBoxFor(m => m.BookName, new { @class = "form-control input-control", @InputFor = "lblBookName", @data_convert = "uppercase" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.BookName)
+                        </span>
+                    </fieldset>
+                </div>
+                <div class="col-lg-3 col-sm-4 col-sm-6">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.Book + @EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Name + @EduSuiteUIResources.OpenBracketWithSpace + EduSuiteUIResources.Optional + EduSuiteUIResources.ClosingBracketWithSpace, htmlAttributes: new { @id = "lblBookName", @class = "form-label" })
+                        <div class="required-icon"><div class="text">*</div></div>
+                        @Html.TextBoxFor(m => m.BookName_Optional, new { @class = "form-control input-control", @InputFor = "lblBookName" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.BookName_Optional)
+                        </span>
+                    </fieldset>
+                </div>
+                <div class="col-lg-3 col-sm-4 col-sm-6">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.Author, new { @id = "lblAuthor", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                        @Html.DropDownListFor(m => m.AuthorKey, new SelectList(Model.Authors, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Author, new { @class = "form-control border-radius input-control", @InputFor = "lblAuthor", @data_live_search = "true" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.AuthorKey)
+                        </span>
+                    </fieldset>
+                </div>
+
+                <div class="col-lg-3 col-sm-4 col-sm-6">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.BookCategory, new { @id = "lblBookCategory", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                        @Html.DropDownListFor(m => m.BookCategoryKey, new SelectList(Model.BookCategories, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.BookCategory, new { @class = "form-control border-radius input-control", @InputFor = "lblBookCategory" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.BookCategoryKey)
+                        </span>
+                    </fieldset>
+                </div>
+                <div class="col-lg-3 col-sm-4 col-sm-6">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.BookIssueType, new { @id = "lblBookIssueType", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                        @Html.DropDownListFor(m => m.BookIssueTypeKey, new SelectList(Model.BookIssueTypes, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.BookIssueType, new { @class = "form-control border-radius input-control", @InputFor = "lblBookIssueType" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.BookIssueTypeKey)
+                        </span>
+                    </fieldset>
+                </div>
+                <div class="col-lg-3 col-sm-4 col-sm-6">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.Language, new { @id = "lblLanguage", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                        @Html.DropDownListFor(m => m.LanguageKey, new SelectList(Model.Languages, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Language, new { @class = "form-control border-radius input-control", @InputFor = "lblLanguage" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.LanguageKey)
+                        </span>
+                    </fieldset>
+                </div>
+
+                <div class="col-lg-3 col-sm-4 col-sm-6">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.Publisher, new { @id = "lblPublisher", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                        @Html.DropDownListFor(m => m.PublisherKey, new SelectList(Model.Publishers, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Publisher, new { @class = "form-control border-radius input-control", @InputFor = "lblPublisher" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.PublisherKey)
+                        </span>
+                    </fieldset>
+                </div>
+                <div class="col-lg-3 col-sm-4 col-sm-6">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.Book + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Wardrobe, new { @id = "lblPublisher", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                        @Html.DropDownListFor(m => m.RackKey, new SelectList(Model.Racks, "RowKey", "Text", Model.RackKey), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Wardrobe, new { @class = "form-control border-radius input-control", @InputFor = "lblPublisher" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.RackKey)
+                        </span>
+                    </fieldset>
+                </div>
+                <div class="col-lg-3 col-sm-4 col-sm-6">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.Wardrobe + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Rack, new { @id = "lblPublisher", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                        @Html.DropDownListFor(m => m.SubRackKey, new SelectList(Model.SubRacks, "RowKey", "Text", Model.SubRackKey), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Rack, new { @class = "form-control border-radius input-control", @InputFor = "lblPublisher" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.SubRackKey)
+                        </span>
+                    </fieldset>
+                </div>
+                <div class="col-lg-2 col-12">
+                    <div class="form-group MemberPhotoUpload" style="width: 150px; height: 200px;">
+                        @*<img src="~/@Model.MemberPhotoUrl" id="MemberPhoto" class="img-thumbnail">*@
+                        @if (Model.CoverPhotoPath != null)
+                        {
+                            <img id="MemberPhoto" src="@Url.Content(Model.CoverPhotoPath)" alt="Image" class="img-thumbnail" />
+                        }
+
+
+                        <div class="custom-file">
+                            @Html.TextBoxFor(m => m.PhotoFile, new { type = "file", @class = "custom-file-input" })
+                            <label class="custom-file-label" for="MFile">Choose file</label>
+                        </div>
+
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.PhotoFile)
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="col-12">
+                    <fieldset class="form-group">
+                        <input type="submit" value="@EduSuiteUIResources.Save" id="btnSave" class="btn btn-sm btn-success mx-1" />
+                        <input type="button" value="@EduSuiteUIResources.Cancel" onclick="location.href='@Url.Action("LibraryBookList", "LibraryBook")' " class="btn btn-sm btn-danger mx-1" />
+                    </fieldset>
+                </div>
+                <div class="col-12">
+                    <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+                </div>
+            </div>
+
+
+            <!-- modal placeholder-->
+
+
+            <div class="form-row">
+                <div class="w-100 mx-lg-3 mx-sm-1" id="replacetarget">
+                    @{ Html.RenderAction("BookCopyList", "BookCopy", new { id = Model.RowKey }); }
+                </div>
+            </div>
+
+
+        }
+    </div>
+
+</section>
+
+<script type="text/javascript">
+
+    $(function () {
+        if ($("#RowKey").val() == "0") {
+            $("#replacetarget").hide();
+        }
+
+    });
+    $(document).ready(function () {
+        AppCommon.FormatInputCase();
+        AppCommon.CustomRemoteMethod();
+        AppCommon.FormatSelect2();
+       // bindbRack();
+        $("#PhotoFile").change(function () {
+
+            if (this.files && this.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#MemberPhoto').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+        $("#RackKey").on("change", function () {
+
+            var obj = {};
+            obj.RackKey = $("#RackKey").val();
+            //Books.GetSubRackByRack(obj, $("#SubRackKey"));
+            AppCommon.BindDropDownbyId(obj, $("#hdnFillSubRack").val(), $("#SubRackKey"), Resources.Rack);
+        });
+        @*if(@Model.Branches.Count<=1)
+        {
+            var obj = {};
+            obj.BranchKey = $("#BranchKey").val();
+            Books.GetRackByBranch(obj, $("#RackKey"));
+        }*@
+        $("#BranchKey").on("change", function () {
+            var obj = {};
+            obj.BranchKey = $("#BranchKey").val();
+            AppCommon.BindDropDownbyId(obj, $("#hdnFillRack").val(), $("#RackKey"), Resources.Wardrobe);
+            //Books.GetRackByBranch(obj, $("#RackKey"));
+        });
+
+        function bindbRack() {
+            var obj = {};
+            obj.BranchKey = $("#BranchKey").val();
+            AppCommon.BindDropDownbyId(obj, $("#hdnFillRack").val(), $("#RackKey"), Resources.Wardrobe);
+        }
+
+    });
+
+</script>

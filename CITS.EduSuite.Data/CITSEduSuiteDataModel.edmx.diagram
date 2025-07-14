@@ -1,0 +1,1089 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="2ef7d14bc6144b2ab5ef21303a130806" Name="Diagram1">
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.AcademicTerm" Width="1.5" PointX="5.25" PointY="179" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.AccountGroup" Width="1.5" PointX="37.5" PointY="199.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.AccountHead" Width="1.5" PointX="42" PointY="198" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.AccountHeadOpeningBalance" Width="1.5" PointX="33" PointY="226" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.AccountHeadType" Width="1.5" PointX="39.75" PointY="199.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.AccountLedger" Width="1.5" PointX="28.75" PointY="270.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.AccountLedgerType" Width="1.5" PointX="26.5" PointY="270.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.AccountTransaction" Width="1.5" PointX="31" PointY="230.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.AccountTransactionPayment" Width="1.5" PointX="44.25" PointY="227.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.Action" Width="1.5" PointX="19.25" PointY="173.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.ActivityLog" Width="1.5" PointX="5.25" PointY="170" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.AdditionalComponentType" Width="1.5" PointX="10.25" PointY="201.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.AdditionalSalaryComponent" Width="1.5" PointX="12.5" PointY="206.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.Address" Width="1.5" PointX="22.75" PointY="210.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.AddressType" Width="1.5" PointX="20.5" PointY="238.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.AdmissionFee" Width="1.5" PointX="23" PointY="204.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.AdmissionNoConfig" Width="1.5" PointX="0.75" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.Agent" Width="1.5" PointX="12.5" PointY="188.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.ApplicationConfig" Width="1.5" PointX="2.75" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.ApplicationFamilyDetail" Width="1.5" PointX="25" PointY="210.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.ApplicationType" Width="1.5" PointX="36.75" PointY="197.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.AttendanceConfigType" Width="1.5" PointX="20.5" PointY="243" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.Audit" Width="1.5" PointX="4.75" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.Author" Width="1.5" PointX="27.25" PointY="275.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.BankAccountType" Width="1.5" PointX="33.75" PointY="238.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.BankReconciliation" Width="1.5" PointX="41.25" PointY="215.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.BankSetting" Width="1.5" PointX="6.75" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.BankStatementMaster" Width="1.5" PointX="41.25" PointY="225.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.BankTransaction" Width="1.5" PointX="38.25" PointY="226.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.BankTransactionType" Width="1.5" PointX="44.25" PointY="209.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.Batch" Width="1.5" PointX="12.5" PointY="193.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.BloodGroup" Width="1.5" PointX="3" PointY="201" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.BookCategory" Width="1.5" PointX="27.25" PointY="252.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.BookCopy" Width="1.5" PointX="31.75" PointY="252.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.BookIssueReturnDetail" Width="1.5" PointX="43.5" PointY="238.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.BookIssueReturnMaster" Width="1.5" PointX="41.25" PointY="221.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.BookIssueType" Width="1.5" PointX="27.25" PointY="279.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.Book" Width="1.5" PointX="28.75" PointY="240.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.BookStatu" Width="1.5" PointX="29.5" PointY="265.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.BorrowerType" Width="1.5" PointX="36.75" PointY="239.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.Branch" Width="1.5" PointX="22.75" PointY="216.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.BranchDepartment" Width="1.5" PointX="25" PointY="230.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.BuildingDetail" Width="1.5" PointX="10.25" PointY="167.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.BuildingMaster" Width="1.5" PointX="8" PointY="167.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.BulkEmailTrack" Width="1.5" PointX="5.75" PointY="6.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.BulkEmailTrackDetail" Width="1.5" PointX="8" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.BulkSMSTrack" Width="1.5" PointX="5.75" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.BulkSMSTrackDetail" Width="1.5" PointX="8" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.CallType" Width="1.5" PointX="7.5" PointY="195.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.CashFlow" Width="1.5" PointX="44.25" PointY="218.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.CashFlowType" Width="1.5" PointX="18.5" PointY="181.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.Caste" Width="1.5" PointX="12.5" PointY="183.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.CertificateType" Width="1.5" PointX="28.75" PointY="246.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.ChequeClearance" Width="1.5" PointX="44.25" PointY="213.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.ClassMode" Width="1.5" PointX="12.5" PointY="179.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.CommonSubjectDetail" Width="1.5" PointX="7.5" PointY="187" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.CommonSubjectMaster" Width="1.5" PointX="5.25" PointY="175.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.Company" Width="1.5" PointX="20.5" PointY="229" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.ComponentType" Width="1.5" PointX="31.5" PointY="241.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.ContactVerification" Width="1.5" PointX="7.5" PointY="204" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.Country" Width="1.5" PointX="3" PointY="210.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.Course" Width="1.5" PointX="5.25" PointY="183.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.CourseSubjectDetail" Width="1.5" PointX="16.25" PointY="173" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.CourseSubjectMaster" Width="1.5" PointX="7.5" PointY="181.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.CourseType" Width="1.5" PointX="3" PointY="184.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.Currency" Width="1.5" PointX="0.75" PointY="206.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.Department" Width="1.5" PointX="3" PointY="204.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.Designation" Width="1.5" PointX="20.5" PointY="232.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.DesignationGrade" Width="1.5" PointX="3" PointY="216.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.DesignationGradeDetail" Width="1.5" PointX="34.75" PointY="199.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.DesignationPermission" Width="1.5" PointX="22.75" PointY="239.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.District" Width="1.5" PointX="12.5" PointY="211" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.EducationType" Width="1.5" PointX="13" PointY="255.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.ElectivePaper" Width="1.5" PointX="26" PointY="206.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.EmployeeAchievement" Width="1.5" PointX="7.5" PointY="218.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.EmployeeCategory" Width="1.5" PointX="3" PointY="220.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.EmployeeConfig" Width="1.5" PointX="15.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.EmployeeContact" Width="1.5" PointX="17.5" PointY="216.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.EmployeeDurationConfig" Width="1.5" PointX="10.75" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.EmployeeFileHandover" Width="1.5" PointX="7.5" PointY="237" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.EmployeeIdentity" Width="1.5" PointX="7.5" PointY="241" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.EmployeeLanguageSkill" Width="1.5" PointX="7.5" PointY="199" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.EmployeeLoan" Width="1.5" PointX="12.5" PointY="222.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.EmployeeLoanPayment" Width="1.5" PointX="14.75" PointY="223.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.EmployeeStatu" Width="1.5" PointX="3" PointY="224.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.EmployeeTask" Width="1.5" PointX="17.5" PointY="222.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.EnquiryCallStatu" Width="1.5" PointX="7.5" PointY="191.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.EnquiryConfiguration" Width="1.5" PointX="0.75" PointY="17.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.EnquiryFeedback" Width="1.5" PointX="9.75" PointY="205.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.EnquiryLeadCallStatu" Width="1.5" PointX="15.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.EnquiryLeadFeedback" Width="1.5" PointX="12" PointY="228.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.EnquiryProcessStatu" Width="1.5" PointX="17.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.EnquiryStatu" Width="1.5" PointX="5.25" PointY="189.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.EnquiryUserBlockList" Width="1.5" PointX="17.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.ExamCenter" Width="1.5" PointX="23.75" PointY="194.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.ExamResult" Width="1.5" PointX="25" PointY="219.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.ExamSchedule" Width="1.5" PointX="26" PointY="200.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.ExamScheduleDetail" Width="1.5" PointX="28" PointY="211.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.ExamScheduleMaster" Width="1.5" PointX="36" PointY="211.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.ExamTerm" Width="1.5" PointX="23.75" PointY="190.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.FamilyMemberType" Width="1.5" PointX="22.75" PointY="230.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.FeePaymentDetail" Width="1.5" PointX="38.25" PointY="210.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.FeeTypeMode" Width="1.5" PointX="18.5" PointY="185.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.FileHandoverType" Width="1.5" PointX="17.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.ForgotPassword" Width="1.5" PointX="5.25" PointY="228.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.FutureTransactionOtherAmountType" Width="1.5" PointX="43.5" PointY="234.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.FutureTransactionPayment" Width="1.5" PointX="41.25" PointY="229.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.FutureTransaction" Width="1.5" PointX="36" PointY="227.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.Grade" Width="1.5" PointX="10.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.GradingSystem" Width="1.5" PointX="14.75" PointY="17.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.GSTMaster" Width="1.5" PointX="18.5" PointY="188.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.HSNCodeMaster" Width="1.5" PointX="33.75" PointY="242.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.IdentificationType" Width="1.5" PointX="32.75" PointY="196.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.IdentityType" Width="1.5" PointX="17.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.Income" Width="1.5" PointX="12.5" PointY="234" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.InternalExam" Width="1.5" PointX="28" PointY="233.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.InternalExamDetail" Width="1.5" PointX="30.25" PointY="236.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.InternalExamDivision" Width="1.5" PointX="33.25" PointY="234.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.InternalExamResult" Width="1.5" PointX="29" PointY="205.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.InternalExamTerm" Width="1.5" PointX="25.75" PointY="238.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.JournalDetail" Width="1.5" PointX="27.25" PointY="266.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.JournalMaster" Width="1.5" PointX="25" PointY="266.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.Language" Width="1.5" PointX="0.75" PointY="211" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.LibraryBook" Width="1.5" PointX="29.5" PointY="252.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.M_UniversityMaster" Width="1.5" PointX="0.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.MaritalStatu" Width="1.5" PointX="3" PointY="227.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.Medium" Width="1.5" PointX="12.5" PointY="237.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.MemberPlanDetail" Width="1.5" PointX="39" PointY="220.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.MemberRegistration" Width="1.5" PointX="35" PointY="204.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.MemberTitle" Width="1.5" PointX="32.75" PointY="193.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.MemberType" Width="1.5" PointX="36.75" PointY="243" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.Menu" Width="1.5" PointX="19.25" PointY="168.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.MenuAction" Width="1.5" PointX="21.5" PointY="171.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.MenuType" Width="1.5" PointX="17" PointY="169.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.Mode" Width="1.5" PointX="12.5" PointY="240.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.ModuleTopic" Width="1.5" PointX="18.5" PointY="177.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.NatureOfEnquiry" Width="1.5" PointX="5.25" PointY="192.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.NotificationColumn" Width="1.5" PointX="15" PointY="13.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.NotificationColumnGroup" Width="1.5" PointX="12.75" PointY="14.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.NotificationData" Width="1.5" PointX="4.75" PointY="18.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.NotificationTemplate" Width="1.5" PointX="6.75" PointY="18.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.Offer" Width="1.5" PointX="12.5" PointY="244.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.OtherBankTransaction" Width="1.5" PointX="48.75" PointY="221.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.PartyType" Width="1.5" PointX="28.75" PointY="261.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.PaymentMode" Width="1.5" PointX="29.75" PointY="189.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.PaymentReceiptNumberConfiguration" Width="1.5" PointX="25" PointY="288.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.PeriodType" Width="1.5" PointX="33.75" PointY="246" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.PrintConfiguration" Width="1.5" PointX="15" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.PrintPaperSize" Width="1.5" PointX="12.75" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.Priority" Width="1.5" PointX="15.25" PointY="234.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.ProcessStatu" Width="1.5" PointX="29.75" PointY="182.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.Promotion" Width="1.5" PointX="39" PointY="216" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.PromotionDetail" Width="1.5" PointX="28" PointY="223.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.PromotionStatu" Width="1.5" PointX="25.75" PointY="242.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.Province" Width="1.5" PointX="10.25" PointY="210.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.Publisher" Width="1.5" PointX="27.25" PointY="282.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.PushNotification" Width="1.5" PointX="10.75" PointY="10" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.PushNotificationDetail" Width="1.5" PointX="13" PointY="10.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.PushNotificationTemplate" Width="1.5" PointX="19.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.Rack" Width="1.5" PointX="25" PointY="296.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.Religion" Width="1.5" PointX="3" PointY="231.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.Role" Width="1.5" PointX="19.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.Salutation" Width="1.5" PointX="3" PointY="235.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.Scholarship" Width="1.5" PointX="17.75" PointY="209.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.ScholarshipExamRegNoConfig" Width="1.5" PointX="8.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.ScholarshipExamResult" Width="1.5" PointX="32" PointY="199.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.ScholarshipExamSchedule" Width="1.5" PointX="27.25" PointY="255.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.ScholarshipType" Width="1.5" PointX="15.5" PointY="195.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.SecondLanguage" Width="1.5" PointX="12.5" PointY="248.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.ServiceType" Width="1.5" PointX="19.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.SkillLevel" Width="1.5" PointX="19.75" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.SMSSetting" Width="1.5" PointX="16.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.Status" Width="1.5" PointX="23.5" PointY="246.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.StudentDocument" Width="1.5" PointX="17" PointY="267.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.StudentFeeInstallment" Width="1.5" PointX="17" PointY="271.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.StudentPaper" Width="1.5" PointX="31" PointY="215.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.StudentStatu" Width="1.5" PointX="12.5" PointY="251.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.StudyMaterial" Width="1.5" PointX="26.75" PointY="192.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.SubBranch" Width="1.5" PointX="25" PointY="300.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.SubjectModule" Width="1.5" PointX="16.25" PointY="163.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.Subject" Width="1.5" PointX="14" PointY="162.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.SubRack" Width="1.5" PointX="27.25" PointY="297.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.TaskStatu" Width="1.5" PointX="15.25" PointY="238.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.TeacherSubjectAllocation" Width="1.5" PointX="33.75" PointY="221" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.TeacherWorkScheduleDetail" Width="1.5" PointX="15.5" PointY="199.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.TeacherWorkScheduleMaster" Width="1.5" PointX="20.5" PointY="222.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.TransactionType" Width="1.5" PointX="25.75" PointY="246.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.UnitTestResult" Width="1.5" PointX="23.75" PointY="199.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.UnitTestSchedule" Width="1.5" PointX="18.5" PointY="195.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.UnitTestTopic" Width="1.5" PointX="20.75" PointY="193.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.UnitType" Width="1.5" PointX="20.5" PointY="248.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.UniversityCourse" Width="1.5" PointX="10.25" PointY="174.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.UniversityCourseFee" Width="1.5" PointX="23" PointY="184" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.UniversityCourseFeeInstallment" Width="1.5" PointX="12.5" PointY="156" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.UniversityPaymentDetail" Width="1.5" PointX="37.25" PointY="205" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.UserPermission" Width="1.5" PointX="21.5" PointY="197" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VoucherType" Width="1.5" PointX="25.75" PointY="249.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.M_University" Width="1.5" PointX="10.75" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwAcadamicTermSelectActiveOnly" Width="1.5" PointX="21.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwAccountGroup" Width="1.5" PointX="12.75" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwAccountHeadSelectActiveOnly" Width="1.5" PointX="21.75" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwAccountHeadType" Width="1.5" PointX="21.75" PointY="17.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwAccountLedgerSelectActiveOnly" Width="1.5" PointX="21.75" PointY="20.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwAdditionalComponentTypeSelectActiveOnly" Width="1.5" PointX="0.75" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwAdditionalComponentTypeSelectAll" Width="1.5" PointX="2.75" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwAddressTypeSelectActiveOnly" Width="1.5" PointX="4.75" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwBankAccountTypeSelectActiveOnly" Width="1.5" PointX="23.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwBankAccountTypeSelectAll" Width="1.5" PointX="6.75" PointY="23.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwBankSelectActiveOnly" Width="1.5" PointX="23.75" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwBankSelectAll" Width="1.5" PointX="14.75" PointY="23.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwBatchSelectActiveOnly" Width="1.5" PointX="23.75" PointY="17.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwBloodGroupSelectActiveOnly" Width="1.5" PointX="23.75" PointY="20.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwBookSelectActiveOnly" Width="1.5" PointX="20.75" PointY="24.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwBranchDepartmentSelectActiveOnly" Width="1.5" PointX="22.75" PointY="24.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.vwBranchSelectActiveOnly" Width="1.5" PointX="24.75" PointY="24.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VWBuildingDetailsSelectActiveOnly" Width="1.5" PointX="25.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwCertificateTypeSelectActiveOnly" Width="1.5" PointX="25.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwChequeClearanceSelect" Width="1.5" PointX="25.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwClassModeSelectActiveOnly" Width="1.5" PointX="10.75" PointY="25.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwCountrySelectActiveOnly" Width="1.5" PointX="25.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwCountrySelectAll" Width="1.5" PointX="25.75" PointY="17.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwCourseSelectActiveOnly" Width="1.5" PointX="0.75" PointY="26.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwCourseTypeSelectActiveOnly" Width="1.5" PointX="2.75" PointY="26.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwDepartmentSelectActiveOnly" Width="1.5" PointX="16.75" PointY="26.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwDesignationWithoutAdminSelectActiveOnly" Width="1.5" PointX="26.75" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwDistrictBranchCount" Width="1.5" PointX="26.75" PointY="26.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwDistrictSelectActiveOnly" Width="1.5" PointX="27.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwDistrictSelectAll" Width="1.5" PointX="27.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwDivisionSelectActiveOnly" Width="1.5" PointX="4.75" PointY="27.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwEducationTypeSelectActiveOnly" Width="1.5" PointX="27.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwEducationTypeSelectAll" Width="1.5" PointX="27.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwEmployeeCategorySelectActiveOnly" Width="1.5" PointX="12.75" PointY="27.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwEmployeeCategorySelectAll" Width="1.5" PointX="27.75" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwEmployeeStatusSelectActiveOnly" Width="1.5" PointX="28.75" PointY="20.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwEmployeeStatusSelectAll" Width="1.5" PointX="28.75" PointY="24.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwEnquiryFeedbackReportSelectAll" Width="1.5" PointX="28.75" PointY="28.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwEnquiryStatusSelectAll" Width="1.5" PointX="29.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwGradeSelectActiveOnly" Width="1.5" PointX="29.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwGradeSelectAll" Width="1.5" PointX="29.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwGradingSystemSelectActiveOnly" Width="1.5" PointX="29.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwGradingSystemSelectAll" Width="1.5" PointX="29.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwIdentityTypeSelectActiveOnly" Width="1.5" PointX="18.75" PointY="29.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwIncomeSelectActiveOnly" Width="1.5" PointX="20.75" PointY="29.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwInternalExamTermSelectActiveOnly" Width="1.5" PointX="0.75" PointY="30.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwLanguageSelectActiveOnly" Width="1.5" PointX="2.75" PointY="30.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwLanguageSelectAll" Width="1.5" PointX="4.75" PointY="30.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwLeaveTypeSelectActiveOnly" Width="1.5" PointX="6.75" PointY="30.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwMaritalStatusSelectActiveOnly" Width="1.5" PointX="8.75" PointY="30.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwMediumSelectActiveOnly" Width="1.5" PointX="14.75" PointY="30.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwMenuSelectActiveOnly" Width="1.5" PointX="30.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwModeSelectActiveOnly" Width="1.5" PointX="30.75" PointY="23.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwOfferSelectActiveOnly" Width="1.5" PointX="30.75" PointY="26.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwPaymentModeSelectActiveOnly" Width="1.5" PointX="30.75" PointY="30.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwPrioritySelectActiveOnly" Width="1.5" PointX="31.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwPrioritySelectAll" Width="1.5" PointX="31.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwProcessStatusSelectActiveOnly" Width="1.5" PointX="31.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwProcessStatusSelectAll" Width="1.5" PointX="10.75" PointY="31.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwPromotionStatusSelectActiveOnly" Width="1.5" PointX="31.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwProvinceSelectActiveOnly" Width="1.5" PointX="22.75" PointY="31.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwProvinceSelectAll" Width="1.5" PointX="24.75" PointY="31.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwReligionSelectActiveOnly" Width="1.5" PointX="32.75" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwRoleSelectActiveOnly" Width="1.5" PointX="32.75" PointY="20.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwSalutationSelectActiveOnly" Width="1.5" PointX="32.75" PointY="24.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwSecoundLanguageSelectActiveOnly" Width="1.5" PointX="32.75" PointY="28.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwSelectBulkEmailSm" Width="1.5" PointX="32.75" PointY="31.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwSkillLevelSelectActiveOnly" Width="1.5" PointX="33.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwStaffSelectActiveOnly" Width="1.5" PointX="33.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwTaskStatusSelectActiveOnly" Width="1.5" PointX="33.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwTaskStatusSelectAll" Width="1.5" PointX="12.75" PointY="33.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwTeacherSelectActiveOnly" Width="1.5" PointX="14.75" PointY="33.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwUniversityMasterSelectActiveOnly" Width="1.5" PointX="16.75" PointY="33.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwUniversitySelectActiveOnly" Width="1.5" PointX="18.75" PointY="33.75" IsExpanded="true" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Books_AcademicTerm" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_CommonSubjectDetails_AcademicTerm" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_CourseSubjectMaster_AcademicTerm" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ExamScheduleMaster_AcademicTerm" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_InternalExam_AcademicTerm" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_UniversityCourse_AcademicTerm" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_AcountHeadTypeMaster_AccountGroup" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_AccountHead_AccountHead" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_AccountHead_AccountHeadType" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_AccountHeadOpeningBalance_AccountHead" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_CashFlow_AccountHead" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_FutureTransactionOtherAmountTypes_AccountHead" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_FutureTransactions_AccountHead" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_JournalDetails_AccountHead" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_OtherBankTransactions_AccountHead" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_AccountHeadOpeningBalance_Branch" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_AccountLedger_AccountLedgerType" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_AccountTransaction_AccountLedger" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_AccountLedgerType_CashFlowType" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_AccountTransaction_Branch" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_AccountTransaction_PartyType" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_AccountTransaction_ProcessStatus" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_AccountTransactionPayment_AccountTransaction" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_MenuAction_Action" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_UserPermission_Action" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_AdditionalSalaryComponent_AdditionalComponentType" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Address_AddressType" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Address_District" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeContact_Address" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_T_AdmissionFee_T_AdmissionFee" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ApplicationFamilyDetails_FamilyMemberType" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_MemberPlanDetails_ApplicationType" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Book_Author" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_BankReconciliation_BankReconciliation" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_BankReconciliation_CashFlowType" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_BankStatementMaster_Branch" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_BankTransaction_BankTransactionType" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_BankTransaction_Branch" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ExamScheduleMaster_Batch" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_InternalExam_Batch" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Promotion_Batch" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_TeacherWorkScheduleMaster_Batch" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_UnitTestSchedule_Batch" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Book_BookCategory" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_BookCopy_Book" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_BookCopy_BookCopy" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_BookIssueReturnDetails_BookCopy" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_BookIssueReturnDetails_BookIssueReturnMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_BookIssueReturnDetails_BookStatus" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_BookIssueReturnMaster_MemberPlanDetails" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Book_BookIssueType" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__M_Books__CourseK__3F466844" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Books_Books" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_T_StudentPapers_M_Books" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_MemberPlanDetails_BorrowerType" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Branch_Company" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Branch_Designation" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Branch_District" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_BranchDepartment_Branch" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_CashFlow_Branch" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ExamScheduleMaster_Branch" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_FutureTransactionPayment_Branch" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_FutureTransactions_FutureTransactions" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_InternalExam_Branch" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_JournalMaster_Branch" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_LibraryBook_Branch" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_MemberPlanDetails_Branch" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_MemberRegistration_Branch" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_PaymentReceiptNumberConfiguration_Branch" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Promotion_Branch" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Rack_Branch" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Scholarship_Branch" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ScholarshipExamSchedule_Branch" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_SubBranch_Branch" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_TeacherWorkScheduleMaster_Branch" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_UnitTestSchedule_Branch" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_BranchDepartment_Department" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_BuildingDetails_BuildingMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__BulkEmail__BulkE__56F49FFA" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__BulkEmail__BulkE__5DA19D89" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__BulkEmail__BulkE__644E9B18" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__BulkEmail__BulkE__672B07C3" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__BulkSMSTr__BulkS__57E8C433" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__BulkSMSTr__BulkS__5E95C1C2" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__BulkSMSTr__BulkS__6542BF51" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__BulkSMSTr__BulkS__681F2BFC" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EnquiryFeedback_CallType" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EnquiryLeadFeedback_CallType" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_CashFlow_CashFlowType" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_CashFlow_PaymentMode" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_FutureTransactionPayment_CashFlowType" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_FutureTransactions_CashFlowType" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_FutureTransactions_CashFlowType1" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Caste_Religion" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ChequeClearance_PaymentMode" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_CommonSubjectDetails_CommonSubjectDetails" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_CommonSubjectDetails_Course" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_CommonSubjectMaster_Subjects" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Country_Currency" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Country_Language" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Province_Country" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_CourseSubjectMaster_Course" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ExamScheduleMaster_Course" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_InternalExam_Course" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_M_Course_M_Course" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_M_UniversityCourse_M_Course" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_CourseSubjectDetails_CourseSubjectMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_CourseSubjectDetails_Subjects" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Designation_Designation" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_DesignationGrade_Designation" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_DesignationPermission_Designation" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_DesignationGradeDetail_DesignationGrade1" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_District_Province" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ElectivePaper_Subjects" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeLanguageSkill_Language" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeLoan_ProcessStatus" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeLoanPayment_EmployeeLoan" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeTask_Priority" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeTask_ProcessStatus" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeTask_TaskStatus" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EnquiryCallStatus_EnquiryStatus" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EnquiryFeedback_EnquiryCallStatus" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EnquiryLeadFeedback_EnquiryCallStatus" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EnquiryLeadFeedback_EnquiryLeadFeedback" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ExamSchedule_ExamCenter" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ExamScheduleDetails_ExamCenter" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ExamResult_ExamSchedule" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ExamResult_Subjects" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ExamSchedule_ExamTerm" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ExamSchedule_Subjects" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ExamScheduleDetails_ExamScheduleMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ExamScheduleMaster_ExamScheduleMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ExamScheduleMaster_ExamTerm" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ExamScheduleMaster_Subjects" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_FutureTransactionOtherAmountTypes_FutureTransactionPayment" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_FutureTransactionOtherAmountTypes_FutureTransactions" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_FutureTransactionPayment_FutureTransactions" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_FutureTransactionPayment_PaymentMode" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_FutureTransactionPayment_ProcessStatus" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_FutureTransactions_HSNCodeMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_FutureTransactions_PeriodType" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_FutureTransactions_Province" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Grade_Grade" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_MemberRegistration_IdentificationType" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_InternalExam_InternalExamTerm" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_InternalExamDetails_InternalExam1" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_InternalExamDivision_InternalExam" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_InternalExamResult_InternalExam" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_InternalExamDetails_Subjects" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_InternalExamResult_InternalExamDetails" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_InternalExamResult_Subjects" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_JournalDetails_JournalMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Book_Language" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Province_Language" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Book_Publisher" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_LibraryBook_SubRack" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_MemberPlanDetails_MemberType" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_MemberRegistration_MemberTitle" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_MemberRegistration_Province" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Menu_MenuType" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_MenuAction_Menu" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_UserPermission_Menu" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ModuleTopics_ModuleTopics" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_TeacherWorkScheduleMaster_ModuleTopics" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_UnitTestTopics_ModuleTopics" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_NotificationColumn_NotificationColumnGroup" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_OtherBankTransactions_ProcessStatus" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_PrintPaperSizes" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_PromotionDetails_Promotion" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_PromotionDetails_PromotionStatus" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_PushNotificationDetail_PushNotification" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_SubRack_Rack" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Scholarship_ScholarshipType" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ScholarshipExamResult_Scholarship" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ScholarshipExamSchedule_Scholarship" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ScholarshipExamResult_ScholarshipExamSchedule" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ScholarshipExamSchedule_ScholarshipType" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ScholarshipExamSchedule_SubBranch" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_TransactionType_Status" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_StudyMaterials_Subjects" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_SubjectModules_ModuleTopics" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_TeacherWorkScheduleMaster_SubjectModules" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_UnitTestSchedule_SubjectModules" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_UnitTestTopics_SubjectModules" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_TeacherSubjectAllocation_Subjects" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_TeacherWorkScheduleMaster_Subjects" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_UnitTestSchedule_Subjects" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_UnitTestTopics_UnitTestTopics1" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_TeacherWorkScheduleDetails_TeacherWorkScheduleMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_UnitTestResult_UnitTestSchedule" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_UnitTestTopics_UnitTestTopics" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_UniversityCourseFee_UniversityCourse" ManuallyRouted="false" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_UniversityCourseFeeInstallment_UniversityCourseFeeInstallment" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.Bank" Width="1.5" PointX="33.75" PointY="183.125" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.ClassDetail" Width="1.5" PointX="36.75" PointY="186" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.Division" Width="1.5" PointX="34.5" PointY="187.625" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.UniversityPaymentMaster" Width="1.5" PointX="41.25" PointY="204.625" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ClassDetails_BuildingDetails" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__Promotion__Promo__7B670A9A" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ClassDetails_Division" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ClassDetails_UniversityCourse" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_InternalExamDivision_ClassDetails" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_InternalExamResult_ClassDetails" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Promotion_ClassDetails" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_TeacherSubjectAllocation_ClassDetails" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_TeacherWorkScheduleMaster_ClassDetails" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_UnitTestSchedule_ClassDetails" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_UniversityPaymentMaster_M_CashType" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_UniversityPaymentMaster_ProcessStatus" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_UniversityPaymentDetail_UniversityPaymentMaster" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.IssueOfStudyMaterial" Width="1.5" PointX="32" PointY="203.625" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.StudentIDCard" Width="1.5" PointX="17" PointY="227.625" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.StudentsCertificateReturn" Width="1.5" PointX="25.25" PointY="225.75" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_IssueOfStudyMaterials_StudyMaterials" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.UniversityCertificate" Width="1.5" PointX="39" PointY="233" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_UniversityCertificate_CertificateType" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.AppUser" Width="1.5" PointX="22.75" PointY="117.5" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ActivityLog_AppUser" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ApplicationFamilyDetails_ApplicationFamilyDetails" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__ForgotPas__AppUs__58DCE86C" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_AppUser_Designation" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_AppUser_Role" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwEmailAddess" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwMobileNumber" Width="1.5" PointX="0.75" PointY="8.75" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.Attendance" Width="1.5" PointX="50" PointY="205.5" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.AttendanceDetail" Width="1.5" PointX="52.25" PointY="202.75" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.AttendanceStatu" Width="1.5" PointX="50" PointY="211.5" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.AttendanceType" Width="1.5" PointX="50" PointY="215.25" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.StudentAbsconder" Width="1.5" PointX="47" PointY="210.875" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.StudentDiary" Width="1.5" PointX="45" PointY="201.25" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.StudentDivisionAllocation" Width="1.5" PointX="48" PointY="200.125" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.StudentEarlyDeparture" Width="1.5" PointX="45" PointY="196" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.StudentLateDetail" Width="1.5" PointX="47" PointY="205.875" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.StudentLeaveDetail" Width="1.5" PointX="48" PointY="194.875" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Attendance_Batch" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Attendance_ClassDetails" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_AttendanceDetails_Attendance" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_T_Attendance_Branch" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_AttendanceDetails_AttendanceStatus" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_AttendanceDetails_AttendanceType" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_AttendanceDetails_StudentAbsconders" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_AttendanceDetails_StudentEarlyDeparture" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_AttendanceDetails_StudentLateDetails" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_AttendanceDetails_StudentLeaveDetails" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_StudentDivisionAllocation_Batch" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_StudentAbsconders_ClassDetails" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_StudentDiary_ClassDetails" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_StudentDivisionAllocation_ClassDetails" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_StudentEarlyDeparture_ClassDetails" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_StudentLateDetails_ClassDetails" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_StudentLeaveDetails_ClassDetails" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_StudentLateDetails_StudentLateDetails" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.Application" Width="1.5" PointX="39" PointY="172.25" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Application_AcademicTerm" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_T_AdmissionFee_T_Application" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_T_Application_M_Agent" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__Applicati__AppUs__04515656" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__Applicati__Blood__07E1F018" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__Applicati__Caste__06EDCBDF" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Application_ClassDetails" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ApplicationFamilyDetails_Application" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Attendance_Application" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ExamResult_Application" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ExamSchedule_Application1" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ExamScheduleDetails_Application" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_InternalExamResult_Application" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_PromotionDetails_Application" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_StudentAbsconders_Application" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_StudentDiary_Application" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_StudentEarlyDeparture_Application" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_StudentLateDetails_Application" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_StudentLeaveDetails_Application" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_StudentsCertificateReturn_Application" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_T_Application_Branch" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_T_Application_M_Batch" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_T_Application_M_ClassMode" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_T_Application_M_Course" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_T_Application_M_Income" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_T_Application_M_Medium" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_T_Application_M_Mode" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_T_Application_M_NatureOfEnquiry" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_T_Application_M_Offers" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_T_Application_M_Religion" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_T_Application_M_SecondLanguage" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_T_Application_M_StudentStatus" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_T_ElectivePaper_T_Application" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_T_IssueOfStudyMaterials_T_Application" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_T_StudentDivisionAllocation_T_Application" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_T_StudentDocument_T_Application" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_T_StudentFeeInstallment_T_Application" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_T_StudentIDCard_T_StudentIDCard1" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_T_StudentPapers_T_Application" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_UnitTestResult_Application" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_UniversityCertificate_Application" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_UniversityPaymentMaster_T_Application" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.AttendanceTypeDetail" Width="1.5" PointX="52.25" PointY="192.125" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.AttendanceTypeMaster" Width="1.5" PointX="39.75" PointY="168.25" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.AttendanceTypeMasterClass" Width="1.5" PointX="42" PointY="185.625" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.Holiday" Width="1.5" PointX="39.75" PointY="162.625" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.HolidayClass" Width="1.5" PointX="42" PointY="188.625" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.WeekOff" Width="1.5" PointX="3.375" PointY="10.75" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_AttendanceTypeDetails_AttendanceType" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_AttendanceTypeDetails_AttendanceTypeMaster" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_AttendanceTypeMasterClasses_AttendanceTypeMaster" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_AttendanceTypeMasterClasses_ClassDetails" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_HoliDay_Branch" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_HolidayClasses_ClassDetails" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_HolidayClasses_Holiday" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.CommunityType" Width="1.5" PointX="10.375" PointY="6" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__Applicati__Commu__4DC03B7B" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.LibraryConfig" Width="1.5" PointX="5.375" PointY="10.75" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VW_MemberPlanDetails" Width="1.5" PointX="0.75" PointY="34.75" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VW_LibraryBookCopy" Width="1.5" PointX="3.375" PointY="34.75" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.EducationQualification" Width="1.5" PointX="41.25" PointY="178" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwSubjectSelectActiveOnly" Width="1.5" PointX="5.375" PointY="35.75" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_T_EducationQualification_T_Application" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_StudentsCertificateReturn_EducationQualification" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.StudentTimeTable" Width="1.5" PointX="45" PointY="190.75" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.TimeTableTempDetail" Width="1.5" PointX="42" PointY="191.625" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.TimeTableTempMaster" Width="1.5" PointX="39.75" PointY="158.125" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_StudentTimeTable_ClassDetails" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_TimeTableTempDetails_ClassDetails" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_StudentTimeTable_Subjects" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_TimeTableTempDetails_Subjects" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_TimeTableTempDetails_TimeTableTempMaster" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.TeacherSubjectModule" Width="1.5" PointX="45" PointY="185.625" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_TeacherSubjectModules_ClassDetails" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_TeacherSubjectModules_SubjectModules" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_TeacherSubjectModules_Subjects" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.TeacherClassAllocation" Width="1.5" PointX="51" PointY="197.25" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_TeacherClassAllocation_Batch" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_TeacherClassAllocation_ClassDetails" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_TeacherSubjectAllocation_TeacherClassAllocation" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_TeacherSubjectModules_TeacherSubjectAllocation" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.BandStatu" Width="1.5" PointX="7.75" PointY="10.75" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.ExamTest" Width="1.5" PointX="41.625" PointY="173.875" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.ExamTestAnswer" Width="1.5" PointX="46.125" PointY="166.125" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.ExamTestSection" Width="1.5" PointX="43.875" PointY="173.75" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.ExamType" Width="1.5" PointX="17.375" PointY="153.875" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.MarkGroup" Width="1.5" PointX="27.125" PointY="155.25" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.MenuCatagory" Width="1.5" PointX="17.375" PointY="159.375" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.Module" Width="1.5" PointX="19.625" PointY="156" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.PaymentModeSub" Width="1.5" PointX="32.375" PointY="188.5" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.QuestionStatu" Width="1.5" PointX="43.875" PointY="167.625" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.QuestionType" Width="1.5" PointX="27.125" PointY="166.5" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.TestModule" Width="1.5" PointX="21.875" PointY="161.625" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.TestPaper" Width="1.5" PointX="19.625" PointY="159" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.TestQuestion" Width="1.5" PointX="29.375" PointY="160.375" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.TestQuestionOption" Width="1.5" PointX="26.375" PointY="160.75" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.TestSection" Width="1.5" PointX="24.125" PointY="161.375" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwSelectMarkGroup" Width="1.5" PointX="0.75" PointY="11.75" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwStudyMaterialSelectActiveOnly" Width="1.5" PointX="7.75" PointY="35.75" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwTestPaper" Width="1.5" PointX="12.75" PointY="5.75" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__AppUser__Applica__637A7270" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ExamTest_Application" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_CashFlow_PaymentModeSub" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ExamTest_TestPaper" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ExamTestSection_ExamTest" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__ExamTestA__Answe__379BF032" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__ExamTestA__Answe__48C67C34" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__ExamTestA__Answe__4BA2E8DF" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__ExamTestA__Answe__4E7F558A" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__ExamTestA__Answe__515BC235" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__ExamTestA__Answe__54382EE0" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__ExamTestA__Answe__57149B8B" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__ExamTestA__Answe__59F10836" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__ExamTestA__Answe__5CCD74E1" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__ExamTestA__Answe__5FA9E18C" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__ExamTestA__Quest__07220AB2" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ExamTestAnswer_ExamTestSection" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ExamTestSection_Module" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__TestPaper__ExamT__3E48EDC1" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__TestPaper__ExamT__49BAA06D" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__TestPaper__ExamT__4C970D18" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__TestPaper__ExamT__4F7379C3" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__TestPaper__ExamT__524FE66E" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__TestPaper__ExamT__552C5319" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__TestPaper__ExamT__5808BFC4" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__TestPaper__ExamT__5AE52C6F" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__TestPaper__ExamT__5DC1991A" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__TestPaper__ExamT__609E05C5" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_FutureTransactionPayment_PaymentModeSub" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__TestQuest__MarkG__4AAEC4A6" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__TestQuest__MarkG__4D8B3151" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__TestQuest__MarkG__50679DFC" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__TestQuest__MarkG__53440AA7" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__TestQuest__MarkG__56207752" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__TestQuest__MarkG__58FCE3FD" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__TestQuest__MarkG__5BD950A8" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__TestQuest__MarkG__5EB5BD53" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__TestQuest__MarkG__619229FE" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Menu_MenuCatagory" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_TestModule_Module" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_PaymentModeSub_PaymentModeSub" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_UniversityPaymentMaster_PaymentModeSub" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_TestQuestion_QuestionType" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_TestPaper_Subject" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_TestModule_TestPaper" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_TestSection_TestModule" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_TestQuestion_TestSection" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__TestQuest__TestS__71F1E3A2" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__StudentAb__Batch__7B51FC01" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__StudentEa__Batch__7E2E68AC" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__StudentLa__Batch__7C46203A" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__StudentLe__Batch__7D3A4473" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ChequeClearance_PaymentModeSub" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VisibilityType" Width="1.5" PointX="34.375" PointY="8" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.Video" Width="1.5" PointX="16.25" PointY="149.875" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__Video__SubjectKe__24541194" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwClassDetailsSelectActiveOnly" Width="1.5" PointX="35.375" PointY="16.75" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.BankStatementDetail" Width="1.5" PointX="52.5" PointY="207.75" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_BankReconciliation_BankStatement" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_BankStatement_BankAccount" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_BankStatement_BankTransactionType" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_BankStatement_CashFlowType" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_OtherBankTransactions_BankStatementDetails" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwBankPaymentSelect" Width="1.5" PointX="35.375" PointY="21.75" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.CondentType" Width="1.5" PointX="35.375" PointY="27.375" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.StudentTCDetail" Width="1.5" PointX="39.875" PointY="27.5" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.TCConfigColumn" Width="1.5" PointX="37.625" PointY="27" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_TCConfigColumns_CondentType" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_StudentTCDetails_TCConfigColumns" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.AssetDetail" Width="1.5" PointX="39" PointY="238.875" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.AssetPurchaseDetail" Width="1.5" PointX="47.5" PointY="244.125" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.AssetPurchaseMaster" Width="1.5" PointX="41.25" PointY="244.5" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.AssetPurchasePayment" Width="1.5" PointX="54.25" PointY="223.25" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.AttendanceCategory" Width="1.5" PointX="3" PointY="191.125" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.AttendanceCategoryWeekOff" Width="1.5" PointX="5.25" PointY="166" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.AttendencePresentStatu" Width="1.5" PointX="44.75" PointY="248.5" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.DepartmentShift" Width="1.5" PointX="30.75" PointY="225.5" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.DepreciationMethod" Width="1.5" PointX="34.5" PointY="251.25" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.EmployeeAttendance" Width="1.5" PointX="47" PointY="227.75" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.EmployeeAttendanceLog" Width="1.5" PointX="49.25" PointY="230.25" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.EmployeeAttendanceStatu" Width="1.5" PointX="44.75" PointY="244" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.EmployeeMonthlyPF" Width="1.5" PointX="23.375" PointY="35.75" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.EmployeeOvertime" Width="1.5" PointX="7.5" PointY="249.25" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.EmployeePFSetting" Width="1.5" PointX="7.5" PointY="245.5" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.EmployeeSalaryAdvanceDetail" Width="1.5" PointX="57.5" PointY="205.375" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.EmployeeSalaryAdvanceReturnDetail" Width="1.5" PointX="54.5" PointY="218.875" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.EmployeeSalaryDetail" Width="1.5" PointX="53.25" PointY="195.375" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.EmployeeSalaryMaster" Width="1.5" PointX="50" PointY="186.125" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.EmployeeSalaryOtherAmount" Width="1.5" PointX="52.25" PointY="187.375" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.EmployeeShift" Width="1.5" PointX="8.25" PointY="222.875" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.EmployeeShiftDetail" Width="1.5" PointX="10.5" PointY="216.375" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.EmployeeWorkType" Width="1.5" PointX="3" PointY="242.125" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.LeaveApplication" Width="1.5" PointX="32" PointY="208.875" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.LeaveCarryForward" Width="1.5" PointX="13.5" PointY="216.25" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.LeaveCountType" Width="1.5" PointX="20.375" PointY="8.75" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.LeaveDurationType" Width="1.5" PointX="29.75" PointY="219.75" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.LeaveType" Width="1.5" PointX="29.75" PointY="177.5" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.LibraryCardConfig" Width="1.5" PointX="22.375" PointY="8.75" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.LoanMonthlyRepayment" Width="1.5" PointX="55.25" PointY="205.125" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.OverTimeFormulaType" Width="1.5" PointX="0.75" PointY="194.125" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.SalaryComponent" Width="1.5" PointX="55.25" PointY="209.5" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.SalaryConfiguration" Width="1.5" PointX="7.375" PointY="27.75" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.SalaryHead" Width="1.5" PointX="29.5" PointY="199.5" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.SalaryHeadType" Width="1.5" PointX="27.25" PointY="196" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.SalaryType" Width="1.5" PointX="3" PointY="239.375" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.ShiftBreak" Width="1.5" PointX="22.75" PointY="250.875" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_AssetDetails_Branch" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_AssetDetails_PeriodType" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_AssetPurchaseDetails_AssetPurchaseMaster" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_AssetPurchaseDetails_DepreciationMethods" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_AssetPurchaseDetails_PeriodType" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_AssetPurchasePayments_AssetPurchaseMaster" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_AssetPurchasePayments_Branch" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_AssetPurchasePayments_PaymentMode" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_AttendanceCategory_OverTimeFormulaType" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_AttendanceCategoryWeekOff_AttendanceCategory" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeAttendance_AttendanceConfigType" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeAttendance_AttendencePresentStatus" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeAttendanceLog_AttendancePresentStatus" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeAttendance_Branch" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_SalaryComponent_ComponentType" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_DepartmentShift_Department" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_DesignationGradeDetail_SalaryHead" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeAttendance_AttendanceStatus1" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeAttendance_EmployeeAttendanceStatus" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeAttendance_LeaveType" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeAttendance_ProcessStatus" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeAttendanceLog_EmployeeAttendance" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeAttendanceLog_EmployeeAttendanceStatus" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_LoanMonthlyRepayment_EmployeeLoan" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeSalaryAdvanceDetails_EmployeeSalaryMaster" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeSalaryDetail_EmployeeSalaryMaster" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeSalaryDetail_SalaryHead" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeSalaryMaster_ProcessStatus" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeSalaryMaster_SalaryType" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeSalaryOtherAmount_EmployeeSalaryMaster" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_LoanMonthlyRepayment_EmployeeSalaryMaster" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_SalaryComponent_EmployeeSalaryMaster" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeShiftDetail_EmployeeShift" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_LeaveApplication_LeaveDurationType" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_LeaveApplication_LeaveType" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_LeaveApplication_ProcessStatus" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_LeaveCarryForward_LeaveType" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_SalaryComponent_ProcessStatus" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_SalaryHead_SalaryHeadType" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.Shift" Width="1.5" PointX="0.75" PointY="226.125" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_DepartmentShift_Shift" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeAttendance_Shift" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeShift_Shift" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ShiftBreak_Shift" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.AttendanceConfiguration" Width="1.5" PointX="31" PointY="245.75" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.DepreciationDetail" Width="1.5" PointX="49.75" PointY="246" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_DepreciationDetails_AssetPurchaseDetails" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_AttendanceConfiguration_AttendanceConfigType" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_AttendanceConfiguration_Branch" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_AttendanceConfiguration_Shift" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_AttendanceConfiguration_UnitType" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.EnquiryLead" Width="1.5" PointX="26" PointY="182.375" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EnquiryLead_Branch" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__EnquiryLe__Telep__31AE0CB2" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__EnquiryLe__TeleP__32A230EB" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EnquiryLead_M_Department" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__EnquiryLe__Natur__2FC5C440" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__EnquiryLe__RefLe__11D56EA6" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EnquiryLead_EnquiryStatus" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EnquiryLeadFeedback_EnquiryLead" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.AdsAPI" Width="1.5" PointX="25.375" PointY="36" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__EnquiryLe__AdsAP__63CF782B" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VwMobileNumbersWithCountry" Width="1.5" PointX="35.375" PointY="31.75" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.BranchAccount" Width="1.5" PointX="47.25" PointY="218.25" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_BranchAccount_Branch" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.EmployeeSalaryAdvancePayment" Width="1.5" PointX="52.25" PointY="213.25" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.EmployeeSalaryAdvanceReturnMaster" Width="1.5" PointX="51.25" PointY="221.625" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.EmployeeSalaryPayment" Width="1.5" PointX="56.25" PointY="197.5" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeSalaryAdvanceDetails_EmployeeSalaryAdvancePayment" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeSalaryAdvancePayment_PaymentMode" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeSalaryAdvancePayment_PaymentModeSub" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeSalaryAdvanceReturnDetails_EmployeeSalaryAdvancePayment" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeSalaryAdvanceReturnDetails_EmployeeSalaryAdvanceReturnMaster" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeSalaryAdvanceReturnMaster_PaymentMode" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeSalaryAdvanceReturnMaster_PaymentModeSub" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeSalaryPayment_EmployeeSalaryPayment" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeSalaryPayment_PaymentMode" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeSalaryPayment_PaymentModeSub" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.StudentTCMaster" Width="1.5" PointX="44.25" PointY="180.25" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.TCReasonMaster" Width="1.5" PointX="42" PointY="164.125" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_StudentTCMaster_Application" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_StudentTCDetails_StudentTCMaster" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_StudentTCMaster_TCReasonMaster" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.AccountFlow" Width="1.5" PointX="57.25" PointY="224.125" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.BankAccount" Width="1.5" PointX="57.25" PointY="215" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__AccountFl__Accou__7F7792A0" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_AccountFlow_Branch" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_AccountFlow_CashFlowType" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_AccountFlow_TransactionType" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_AccountFlow_VoucherType" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__BankAccou__Accou__006BB6D9" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_AccountTransactionPayment_BankAccount" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_AssetPurchasePayments_BankAccount" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_BankAccount_Bank" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_BankAccount_BankAccountType" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_BankAccount_Branch" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_BankReconciliation_BankAccount" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_BankStatementMaster_BankAccount" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_BankTransaction_BankAccountFrom" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_BankTransaction_BankAccountTo" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_BranchAccount_BankAccount" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_CashFlow_BankAccount" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ChequeClearance_BankAccount" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeLoanPayment_BankAccount" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeSalaryAdvancePayment_BankAccount" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeSalaryAdvanceReturnMaster_BankAccount" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeSalaryPayment_BankAccount" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_FutureTransactionPayment_BankAccount" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_OtherBankTransactions_BankAccount" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_UniversityPaymentMaster_BankAccount" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.Party" Width="1.5" PointX="49.25" PointY="234.75" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__Party__AccountHe__174F1C31" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_AssetPurchaseMaster_AssetPurchaseMaster" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Party_Branch" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Party_PartyType" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Party_Province" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.AssetType" Width="1.5" PointX="52.25" PointY="231.875" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__AssetType__Accou__1843406A" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_AssetDetails_AssetType" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_AssetPurchaseDetails_AssetType" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_AssetType_DepreciationMethods" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_AssetType_HSNCodeMaster" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.UniversityMaster" Width="1.5" PointX="44.25" PointY="160.25" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__Universit__Accou__1B1FAD15" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Application_UniversityMaster" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Books_UniversityMaster" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_CommonSubjectDetails_UniversityMaster" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_CourseSubjectMaster_UniversityMaster" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ExamScheduleMaster_UniversityMaster" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_InternalExam_UniversityMaster" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_M_UniversityCourse_M_UniversityMaster" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.GeneralConfiguration" Width="1.5" PointX="35.375" PointY="34.75" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.Employee" Width="1.5" PointX="52.25" PointY="164.5" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__Employee__Accoun__1C13D14E" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_AdditionalSalaryComponent_Employee" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__Applicati__Emplo__66ABE4D6" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Employee_AppUser" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Employee_AppUser1" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_T_Attendance_Employee" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Employee_AttendanceCategory" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Employee_AttendanceConfigType" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Employee_BloodGroup" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Employee_Branch" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ContactVerification_Employee" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Employee_Country" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Employee_Country1" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Employee_Department" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Employee_Designation" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Employee_DesignationGrade" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__UnitTestS__Emplo__75AE3144" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Employee_EmployeeCategory" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Employee_EmployeeStatus" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Employee_EmployeeWorkType" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Employee_MaritalStatus" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Employee_Religion" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Employee_SalaryType" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Employee_Salutation" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Employee_Shift" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeAchievements_Employee" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeAttendance_Employee" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeContact_Employee" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeFileHandover_Employee" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeFileHandover_EmployeeFileHandover" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeIdentity_Employee" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeLanguageSkill_Employee" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeLoan_Employee" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeOvertime_Employee" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeSalaryAdvancePayment_Employee" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeSalaryAdvanceReturnMaster_Employee" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeSalaryMaster_Employee" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeShiftDetail_Employee" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeTask_Employee" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EnquiryLead_Employee" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_LeaveApplication_Employee" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_LeaveCarryForward_Employee" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_PFSettings_Employee" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_SalaryComponent_Employee" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_StudentTimeTable_Employee" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_TeacherClassAllocation_Employee" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_TeacherSubjectAllocation_Employee" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_TeacherSubjectModules_Employee" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_TeacherWorkScheduleDetails_TeacherWorkScheduleDetails" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_TeacherWorkScheduleMaster_Employee" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_TimeTableMaster_Employee" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_TimeTableTempDetails_Employee" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_UserPermission_Employee" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.CashTransaction" Width="1.5" PointX="25" PointY="252.5" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_CashTransaction_Branch" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_CashTransaction_Branch1" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.DashBoardContent" Width="1.5" PointX="52.25" PointY="159.875" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.DashBoardType" Width="1.5" PointX="50" PointY="159.875" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.DashBoardUserPermission" Width="1.5" PointX="54.5" PointY="173.875" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_DashBoardContent_DashBoardType" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_DashBoardUserPermission_DashBoardContent" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_DashBoardUserPermission_Employee" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.FeeRefundDetail" Width="1.5" PointX="62.25" PointY="196.375" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_FeeRefundDetail_FeePaymentDetail" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.FeeRefundMaster" Width="1.5" PointX="59.5" PointY="194.375" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_FeeRefundMaster_Application" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_FeeRefundMaster_BankAccount" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_FeeRefundDetail_FeeRefundMaster" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_FeeRefundMaster_PaymentMode" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_FeeRefundMaster_PaymentModeSub" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_FeeRefundMaster_ProcessStatus" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_FeeRefundMaster_ProcessStatus1" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.StudentStudyMaterial" Width="1.5" PointX="16.25" PointY="176.75" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__StudentSt__Subje__13298592" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.StudentStudyMaterialDetail" Width="1.5" PointX="36.625" PointY="92.125" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_StudentStudyMaterialDetails_StudentStudyMaterial" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_StudentStudyMaterialDetails_VisibilityType" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.VideoDetail" Width="1.5" PointX="36.625" PointY="78.5" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_VideoDetails_Video" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_VideoDetails_VisibilityType" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.DocumentTrack" Width="1.5" PointX="25.5" PointY="119.375" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_DocumentTrack_AppUser" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__Universit__PaidB__5B052800" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.UniversityPaymentCancelation" Width="1.5" PointX="55.25" PointY="190.25" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_UniversityPaymentCancelation_AccountHead" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_UniversityPaymentCancelation_Application" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.BonafiedCertificate" Width="1.5" PointX="41.25" PointY="149.375" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.CourseCompletionCertificate" Width="1.5" PointX="41.25" PointY="153.5" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_BonafiedCertificate_Application" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_CourseCompletionCertificate_Application" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__FeeRefund__PaidB__04FB61CC" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.FeePaymentMaster" Width="1.5" PointX="36" PointY="219.125" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.FeeType" Width="1.5" PointX="52.25" PointY="238.75" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__FeeType__Account__1A2B88DC" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_AdmissionFee_FeeType" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_T_FeeDetails_T_Application" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_T_FeeDetails_Bank" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__FeePaymen__PaidB__34DF7F18" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_M_FeeType_CashFlowType" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_FeeDetails_M_FeeType" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_FeePaymentDetail_FeePaymentMaster" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__FeePaymen__Recei__2D095326" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_FeeMaster_M_CashType" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_FeePaymentMaster_PaymentModeSub" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_FeePaymentMaster_ProcessStatus" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_FeeRefundDetail_FeeType" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__FeeType__Receipt__2C152EED" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_FeeType_FeeTypeMode" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_FeeType_GSTMaster" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_UniversityCourseFee_FeeType" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_UniversityPaymentDetail_M_FeeType" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.RegistratonCatagory" Width="1.5" PointX="36.375" PointY="0.875" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__Applicati__Regis__6735F4BB" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.StudentCourseTransfer" Width="1.5" PointX="46.5" PointY="175.75" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.TransferAdmissionFee" Width="1.5" PointX="59.5" PointY="209.75" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_StudentCourseTransfer_AcademicTerm" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_StudentCourseTransfer_AcademicTerm1" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_StudentCourseTransfer_Application" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_TransferAdmissionFee_Application" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_StudentCourseTransfer_Course" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_StudentCourseTransfer_Course1" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_TransferAdmissionFee_FeeType" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_StudentCourseTransfer_UniversityMaster" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_StudentCourseTransfer_UniversityMaster1" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_TransferAdmissionFee_StudentCourseTransfer" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.FeeCarryForwordDetail" Width="1.5" PointX="46.5" PointY="223.875" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.FeeCarryForwordMaster" Width="1.5" PointX="38.25" PointY="248.375" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_FeeCarryForwordDetail_AdmissionFee" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_FeeCarryForwordDetail_FeeCarryForwordMaster" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_FeeCarryForwordMaster_FeePaymentMaster" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.EmployeeHierarchy" Width="1.5" PointX="54.5" PointY="178.375" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeHierarchy_Employee" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeHierarchy_Employee1" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.ApplicationWebForm" Width="1.5" PointX="47" PointY="116.5" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ApplicationWebForm_AcademicTerm" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ApplicationWebForm_Agent" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ApplicationWebForm_Application" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ApplicationWebForm_Branch" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ApplicationWebForm_Caste" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ApplicationWebForm_CommunityType" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ApplicationWebForm_Course" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ApplicationWebForm_NatureOfEnquiry" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ApplicationWebForm_Religion" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ApplicationWebForm_UniversityMaster" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__Applicati__Secon__4476C863" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__Applicati__Emplo__465F10D5" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.CounsellingTime" Width="1.5" PointX="36.375" PointY="3.75" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.EmployeeEnquiryTarget" Width="1.5" PointX="54.5" PointY="169.25" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeEnquiryTarget_Employee" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.EmployeeEnquiryTargetDetail" Width="1.5" PointX="56.75" PointY="169.25" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeEnquiryTargetDetails_EmployeeEnquiryTarget" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.Enquiry" Width="1.5" PointX="57.5" PointY="183" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Enquiry_AcademicTerm" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Application_Enquiry" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ApplicationWebForm_Enquiry" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__Enquiry__OtherBr__0FED2634" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Enquiry_Branch" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__Enquiry__Country__10E14A6D" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Enquiry_M_Course" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Enquiry_Employee" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Enquiry_EnquiryStatus" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Enquiry_M_UniversityMaster" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Enquiry_NatureOfEnquiry" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EnquiryFeedback_Enquiry" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EnquiryLead_Enquiry" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Scholarship_Enquiry" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.EmployeeExperience" Width="1.5" PointX="54.5" PointY="182.25" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeExperience_Employee" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__EmployeeS__PaidB__218291E1" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__EmployeeS__PaidB__2276B61A" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__EmployeeS__PaidB__236ADA53" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.ApplicationCertificate" Width="1.5" PointX="60.25" PointY="216.25" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ApplicationCertificates_Application" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ApplicationCertificates_CertificateType" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.CourseDurationType" Width="1.5" PointX="3" PointY="180.375" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__Course__Duration__15DBD50B" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.TaxRateType" Width="1.5" PointX="36.375" PointY="8" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__FeePaymen__TaxRa__308FCB47" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.SalaryOtherAmountType" Width="1.5" PointX="36.375" PointY="12" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeSalaryOtherAmount_SalaryOtherAmountType" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.EmployeeEducation" Width="1.5" PointX="60.5" PointY="204.375" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_Education_EducationType" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__Education__Emplo__3F9D04AD" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.EmployeeAccount" Width="1.5" PointX="57.5" PointY="176.625" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeAccount_Bank" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_EmployeeAccount_Employee" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__StudentTi__Branc__0BE8567D" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.ApplicationFeeFollowup" Width="1.5" PointX="47.25" PointY="183.375" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.ExtendFeeFollowUpDate" Width="1.5" PointX="49.5" PointY="181.875" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.FeeFollowUpFeeType" Width="1.5" PointX="54.5" PointY="215.25" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ApplicationFeeFollowup_Application" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ApplicationFeeFollowup_ProcessStatus" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ExtendFeeFollowUpDate_ApplicationFeeFollowup" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_FeeFollowUpFeeType_ApplicationFeeFollowup" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_FeeFollowUpFeeType_FeeType" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.ESSLAttendnaceLogDetail" Width="1.5" PointX="22.375" PointY="0.75" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.ApplicationSchedule" Width="1.5" PointX="47.25" PointY="188.125" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.ApplicationScheduleCallStatu" Width="1.5" PointX="45" PointY="151.5" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.ApplicationScheduleType" Width="1.5" PointX="45" PointY="156" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ApplicationSchedule_Application" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ApplicationSchedule_ApplicationScheduleCallStatus" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ApplicationSchedule_ApplicationScheduleType" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ApplicationSchedule_CallType" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_ApplicationSchedule_ProcessStatus" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.EsslStudent" Width="1.5" PointX="17.375" PointY="37" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK__Applicati__BioMe__2F869875" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.UserManualDetail" Width="1.5" PointX="57.5" PointY="164.125" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.UserManualMaster" Width="1.5" PointX="55.25" PointY="163.375" />
+        <EntityTypeShape EntityType="CITSEduSuiteDataModel.UserManualType" Width="1.5" PointX="53" PointY="156.25" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_UserManualMaster_DashBoardType" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_UserManualMaster_Menu" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_UserManualMaster_MenuType" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_UserManualDetails_UserManualMaster" />
+        <AssociationConnector Association="CITSEduSuiteDataModel.FK_UserManualMaster_UserManualType" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

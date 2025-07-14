@@ -1,0 +1,97 @@
+﻿<div class="row">
+    <div class="col-12 col-lg-8">
+        <div class="row portal-menu p-4">
+            <!-- Column -->
+            <div class="col-6 col-lg-2 col-xlg-3 p-0 mr-5">
+                <a class="card card-hover" onclick="TeacherPortal.GetStudents('{{BranchKey}}', '{{ClassDetailsKey}}', '{{ClassName}}',1)">
+                    <div class="box  text-center">
+                        <h1 class="font-light "><i class="fa fa-users"></i></h1>
+                        <h6 class="">Students</h6>
+                    </div>
+                </a>
+            </div>
+            <!-- Column -->
+            <div class="col-6 col-lg-2 col-xlg-3 p-0 mr-5">
+                <a class="card card-hover" onclick="TeacherPortal.GetAttendances('{{BranchKey}}', '{{ClassDetailsKey}}', '{{ClassName}}')">
+                    <div class="box text-center">
+                        <h1 class="font-light "><i class="fa fa-clock-o"></i></h1>
+                        <h6 class="">Attendance</h6>
+                    </div>
+                </a>
+            </div>
+            <!-- Column -->
+            <!-- Column -->
+            <div class="col-6 col-lg-2 col-xlg-3 p-0 mr-5 d-none">
+                <a class="card card-hover" onclick="TeacherPortal.WorkUpdateClick('{{BranchKey}}', '{{ClassDetailsKey}}', '{{ClassName}}')">
+                    <div class="box text-center">
+                        <h1 class="font-light "><i class="fa fa-user"></i></h1>
+                        <h6 class="">Class Notes</h6>
+                    </div>
+                </a>
+            </div>
+            <!-- Column -->
+            <div class="col-6 col-lg-2 col-xlg-3 p-0 mr-5 d-none">
+                <a class="card card-hover" onclick="TeacherPortal.GetUnitTest('{{BranchKey}}', '{{ClassDetailsKey}}', '{{ClassName}}')">
+                    <div class="box  text-center">
+                        <h1 class="font-light "><i class="fa fa-paperclip"></i></h1>
+                        <h6 class="">Unit Test</h6>
+                    </div>
+                </a>
+            </div>
+            <!-- Column -->
+            <div class="col-6 col-lg-2 col-xlg-3 p-0 mr-5 d-none" onclick="TeacherPortal.GetStudents('{{BranchKey}}', '{{ClassDetailsKey}}', '{{ClassName}}',2)">
+                <a class="card card-hover">
+                    <div class="box text-center">
+                        <h1 class="font-light "><i class="fa fa-calendar"></i></h1>
+                        <h6 class="">Dairy</h6>
+                    </div>
+                </a>
+            </div>
+            <!-- Column -->
+            <!--<div class="col-6 col-lg-4 col-xlg-3 p-0 d-none">
+                <a class="card card-hover">
+                    <div class="box  text-center">
+                        <h1 class="font-light "><i class="fa fa-rupee"></i></h1>
+                        <h6 class="">Due List</h6>
+                    </div>
+                </a>
+            </div>-->
+            <!-- Column -->
+            <!--<div class="col-6 col-lg-4 col-xlg-3 p-0" onclick="TeacherPortal.GetStudents('{{BranchKey}}', '{{ClassDetailsKey}}', '{{ClassName}}',3)">
+                <a class="card card-hover">
+                    <div class="box w3-cyan text-center">
+                        <h1 class="font-light "><i class="fa fa-rupee"></i></h1>
+                        <h6 class="">Parents Meeting</h6>
+                    </div>
+                </a>
+            </div>-->
+          
+            <div class="col-6 col-lg-2 col-xlg-3 p-0 mr-5 d-none" onclick="TeacherPortal.GetWorkUpdates('{{BranchKey}}', '{{ClassDetailsKey}}', '{{ClassName}}', 3)">
+                <a class="card card-hover">
+                    <div class="box  text-center">
+                        <h1 class="font-light "><i class="fa fa-wrench"></i></h1>
+                        <h6 class="">Work Updates</h6>
+                    </div>
+                </a>
+            </div>
+            <!--<div class="col-6 col-lg-4 col-xlg-3 p-0" onclick="TeacherPortal.EmployeeTimeTable()">
+                <a class="card card-hover">
+                    <div class="box w3-amber text-center">
+                        <h1 class="font-light "><i class="fa fa-address-card-o"></i></h1>
+                        <h6 class="">Time Table</h6>
+                    </div>
+                </a>
+            </div>
+            <div class="col-6 col-lg-4 col-xlg-3 p-0" onclick="TeacherPortal.EmployeeEvents()">
+                <a class="card card-hover">
+                    <div class="box w3-amber text-center">
+                        <h1 class="font-light "><i class="fa fa-address-card-o"></i></h1>
+                        <h6 class="">Events</h6>
+                    </div>
+                </a>
+            </div>-->
+
+        </div>
+    </div>
+
+</div>

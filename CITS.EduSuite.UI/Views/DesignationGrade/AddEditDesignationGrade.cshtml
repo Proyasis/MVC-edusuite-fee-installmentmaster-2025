@@ -1,0 +1,362 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.DesignationGradeViewModel
+
+
+
+@section scripts{
+    @Styles.Render("~/Content/ExcelSheetCSS")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/CitsValidation")
+    @Scripts.Render("~/Content/ExcelSheetJS")
+    @Scripts.Render("~/Scripts/DesignationGrade")
+    @Scripts.Render("~/Scripts/Common")
+
+}
+
+<input type="hidden" id="hdnGetDesignationGradeDetailsById" value="@Url.Action("GetDesignationGradeDetailsById", "DesignationGrade")" />
+<input type="hidden" id="hdnDesignationGradeList" value="@Url.Action("DesignationGradeList", "DesignationGrade")" />
+<script src="~/Scripts/tagInputAutocomplete.js"></script>
+@using (Html.BeginForm("AddEditDesignationGrade", "DesignationGrade", FormMethod.Post))
+{
+    @Html.HiddenFor(m => m.RowKey)
+    @Html.HiddenFor(m => m.TotalIncludedAmount)
+
+
+
+    <header class="section-header">
+        <div class="row justify-content-between px-1">
+            <div class="col-12">
+                <div class="tbl">
+                    <div class="tbl-row">
+                        <div class="tbl-cell">
+                            <h3>@EduSuiteUIResources.Add@EduSuiteUIResources.Hyphen@EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Designation@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Grade</h3>
+                            <ol class="breadcrumb breadcrumb-simple mb-2 float-sm-right">
+                                <li><a href="#" onclick="location.href='@Url.Action("DesignationGradeList", "DesignationGrade")' ">@EduSuiteUIResources.DesignationGrade</a></li>
+                                <li class="active">@EduSuiteUIResources.Add@EduSuiteUIResources.Hyphen@EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.DesignationGrade</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="section-content mx-sm-3 mx-0">
+        <div class="form-master">
+
+
+            <div class="form-master border_fieldset">
+                <div class="form-row">
+                    <div class="col-sm-3 ">
+                        <fieldset class="form-group">
+                            @Html.Label(EduSuiteUIResources.Designation + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Name, htmlAttributes: new { @id = "lblDesignation", @class = "form-label" })
+                            @Html.DropDownListFor(m => m.DesignationKey, new SelectList(Model.Designations, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Designation, new { @class = "form-control input-control", @InputFor = "lblDesignation" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.DesignationKey)
+                            </span>
+                        </fieldset>
+                    </div>
+                    <div class="col-sm-3 ">
+                        <fieldset class="form-group">
+                            @Html.Label(EduSuiteUIResources.Grade + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Name, htmlAttributes: new { @id = "lblDesignation", @class = "form-label" })
+                            @Html.TextBoxFor(m => m.DesignationGradeName, new { @class = "form-control input-control", @InputFor = "lblGradeName" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.DesignationGradeName)
+                            </span>
+                        </fieldset>
+                    </div>
+                    @*<div class="col-sm-3 form-col">
+                            <div class="form-group">
+                                <label class="lblControlHead"></label>
+                                <br />
+                                <a id="btnDownload" class="btn btn-danger btn-sm ">
+                                    <i class="fa fa-download" aria-hidden="true"></i>@EduSuiteUIResources.Download@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.ExcelSheet
+                                </a>
+                            </div>
+                        </div>*@
+
+                </div>
+                <div id="dvSalaryDetailsList" class="form-row">
+                    <div class="col-12 form-col">
+                        <table id="tblSalaryDetails" class="table table-bordered w-100 white-bg">
+                            <thead>
+                                <tr>
+                                    <th>@EduSuiteUIResources.Code</th>
+                                    <th>@EduSuiteUIResources.Salary@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Head</th>
+                                    <th>@EduSuiteUIResources.Formula</th>
+                                    <th>@EduSuiteUIResources.Amount</th>
+                                    <th>@EduSuiteUIResources.Inclusive</th>
+                                    <th class="d-none">@EduSuiteUIResources.Type</th>
+                                    <th class="d-none">@EduSuiteUIResources.Applicable@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Formula</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr data-code="TSLR">
+                                    <td>
+                                        TSLR
+                                    </td>
+                                    <td class="">
+                                        @EduSuiteUIResources.TotalSalary
+
+                                    </td>
+
+                                    <td class=""></td>
+                                    <td class="">
+                                        @Html.TextBoxFor(m => m.MonthlySalary, "{0:G29}", new { @class = "form-control input-control  text-right-decimal", @CharSpace = "RemoveSpace", @onClick = "this.setSelectionRange(0, this.value.length)", @fixedsalary = "true" })
+                                        <span class="form-control-error-text">
+                                            @Html.ValidationMessageFor(m => m.MonthlySalary)
+                                        </span>
+
+                                    </td>
+                                    <td></td>
+                                    <td class="d-none"></td>
+                                    <td class="d-none"></td>
+
+                                </tr>
+                                @for (int i = 0; i < Model.DesignationGradeDetails.Count; i++)
+                                {
+                                    if (i == 0 || (Model.DesignationGradeDetails[i].SalaryHeadTypeKey != Model.DesignationGradeDetails[i - 1].SalaryHeadTypeKey))
+                                    {
+                                        <tr>
+                                            <th colspan="7" class="text-center bg-secondary">@Model.DesignationGradeDetails[i].SalaryHeadTypeName</th>
+                                        </tr>
+                                    }
+
+                                    <tr data-code=@Model.DesignationGradeDetails[i].SalaryHeadCode>
+                                        <td>
+                                            @Model.DesignationGradeDetails[i].SalaryHeadCode
+                                        </td>
+                                        <td>
+                                            @Model.DesignationGradeDetails[i].SalaryHeadName
+                                            @Html.HiddenFor(m => m.DesignationGradeDetails[i].RowKey)
+                                            @Html.HiddenFor(m => m.DesignationGradeDetails[i].SalaryHeadKey)
+                                            @Html.HiddenFor(m => m.DesignationGradeDetails[i].SalaryHeadCode)
+                                            @Html.HiddenFor(m => m.DesignationGradeDetails[i].DesignationGradeKey)
+                                        </td>
+
+                                        <td class="paddingNone">
+                                            @Html.TextBoxFor(m => m.DesignationGradeDetails[i].Formula, new { @class = "form-control input-control", @CharSpace = "RemoveSpace", @onClick = "this.setSelectionRange(0, this.value.length)" })
+                                            <span class="form-control-error-text">
+                                                @Html.ValidationMessageFor(m => m.DesignationGradeDetails[i].Formula)
+                                            </span>
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(m => m.DesignationGradeDetails[i].AmountUnit, "{0:G29}", new { @class = "form-control input-control  text-right-decimal", @CharSpace = "RemoveSpace", @onClick = "this.setSelectionRange(0, this.value.length)", @readonly = true, @data_headtype_key = Model.DesignationGradeDetails[i].SalaryHeadTypeKey })
+
+                                            <span class="red">
+                                                @Html.ValidationMessageFor(m => m.DesignationGradeDetails[i].AmountUnit)
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <div class="switch-check">
+                                                @Html.CheckBoxFor(m => m.DesignationGradeDetails[i].IsInclude, new { @class = "switch-input" })
+                                                <div class="switch-label yesno" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                                                <div class="switch-handle"></div>
+                                            </div>
+
+                                        </td>
+                                        <td class="d-none">
+                                            <div class="switch-check" style="width:80px;">
+                                                @Html.CheckBoxFor(m => m.DesignationGradeDetails[i].IsFixed, new { @class = "switch-input" })
+                                                <div class="switch-label yesno" data-on="@EduSuiteUIResources.Fixed" data-off="@EduSuiteUIResources.Dynamic"></div>
+                                                <div class="switch-handle"></div>
+                                            </div>
+
+                                        </td>
+                                        <td class="paddingNone d-none">
+                                            <div id="dvDynamic">
+                                                @Html.TextBoxFor(m => m.DesignationGradeDetails[i].Applicable, new { @class = "form-control input-control", @CharSpace = "RemoveSpace", @onClick = "this.setSelectionRange(0, this.value.length)" })
+                                                <span class="form-control-error-text">
+                                                    @Html.ValidationMessageFor(m => m.DesignationGradeDetails[i].Applicable)
+                                                </span>
+                                            </div>
+                                        </td>
+
+                                    </tr>
+
+                                    if ((i == Model.DesignationGradeDetails.Count - 1) || (i > 1 && i < Model.DesignationGradeDetails.Count - 1 && Model.DesignationGradeDetails[i].SalaryHeadTypeKey != Model.DesignationGradeDetails[i + 1].SalaryHeadTypeKey))
+                                    {
+                                        <tr class="uppercase" data-code=@("T"+Model.DesignationGradeDetails[i].SalaryHeadTypeKey)>
+                                            <th>@("T" + Model.DesignationGradeDetails[i].SalaryHeadTypeKey)</th>
+                                            <th totalname>
+                                                @EduSuiteUIResources.Total@EduSuiteUIResources.BlankSpace@Model.DesignationGradeDetails[i].SalaryHeadTypeName
+                                            </th>
+
+                                            <th></th>
+                                            <th totalsalaryhead>
+                                                @Html.TextBox("AmountUnit" + Model.DesignationGradeDetails[i].SalaryHeadTypeKey, String.Format("{0:G29}", Model.DesignationGradeDetails.Where(row => row.SalaryHeadTypeKey == Model.DesignationGradeDetails[i].SalaryHeadTypeKey).Select(row => row.AmountUnit).DefaultIfEmpty().Sum()), new { @class = "form-control input-control  text-right-decimal", @CharSpace = "RemoveSpace", @onClick = "this.setSelectionRange(0, this.value.length)", @readonly = true, @data_headtype_key = Model.DesignationGradeDetails[i].SalaryHeadTypeKey })
+
+                                            </th>
+                                            <th></th>
+                                            <th class="d-none"></th>
+                                            <th class="d-none"></th>
+                                        </tr>
+
+                                    }
+
+                                }
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-sm-6 form-col">
+                        <div class="form-group col-sm-12 paddingNone">
+                            <input type="submit" value="@EduSuiteUIResources.Save" id="btnSave" class="btn btn-sm btn-success mx-1" />
+                            <button type="button" data-dismiss="modal" class="btn btn-sm btn-danger mx-1">@EduSuiteUIResources.Cancel</button>
+                        </div>
+                        <div class="col-sm-12 paddingNone">
+                            <span class="ValidateDataMsg"> @Html.ValidationMessage("error_msg")  </span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+
+        </div>
+    </section>
+}
+<style>
+    .tag-ctn, .tag-ctn tag-ctn-bootstrap-focus {
+        border: none !important;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        var jsonData=@(Html.Raw(Json.Encode(Model)));
+        var SalaryHeadList=[];
+        SalaryHeadList=jsonData["DesignationGradeDetails"].map(function(item){
+            return {id:item.SalaryHeadCode,name:item.SalaryHeadName}
+        });
+        SalaryHeadList.push({id:"TSLR",name: '@EduSuiteUIResources.TotalSalary'})
+
+        var LastIndex = 0;
+        $("#keywords a").on("dblclick", function () {
+
+            var _this = $("input[name='DesignationGradeDetails[" + LastIndex + "].Formula']");
+            var item = $(_this).closest("tr");
+            var val = $(_this).val();
+            val = val + $(this).data("val");
+            $(_this).val(val).trigger("change");
+        });
+        $("input").on("focus", function () {
+            LastIndex = $(this).closest("tr").index() - 1;
+        });
+        $("#MonthlySalary").on("input", function () {
+            $("#tblSalaryDetails tbody tr[data-code]").each(function () {
+                AppCommon.CalculateRowAmount(this);
+            });
+            $("[totalsalaryhead]>input[name*=AmountUnit]").each(function () {
+
+                var TotalAmount=0;
+                $("[name*=AmountUnit][data-headtype-key="+this.dataset.headtypeKey+"]").not(":last").each(function(){
+
+                    TotalAmount+=(parseFloat(this.value)?parseFloat(this.value):0)
+                })
+                $(this).val(AppCommon.RoundTo(TotalAmount, 0).toString());
+
+            });
+            CaculateIncludedAmount();
+        });
+        $("[id*=IsInclude]").on("change", function () {
+        CaculateIncludedAmount();
+        });
+
+        $("[name*=Formula]").each(function () {
+
+            var _this=$(this).closest("tr");
+            var code=$(_this).data("code");
+            var Data=SalaryHeadList.filter(function(n,p){
+                return  n.id!==code
+            })
+            var tageSuggest= $(this).tagSuggest({
+                data: Data,
+                sortOrder: 'name',
+                name: $(this).prop("name"),
+                maxDropHeight: 200,
+                emptyTextCls: "form-control input-control",
+                valueField: "id",
+                displayField: "name",
+                resultAsString: false,
+                hideTrigger: true,
+                emptyText: function () {
+                    return "Enter your formula here ...";
+                },
+                allowDuplicate:true,
+                width:"100%",
+                value: $(this).val(),
+                useTabKey: true,
+                onBlur:function(){
+                    var formula=tageSuggest.getValue().join();
+                    if(formula)
+                    {
+                        AppCommon.CalculateRowAmount(_this)
+
+                        $("[totalsalaryhead]>input[name*=AmountUnit]").each(function(){
+                            var TotalAmount=0;
+                            $("[name*=AmountUnit][data-headtype-key="+this.dataset.headtypeKey+"]").not(":last").each(function(){
+                                TotalAmount+=(parseFloat(this.value)?parseFloat(this.value):0)
+                            })
+                            $(this).val(AppCommon.RoundTo(TotalAmount, 0).toString());
+
+                        });
+                        CaculateIncludedAmount();
+
+                    }
+                }
+            });
+        })
+        $("[name*=Applicable]").each(function () {
+
+            var _this = $(this).closest("tr");
+            var code = $(_this).data("code");
+            var Data = SalaryHeadList.filter(function (n, p) {
+                return n.id !== code
+            })
+            $(this).tagSuggest({
+                data: Data,
+                sortOrder: 'name',
+                name: $(this).prop("name"),
+                maxDropHeight: 200,
+                emptyTextCls: "form-control input-control",
+                valueField: "id",
+                displayField: "name",
+                resultAsString: false,
+                useTabKey: true,
+                hideTrigger: true,
+                emptyText: function () {
+                    return "Enter your formula here ...";
+                },
+                allowDuplicate: true,
+                width: "100%",
+                value: $(this).val()
+            });
+        })
+        $("[id*=IsFixed]").on("change", function () {
+            var tr = $(this).closest("tr");
+            if(this.checked)
+                $("#dvDynamic", tr).hide();
+            else
+                $("#dvDynamic", tr).show();
+        })
+        $("[id*=IsFixed]").each(function () {
+            var tr = $(this).closest("tr");
+            if (this.checked)
+                $("#dvDynamic", tr).hide();
+            else
+                $("#dvDynamic", tr).show();
+        })
+
+
+    });
+    function CaculateIncludedAmount() {
+        var TotalIncludedAmount = $("[name*=IsInclude][type=checkbox]:checked").toArray().reduce(function (sum, element) {
+            var amount = $("[id*=AmountUnit]", $(element).closest("tr")).val();
+            if (isNaN(sum)) sum = 0;
+            return sum + Number(amount);
+        }, 0);
+        $("#TotalIncludedAmount").val(TotalIncludedAmount);
+    }
+</script>

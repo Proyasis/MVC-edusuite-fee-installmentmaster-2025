@@ -1,0 +1,140 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.BankStatementMasterViewModel
+@using CITS.EduSuite.Business.Models.ViewModels;
+
+
+
+@for (int i = 0; i < Model.BankStatementDetails.Count(); i++)
+{
+    @*<div data-repeater-item>
+            <div class=" Margin_BottomNone row bottomLine paddingNone" style=" margin-top: -1px;">
+                <div class="form-group">
+                    <div class="col-sm-2 form-col paddingNone">
+                        <div class="form-group">
+                            @Html.TextBoxFor(m => Model.BankStatementDetails[i].ReferenceKey, new { @class = "form-control input-control SearchDropDown" })
+                            <span class="red">
+                                @Html.ValidationMessageFor(m => Model.BankStatementDetails[i].ReferenceKey)
+                            </span>
+                            @Html.HiddenFor(m => Model.BankStatementDetails[i].RowKey)
+                        </div>
+                    </div>
+                    <div class="col-sm-2 form-col paddingNone">
+                        <div class="form-group">
+                            @Html.TextBoxFor(m => Model.BankStatementDetails[i].TransactionDate, "{0:dd/MM/yyyy}", new { @class = "form-control input-control SearchDropDown", @data_inputmask = "'alias': 'date'", @data_input_type = "date" })
+                            <span class="red">
+                                @Html.ValidationMessageFor(m => Model.BankStatementDetails[i].TransactionDate)
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-sm-2 form-col paddingNone">
+                        <div class="form-group">
+                            @Html.TextBoxFor(m => Model.BankStatementDetails[i].Particulars, "{0:G29}", new { @class = "form-control input-control text-right-decimal SearchDropDown" })
+                            <span class="red">
+                                @Html.ValidationMessageFor(m => Model.BankStatementDetails[i].Particulars)
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-sm-1 form-col paddingNone">
+                        <div class="form-group">
+                            @Html.TextBoxFor(m => Model.BankStatementDetails[i].Amount, "{0:G29}", new { @class = "form-control input-control text-right-decimal SearchDropDown" })
+                            <span class="red">
+                                @Html.ValidationMessageFor(m => Model.BankStatementDetails[i].Amount)
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-sm-2 form-col paddingNone">
+                        <div class="form-group">
+                            @Html.DropDownListFor(m => Model.BankStatementDetails[i].BankTransactionTypeKey, new SelectList(Model.BankStatementDetails[i].BankTransactionTypes, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Bank + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.TransactionType, new { @class = "form-control input-control SearchDropDown" })
+                            <span class="red">
+                                @Html.ValidationMessageFor(m => Model.BankStatementDetails[i].BankTransactionTypeKey)
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-sm-2 form-col paddingNone">
+                        <div class="form-group">
+                            @Html.DropDownListFor(m => Model.BankStatementDetails[i].CashFlowTypeKey, new SelectList(Model.BankStatementDetails[i].CashFlowTypes, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Amount + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Type, new { @class = "form-control input-control SearchDropDown" })
+                            <span class="red">
+                                @Html.ValidationMessageFor(m => Model.BankStatementDetails[i].CashFlowTypeKey)
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-sm-1 form-col paddingNone SearchDropDown text-center white-bg">
+                        <span data-repeater-delete="" class=" btnDeleteRow">
+                            <span class="glyphicon glyphicon-remove" style="color: red;text-align: center;font-size: 15px;padding-top: 7px;"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+
+    <tr data-repeater-item>
+        <td class="p-0 align-top">
+            <span data-repeater-delete="" class="btn btn-danger btn-sm btnDeleteRow">
+                <span class=" fa fa-remove"></span>
+            </span>
+        </td>
+        <td class="p-0 align-top">
+            @Html.TextBoxFor(m => Model.BankStatementDetails[i].ReferenceKey, new { @class = "form-control input-control SearchDropDown" })
+            <span class="form-control-error-text">
+                @Html.ValidationMessageFor(m => Model.BankStatementDetails[i].ReferenceKey)
+            </span>
+            @Html.HiddenFor(m => Model.BankStatementDetails[i].RowKey)
+
+        </td>
+        <td class="p-0 align-top">
+            @Html.TextBoxFor(m => Model.BankStatementDetails[i].TransactionDate, "{0:dd/MM/yyyy}", new { @class = "form-control input-control SearchDropDown", @data_inputmask = "'alias': 'date'", @data_input_type = "date" })
+            <span class="form-control-error-text">
+                @Html.ValidationMessageFor(m => Model.BankStatementDetails[i].TransactionDate)
+            </span>
+        </td>
+        <td class="p-0 align-top">
+            @Html.TextBoxFor(m => Model.BankStatementDetails[i].Particulars, "{0:G29}", new { @class = "form-control input-control text-right-decimal SearchDropDown" })
+            <span class="form-control-error-text">
+                @Html.ValidationMessageFor(m => Model.BankStatementDetails[i].Particulars)
+            </span>
+        </td>
+        <td class="p-0 align-top">
+            @Html.TextBoxFor(m => Model.BankStatementDetails[i].Amount, "{0:G29}", new { @class = "form-control input-control text-right-decimal SearchDropDown" })
+            <span class="form-control-error-text">
+                @Html.ValidationMessageFor(m => Model.BankStatementDetails[i].Amount)
+            </span>
+        </td>
+        <td class="p-0 align-top">
+            @Html.DropDownListFor(m => Model.BankStatementDetails[i].BankTransactionTypeKey, new SelectList(Model.BankStatementDetails[i].BankTransactionTypes, "RowKey", "Text", Model.BankStatementDetails[i].BankTransactionTypeKey), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Bank + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.TransactionType, new { @class = "form-control input-control SearchDropDown" })
+            <span class="form-control-error-text">
+                @Html.ValidationMessageFor(m => Model.BankStatementDetails[i].BankTransactionTypeKey)
+            </span>
+        </td>
+        <td class="p-0 text-center">
+            @Html.DropDownListFor(m => Model.BankStatementDetails[i].CashFlowTypeKey, new SelectList(Model.BankStatementDetails[i].CashFlowTypes, "RowKey", "Text", Model.BankStatementDetails[i].CashFlowTypeKey), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Amount + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Type, new { @class = "form-control input-control SearchDropDown" })
+            <span class="form-control-error-text">
+                @Html.ValidationMessageFor(m => Model.BankStatementDetails[i].CashFlowTypeKey)
+            </span>
+
+        </td>
+
+    </tr>
+}
+
+@*<div class="row paddingNone">
+    <div class="col-sm-12 paddingNone" style=" margin-top: -1px;">
+        <div class="col-sm-11 form-col bankStatement-header">
+        </div>
+        <div class="col-sm-1  form-col bankStatement-header">
+            <span data-repeater-create class="">
+                <span class="glyphicon glyphicon-plus" style="color: green;font-size: 15px;"></span>
+            </span>
+        </div>
+    </div>
+</div>*@
+<script>
+    $(document).ready(function () {
+        var jsonData=@(Html.Raw(Json.Encode(Model)));
+        $("#RowKey").val(@Model.RowKey)
+        BankStatement.GetBankStatementDetail(jsonData);
+        AppCommon.FormatDateInput();
+        AppCommon.FormatMonthInput();
+
+
+    });
+
+</script>

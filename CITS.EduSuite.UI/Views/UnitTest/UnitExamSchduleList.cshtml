@@ -1,0 +1,169 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.UnitTestScheduleViewModel
+
+@using System.Web.Mvc
+@using CITS.EduSuite.Business.Models.ViewModels
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/Scripts/UnitTestSchedule")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Content/MultiselectJs")
+
+
+}
+<input type="hidden" id="hdnGetUnitTestSchedule" value="@Url.Action("GetUnitTestSchedule", "UnitTest")" />
+<input type="hidden" id="hdnDeleteUnitTest" value="@Url.Action("DeleteUnitTest", "UnitTest")" />
+<input type="hidden" id="hdnAddEditUnitTestSchedule" value="@Url.Action("AddEditUnitTestSchedule", "UnitTest")" />
+<input type="hidden" id="hdnFillSearchClassDetails" value="@Url.Action("FillSearchClassDetails", "UnitTest")" />
+<input type="hidden" id="hdnFillSearchBatch" value="@Url.Action("FillSearchBatch", "UnitTest")" />
+
+
+
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-sm-6 col-12">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.UnitTest</h3>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 text-right">
+            <a href="@Url.Action("AddEditUnitTestSchedule", "UnitTest")" class="btn btn-success btn-sm "><i class="fa fa-plus-square-o"></i> <span>@EduSuiteUIResources.New @EduSuiteUIResources.BlankSpace @EduSuiteUIResources.UnitTest</span></a>
+        </div>
+    </div>
+</header>
+<section class="section-content mx-sm-3 mx-0">
+    <div class="GridBody">
+
+        <div class="grid-nav-bar">
+            <div class=" form-row">
+                @if (Model.Branches.Count == 1)
+                {
+                    {
+                        Model.BranchKey = (Model.BranchKey ?? 0) == 0 ? (short)Model.Branches.Select(x => x.RowKey).FirstOrDefault() : Model.BranchKey;
+                    }
+                    @Html.HiddenFor(m => m.BranchKey)
+                }
+                else
+                {
+
+                    if (DbConstants.Role.AdminUserTypes.Contains(DbConstants.User.RoleKey))
+                    {
+                        <div class="col-lg-2 col-sm-4 col-6">
+                            <div class="form-group">
+                                @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Branch, new { @class = "form-control input-control autohide-select", @data_plugin_type = "select2", @InputFor = "lblBranch", @data_live_search = "true" })
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-lg-2 col-sm-4 col-6">
+                            <div class="form-group">
+                                @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), new { @class = "form-control input-control autohide-select", @data_plugin_type = "select2", @InputFor = "lblBranch" })
+                            </div>
+                        </div>
+                    }
+
+                }
+                <div class="col-lg-2 col-sm-4 col-6">
+                    <div class="form-group">
+                        @Html.DropDownListFor(m => m.ClassDetailsKey, new SelectList(Model.ClassDetails, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.ClassCode, new { @class = "form-control input-control autohide-select", @data_plugin_type = "select2", @InputFor = "lblBranch", @data_live_search = "true" })
+                    </div>
+                </div>
+                <div class="col-lg-2 col-sm-4 col-6">
+                    <div class="form-group">
+                        @Html.DropDownListFor(m => m.BatchKey, new SelectList(Model.Batches, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Batch, new { @class = "form-control input-control autohide-select", @data_plugin_type = "select2", @InputFor = "lblBranch", @data_live_search = "true" })
+                    </div>
+                </div>
+
+                <div class="col-lg-2 col-sm-4 col-6">
+                    <fieldset class="form-group">
+                        @Html.TextBoxFor(m => m.SearchDate, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_input_type = "date", @data_inputmask = "'alias': 'dd/mm/yyyy'", @placeholder = "" + @EduSuiteUIResources.Date + "" })
+                        <span id="iconSpandate" class="iconSpan"><i class="fa fa-times-circle" aria-hidden="true"></i></span>
+                    </fieldset>
+                </div>
+                <div class="col-lg-2 col-sm-4 col-6">
+                    <input id="txtsearch" type="text" name="focus" class="form-control gridSearchTextBox" placeholder="@EduSuiteUIResources.Search @EduSuiteUIResources.SubjectName @EduSuiteUIResources.Coma @EduSuiteUIResources.Module" /> @* Change Search TextBox Placeholder*@
+                    <span id="iconSpantext" class="iconSpan"><i class="fa fa-times-circle" aria-hidden="true"></i></span>
+                </div>
+
+                <div class="col-lg-2 col-sm-4 col-6">
+                    <a class="btn btn-info btn-sm float-right " onclick='window.location.reload()'>
+                        <i class="fa fa-refresh"></i>   @EduSuiteUIResources.Refresh
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-wrapper">
+
+            <div class="jqGrid_wrapper overflow-auto">
+                <table id="grid"></table>
+                <div id="pager"></div>
+            </div>
+        </div>
+
+
+    </div>
+</section>
+
+<script>
+    $(document).ready(function () {
+
+        AppCommon.FormatDateInput();
+
+        BindClass();
+        BindBatch();
+        $("#txtsearch").on("input", function () {
+            UnitTestSchedule.GetUnitTestSchedule();
+        });
+
+        $("#SearchDate").on("changeDate", function () {
+            UnitTestSchedule.GetUnitTestSchedule();
+        })
+        $("#BranchKey").change(function () {
+            BindClass();
+            BindBatch();
+            UnitTestSchedule.GetUnitTestSchedule();
+        });
+        $("#ClassDetailsKey").change(function () {
+            BindBatch();
+            UnitTestSchedule.GetUnitTestSchedule();
+        });
+        $("#BatchKey").change(function () {
+            UnitTestSchedule.GetUnitTestSchedule();
+        });
+
+        $("#iconSpantext").click(function () {
+            $('#txtsearch').val('');
+            UnitTestSchedule.GetUnitTestSchedule();
+        });
+        $("#iconSpandate").click(function () {
+            $('#SearchDate').val('');
+            UnitTestSchedule.GetUnitTestSchedule();
+        });
+
+        UnitTestSchedule.GetUnitTestSchedule();
+        
+    });
+
+    var BindClass = function () {
+        var obj = {};
+        obj.key = $("#BranchKey").val() != "" ? $("#BranchKey").val() : 0;
+        AppCommon.BindDropDownbyId(obj, $("#hdnFillSearchClassDetails").val(), $("#ClassDetailsKey"), Resources.ClassCode);
+        UnitTestSchedule.GetUnitTestSchedule();
+    }
+    var BindBatch = function () {
+        var obj = {};
+        obj.BranchKey = $("#BranchKey").val() != "" ? $("#BranchKey").val() : 0;
+        obj.ClassDetailsKey = $("#ClassDetailsKey").val() != "" ? $("#ClassDetailsKey").val() : 0;
+        AppCommon.BindDropDownbyId(obj, $("#hdnFillSearchBatch").val(), $("#BatchKey"), Resources.Batch);
+        UnitTestSchedule.GetUnitTestSchedule();
+    }
+</script>

@@ -1,0 +1,181 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.DepreciationViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+@using CITS.EduSuite.UI.Resources
+@{
+    ViewBag.Title = EduSuiteUIResources.Add + EduSuiteUIResources.Sla + EduSuiteUIResources.Edit + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Depreciation;
+}
+
+<div class="modal-header">
+    <i data-dismiss="modal" class="fa fa-remove close"></i>
+    <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.Add @EduSuiteUIResources.Sla @EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace @EduSuiteUIResources.Depreciation</h4>
+</div>
+@using (Html.BeginForm("AddEditDepreciation", "Depreciation", FormMethod.Post, new { @id = "frmDepreciation" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.RowKey)
+    @Html.HiddenFor(m => m.AssetDetailsKey)
+    @Html.HiddenFor(m => m.DepreciationMethodKey)
+    @Html.HiddenFor(m => m.PurchaseAmount)
+    @Html.HiddenFor(m => m.Period)
+    @Html.ValidationSummary(true)
+
+    <div class="modal-body bottomLine">
+        <div class="topMarginSpace  form-master fnone">
+            <div class="row">
+                <div class="paddingNone">
+                    <span class="ValidateDataMsg"> @Html.ValidationMessage("error_msg")  </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 mandatoryHead ">
+                    <span>@EduSuiteUIResources.FieldsMarkedAs<span class="mandatoryStar"> * </span>@EduSuiteUIResources.AreMandatory</span>
+                </div>
+            </div>
+            <div class="row ">
+                <div class="col-sm-4 form-col">
+                    <div class="form-group ">
+                        @Html.Label(EduSuiteUIResources.Asset + @EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Name, htmlAttributes: new { @id = "lblDepreciationName", @class = "lblControlHead" })<span class="spnStar">*</span>
+                        @Html.TextBoxFor(m => m.AssetName, new { @class = "form-control input-control", @InputFor = "lblDepreciationName", @readonly = "readonly" })
+                        <span class="red">
+                            @Html.ValidationMessageFor(m => m.AssetName)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-sm-4 form-col">
+                    <div class="form-group ">
+                        @Html.Label(EduSuiteUIResources.Period, htmlAttributes: new { @id = "lblDepreciationName", @class = "lblControlHead" })<span class="spnStar">*</span>
+                        @Html.TextBoxFor(m => m.PeriodName, new { @class = "form-control input-control", @InputFor = "lblDepreciationName", @readonly = "readonly" })
+                        <span class="red">
+                            @Html.ValidationMessageFor(m => m.PeriodName)
+                        </span>
+                    </div>
+                </div>
+                @if (Model.DepreciationMethodKey == DbConstants.DepreciationMethod.Unitsofproduction)
+                {
+                    <div class="col-sm-4 form-col">
+                        <div class="form-group ">
+                            @Html.Label(EduSuiteUIResources.Production + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Limit, htmlAttributes: new { @id = "lblDepreciationName", @class = "lblControlHead" })
+                            @Html.TextBoxFor(m => m.ProductionLimit, "{0:G29}", new { @class = "form-control input-control", @InputFor = "lblDepreciationName", @readonly = "readonly" })
+                            <span class="red">
+                                @Html.ValidationMessageFor(m => m.ProductionLimit)
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 form-col">
+                        <div class="form-group ">
+                            @Html.Label(EduSuiteUIResources.Old + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Depreciation, htmlAttributes: new { @id = "lblDepreciationName", @class = "lblControlHead" })
+                            @Html.TextBoxFor(m => m.OldProduction, "{0:G29}", new { @class = "form-control input-control", @InputFor = "lblDepreciationName", @readonly = "readonly" })
+                            <span class="red">
+                                @Html.ValidationMessageFor(m => m.OldProduction)
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 form-col">
+                        <div class="form-group ">
+                            @Html.Label(EduSuiteUIResources.Production + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Unit, htmlAttributes: new { @id = "lblDepreciationName", @class = "lblControlHead" })<span class="spnStar">*</span>
+                            @Html.TextBoxFor(m => m.ProductionUnit, "{0:G29}", new { @class = "form-control input-control", @InputFor = "lblDepreciationName"})
+                            <span class="red">
+                                @Html.ValidationMessageFor(m => m.ProductionUnit)
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 form-col">
+                        <div class="form-group ">
+                            @Html.Label(EduSuiteUIResources.Production + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Balance, htmlAttributes: new { @id = "lblDepreciationName", @class = "lblControlHead" })
+                            @Html.TextBox("ProductionBalance", Model.ProductionLimit - (Model.OldProduction ?? 0) - (Model.ProductionUnit ?? 0), "{0:G29}", new { @class = "form-control input-control", @InputFor = "lblDepreciationName", @readonly = "readonly" })
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    @Html.HiddenFor(m => m.ProductionUnit)
+                }
+                <div class="col-sm-4 form-col">
+                    <div class="form-group ">
+                        @Html.Label(EduSuiteUIResources.Depreciation, htmlAttributes: new { @id = "lblDepreciationName", @class = "lblControlHead" })<span class="spnStar">*</span>
+                        @Html.TextBoxFor(m => m.Depreciation, "{0:G29}", new { @class = "form-control input-control", @InputFor = "lblDepreciationName", @readonly = "readonly" })
+                        <span class="red">
+                            @Html.ValidationMessageFor(m => m.Depreciation)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-sm-4 form-col">
+                    <div class="form-group ">
+                        @Html.Label(EduSuiteUIResources.BookValue, htmlAttributes: new { @id = "lblDepreciationName", @class = "lblControlHead" })<span class="spnStar">*</span>
+                        @Html.TextBoxFor(m => m.BookValue, "{0:G29}", new { @class = "form-control input-control", @InputFor = "lblDepreciationName", @readonly = "readonly" })
+                        <span class="red">
+                            @Html.ValidationMessageFor(m => m.BookValue)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-sm-3 form-col">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.Date, htmlAttributes: new { @id = "lblDate", @class = "lblControlHead" })<span class="spnStar">*</span>
+                        @Html.TextBoxFor(m => m.PostDate, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_inputmask = "'alias': 'date'", @data_input_type = "date" })
+                        <span class="red">
+                            @Html.ValidationMessageFor(m => m.PostDate)
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <input type="submit" value="@EduSuiteUIResources.Save" id="btnSave" class="btnForm btnSubmit btn btn-sm btn-default pull-left " />
+                <button type="button" data-dismiss="modal" class="btnForm btnCancel btn btn-sm btn-default pull-left">@EduSuiteUIResources.Cancel</button>
+
+            </div>
+
+        </div>
+    </div>
+}
+
+<style>
+
+    .select2-container {
+        width: 100% !important;
+    }
+</style>
+
+
+<script>
+    //Script to Remove space on Input in textbox
+
+    $(document).ready(function () {
+        AppCommon.FormatDateInput()
+        setTimeout(function () {
+            AppCommon.FormatSelect2();
+            var method = $("#DepreciationMethodKey").val()
+            method = parseInt(method) ? parseInt(method) : 0
+            if (method == 3) {
+                Depreciation.ValidUnit()
+            }
+            $("#ProductionUnit").on("input", function () {
+                Depreciation.ValidUnit()
+            })
+            $('input[CharSpace="RemoveSpace"]').on("input", function () {
+
+                var start = this.selectionStart
+                $(this).val($(this).val().toUpperCase())
+                var test = /^[\s]/;
+                if (test.test($(this).val())) {
+                    var newVal = $(this).val().replace(/[\s *0-]/g, "");
+                    $(this).val(newVal);
+                }
+                document.getElementById(this.id).value = document.getElementById(this.id).value.trim();
+                this.selectionStart = this.selectionEnd = start;
+
+            });
+
+            $('input,textarea,select').click(function (e) {
+                $('input[type="text"],textarea').each(function () {
+                    $(this).val($(this).val().trim())
+                });
+            });
+        }, 500);
+    });
+
+</script>

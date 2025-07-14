@@ -1,0 +1,131 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.ReportViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+@using System.Web.Mvc
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/StudentsSummary")
+    @Scripts.Render("~/Content/DatePickerJS")
+
+    @Scripts.Render("~/Content/ExcelExportJS")
+    @Scripts.Render("~/Content/momentJS")
+    @Scripts.Render("~/Scripts/BaseStudentsSearch")
+}
+
+
+
+
+<input type="hidden" id="hdnGetFeeInstallmentSummary" value="@Url.Action("GetFeeInstallmentSummary", "Report")" />
+<input type="hidden" id="hdnGetStudentFeeInstallmentDetails" value="@Url.Action("GetStudentFeeInstallmentDetails", "Report")" />
+
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-12">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.FeeInstallment@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Summary</h3>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</header>
+<section class="section-content mx-sm-3 mx-0">
+
+    <div class="GridBody">
+        <div class="grid-nav-bar">
+            <form>
+
+                <div class="form-row">
+                    @Html.HiddenFor(m => m.RowKey)
+                    @Html.Action("Index", "BaseStudentSearch")
+
+
+                    <div class="col-lg-2 col-sm-3 col-4">
+                        <fieldset class="form-group">
+                            @Html.DropDownListFor(m => m.PaymentStatus, new SelectList(Model.PaymentStatuses, "RowKey", "Text"), EduSuiteUIResources.Payment + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Status, new { @class = "form-control input-control " })
+                        </fieldset>
+                    </div>
+                    <div class="col-lg-2 col-sm-3 col-4">
+                        <fieldset class="form-group">
+                            @Html.TextBoxFor(m => m.DateAdded, "{0:MMM yyyy}", new { @class = "form-control input-control", @data_input_type = "month", @readonly = "readonly" })
+                        </fieldset>
+                    </div>
+
+                    <div class="col-lg-1 col-sm-3 col-4">
+                        <fieldset class="form-group">
+                            <button type="button" id="btnSearch" class="btnForm btnSubmit btn btn-sm btn-success">@EduSuiteUIResources.Search</button>
+                        </fieldset>
+                    </div>
+                    <div class="col-lg-1 col-sm-3 col-2 ">
+                        <a class="btn btn-info btn-sm float-right " onclick='window.location.reload()'>
+                            <i class="fa fa-refresh"></i>   Refresh
+                        </a>
+                    </div>
+                </div>
+
+            </form>
+            <div class="form-row justify-content-between">
+
+                <div class="col-lg-2 col-sm-3 col-4">
+                    <div class="form-group">
+                        @Html.ListBox("ShowHideColumns", new SelectList(Model.Columns, "RowKey", "Text"), new { @class = "form-control input-control selectpicker", @multiple = "multiple", @data_live_search = "true", @onchange = "StudentSummary.GetCustomizedColumns(this)", @data_title = "Columns" })
+                    </div>
+
+                </div>
+                <div class="col-lg-2 col-sm-3 col-4">
+                    <div class="button-group float-right">
+                        <button id="btnPrint" type="button" onclick="StudentSummary.GetExportPrintData('P','#hdnGetFeeInstallmentSummary','FeeInstallmentSummary','Fee Installment Summary',false)" class="btn btn-primary btn-sm"><i class="fa fa-print btn-blue" aria-hidden="true"></i></button>
+                        <button id="btnExport" type="button" onclick="StudentSummary.GetExportPrintData('E','#hdnGetFeeInstallmentSummary','FeeInstallmentSummary','Fee Installment Summary',false)" class="btn btn-success btn-sm"><i class="fa fa-file-excel-o fa-align-right" aria-hidden="true"></i></button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-wrapper">
+
+            <div class="jqGrid_wrapper overflow-auto">
+                <table id="grid" class="table table-striped"></table>
+                <div id="pager"></div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<script type="text/javascript">
+    var jsonDataList=@(Html.Raw(Json.Encode(Model)));
+    jsonDataList["DefaultColumns"] = ["AdmissionNo", "Name", "Course", "Affiliations", "CurrentYearText","InstallmentMonth", "InstallmentAmount", "InstallmentPaid", "BalanceDue", "DueDate", "TotalFee", "TotalPaid", "BalanceFee"]
+    $(document).ready(function ()
+    {
+        $(".divSearchText").hide();
+        AppCommon.FormatMonthInput();
+
+        AppCommon.FormatDateInput();
+        AppCommon.FormatSelect2();
+
+        StudentSummary.GetFeeInstallmentSummary(jsonDataList);
+
+        $('#btnSearch').on("click", function ()
+        {
+            StudentSummary.GetFeeInstallmentSummary(jsonDataList);
+        });
+
+        $('#SearchAnyText').on("input", function ()
+        {
+            StudentSummary.GetFeeInstallmentSummary(jsonDataList);
+        });
+        $('#DateAdded').on("change", function () {
+            StudentSummary.GetFeeInstallmentSummary(jsonDataList);
+        });
+
+
+    });
+</script>

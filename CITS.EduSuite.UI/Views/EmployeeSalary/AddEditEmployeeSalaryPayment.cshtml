@@ -1,0 +1,253 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.EmployeeSalaryAdvanceReturnViewModel
+
+@using (Html.BeginForm("AddEditEmployeeSalaryPayment", "EmployeeSalary", FormMethod.Post, new { @id = "frmEmployeeSalaryPayment" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.MasterKey)
+    @Html.HiddenFor(m => m.PaymentKey)
+    @Html.HiddenFor(m => m.CashFlowTypeKey)
+    @Html.HiddenFor(m => m.BranchKey)
+    @Html.ValidationSummary(true)
+    <div class="row">
+        <div class="col-sm-12 label-warning Text_Left">
+            <h4><span class="label">@EduSuiteUIResources.Add @EduSuiteUIResources.BlankSpace @EduSuiteUIResources.Salary @EduSuiteUIResources.Payment</span></h4>
+        </div>
+    </div>
+
+    <div class="row bottomLine">
+        <div class="col-sm-4 form-col">
+            <div class="form-group">
+                @Html.Label(EduSuiteUIResources.Payment + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Date, htmlAttributes: new { @id = "lblDate", @class = "lblControlHead" })<div class="required-icon"><div class="text">*</div></div>
+
+                @Html.TextBoxFor(m => m.PaymentDate, "{0:dd/MM/yyyy}", new { @class = "form-control border-radius", @data_input_type = "date", @data_inputmask = "'alias': 'dd/mm/yyyy'", @InputFor = "lblDate" })
+                <span class="form-control-error-text">
+                    @Html.ValidationMessageFor(m => m.PaymentDate)
+                </span>
+            </div>
+        </div>
+
+        <div class="col-sm-4 form-col">
+            <div class="form-group">
+                @Html.Label(EduSuiteUIResources.TotalReceivedAmount, htmlAttributes: new { @id = "lblAmount", @class = "lblControlHead" })<div class="required-icon"><div class="text">*</div></div>
+                @Html.TextBoxFor(m => m.TotalReceivedAmount, new { @class = "form-control border-radius", @InputFor = "lblAmount" })
+                <span class="form-control-error-text">
+                    @Html.ValidationMessageFor(m => m.TotalReceivedAmount)
+                </span>
+            </div>
+        </div>
+
+        <div class="col-sm-4 form-col">
+            <div class="form-group">
+                @Html.Label(EduSuiteUIResources.AmountPaid, htmlAttributes: new { @id = "lblAmount", @class = "lblControlHead" })<div class="required-icon"><div class="text">*</div></div>
+                @Html.TextBoxFor(m => m.PaidAmount, new { @class = "form-control border-radius", @InputFor = "lblAmount" })
+                <span class="form-control-error-text">
+                    @Html.ValidationMessageFor(m => m.PaidAmount)
+                </span>
+            </div>
+        </div>
+
+        <div class="col-sm-3 form-col pull-right">
+            <div class="form-group">
+                @Html.Label(EduSuiteUIResources.Due, htmlAttributes: new { @id = "lblBalanceAmount", @class = "lblControlHead" })
+                @Html.TextBoxFor(m => m.BalanceAmount, new { @class = "form-control input-control text-green Border_None  full-width", @InputFor = "lblBalanceAmount", @readonly = true })
+            </div>
+        </div>
+
+
+    </div>
+    <div class="form-row">
+        <div class="col-12">
+            <fieldset class="form-group">
+                <div class="btn-group btn-group-toggle " data-toggle="buttons">
+                    @foreach (var PaymentMode in Model.PaymentModes)
+                    {
+                        if (PaymentMode.RowKey == Model.PaymentModeKey)
+                        {
+                            <label class="btn btn-outline-primary active">
+                                @Html.RadioButtonFor(m => m.PaymentModeKey, PaymentMode.RowKey)@PaymentMode.Text
+                            </label>
+                        }
+                        else
+                        {
+                            <label class="btn btn-outline-primary">
+                                @Html.RadioButtonFor(m => m.PaymentModeKey, PaymentMode.RowKey)@PaymentMode.Text
+                            </label>
+                        }
+                    }
+                </div>
+                <span class="form-control-error-text">
+                    @Html.ValidationMessageFor(m => m.PaymentModeKey)
+                </span>
+            </fieldset>
+        </div>
+    </div>
+    <div id="dvPaymentModes" class="form-row">
+
+        <div class="col-5 divCardDetails">
+            <fieldset class="form-group">
+                @Html.Label(EduSuiteUIResources.CardNumber, htmlAttributes: new { @id = "lblCardNumber", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                @Html.TextBoxFor(m => m.CardNumber, new { @class = "form-control border-radius", @InputFor = "lblCardNumber" })
+                <span class="form-control-error-text">
+                    @Html.ValidationMessageFor(m => m.CardNumber)
+                </span>
+            </fieldset>
+        </div>
+        <div class="col-6 divBankAccount">
+            <fieldset class="form-group">
+
+                @Html.Label(EduSuiteUIResources.BankAccount, htmlAttributes: new { @id = "lblBankAccount", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                @Html.DropDownListFor(m => m.BankAccountKey, new SelectList(Model.BankAccounts, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.BankAccount, new { @class = "dropdownStyle form-control", @InputFor = "lblBankAccount" })
+                <span class="form-control-error-text">
+                    @Html.ValidationMessageFor(m => m.BankAccountKey)
+                </span>
+            </fieldset>
+        </div>
+        <div class="col-6 divChequeDetails">
+            <fieldset class="form-group">
+                @Html.Label(EduSuiteUIResources.ChequeOrDDNumber, htmlAttributes: new { @id = "lblChequeOrDDNumber", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                @Html.TextBoxFor(m => m.ChequeOrDDNumber, new { @class = "form-control border-radius", @InputFor = "lblChequeOrDDNumber" })
+                <span class="form-control-error-text">
+                    @Html.ValidationMessageFor(m => m.ChequeOrDDNumber)
+                </span>
+            </fieldset>
+        </div>
+
+        <div class="col-6 divChequeDetails">
+            <fieldset class="form-group ">
+                @Html.Label(EduSuiteUIResources.ChequeOrDDDate, htmlAttributes: new { @id = "lblChequeOrDDDate", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                @Html.TextBoxFor(m => m.ChequeOrDDDate, "{0:dd/MM/yyyy}", new { @class = "form-control border-radius datetimepicker", @data_input_type = "date", @data_inputmask = "'alias': 'dd/mm/yyyy'", @InputFor = "lblChequeOrDDDate" })
+                <span class="form-control-error-text">
+                    @Html.ValidationMessageFor(m => m.ChequeOrDDDate)
+                </span>
+            </fieldset>
+        </div>
+
+    </div>
+
+    <div class="row bottomLine">
+        <div class="col-sm-4 form-col">
+            <div class="form-group">
+                @Html.Label(EduSuiteUIResources.Purpose, htmlAttributes: new { @id = "lblPurpose", @class = "lblControlHead" })
+
+
+                @Html.TextBoxFor(m => m.Purpose, new { @class = "form-control border-radius", @InputFor = "lblPurpose", @readonly = true })
+                <span class="form-control-error-text">
+                    @Html.ValidationMessageFor(m => m.Purpose)
+                </span>
+            </div>
+        </div>
+        <div class="col-sm-4 form-col">
+            <div class="form-group">
+                @Html.Label(EduSuiteUIResources.PaidBy, htmlAttributes: new { @id = "lblPaidBy", @class = "lblControlHead" })
+
+                @Html.TextBoxFor(m => m.PaidBy, new { @class = "form-control border-radius", @InputFor = "lblPaidBy" })
+                <span class="form-control-error-text">
+                    @Html.ValidationMessageFor(m => m.PaidBy)
+                </span>
+            </div>
+        </div>
+        <div class="col-sm-4 form-col">
+            <div class="form-group">
+
+                @Html.Label(EduSuiteUIResources.AuthorizedBy, htmlAttributes: new { @id = "lblAuthorizedBy", @class = "lblControlHead" })
+                @Html.TextBoxFor(m => m.AuthorizedBy, new { @class = "form-control border-radius", @InputFor = "lblAuthorizedBy" })
+                <span class="form-control-error-text">
+                    @Html.ValidationMessageFor(m => m.AuthorizedBy)
+                </span>
+            </div>
+        </div>
+        <div class="col-sm-4 form-col">
+            <div class="form-group">
+                @Html.Label(EduSuiteUIResources.ReceivedBy, htmlAttributes: new { @id = "lblReceivedBy", @class = "lblControlHead" })
+
+
+                @Html.TextBoxFor(m => m.ReceivedBy, new { @class = "form-control border-radius", @InputFor = "lblReceivedBy", @readonly = true })
+                <span class="form-control-error-text">
+                    @Html.ValidationMessageFor(m => m.ReceivedBy)
+                </span>
+
+            </div>
+        </div>
+
+        <div class="col-sm-4 form-col">
+            <div class="form-group">
+                @Html.Label(EduSuiteUIResources.OnBehalfOf, htmlAttributes: new { @id = "lblOnBehalfOf", @class = "lblControlHead" })
+
+
+                @Html.TextBoxFor(m => m.OnBehalfOf, new { @class = "form-control border-radius", @InputFor = "lblOnBehalfOf" })
+                <span class="form-control-error-text">
+                    @Html.ValidationMessageFor(m => m.OnBehalfOf)
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="row bottomLine">
+
+        <div class="col-sm-6 form-col">
+            <div class="form-group">
+                @Html.Label(EduSuiteUIResources.Remarks, htmlAttributes: new { @id = "lblRemarks", @class = "lblControlHead" })
+
+
+                @Html.TextAreaFor(m => m.Remarks, new { @class = "form-control border-radius", @InputFor = "lblRemarks" })
+                <span class="form-control-error-text">
+                    @Html.ValidationMessageFor(m => m.Remarks)
+                </span>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <input type="button" value="@EduSuiteUIResources.Payment" id="btnPayment" class="btnForm btn btn-sm btn-warning " />
+                @if (Model.SalaryPaymentKey != 0)
+                {
+                    <input type="button" value="@EduSuiteUIResources.PaySlip" id="btnPayslip" class="btnForm btn btn-sm btn-info " />
+                }
+
+            </div>
+            <span class="ValidateDataMsg"> @Html.ValidationMessage("error_msg_payment")  </span>
+
+        </div>
+    </div>
+
+
+    <script>
+        $(document).ready(function () {
+            EmployeeSalary.CheckPaymentMode($("[id*=PaymentModeKey]:checked").val());
+            var paymentMode=@Model.PaymentModeKey;
+            var BankAccountKey = $("#BankAccountKey").val();
+            var RowKey = $("#CashFlowKey").val();
+            EmployeeSalary.GetBalance(paymentMode, RowKey, BankAccountKey,$("#BranchKey").val())
+            $("[id*=PaymentModeKey]").change(function () {
+                if(!$(this).is(":checked"))
+                {
+                    $(this).prop("checked",true);
+                }
+                var paymentMode = $(this).val();
+                var BankAccountKey = $("#BankAccountKey").val();
+                var RowKey = $("#CashFlowKey").val();
+                EmployeeSalary.GetBalance(paymentMode, RowKey, BankAccountKey,$("#BranchKey").val())
+                $("#BankAccountKey,#ChequeOrDDNumber,#ChequeOrDDDate,#BankAccountKey").each(function () {
+                    $(this).val("")
+                });
+                $("#BankAccountBalance").html("");
+
+                EmployeeSalary.CheckPaymentMode($(this).val());
+            })
+            EmployeeSalary.CalculateBalanceAmount();
+            $("#PaidAmount").on("keyup blur", function () {
+                EmployeeSalary.CalculateBalanceAmount();
+            });
+            $("#btnPayment").on("click", function () {
+                EmployeeSalary.FormPaymentSubmit($(frmEmployeeSalaryPayment));
+            });
+            $("#btnPayslip").on("click", function () {
+                EmployeeSalary.GeneratePayslip($("#SalaryPaymentKey").val());
+            })
+
+        });
+    </script>
+}
+

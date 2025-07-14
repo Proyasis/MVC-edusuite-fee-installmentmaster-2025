@@ -1,0 +1,480 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.TestPaperViewModel
+
+@using CITS.EduSuite.Business.Models.ViewModels
+
+@if (Model.RowKey != 0)
+{
+    <a href="@Url.Action("AddEditTestPaper", "TestPaper")/@Model.RowKey" id="hdnTestPaper"></a>
+}
+else
+{
+    <a href="@Url.Action("AddEditTestPaper", "TestPaper")" id="hdnTestPaper"></a>
+}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.5.207/pdf.worker.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.5.207/pdf.min.js"></script>
+
+
+<input type="hidden" value="1" id="pageNumber" />
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-12">
+            <div class="tbl">
+                <div class="tbl-row  px-1">
+                    <div class="tbl-cell">
+                        <h3>Import Questions</h3>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section style="height:100vh">
+
+    @*<script src="~/Scripts/jquery-3.2.1.min.js"></script>*@
+    <script src="~/Scripts/jquery.Jcrop.min.js"></script>
+    <link href="~/Content/jquery.Jcrop.min.css" rel="stylesheet" />
+
+    <div class="col col-12">
+
+        <div class="colFileUpload">
+            <input type="file" id="pdf-upload" />
+            <img src="~/Images/upload.png" />
+        </div>
+    </div>
+
+
+
+    <div data-hidden class="popupWrapper">
+
+        <div class="PopUp">
+            <div class="Paging text-center">
+                <button onclick="PrevPaging()" disabled="disabled" class="btnPaging PrevPage"> << Prev Page</button>
+                <button onclick="NextPaging()" class="btnPaging NextPage"> Next Page >></button>
+
+                <div class="pagesDetails">
+                    <span id="CurrentPage"></span> of <span id="totalPages"></span>
+                </div>
+            </div>
+            <canvas id="viewport"></canvas>
+            <canvas style="display:none" id="canvas"></canvas>
+            <input type="hidden" name="imgX1" id="imgX1" />
+            <input type="hidden" name="imgY1" id="imgY1" />
+            <input type="hidden" name="imgWidth" id="imgWidth" />
+            <input type="hidden" name="imgHeight" id="imgHeight" />
+
+
+        </div>
+        <div class="addedImages">
+
+            <div class="dvImageButtons">
+                <button value="Add Question" onclick="SubmitPhoto(this)" id="btnPhotoUpload" class="btn btn-sm btn-success btnAddImage"><i class="fa fa-plus"></i> Add Selected Question</button>
+                <button data-hidden onclick="SaveQuestion(this)" id="btnSaveQuestion" class="btn btn-sm btn-success btnCreateTestPaper "> Import Selected >> </button>
+                <button id="btnCancel" onclick="CancelImport()" class="btn btn-sm btn-danger btnCancelTestPaper"> Cancel </button>
+            </div>
+        </div>
+    </div>
+
+
+
+    <style>
+        .btnPaging {
+            padding: 6px 12px;
+            border: 0px;
+            margin-right: 2px;
+            margin-bottom: 4px;
+            margin-top: 4px;
+            font-weight: 700;
+            font-size: 11px;
+            border: solid #dbcdb2 0px;
+            background: #234461;
+            border-radius: 0px;
+            color: #f6f6f6;
+            cursor: pointer;
+            border-radius: 0px;
+        }
+
+            .btnPaging:hover {
+                background: #0f75cc !important;
+            }
+
+            .btnPaging[disabled] {
+                opacity: 0.6;
+            }
+
+        .popupWrapper {
+            position: absolute;
+            width: 100%;
+            left: 0px;
+            right: 0px;
+            background: #ffffff;
+            top: 0px;
+            z-index: 999;
+        }
+
+        /*.PopUp {
+
+            float: left;
+            border: dashed #1072d8 2px;
+            padding: 1px 10px;
+
+        }*/
+        .PopUp {
+            /* width: 793px; */
+            float: left;
+            border: dashed #1072d8 2px;
+            padding: 1px 10px;
+            overflow: scroll;
+        }
+
+
+        input[type="file"] {
+            width: 100%;
+            height: 100%;
+            z-index: 9;
+            position: absolute;
+            top: 0px;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .colFileUpload::after {
+            content: "Upload PDF";
+            display: block;
+            font-weight: bold;
+            padding-left: 1px;
+            text-align: center;
+            margin-top: 10px;
+            font-size: 20px;
+            color: #255586;
+        }
+
+        .colFileUpload {
+            position: absolute;
+            left: 0px;
+            right: 0px;
+            /* margin: auto; */
+            width: 246px;
+            border: dashed 2px #7d7979;
+            padding: 27px 15px;
+            margin-top: 44px;
+            margin-left: 37px;
+        }
+
+            .colFileUpload img {
+                width: 100%;
+            }
+
+        .dvImageButtons .btn {
+            border-radius: 0px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+
+        .addedImages {
+            float: left;
+            width: 39%;
+            overflow: auto;
+            height: 100vh;
+        }
+
+        .btnAddImage {
+            position: fixed;
+            margin-top: 265px;
+            margin-left: 0px;
+            box-shadow: 3px 3px 8px #1e1a4c;
+            background: #2132a094 !important;
+            z-index: 99999;
+            margin-left: -250px;
+            bottom: 19%;
+            top: -210px;
+            height: 36px;
+            border: solid #088dab 1px !important;
+            z-index: 99999999999;
+            right: 0px;
+        }
+
+        .btnCreateTestPaper {
+            position: fixed;
+            bottom: 0px;
+            margin: 33px;
+            box-shadow: 5px 4px 5px #908a8a;
+            padding: 11px 45px;
+        }
+
+        .btnCancelTestPaper {
+            position: fixed;
+            bottom: 0px;
+            margin: 33px;
+            box-shadow: 5px 4px 5px #908a8a;
+            padding: 11px 45px;
+            margin-left: 248px;
+        }
+
+        .imageWrapper {
+            margin-bottom: 6px;
+            border: solid #0a84d5 3px;
+            width: 26%;
+            padding: 0px 9px;
+            margin-left: 9px;
+            margin-top: 8px;
+            padding-top: 7px;
+            padding-bottom: 7px;
+            float: left;
+            height: 127px;
+        }
+
+            .imageWrapper img {
+                max-width: 100%;
+                max-height: 100%;
+                width: 100%;
+            }
+
+        i.fa.fa-remove {
+            background: #e60505;
+            padding: 5px 5px;
+            border-radius: 0px;
+            color: white;
+            font-size: 8px;
+            display: block;
+            margin-top: -69px;
+            width: 20px;
+            height: 20px;
+            /* bottom: 0px; */
+            float: right;
+            text-align: center;
+            margin-top: 0px;
+            box-shadow: 1px 1px 1px #645a5a;
+        }
+
+        .pagesDetails {
+            /*position: relative;
+            top: -23px;
+            right: -86%;
+            width: 149px;
+            color: #0c4891;*/
+            color: #0c4891;
+            font-weight: bold;
+        }
+    </style>
+
+
+
+    <script>
+        var TypeArray;
+        var TotalPages;
+        function NextPaging() {
+            resetCoords();
+
+            var CurrentPage = $("#pageNumber").val();
+            NextPage = parseInt(CurrentPage) + 1;
+            $("#pageNumber").val(NextPage)
+            start(TypeArray);
+
+            if (NextPage > 1) {
+                $(".PrevPage").removeAttr("disabled");
+
+            }
+            if (TotalPages == NextPage) {
+                $(".NextPage").attr("disabled", "disabled");
+            }
+
+
+        }
+
+        function PrevPaging() {
+
+
+            var CurrentPage = $("#pageNumber").val();
+            PrevPage = parseInt(CurrentPage) - 1;
+            $("#pageNumber").val(PrevPage)
+            start(TypeArray);
+
+            if (PrevPage == 1) {
+                $(".PrevPage").attr("disabled", "disabled");
+            }
+
+            if (PrevPage < TotalPages) {
+                $(".NextPage").removeAttr("disabled");
+            }
+
+        }
+
+        document.querySelector("#pdf-upload").addEventListener("change", function (e) {
+            
+
+            if (CheckExtension(this) == true) {
+
+                $(".popupWrapper").show();
+
+                var canvasElement = document.querySelector("canvas")
+                var file = e.target.files[0]
+                if (file.type != "application/pdf") {
+                    console.error(file.name, "is not a pdf file.")
+                    return
+                }
+
+                var fileReader = new FileReader();
+
+                fileReader.onload = function () {
+                    var typedarray = new Int8Array(this.result);
+                    start(typedarray);
+
+
+                };
+
+                fileReader.readAsArrayBuffer(file);
+
+            }
+
+        });
+
+    </script>
+
+    <script>
+        // simple.js
+
+        async function start(typearray) {
+
+            TypeArray = typearray;
+
+
+            const loadingTask = pdfjsLib.getDocument(typearray);
+
+
+
+            const pdf = await loadingTask.promise;
+
+            TotalPages = pdf.numPages;
+            $("#totalPages").html(TotalPages);
+            $("#CurrentPage").html($("#pageNumber").val());
+            // Load information from the first page.
+            const page = await pdf.getPage(parseInt($("#pageNumber").val()));
+            var scale = 1.5;
+            const viewport = page.getViewport({ scale: scale });
+
+            // Apply page dimensions to the <canvas> element.
+            const canvas = document.getElementById('viewport');
+
+            var context = canvas.getContext("2d");
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+
+            // Render the page into the <canvas> element.
+            const renderContext = {
+                canvasContext: context,
+                viewport: viewport
+            };
+            await page.render(renderContext);
+            console.log("Page rendered!");
+
+            $('#viewport').Jcrop({
+                onChange: updatePreview,
+                onSelect: updatePreview,
+                //allowSelect: true,
+                allowMove: true,
+                allowResize: true,
+                //setSelect: 100,
+
+            });
+
+        }
+
+        function resetCoords() {
+
+
+            $('#viewport').Jcrop({
+                onChange: updatePreview,
+                onSelect: updatePreview,
+                allowSelect: true,
+                allowMove: true,
+                allowResize: true,
+
+                //setSelect: 100,
+
+            });
+        }
+
+
+
+        function updatePreview(c) {
+            if (parseInt(c.w) > 0) {
+                // Show image preview
+                var imageObj = $("#viewport")[0];
+                var canvas = $("#canvas")[0];
+                var context = canvas.getContext("2d");
+
+                if (imageObj != null && c.x != 0 && c.y != 0 && c.w != 0 && c.h != 0) {
+                    canvas.height = c.h;
+                    canvas.width = c.w;
+                    context.drawImage(imageObj, c.x, c.y, c.w, c.h, 0, 0, canvas.width, canvas.height);
+                }
+            }
+        }
+
+        function SubmitPhoto(_this) {
+
+            var canvas = $("#canvas")[0];
+            DataURI = canvas.toDataURL();
+            if (DataURI.length > 1594) {
+                $(".addedImages").append("<div class='imageWrapper'> <img src='" + DataURI + "'/>  <i onclick='RemoveImage(this)' class='fa fa-remove'></i>  </div> ");
+                $("#btnSaveQuestion").show();
+            }
+            else {
+                alert("Please select image");
+            }
+        }
+
+        function RemoveImage(_this) {
+            $(_this).parent('.imageWrapper').remove();
+
+            if ($(".imageWrapper").length == 0) {
+                $("#btnSaveQuestion").hide();
+            }
+        }
+        function CancelImport() {
+            $("#pdf-upload").val("");
+            $(".popupWrapper").hide();
+        }
+
+        function SaveQuestion() {
+            localStorage.removeItem("ImageDataURI");
+            
+            var ImageDataURI = {};
+            ImageDataURI.DataURI = [];
+            $(".imageWrapper img").each(function (index) {
+                var DataUrl = $(this).attr("src")
+                ImageDataURI.DataURI.push(DataUrl);
+
+            });
+
+            localStorage.setItem("ImageDataURI", JSON.stringify(ImageDataURI));
+            var url = $("#hdnTestPaper").attr("href");
+            $("#hdnTestPaper").attr("href", url + "?Qn=" + $(".imageWrapper").length);
+            window.location.href = $("#hdnTestPaper").attr("href");
+        }
+
+
+
+        function CheckExtension(_this) {
+            
+            var ext = _this.value.split(".");
+            ext = ext[ext.length - 1].toLowerCase();
+            var fileExtension = ['pdf'];
+            if (fileExtension.lastIndexOf((ext ? ext : "").toLowerCase()) == -1) {
+                alert("Only formats are allowed : " + fileExtension.join(', '));
+                $(_this).val("")
+                return false;
+            }
+            return true;
+
+
+        };
+
+
+    </script>
+
+</section> 

@@ -1,0 +1,100 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.CourseSubjectDetailViewModel
+
+
+@{
+    ViewBag.Title = EduSuiteUIResources.Add + EduSuiteUIResources.Sla + EduSuiteUIResources.Edit + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Location;
+}
+@using (Html.BeginForm("GetStudyMaterials", "CourseSubject", FormMethod.Post, new { @id = "frmStudyMaterialDetails" }))
+{
+    @Html.Hidden("index", (int)ViewBag.Index)
+    <div class="modal-header">
+        <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+        <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.Add @EduSuiteUIResources.Sla @EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace @EduSuiteUIResources.Edit @EduSuiteUIResources.BlankSpace @EduSuiteUIResources.StudyMaterial</h4>
+    </div>
+    <div class="modal-body">
+        <div class="form-master">
+
+            <div class="repeater" id="dynamicRepeaterStudyMaterial">
+                <table class="table table-responsive table-stripped">
+                    <thead class="form-group">
+                        <tr>
+                            <th></th>
+                            <th>
+                                @Html.Label(EduSuiteUIResources.StudyMaterial + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Code, htmlAttributes: new { @class = "form-label" })
+                            </th>
+
+                            <th>
+                                @Html.Label(EduSuiteUIResources.StudyMaterial + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Name, htmlAttributes: new { @class = "form-label" })
+                            </th>
+
+
+
+                        </tr>
+                    </thead>
+
+                    <tbody data-repeater-list>
+                        @for (int i = 0; i < Model.StudyMaterials.Count(); i++)
+                        {
+                            <tr data-repeater-item>
+
+                                <td class="px-1">
+                                    <span data-repeater-delete="" class="btn btn-danger btn-sm pull-right">                                      
+                                        <span class="fa fa-remove"></span>
+                                    </span>
+                                </td>
+                                <td class="px-1">
+                                    <fieldset class="form-group">
+                                        @Html.TextBoxFor(m => m.StudyMaterials[i].StudyMaterialCode, new { @class = "form-control input-control text-right-decimal", @CharSpace = "RemoveSpace", @data_unique = true })
+                                        <span class="form-control-error-text">
+                                            @Html.ValidationMessageFor(m => m.StudyMaterials[i].StudyMaterialCode)
+                                        </span>
+                                        @Html.HiddenFor(m => m.StudyMaterials[i].RowKey)
+                                        @Html.HiddenFor(m => m.StudyMaterials[i].SubjectKey)
+                                        @Html.HiddenFor(m => m.StudyMaterials[i].IsActive)
+                                    </fieldset>
+                                </td>
+                                <td class="px-1">
+                                    <fieldset class="form-group">
+                                        @Html.TextBoxFor(m => m.StudyMaterials[i].StudyMaterialName, new { @class = "form-control input-control text-right-decimal", @CharSpace = "RemoveSpace", @data_unique = true })
+                                        <span class="form-control-error-text">
+                                            @Html.ValidationMessageFor(m => m.StudyMaterials[i].StudyMaterialName)
+                                        </span>
+                                    </fieldset>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th class="px-1" colspan="4">
+                                <span data-repeater-create class="btn btn-info btn-sm">
+                                    <span class="fa fa-plus"></span>
+                                </span>
+                            </th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+        </div>
+
+
+    </div>
+    <div class="modal-footer justify-content-start">
+
+        <div class="form-group">
+            <input type="submit" value="@EduSuiteUIResources.Add" id="btnAddDealer" class="btn btn-sm btn-success mx-1" />
+            <button type="button" data-dismiss="modal" class="btn btn-sm btn-danger mx-1">@EduSuiteUIResources.Cancel</button>
+        </div>
+
+    </div>
+
+    <style>
+        .select2-container {
+            width: 100% !important;
+        }
+    </style>
+}
+
+
+

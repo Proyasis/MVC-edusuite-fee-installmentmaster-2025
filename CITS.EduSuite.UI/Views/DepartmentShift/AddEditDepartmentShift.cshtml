@@ -1,0 +1,92 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.DepartmentShiftViewModel
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+
+    @Scripts.Render("~/Scripts/DepartmentShift")
+}
+<div class="modal-header">
+    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+    <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.Add @EduSuiteUIResources.Sla @EduSuiteUIResources.Edit @EduSuiteUIResources.DepartmentShift</h4>
+</div>
+@using (Html.BeginForm("AddEditDepartmentShift", "DepartmentShift", FormMethod.Post, new { @id = "frmDepartmentShift" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.RowKey)
+    @Html.ValidationSummary(true)
+
+    <div class="modal-body">
+        <div class="form-master">
+            <div class="paddingNone">
+                <span class="ValidateDataMsg"> @Html.ValidationMessage("error_msg")  </span>
+            </div>
+
+            <div class="form-row">
+
+                <div class="col-6">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.Department, htmlAttributes: new { @id = "lblCompany", @class = "lblControlHead" })
+                        @Html.DropDownListFor(m => m.DepartmentKey, new SelectList(Model.Departments, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Department, new { @class = "input-control form-control form-control-sm form-control-sm", @data_plugin_type = "select2", @InputFor = "lblCompany" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.DepartmentKey)
+                        </span>
+                    </div>
+                </div>
+
+
+                <div class="col-6">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.Shift, htmlAttributes: new { @class = "lblControlHead" })
+                        <div class="required-icon"><div class="text">*</div></div>
+                        @Html.DropDownListFor(m => m.ShiftKey, new SelectList(Model.Shifts, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Shift, new { @class = "input-control form-control form-control-sm" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.ShiftKey)
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-6">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.FromDate, htmlAttributes: new { @id = "lblInTime", @class = "lblControlHead" })
+                        <div class="required-icon"><div class="text">*</div></div>
+                        @Html.TextBoxFor(m => m.FromDate, "{0:dd/MM/yyyy}", new { @class = "input-control form-control form-control-sm", @data_inputmask = "'alias': 'dd/mm/yyyy'", @data_input_type = "date" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.FromDate)
+                        </span>
+
+                    </div>
+                </div>
+
+                <div class="col-6">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.ToDate, htmlAttributes: new { @id = "lblOutTime", @class = "lblControlHead" })
+                        <div class="required-icon"><div class="text">*</div></div>
+                        @Html.TextBoxFor(m => m.ToDate, "{0:dd/MM/yyyy}", new { @class = "input-control form-control form-control-sm", @data_inputmask = "'alias': 'dd/mm/yyyy'", @data_input_type = "date" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.ToDate)
+                        </span>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+
+    </div>
+    <div class="modal-footer">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <button type="submit" id="btnSave" class="btn btn-sm btn-success mx-1"><i class="fa fa-save"></i> @EduSuiteUIResources.Save</button>
+                <button type="button" data-dismiss="modal" class="btn btn-sm btn-danger mx-1"><i class="fa fa-close"></i>@EduSuiteUIResources.Cancel</button>
+            </div>
+        </div>
+    </div>
+}
+
+
+
+
+

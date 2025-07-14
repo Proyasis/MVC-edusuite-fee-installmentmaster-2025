@@ -1,0 +1,184 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.CashFlowViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+
+@Styles.Render("~/Content/BootstrapCSS")
+@Styles.Render("~/Styles/css")
+@*@Styles.Render("~/Styles/PrintRecieptCSS")*@
+
+
+
+@*<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/i18n/grid.locale-en.js" type="text/javascript"></script>
+    <script src="~/Scripts/jquery.jqGrid.min.js" type="text/javascript"></script>*@
+@Scripts.Render("~/Scripts/PrintArea")
+@Scripts.Render("~/Scripts/CashFlow")
+<link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
+<link href="~/Styles/PrintReciept.css" rel="stylesheet" />
+<div class="PrintReciept">
+    <div class="row paddingNone">
+        <div class="col-sm-4">
+            <div class="logo">
+                @*<img src="~/images/Fancy-Png-Logo-Design-91-On-professional-logo-design-with-Png-Logo-Design.jpg" />*@
+                <img alt="" src="@Url.Content("~/UploadedFiles/CompanyLogo/" + Model.CompanyImageUrl)" />
+            </div>
+        </div>
+        @if (Model.CashFlowTypeKey != DbConstants.CashFlowType.Out)
+        {
+            <div class="col-sm-3 Receipt-Header">
+                <span>Receipt</span>
+            </div>
+        }
+        else
+        {
+            <div class="col-sm-3 Receipt-Header">
+                <span>Payment Voucher</span>
+            </div>
+        }
+        <div class="col-sm-5 address">
+            <div class="col-sm-12">
+                <span>@Html.DisplayFor(m => m.CompanyAddress)</span>
+                <span>@Html.DisplayFor(m => m.CompanyEmailId)</span>
+                <span>@Html.DisplayFor(m => m.CompanyWebsite)</span>
+            </div>
+        </div>
+    </div>
+    <div class="row paddingNone">
+        <div class="col-sm-6 first-data">
+            <div class="col-sm-3">
+                <label>@EduSuiteUIResources.Date</label>
+            </div>
+            <div class="col-sm-8">
+                <span>
+                    @(string.Format("{0:dd/MM/yyyy}", Model.CashFlowDate))
+                </span>
+            </div>
+        </div>
+        <div class="col-sm-6 first-data receipt-no">
+            <div class="col-sm-3">
+                <label>@EduSuiteUIResources.No</label>
+            </div>
+            @if (Model.CashFlowTypeKey != DbConstants.CashFlowType.Out)
+            {
+                <div class="col-sm-8">
+                    <span>@EduSuiteUIResources.SOREC@EduSuiteUIResources.Hyphen@Html.DisplayFor(m => m.CashFlowKey)</span>
+                </div>
+            }
+            else
+            {
+                <div class="col-sm-8">
+                    <span>PVCR @EduSuiteUIResources.Hyphen@Html.DisplayFor(m => m.CashFlowKey)</span>
+                </div>
+            }
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        @if (Model.CashFlowTypeKey != DbConstants.CashFlowType.Out)
+        {
+            <div class="col-sm-2 PrintReciept-Details">
+                <label>@EduSuiteUIResources.ReceivedFrom</label>
+            </div>
+        }
+        else
+        {
+            <div class="col-sm-2 PrintReciept-Details">
+                <label>@EduSuiteUIResources.Paid@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.To</label>
+            </div>
+        }
+        <div class="col-sm-5 solid-Border-Bottom">
+            <span>@Html.DisplayFor(m => m.AccountHeadName) </span>
+        </div>
+        <div class="col-sm-2 text-right">
+            <label>@EduSuiteUIResources.Amount</label>
+        </div>
+        <div class="col-sm-2 solid-Border text-right">
+            <span>@Html.DisplayFor(m => m.Amount)</span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2 PrintReciept-Details text-right font-Smaller">
+            <label>@EduSuiteUIResources.Amount</label>
+        </div>
+        <div class="col-sm-7 solid-Border-Bottom">
+            <span id="amountWords"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2 PrintReciept-Details">
+            <label>@EduSuiteUIResources.For@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Payment@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.of</label>
+        </div>
+        <div class="col-sm-7 solid-Border-Bottom">
+            <span>@Html.DisplayFor(m => m.Purpose)</span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6 PrintReciept-Details">
+            <div class="col-sm-2 paddingNone">
+                <label>@EduSuiteUIResources.PaidBy</label>
+            </div>
+            <div class="col-sm-9">
+                <span>[] @Html.DisplayFor(m => m.PaymentModeName)</span>
+            </div>
+        </div>
+        <div class="col-sm-5 dash-Border">
+            <div class="row paddingNone dash-Border-Bottom">
+                <div class="col-sm-5 dash-Border-right">
+                    <label>@EduSuiteUIResources.Account@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Amount</label>
+                </div>
+                <div class="col-sm-7 text-right">
+                    <span id="AmountAccount">@Html.DisplayFor(m => m.AccountAmount)</span>
+                </div>
+            </div>
+            <div class="row paddingNone solid-Border-Bottom">
+                <div class="col-sm-5 dash-Border-right">
+                    <label>@EduSuiteUIResources.This@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Payment</label>
+                </div>
+                <div class="col-sm-7 text-right">
+                    <span>@Html.DisplayFor(m => m.AmountPaid)</span>
+                </div>
+            </div>
+            <div class="row paddingNone">
+                <div class="col-sm-5 dash-Border-right">
+                    <label>@EduSuiteUIResources.Balance@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Due</label>
+                </div>
+                <div class="col-sm-7 text-right">
+                    <span>@Html.DisplayFor(m => m.AmountBalace)</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="reciept-footer">
+    <div class="col-sm-12">
+        <div class="form-group pull-right">
+            <input type="button" value="@EduSuiteUIResources.Print" id="btnPrint" class="btnForm btnSubmit btn btn-sm btn-default pull-left " />
+            <button type="button" id="cancel" data-dismiss="modal" class="btnForm btnCancel btn btn-sm btn-default pull-left">@EduSuiteUIResources.Cancel</button>
+
+        </div>
+
+    </div>
+</div>
+<style>
+    @@page {
+        size: A5;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        setTimeout(function () {
+            $("#amountWords").html(AppCommon.AmounToWords('@Model.Amount'))
+            $("#btnPrint", $(".reciept-footer")).on("click", function () {
+                $(".PrintReciept").printArea({ zoom: '@Model.ConversionSize%' });
+                setTimeout(function () {
+                    location.reload();
+                }, 1000);
+            });
+
+            $("#cancel").on("click", function () {
+                location.reload();
+            });
+        }, 500);
+    });
+</script>
+

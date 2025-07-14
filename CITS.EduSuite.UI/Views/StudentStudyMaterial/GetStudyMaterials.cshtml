@@ -1,0 +1,232 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.StudentStudyMaterialViewModel
+@using System.Web.Mvc
+@using CITS.EduSuite.Business.Models.ViewModels
+
+
+<input type="hidden" id="hdnStudyMaterialsTotalRecords" value="@Model.TotalRecords" />
+
+
+<ul id="StudyMaterialCategories" class="list-group">
+    @foreach (var item in Model.StudyMaterials)
+    {
+        <li class="list-group-item StudyMaterialsList">
+            <div class="row">
+                <div class="col-12 col-sm-12 col-lg-12">
+                    <a> <i class="fa fa-download" aria-hidden="true"></i> @item.StudyMaterialTitle </a>
+                </div>
+                <div class="col-12 col-sm-12 col-lg-12 StudyMaterialDescription">
+                    <a> @item.StudyMaterialDecription </a>
+                </div>
+                @for (int i = 0; i < item.StudentStudyMaterialDetailsList.Count(); i++)
+                {
+
+                    <div class="col-12 col-sm-12 col-lg-12 StudyMaterialDescription">
+                        <a> @item.StudentStudyMaterialDetailsList[i].StudyMaterialName </a>
+                    </div>
+                    <div class="col-12 col-sm-12 col-lg-12 StudyMaterialDescription">
+
+
+                        @if (item.StudentStudyMaterialDetailsList[i].IsAllowDownload)
+                        {
+                            @*<a class="btnDownload" href="/UploadFiles/StudyMaterialUpload/@item.RowKey/@item.StudentStudyMaterialDetailsList[i].StudyMaterialFilePath" download>
+                                    <label class="badge badge-success mt-1">
+                                        <i style="color:white" class="fa fa-download"></i>  Download File
+                                    </label>
+                                </a>*@
+
+                            <a class="btnDownload" onclick="Shared.FileViewPopUp('@DbConstants.DocumentType.PDF','@item.StudentStudyMaterialDetailsList[i].RowKey','true','@item.StudentStudyMaterialDetailsList[i].StudyMaterialFilePath')" href=@Url.Action("DownloadFile", "StudyMaterialUpload", new { filename = item.StudentStudyMaterialDetailsList[i].StudyMaterialFilePath })>
+                                <label class="badge badge-success mt-1">
+                                    <i style="color:white" class="fa fa-download"></i>  Download File
+                                </label>
+                            </a>
+                            
+                        }
+
+                        @if (item.StudentStudyMaterialDetailsList[i].IsAllowPreview)
+                        {
+
+                            @*<a extension="@Path.GetExtension(item.StudentStudyMaterialDetailsList[i].StudyMaterialFilePath)" class="btnPreview" data-href="https://docs.google.com/gview?url=http://forcits-005-site6.itempurl.com/UploadFiles/StudyMaterialUpload/@item.RowKey/@item.StudentStudyMaterialDetailsList[i].StudyMaterialFilePath&embedded=true">Preview </a>*@
+
+                            <div id="file_@i" filediv="">
+                                <a onclick="Shared.FileViewPopUp('@DbConstants.DocumentType.PDF','@item.StudentStudyMaterialDetailsList[i].RowKey','false','@item.StudentStudyMaterialDetailsList[i].StudyMaterialFilePath')">
+                                    <label class="badge badge-light mt-1">
+                                        <i style="color:red" class="fa fa-file-pdf-o" aria-hidden="true"></i> View File  <i style="color:forestgreen" class="fa fa-check"></i>
+                                    </label>
+                                </a>
+
+                            </div>
+                        }
+
+
+
+
+                    </div>
+
+                }
+            </div>
+        </li>
+    }
+</ul>
+<div class="form-row">
+    <div class="col-md-7">
+        <div id="page-selection-down" class=" m-0"></div>
+    </div>
+</div>
+
+
+
+<section>
+
+    <div class="disable PreviewBox" id="DivPrview">
+        <div class="hideDownload"></div>
+        @*<h2>Preview</h2>*@
+        <embed id="iframe" />
+        <div class="col-sm-12 text-center">
+            <i class="fa fa-remove roundeClose"></i>
+        </div>
+
+
+    </div>
+
+    <script type='text/javascript'>
+
+    </script>
+
+    <script>
+
+
+        $(document).ready(function () {
+
+
+
+            $(".btnPreview").click(function () {
+
+                var ext = $(this).attr("extension");
+                if (CheckExtension(ext) == true) {
+                    var src = $(this).attr("data-href");
+                    $("#DivPrview #iframe").attr("src", src);
+                    $("#DivPrview").addClass("enable");
+                }
+
+
+            });
+
+            $(".roundeClose").click(function () {
+
+                $("#DivPrview").removeClass("enable");
+                $("#DivPrview #iframe").removeAttr("src");
+
+
+            });
+
+        });
+
+    </script>
+
+
+    <script>
+
+
+        function CheckExtension(extValue) {
+
+            var ext = extValue.split(".");
+            ext = ext[ext.length - 1].toLowerCase();
+            var fileExtension = ['jpeg', 'jpg', 'png'];
+            if (fileExtension.lastIndexOf((ext ? ext : "").toLowerCase()) != -1) {
+                alert("Preview not available");
+
+                return false;
+            }
+            else {
+                return true;
+            }
+
+
+        };
+    </script>
+
+    <style>
+        .disable {
+            display: none;
+        }
+
+        .enable {
+            display: block;
+        }
+
+        div#DivPrview {
+            background: white;
+            width: 100%;
+            padding: 15px 0px;
+            position: fixed;
+            box-shadow: none;
+            left: 0px;
+            z-index: 9999;
+            margin: auto;
+            float: none;
+            right: 0px;
+            top: 0px;
+            padding: 0px;
+            border: 0px;
+        }
+
+        /*.PreviewBox h2 {
+            font-size: 21px;
+            background: #2a2f35;
+            padding: 18px !important;
+            border-radius: 0px;
+            position: absolute;
+            top: 15px;
+            width: 97%;
+            color: white;
+        }*/
+        .PreviewBox #iframe {
+            overflow: auto;
+            width: 100%;
+            height: 49vh;
+            border: none;
+        }
+
+        .PreviewBox #iframe {
+            width: 100%;
+            min-height: 100vh;
+            border: none;
+            /*border-bottom: solid #dbd4d4 1px !important;*/
+        }
+        /*.PreviewBox h2 {
+            font-size: 14px;
+            background: #b0ccea;
+            padding: 16px !important;
+            border-radius: 0px;
+            position: absolute;
+            top: 15px;
+            width: 97%;
+        }*/
+
+        i.fa.fa-remove.roundeClose {
+            border: solid #ffffff 0px;
+            width: 35px;
+            height: 34px;
+            border-radius: 50%;
+            text-align: center;
+            padding-top: 9px;
+            font-size: 14px;
+            color: #ffffff;
+            cursor: pointer;
+            background: #10101099;
+            position: absolute;
+            bottom: 76px;
+        }
+
+        .hideDownload {
+            position: fixed;
+            background: #d2d1d1;
+            width: 100px;
+            height: 100px;
+            right: 0px;
+            opacity: 1;
+            z-index: 99999;
+        }
+    </style>
+
+</section>

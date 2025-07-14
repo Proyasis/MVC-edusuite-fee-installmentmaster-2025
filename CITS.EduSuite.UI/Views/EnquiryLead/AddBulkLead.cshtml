@@ -1,0 +1,223 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.EnquiryLeadViewModel
+
+@using CITS.EduSuite.Business.Models.ViewModels
+
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Content/ExcelSheetJS")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Content/momentJS")
+    @Scripts.Render("~/Scripts/EnquiryLead")
+
+}
+
+<input type="hidden" id="hdnCheckPhoneExists" value="@Url.Action("CheckPhoneExists", "EnquiryLead")" />
+<input type="hidden" id="hdnCheckEmailExists" value="@Url.Action("CheckEmailExists", "EnquiryLead")" />
+<input type="hidden" id="hdnCheckBulkLeadExists" value="@Url.Action("CheckBulkLeadExists", "EnquiryLead")" />
+<input type="hidden" id="hdnGetPendingLeadById" value="@Url.Action("GetPendingLeadById", "EnquiryLead")" />
+<input type="hidden" id="hdnEnquiryLeadList" value="@Url.Action("EnquiryLeadList", "EnquiryLead")" />
+<input type="hidden" id="hdnDeleteEnquiryLead" value="@Url.Action("DeleteEnquiryLead", "EnquiryLead")" />
+
+@using (Html.BeginForm("AddBulkLead", "EnquiryLead", FormMethod.Post))
+{
+    @Html.HiddenFor(row => row.MobileNumber)
+    @Html.HiddenFor(row => row.EmailAddress)
+    @Html.HiddenFor(row => row.LeadDate, new { @data_val_is = EduSuiteUIResources.LeadDateCompareErrorMessage })
+    @Html.HiddenFor(m => m.Qualification)
+
+
+    <header class="section-header">
+        <div class="row justify-content-between px-1">
+            <div class="col-12">
+                <div class="tbl">
+                    <div class="tbl-row  px-1">
+                        <div class="tbl-cell">
+                            <h3>@EduSuiteUIResources.Add@EduSuiteUIResources.Sla@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.BulkLead</h3>
+                            <ol class="breadcrumb breadcrumb-simple mb-2 float-sm-right">
+                                <li><a href="#" onclick="location.href='@Url.Action("EnquiryLeadList", "EnquiryLead")' ">@EduSuiteUIResources.EnquiryLead</a></li>
+                                <li class="active">@EduSuiteUIResources.Add@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.BulkLead</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="section-content mx-sm-3 mx-0">
+        <div class="form-row">
+            @*@if (DbConstants.Role.AdminUserTypes.Contains(DbConstants.User.RoleKey))
+                {
+                    <div class="col-lg-2 col-md-3  col-sm-6 col-12">
+                        <fieldset class="form-group">
+                            @Html.Label(EduSuiteUIResources.Branch, htmlAttributes: new { @id = "lblBranch", @class = "form-label" })
+                            <div class="required-icon"><div class="text">*</div></div>
+                            @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Branch, new { @class = "form-control input-control ", @data_live_search = "true" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.BranchKey)
+                            </span>
+                        </fieldset>
+                    </div>}
+                else
+                {
+                    <div class="col-sm-4 col-6">
+                        <div class="form-group ">
+                            @Html.Label(EduSuiteUIResources.Branch, htmlAttributes: new { @id = "lblBranch", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                            @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), new { @class = "form-control input-control  ", @InputFor = "lblBranch" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.BranchKey)
+                            </span>
+                        </div>
+                    </div>
+                }*@
+          
+
+
+            @if (DbConstants.Role.AdminUserTypes.Contains(DbConstants.User.RoleKey))
+            {
+
+                if (Model.Branches.Count == 1)
+                {
+                    {
+                        Model.BranchKey = (Model.BranchKey == 0 || Model.BranchKey == null) ? (short)Model.Branches.Select(x => x.RowKey).FirstOrDefault() : Model.BranchKey;
+                    }
+                    @Html.HiddenFor(m => m.BranchKey)
+                }
+                else
+                {
+                    <div class="col-lg-2 col-sm-4 col-6">
+                        <fieldset class="form-group">
+                            @Html.Label(EduSuiteUIResources.Branch, htmlAttributes: new { @id = "lblEmployee", @class = "form-label" })
+                            <div class="required-icon"><div class="text">*</div></div>
+                            @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.Branch, new { @class = "form-control input-control ", @data_live_search = "true" })
+                        </fieldset>
+                    </div>
+                }
+            }
+            else
+            {
+                if (Model.Branches.Count == 1)
+                {
+                    {
+                        Model.BranchKey = (Model.BranchKey == 0 || Model.BranchKey == null) ? (short)Model.Branches.Select(x => x.RowKey).FirstOrDefault() : Model.BranchKey;
+                    }
+                    @Html.HiddenFor(m => m.BranchKey)
+                }
+            }
+
+
+        </div>
+        <div class="form-row justify-content-between" id="dvHiddenRow">
+            <div class="col-sm-4 col-6">
+                <fieldset class="form-group">
+                    @Html.Label(EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.ExcelSheet, htmlAttributes: new { @id = "lblExcelFile", @class = "form-label" })
+                    <div class="custom-file">
+                        @Html.TextBox("ExcelFile", "", new { @type = "file", @class = "custom-file-input" })
+                        <label class="custom-file-label" for="ExcelFile">Choose file</label>
+                    </div>
+                </fieldset>
+            </div>
+            <div class=" col-sm-4 col-6">
+                <fieldset class="form-group">
+                    <label class="form-label"></label>
+                    <br />
+                    <a id="btnDownload" class="btn btn-primary btn-sm float-right ">
+                        <i class="fa fa-download" aria-hidden="true"></i>@EduSuiteUIResources.Download@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.ExcelSheet
+                    </a>
+                </fieldset>
+            </div>
+
+        </div>
+
+        <div class="form-row">
+            <div class="col-md-6">
+                <h6>
+                    @EduSuiteUIResources.TotalRecords  <span id="TotalRecords" class="label label-primary"></span>
+
+                </h6>
+            </div>
+            <div class="col-md-6">
+                <a id="btnBulkDelete" class="btn btn-danger btn-sm float-right ">
+                    <i class="fa fa-trash" aria-hidden="true"></i>@EduSuiteUIResources.Delete@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Selected
+                </a>
+            </div>
+        </div>
+        <div id="Excel" class="jexcel-grid overflow-auto"></div>
+        <div class="form-row">
+            <div class="col-12 text-center">
+                <p><a id="btnMore" data-index="1" class="text-info">Load More</a></p>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-12">
+                <div class="form-group">
+                    <input type="button" value="@EduSuiteUIResources.Save" id="btnSave" class="btn btn-sm btn-success mx-1" />
+                    <input type="button" value="@EduSuiteUIResources.Cancel" onclick="location.href='@Url.Action("EnquiryLeadList", "EnquiryLead")' " class="btn btn-sm btn-danger mx-1" />
+                </div>
+            </div>
+            <div class="col-12">
+                <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+            </div>
+        </div>
+    </section>
+}
+
+<script>
+    $(document).ready(function () {
+        var jsonData=@(Html.Raw(Json.Encode(Model)));
+        jsonData["EnquiryLeadStatusKey"]=null;
+        AppCommon.FormatDateInput();
+        if($("#BranchKey").val()=="")
+        {
+            $("#dvHiddenRow").hide();
+            $("#Excel").empty();
+        }
+        else
+        {
+            jsonData["BranchKey"]=$("#BranchKey").val();
+            EnquiryLead.GetPendingLeadsById(jsonData, $("#btnMore").data("index"));
+            $("#dvHiddenRow").show();
+        }
+        $('#btnMore').click(function () {
+            var index=$(this).attr("data-index");
+            EnquiryLead.GetPendingLeadsById(jsonData,index);
+        });
+
+
+        $('#btnAddNew').click(function () {
+            EnquiryLead.AddNewGrade()
+        })
+        $('#btnSave').click(function () {
+            EnquiryLead.UpdateBulkLead()
+        })
+        $('#btnDownload').click(function () {
+            EnquiryLead.DownloadExcel()
+        })
+        $('#ExcelFile').on("change",function (e) {
+            EnquiryLead.FileUploadChange(e)
+            $('#btnBulkDelete').show();
+        })
+        $('#btnBulkDelete').hide();
+        $('#BranchKey').on("change",function () {
+            $('#btnBulkDelete').hide();
+            if($(this).val()=="")
+            {
+                $("#dvHiddenRow").hide();
+                $("#Excel").empty();
+            }
+            else
+            {
+                jsonData["BranchKey"]=$(this).val();
+                var index=$("#btnMore").data("index");
+                index=index&&index!="0"?index:1;
+                EnquiryLead.GetPendingLeadsById(jsonData,index );
+                $("#dvHiddenRow").show();
+            }
+        })
+        $('#btnBulkDelete').on("click",function () {
+            EnquiryLead.DeleteBulkEnquiryLead();
+        });
+    });
+
+</script>

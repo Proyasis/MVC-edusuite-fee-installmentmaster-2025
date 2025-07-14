@@ -1,0 +1,18 @@
+﻿
+    {{#TestQuestions}}
+<a class="btn btn-info btn-square-icon  position-relative" data-question="{{QuestionNumber}}">
+    <strong>{{QuestionNumber}}</strong>
+    <div class="d-block">
+        <i class="fa fa-trash text-danger bg-white badge d-inline-block" onclick="deleteQuestion(this)"></i>
+        {{#if IsEdit}}
+        <i class="fa fa-pencil text-primary bg-white badge d-inline-block" onclick="TestPaper.OptionClick('{{QuestionTypeKey}}',this)"></i>
+        {{/if}}
+    </div>
+
+    <input name="TestQuestions[{{index}}].QuestionTypeKey" type="hidden" value="{{QuestionTypeKey}}" />
+    <input name="TestQuestions[{{index}}].QuestionNumber" type="hidden" value="{{QuestionNumber}}" />
+    <input name="TestQuestions[{{index}}].RowKey" type="hidden" value="{{RowKey}}" />
+</a>
+    {{/TestQuestions}}
+
+

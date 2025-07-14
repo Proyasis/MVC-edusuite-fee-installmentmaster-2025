@@ -1,0 +1,38 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.DocumentTrackViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+<form id="frmfileView">
+
+    @Html.TextBoxFor(m => m.FilePath, new { @class = "form-control input-control", @data_convert = "uppercase" })
+    <!-- Modal Header -->
+    <div class="modal-header">
+        <h4 class="modal-title">File</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+    </div>
+    <!-- Modal body -->
+    <div class="modal-body">
+
+        @if (System.IO.Path.GetExtension(Model.FilePath).ToUpper() == DbConstants.FileExtension.PDF)
+        {
+            <iframe src="@ViewBag.FullPath" style="width:100%;min-height:100vh"></iframe>
+        }
+        else
+        {
+            <img src="@ViewBag.FullPath" />
+        }
+    </div>
+
+</form>
+<script>
+    $(document).ready(function () {
+        
+        var item = $("#frmfileView").closest(".modal-dialog").modal();        
+        $(item).removeClass("mloading-container");
+        //$("#frmfileView").removeData("validator");
+        //$("#frmfileView").removeData("unobtrusiveValidation");
+        //$.validator.unobtrusive.parse($("#frmfileView"));
+        //window.onload = function () {
+        //    var pdfViewer = document.getElementById('pdfviewer').ej2_instances[0];
+        //    pdfViewer.toolbar.showToolbarItem(new Array("OpenOption"), false);
+        //}
+    })
+</script>

@@ -1,0 +1,205 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.DepreciationViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+@using CITS.EduSuite.UI.Resources
+
+
+@section scripts{
+    @Scripts.Render("~/Content/JqueryRepeater")
+    @Scripts.Render("~/Scripts/AssetPurchase")
+}
+
+
+@Html.AntiForgeryToken()
+@Html.HiddenFor(m => m.RowKey)
+
+
+<div class="modal-header">
+    <i data-dismiss="modal" class="fa fa-remove close"></i>
+    <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.View@EduSuiteUIResources.BlankSpace @EduSuiteUIResources.Depreciation</h4>
+</div>
+
+<div class="modal-body bottomLine">
+    <div class="row">
+        <div class="col-sm-12">
+            @* SalesOrder *@
+            <div class="form-master border_fieldset">
+                <div class="row">
+                    <div class="col-sm-12 btn-primary  text-center">
+                        <span>@EduSuiteUIResources.Depreciation @EduSuiteUIResources.Details</span>
+
+                    </div>
+                </div>
+
+
+                <fieldset style="  border: solid 1px white;" class="salesOrderView">
+                    <div class="row bottomLine  gridHead">
+
+                        <div class="form-group">
+                            <div class="col-sm-2 form-col text-center">
+                                @Html.Label(EduSuiteUIResources.Asset, htmlAttributes: new { @class = "lblControlHead" })
+                            </div>
+                            <div class="col-sm-2 form-col text-center">
+                                @Html.Label(EduSuiteUIResources.Date, htmlAttributes: new { @class = "lblControlHead" })
+                            </div>
+                            <div class="col-sm-2 form-col text-center">
+                                @Html.Label(EduSuiteUIResources.Life + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Period, htmlAttributes: new { @class = "lblControlHead" })
+                            </div>
+
+                            <div class="col-sm-6 form-col">
+                                <div class="col-sm-4 form-col text-center">
+                                    @Html.Label(EduSuiteUIResources.Amt, htmlAttributes: new { @class = "lblControlHead" })
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row bottomLine salesOrderView">
+
+                        <div class="form-group">
+                            <div class="col-sm-2 form-col">
+                                @Html.TextBox("MaterialName", Model.AssetName, new { @class = "form-control input-control", @readonly = "readonly" })
+                            </div>
+                            <div class="col-sm-2 form-col">
+                                @Html.TextBox("PurchaseDate", Model.PurchaseDate, new { @class = "form-control input-control", @readonly = "readonly" })
+                            </div>
+                            <div class="col-sm-2 form-col">
+                                @Html.TextBox("Period", Model.Period, new { @class = "form-control input-control", @readonly = "readonly" })
+                            </div>
+                            <div class="col-sm-6 form-col ">
+                                <div class="col-sm-4 form-col ">
+                                    <div class="input-group-transparent">
+                                        @Html.TextBox("Amount", Model.PurchaseAmount, "{0:G29}", new { @class = "form-control input-control text-right", @readonly = "readonly" })
+
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                        </div>
+                    </div>
+                </fieldset>
+
+
+            </div>
+
+            @* SalesOrder Payments *@
+            <div class="form-master border_fieldset">
+
+                <div class="row" data-toggle="collapse" href="#PurchasePayments">
+                    <div class="col-sm-12 btn-primary  text-center">
+                        <span>@EduSuiteUIResources.Depreciation @EduSuiteUIResources.Post @EduSuiteUIResources.Details</span><i class="fa fa-toggle-down pull-right" aria-hidden="true">View</i>
+
+                    </div>
+                </div>
+
+                <fieldset id="PurchasePayments" class="salesOrderView panel-collapse in " aria-expanded="true">
+
+                    @if (Model.DepreciationList.Count() > 0)
+                    {
+
+                        <div class="card-deck mb-3 text-center">
+
+                            @for (int i = 0; i < Model.DepreciationList.Count(); i++)
+                            {
+                                <div class="card mb-4 box-shadow depreciation-details col-sm-3">
+                                    <div class="card-header">
+                                        <h4 class="my-0 font-weight-normal">@Model.DepreciationList[i].PeriodName</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <h1 class="card-title pricing-card-title">@string.Format("{0:G29}", Model.DepreciationList[i].Depreciation) <small class="text-muted">/ @EduSuiteUIResources.Depreciation</small></h1>
+                                        <ul class="list-unstyled mt-3 mb-4">
+                                            <li>@string.Format("{0:G29}", Model.DepreciationList[i].AccumulatedDepreciation) Accumulated Depreciation</li>
+                                            <li>@string.Format("{0:G29}", Model.DepreciationList[i].BookValue) Ending Book Vale</li>
+                                            @if (Model.DepreciationList[i].RowKey != 0)
+                                            {
+                                                <li>Posted On @Model.DepreciationList[i].PostDate</li>
+                                            }
+                                            else
+                                            {
+                                                <li>Depreciation Coming On @Model.DepreciationList[i].PostDate</li>
+                                            }
+                                        </ul>
+                                        @if (Model.DepreciationList[i].RowKey != 0)
+                                        {
+                                            <div class="col-sm-6">
+                                                <button data-modal="" type="button" onclick="Depreciation.EditPopup(this)" data-href="@Url.Action("AddEditDepreciation","Depreciation",new {@id=Model.DepreciationList[i].RowKey,@AssetDetailKey=Model.AssetDetailsKey,@Period=Model.DepreciationList[i].Period })" class="btn btn-xs btn-primary btn-block">Edit</button>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <button type="button" onclick="javascript:deleteDepreciation(@Model.DepreciationList[i].RowKey);return false;" class="btn btn-xs btn-danger  btn-block">Delete</button>
+                                            </div>
+                                        }
+                                        else if (Model.DepreciationList[i].PostDate <= DateTimeUTC.Now && Model.DepreciationList[i].Period == (Model.DepreciationList.Where(x => x.RowKey != 0).Select(x => x.Period).DefaultIfEmpty().Max() + 1))
+                                        {
+                                            <button data-modal="" type="button" onclick="Depreciation.EditPopup(this)" data-href="@Url.Action("AddEditDepreciation","Depreciation",new {@id=Model.DepreciationList[i].RowKey,@AssetDetailKey=Model.AssetDetailsKey,@Period=Model.DepreciationList[i].Period })" class="btn btn-xs btn-block btn-primary">Post</button>
+                                        }
+                                        else
+                                        {
+                                            <button type="button" class="btn btn-xs btn-block btn-success">Coming Soon</button>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                </fieldset>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .form-master {
+        background: #ffffff;
+    }
+
+    .salesOrderView {
+        font-family: initial;
+    }
+
+        .salesOrderView .gridHead {
+            background: #e6e6e6;
+        }
+
+    .modal {
+        overflow: scroll;
+    }
+
+    .depreciation-details {
+        padding: 17px;
+    }
+
+    .card-header {
+        background: #efefef;
+        height: 40px;
+        padding-top: 1px;
+    }
+
+    .card-body {
+        padding-right: 15px;
+        padding-left: 15px;
+        padding-bottom: 15px;
+    }
+
+        .card-body button {
+            height: 35px;
+        }
+</style>
+
+<script>
+    function divToggle(e) {
+        var id = $(e).attr('id');
+        //$(".divtoggle").hide();
+        $("#divProductionChild_" + id).toggle();
+    }
+
+</script>
+
+
+<style>
+    .ViewPartyOrder {
+        width: 70%;
+    }
+</style>

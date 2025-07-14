@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <link rel="icon" href="~/Images/EduSuite.ico" />
+    <title>@EduSuiteUIResources.EduSuitePortal@EduSuiteUIResources.FullColon@EduSuiteUIResources.Login_Login</title>
+
+    <link href="~/Content/font-awesome.css" rel="stylesheet" />
+    <link href="~/Content/themes/default/style.min.css" rel="stylesheet" />
+    <link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
+    <link href="~/Content/icofont.css" rel="stylesheet" />
+    <link href="~/Styles/style.css" rel="stylesheet" />
+    @Styles.Render("~/Content/BootstrapCSS")
+    @Styles.Render("~/Content/DatePickerCSS")
+    @Styles.Render("~/Content/LoadMaskCSS")
+    @Styles.Render("~/Content/Select2CSS")
+    @Styles.Render("~/Content/BootstrapSelectCSS")
+    @Styles.Render("~/Content/JqGridCSS")
+    @Styles.Render("~/Content/ToastrCSS")
+    @Styles.Render("~/Content/JCropCSS")
+    @Styles.Render("~/Content/ChartCSS")
+    @Styles.Render("~/Styles/CSS")
+
+    @Styles.Render("~/Styles/LoginCSS")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/Shared")
+
+    <link href="~/Content/jquery-confirm.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-daterangepicker/daterangepicker.min.css" rel="stylesheet" />
+
+    @Scripts.Render("~/bundles/BootstrapJS")
+    @Scripts.Render("~/Content/BootstrapSelectJS")
+    @Scripts.Render("~/Content/Select2JS")
+    @Scripts.Render("~/Content/LoadMaskJS")
+    @Scripts.Render("~/Content/InputMaskJS")
+    @Scripts.Render("~/Content/JqGridJS")
+    @Scripts.Render("~/Content/MomentJS")
+    @Scripts.Render("~/Scripts/Common")
+
+    @RenderPage("~/Views/Shared/Resources.cshtml")
+
+    <script src="~/Scripts/App/app.js"></script>
+    <script src="~/Scripts/App/plugins.js"></script>
+
+    <script src="~/Scripts/jquery.popupform.js"></script>
+    <script src="~/Scripts/jquery.contextMenu.min.js"></script>
+    <script src="~/Scripts/jquery.bootpag.min.js"></script>
+    <script src="~/Scripts/jquery.timesetter.js"></script>
+    <script src="~/Scripts/excelexport.js"></script>
+    <script src="~/Scripts/jquery.PrintArea.js"></script>
+    <script src="~/Scripts/jquery.serializeToJSON.js"></script>
+    <script src="~/Scripts/handlebars.js"></script>
+    <script src="~/Scripts/handlebars.min.js"></script>
+    <script src="~/Scripts/QRCodeJS.js"></script>
+    <script src="~/Scripts/tableHeadFixed.js"></script>
+    <script src="~/Scripts/bootstrap3-typeahead.min.js"></script>
+    <script src="~/Scripts/jquery.signalR-2.4.1.min.js"></script>
+    <script src="~/signalr/hubs"></script>
+    <script src="~/Content/bootstrap-daterangepicker/daterangepicker.min.js"></script>
+
+    <script src="~/Scripts/jquery.popupform.js"></script>
+</head>
+<body>
+
+    @RenderBody()
+
+</body>
+</html>

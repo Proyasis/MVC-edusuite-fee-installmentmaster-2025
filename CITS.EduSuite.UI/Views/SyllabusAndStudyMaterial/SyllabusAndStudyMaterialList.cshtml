@@ -1,0 +1,144 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.SyllabusAndStudyMaterialViewModel
+
+@using System.Web.Mvc
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/Scripts/SyllabusAndStudyMaterial")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Content/MultiselectJs")
+    @Scripts.Render("~/Content/JqueryRepeater")
+    @Scripts.Render("~/bundles/CitsValidation")
+    @Scripts.Render("~/Scripts/Common")
+
+
+}
+<input type="hidden" id="hdnGetSyllabusAndStudyMaterial" value="@Url.Action("GetSyllabusAndStudyMaterial", "SyllabusAndStudyMaterial")" />
+<input type="hidden" id="hdnDeleteStudyMaterial" value="@Url.Action("DeleteStudyMaterial", "SyllabusAndStudyMaterial")" />
+<input type="hidden" id="hdnAddEditStudyMaterial" value="@Url.Action("AddEditStudyMaterial", "SyllabusAndStudyMaterial")" />
+<input type="hidden" id="hdnAddEditSubjectModules" value="@Url.Action("AddEditSubjectModules", "SyllabusAndStudyMaterial")" />
+
+<input type="hidden" id="hdnFillCourseYear" value="@Url.Action("FillCourseYear", "SyllabusAndStudyMaterial")" />
+<input type="hidden" id="hdnFillUniversity" value="@Url.Action("FillUniversity", "SyllabusAndStudyMaterial")" />
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class=" col-12">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.SyllabusAndStudyMaterials</h3>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</header>
+<section class="section-content mx-sm-3 mx-0">
+    <div class="GridBody">
+
+        <div class="grid-nav-bar ">
+            <div class=" form-row ">
+                @if ((bool)ViewBag.ShowAcademicTerm)
+                {
+                    <div class="col-lg-2 col-sm-4 col-6">
+                        <div class="form-group">
+                            @Html.DropDownListFor(m => m.AcademicTermKey, new SelectList(Model.AcademicTerms, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.AcademicTerm, new { @class = "form-control input-control autohide-select", @data_plugin_type = "select2", @InputFor = "lblBranch", @data_live_search = "true" })
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    {
+                        Model.AcademicTermKey = (byte)Model.AcademicTerms.Select(row => row.RowKey).FirstOrDefault();
+
+                    }
+                    @Html.HiddenFor(m => m.AcademicTermKey)
+                }
+                <div class="col-lg-2 col-sm-4 col-6">
+                    <div class="form-group">
+                        @Html.DropDownListFor(m => m.CourseKey, new SelectList(Model.Courses, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Course, new { @class = "form-control input-control autohide-select", @data_plugin_type = "select2", @InputFor = "lblBranch", @data_live_search = "true" })
+                    </div>
+                </div>
+                @if ((bool)ViewBag.ShowUniversity)
+                {
+                    <div class="col-lg-2 col-sm-4 col-6">
+                        <div class="form-group">
+                            @Html.DropDownListFor(m => m.UniversityMasterKey, new SelectList(Model.Universities, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Affiliations, new { @class = "form-control input-control autohide-select", @data_plugin_type = "select2", @InputFor = "lblBranch", @data_live_search = "true" })
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    {
+                        Model.UniversityMasterKey = (short)Model.Universities.Select(row => row.RowKey).FirstOrDefault();
+                    }
+                    @Html.HiddenFor(m => m.UniversityMasterKey)
+                }
+                <div class="col-lg-2 col-sm-4 col-6">
+                    <div class="form-group">
+                        @Html.DropDownListFor(m => m.SubjectYear, new SelectList(Model.CourseYear, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Year, new { @class = "form-control input-control autohide-select", @data_plugin_type = "select2", @InputFor = "lblBranch", @data_live_search = "true" })
+                    </div>
+                </div>
+                <div class="col-lg-2 col-sm-4 col-6">
+                    <input id="txtsearch" type="text" name="focus" class="form-control gridSearchTextBox" placeholder="@EduSuiteUIResources.Search" />
+
+                    <span id="iconSpan" class="iconSpan"><i class="fa fa-times-circle" aria-hidden="true"></i></span>
+                </div>
+
+                <div class="col-lg-2 col-sm-4 col-6">
+                    <a class="btn btn-info btn-sm float-right " onclick='location.reload();'>
+                        <i class="fa fa-refresh"></i>   @EduSuiteUIResources.Refresh
+                    </a>
+                </div>
+
+            </div>
+        </div>
+        <div class="table-wrapper">
+
+            <div class="jqGrid_wrapper overflow-auto">
+                <table id="grid"></table>
+                <div id="pager"></div>
+            </div>
+        </div>
+
+
+    </div>
+</section>
+
+<script>
+    $(document).ready(function () {
+
+        AppCommon.FormatDateInput();
+        $("#txtsearch").on("input", function () {
+            SyllabusAndStudyMaterial.GetSyllabusAndStudyMaterial();
+        });
+
+        $("#iconSpan").click(function () {
+            $('#txtsearch').val('');
+
+            SyllabusAndStudyMaterial.GetSyllabusAndStudyMaterial();
+        });
+
+
+        $("#CourseKey,#AcademicTermKey").change(function () {
+            var obj = {};
+            obj.key = $("#CourseKey").val() != "" ? $("#CourseKey").val() : 0;
+            obj.AcademicTermKey = $("#AcademicTermKey").val() != "" ? $("#AcademicTermKey").val() : 0;
+            AppCommon.BindDropDownbyId(obj, $("#hdnFillCourseYear").val(), $("#SubjectYear"), Resources.Year);
+            AppCommon.BindDropDownbyId(obj, $("#hdnFillUniversity").val(), $("#UniversityMasterKey"), Resources.Affiliation);
+            SyllabusAndStudyMaterial.GetSyllabusAndStudyMaterial();
+        });
+        $("#SubjectYear,#UniversityMasterKey").change(function () {
+            SyllabusAndStudyMaterial.GetSyllabusAndStudyMaterial();
+        });
+
+        SyllabusAndStudyMaterial.GetSyllabusAndStudyMaterial();
+
+
+
+
+    });
+</script>

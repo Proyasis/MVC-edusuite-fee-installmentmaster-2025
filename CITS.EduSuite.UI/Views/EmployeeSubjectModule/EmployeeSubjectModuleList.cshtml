@@ -1,0 +1,77 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.EmployeePersonalViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+@using CITS.EduSuite.UI
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/CitsValidation")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Scripts/EmployeeSubjectModule")
+    @Scripts.Render("~/Content/Select2JS")
+    @Scripts.Render("~/Content/JqueryRepeater")
+
+}
+
+<header class="section-header">
+    <div class="row px-1">
+        <div class="col-12">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.EmployeeSubjectModules</h3>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</header>
+<input type="hidden" id="hdnEmployeeSubjectModule" value="@Url.Action("EmployeeSubjectModule", "EmployeeSubjectModule")" />
+<section class="section-content mx-sm-3 mx-0">
+    <div class="form-master">
+        <div class="form-row ">
+            <div class="col-12 col-sm-4 col-lg-2">
+                <div class="form-group">
+                    @Html.Label(EduSuiteUIResources.Employee +EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Code, htmlAttributes: new { @id = "lblEmployeecode", @class = "form-label" })
+
+                    @Html.TextBox("EmployeeCode", "", new { @class = "form-control input-control", @InputFor = "lblAdmissionNo", @data_plugin_type = "autocomplete", @data_url = Url.Action("AutoCompleteEmployeeCode", "SelectList") })
+
+
+                </div>
+            </div>
+        </div>
+        @Html.HiddenFor(m => Model.EmployeeKey)
+        <div id="DivCourseFee">
+
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<script>
+
+
+    $(document).ready(function () {
+
+        AppCommon.FormatInputCase();
+
+        AppCommon.FormatDateInput();
+        AppCommon.CustomRemoteMethod();
+
+        AppCommon.FormatAutoComplete();
+
+        if ($("#EmployeeKey").val())
+            EmployeeSubjectModule.GetEmployeeDetails();
+        $("#EmployeeCode").on("change", function () {
+            
+            EmployeeSubjectModule.GetEmployeeDetails();
+
+        });
+    });
+
+</script>

@@ -1,0 +1,188 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.EnquiryFeedbackViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+
+<input type="hidden" id="hdnGetCallStatusByEnquiryStatus" value="@Url.Action("GetCallStatusByEnquiryStatus", "Enquiry")" />
+<input type="hidden" id="hdnCheckCallStatusDuration" value="@Url.Action("CheckCallStatusDuration", "Enquiry")" />
+
+<div class="modal-header">
+    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+    <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.Add @EduSuiteUIResources.Sla @EduSuiteUIResources.Edit @EduSuiteUIResources.Enquiry @EduSuiteUIResources.Feedback</h4>
+</div>
+
+@using (Html.BeginForm("AddEditEnquiryFeedback", "Enquiry", FormMethod.Post, htmlAttributes: new { @id = "frmEnquiryFeedback" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.RowKey, new { @class = "hidEmployeeTaskKey" })
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(m => m.EnquiryKey)
+    @Html.HiddenFor(m => m.IsDuration)
+
+    <div class="modal-body bottomLine">
+        <div class="form-master">
+            <div class="paddingNone">
+                <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+            </div>
+            <div class="formMaster paddingNone">
+
+                <div class="form-row">
+                    <div class="col-4 form-col">
+                        <div class="form-group">
+                            <div class="custom-control custom-checkbox">
+                                @Html.CheckBoxFor(m => m.IsShortListed, new { @class = "custom-control-input", @onchange = "Enquiry.EnableDisableClosed(this)" })
+
+                                @Html.Label(EduSuiteUIResources.Shortlist, htmlAttributes: new { @class = "custom-control-label", @for = "IsShortListed" })
+                            </div>
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.IsShortListed)
+                            </span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="form-row">
+                    <div class="col-4 form-col">
+                        <div class="form-group">
+                            @Html.Label(EduSuiteUIResources.CallType, htmlAttributes: new { @id = "lblCallType", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                            @Html.DropDownListFor(m => m.CallTypeKey, new SelectList(Model.CallTypes, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.CallType, new { @class = "form-control input-control" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.CallTypeKey)
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="col-4 form-col">
+                        <div class="form-group">
+                            @Html.Label(EduSuiteUIResources.Enquiry + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Status, htmlAttributes: new { @id = "lblEnquiryLeadCallStatus", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                            @Html.DropDownListFor(m => m.EnquiryStatusKey, new SelectList(Model.EnquiryStatuses, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Status, new { @class = "form-control input-control" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.EnquiryStatusKey)
+                            </span>
+                        </div>
+                    </div>
+
+
+
+                    <div class="col-4 form-col">
+                        <div class="form-group">
+                            @Html.Label(EduSuiteUIResources.CallStatus, htmlAttributes: new { @id = "lblEnquiryLeadCallStatus", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                            @Html.DropDownListFor(m => m.EnquiryCallStatusKey, new SelectList(Model.EnquiryCallStatuses, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.CallStatus, new { @class = "form-control input-control" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.EnquiryCallStatusKey)
+                            </span>
+                        </div>
+                    </div>
+
+
+
+
+
+
+                </div>
+
+                <div class="form-row">
+                    <div class="col-4 form-col">
+                        <div class="form-group">
+                            @Html.Label(EduSuiteUIResources.Duration, htmlAttributes: new { @id = "lblCallDuration", @class = "form-label" })
+                            @Html.TextBoxFor(m => m.CallDuration, new { @class = "form-control input-control", @data_input_type = "duration", @InputFor = "lblCallDuration" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.CallDuration)
+                            </span>
+                        </div>
+                    </div>
+
+
+                    <div class="col-4 form-col">
+                        <div class="form-group">
+                            @Html.Label(EduSuiteUIResources.NextCallSchedule, htmlAttributes: new { @id = "lblNextCallSchedule", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                            @if (Model.EnquiryStatusKey == 4)
+                            {
+                                @Html.TextBoxFor(m => m.NextCallSchedule, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_input_type = "date", @InputFor = "lblNextCallSchedule", @data_inputmask = "'alias': 'dd/mm/yyyy'", @Disabled = "Disabled" })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(m => m.NextCallSchedule, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_input_type = "date", @InputFor = "lblNextCallSchedule", @data_inputmask = "'alias': 'dd/mm/yyyy'" })
+                            }
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.NextCallSchedule)
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="col-4 form-col">
+                        <div class="form-group">
+                            @Html.Label(EduSuiteUIResources.CounsellingTime, htmlAttributes: new { @class = "form-label" })
+                            @if (Model.EnquiryCallStatusKey != DbConstants.EnquiryCallStatus.Counselling || Model.EnquiryCallStatusKey == null)
+                            {
+                                @Html.DropDownListFor(m => m.ConcellingTimeKey, new SelectList(Model.ConcellingTimes, "Text", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.CounsellingTime, new { @class = "form-control input-control", @InputFor = "lblEnquiryLeadCallStatus", @Disabled = "Disabled" })
+                            }
+                            else
+                            {
+                                @Html.DropDownListFor(m => m.ConcellingTimeKey, new SelectList(Model.ConcellingTimes, "Text", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.CounsellingTime, new { @class = "form-control input-control", @InputFor = "lblEnquiryLeadCallStatus" })
+                            }
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.ConcellingTimeKey)
+                            </span>
+                        </div>
+                    </div>
+                    @if (Model.RowKey == 0)
+                    {
+                        <div class="col-4 d-none">
+                            <div class="form-group">
+                                @Html.Label(EduSuiteUIResources.FileHandOver + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Employee, htmlAttributes: new { @class = "form-label", @style = "margin:0px" })
+                                @Html.DropDownListFor(m => m.EmployeeKey, new SelectList(Model.Employees, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Employee, new { @class = "input-control form-control form-control-sm", @data_plugin_type = "select2", @InputFor = "lblEmployee" })
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => m.EmployeeKey)
+                                </span>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+
+
+                <div class="form-row">
+
+                    <div class="col-12">
+                        <div class="form-group">
+                            @Html.Label(EduSuiteUIResources.Feedback, htmlAttributes: new { @id = "lblNextCallSchedule", @class = "form-label" })
+                            <div class="required-icon"><div class="text">*</div></div>
+                            @Html.TextAreaFor(m => m.Feedback, new { @class = "form-control input-control" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.Feedback)
+                            </span>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="form-row">
+                    <div class="col-6 form-col">
+                        <div class="form-group">
+                            <input type="submit" value="@EduSuiteUIResources.Save" id="btnSaveCopy" class="btn btn-sm btn-success mx-1 " />
+                            <button type="button" id="btnCancel" data-dismiss="modal" class="btn btn-sm btn-danger mx-1">@EduSuiteUIResources.Cancel</button>
+
+                        </div>
+                        <div class="col-12 paddingNone">
+                            <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+
+
+
+
+
+            </div>
+        </div>
+    </div>
+}
+
+
+

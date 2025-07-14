@@ -1,0 +1,214 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.ApplicationPersonalViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+@using System.Web.Mvc
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Scripts/Application")
+    @Scripts.Render("~/Content/JqueryRepeater")
+    @Scripts.Render("~/Scripts/ApplicationSchedule")
+}
+
+<input type="hidden" id="hdnGetApplications" value="@Url.Action("GetApplications", "Application")" />
+<input type="hidden" id="hdnDeleteApplication" value="@Url.Action("DeleteApplication", "Application")" />
+<input type="hidden" id="hdnViewApplication" value="@Url.Action("ViewApplication", "Application")" />
+<input type="hidden" id="hdnAddEditApplicationSchedule" value="@Url.Action("AddEditApplicationSchedule", "ApplicationSchedule")" />
+<input type="hidden" id="hdnAddEditEnrollmentNo" value="@Url.Action("AddEditEnrollmentNo", "Application")" />
+<input type="hidden" id="hdnAddEditClass" value="@Url.Action("AddEditClass", "Application")" />
+<input type="hidden" id="hdnFillSearchBatch" value="@Url.Action("FillSearchBatch", "Application")" />
+<input type="hidden" id="hdnAddEditApplicationSchedule" value="@Url.Action("AddEditApplicationSchedule","ApplicationSchedule")" />
+@Html.Hidden("IsApplicationSchedule",(bool)ViewBag.IsApplicationSchedule)
+<div class="card-header">
+    <header class="section-header">
+        <div class="row justify-content-between px-1">
+            <div class="col-sm-6 col-12">
+                <div class="tbl">
+                    <div class="tbl-row">
+                        <div class="tbl-cell">
+                            <h3>@EduSuiteUIResources.Application</h3>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-12 text-right">
+                <a class="btn btn-warning btn-sm " onclick='window.location.reload()'>
+                    <i class="fa fa-refresh"></i>   Refresh
+                </a>
+                <a class="btn btn-info btn-sm" id="lnkAddEnrollmentNo">
+                    <i class="fa fa-plus"></i>   @EduSuiteUIResources.AddEditEnrollmetandStatus
+                </a>
+                <a class="btn btn-primary btn-sm" id="lnkchangeclass">
+                    @EduSuiteUIResources.Change@EduSuiteUIResources.ClassCode
+                </a>
+                <a href="@Url.Action("AddEditApplication", "Application")" class="btn btn-success btn-sm"><i class="fa fa-plus-square-o"></i> <span>@EduSuiteUIResources.New@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Application</span></a>
+            </div>
+        </div>
+    </header>
+</div>
+<div class="card-body">
+    <section class="section-content mx-sm-3 mx-0">
+        <div class="GridBody">
+
+            <div class="grid-nav-bar">
+                <div class="form-row">
+                    @if (Model.Branches.Count == 1)
+                    {
+                        {
+                            Model.BranchKey = (Model.BranchKey == 0 || Model.BranchKey == null) ? (short)Model.Branches.Select(x => x.RowKey).FirstOrDefault() : Model.BranchKey;
+                        }
+                        @Html.HiddenFor(m => m.BranchKey)
+                    }
+                    else
+                    {
+                        <div class="col-lg-2 col-sm-4 col-6">
+                            <fieldset class="form-group">
+                                @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.Branch, new { @class = "form-control input-control ", @data_live_search = "true" })
+                            </fieldset>
+                        </div>
+                    }
+                    <div class="col-lg-2 col-sm-4 col-6">
+                        <div class="form-group">
+                            @Html.DropDownListFor(m => m.CourseKey, new SelectList(Model.Courses, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Course, new { @class = "form-control input-control autohide-select", @data_plugin_type = "select2", @InputFor = "lblBranch", @data_live_search = "true" })
+                        </div>
+                    </div>
+                    @if (Model.Universities.Count == 1)
+                    {
+                        {
+                            Model.UniversityKey = (Model.UniversityKey == 0) ? (short)Model.Universities.Select(x => x.RowKey).FirstOrDefault() : Model.UniversityKey;
+                        }
+                        @Html.HiddenFor(m => m.UniversityKey)
+                        @Html.Hidden("UniversityCount", 1)
+                    }
+                    else
+                    {
+                        <div class="col-lg-2 col-sm-4 col-6">
+                            <div class="form-group">
+                                @Html.DropDownListFor(m => m.UniversityKey, new SelectList(Model.Universities, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.AffiliationsTieUps, new { @class = "form-control input-control autohide-select", @data_plugin_type = "select2", @InputFor = "lblBranch", @data_live_search = "true" })
+                            </div>
+                        </div>
+                    }
+
+                    <div class="col-lg-2 col-sm-4 col-6">
+                        <div class="form-group">
+                            @Html.DropDownListFor(m => m.BatchKey, new SelectList(Model.Batches, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Batch, new { @class = "form-control input-control autohide-select", @data_plugin_type = "select2", @InputFor = "lblBranch", @data_live_search = "true" })
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-sm-4 col-6">
+                        <div class="form-group">
+                            <input id="txtSearchApplicantName" type="text" name="focus" class="form-control gridSearchTextBox" placeholder="@EduSuiteUIResources.Search@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Name@EduSuiteUIResources.Coma@EduSuiteUIResources.AdmissionNo" /> @* Change Search TextBox Placeholder*@
+                            <span id="iconSpanName" class="iconSpan"><i class="fa fa-times-circle" aria-hidden="true"></i></span>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-sm-4 col-6">
+                        <input id="txtSearchMobileNumber" type="text" name="focus" class="form-control gridSearchTextBox" placeholder="@EduSuiteUIResources.Search@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.MobileNumber" />
+                        <span id="iconSpanMobileNumber" class="iconSpan"><i class="fa fa-times-circle" aria-hidden="true"></i></span>
+                    </div>
+                    <div class="col-sm-2 form-col">                       
+                        <div class="checkbox-bird green inline-block mr-5 mt-1">
+                            @Html.CheckBox("HasPhoto", new { @InputFor = "lblConsession", @class = "switch-input", @onclick = "Application.GetApplication()" })
+                            <label for="HasPhoto">@EduSuiteUIResources.Photo</label>
+                        </div>
+                    </div>
+                   
+                </div>
+
+            </div>
+            <div class="table-wrapper">
+
+                <div class="jqGrid_wrapper overflow-auto">
+                    <table id="grid"></table>
+                    <div id="pager"></div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#txtSearchApplicantName").on("input", function () {
+            Application.GetApplication();
+        });
+        $("#txtSearchMobileNumber").on("input", function () {
+            Application.GetApplication();
+        });
+
+        $("#iconSpanMobileNumber").click(function () {
+            $('#txtSearchMobileNumber').val('');
+            Application.GetApplication();
+        });
+        $("#iconSpanName").click(function () {
+            $('#txtSearchApplicantName').val('');
+            Application.GetApplication();
+        });
+        $("#BranchKey").change(function () {
+            var obj = {};
+            obj.BranchKey = $(this).val() != "" ? $(this).val() : 0;
+            AppCommon.BindDropDownbyId(obj, $("#hdnFillSearchBatch").val(), $("#BatchKey"), Resources.Batch);
+            Application.GetApplication();
+        });
+        $("#BatchKey").change(function () {
+            Application.GetApplication();
+        });
+        $("#CourseKey").change(function () {
+            Application.GetApplication();
+        });
+        $("#UniversityKey").change(function () {
+            Application.GetApplication();
+        });
+        Application.GetApplication();
+        // AppCommon.EditGridPopup($("#AddEditApplicationSchedule"))
+
+
+        $("#lnkAddEnrollmentNo").on("click", function () {
+            var URL = $("#hdnAddEditEnrollmentNo").val();
+            BindPopup(URL);
+        });
+        $("#lnkchangeclass").on("click", function () {
+            var URL = $("#hdnAddEditClass").val();
+            BindPopup(URL);
+        });
+    });
+
+    function BindPopup(url) {
+
+        var myGrid = $('#grid');
+        var ids = $("#grid").jqGrid('getDataIDs');
+        var selRowIds = myGrid.jqGrid("getGridParam", "selarrrow"), n, rowData;
+        var TotalRecords = myGrid.getGridParam("reccount")
+
+        if (TotalRecords > 0) {
+            var URL = url;
+            if (selRowIds && selRowIds.length > 0) {
+                URL = URL + "?keys=" + selRowIds;
+                $.customPopupform.CustomPopup({
+                    modalsize: "modal-lg",
+                    load: function () {
+
+                    },
+                    rebind: function (result) {
+                        Application.GetApplication();
+                    }
+                }, URL);
+            }
+            else {
+                URL = URL + "?keys=" + ids;
+                $.customPopupform.CustomPopup({
+                    modalsize: "modal-lg",
+                    load: function () {
+
+                    },
+                    rebind: function (result) {
+                        Application.GetApplication();
+                    }
+                }, URL);
+            }
+        }
+    }
+</script>
+

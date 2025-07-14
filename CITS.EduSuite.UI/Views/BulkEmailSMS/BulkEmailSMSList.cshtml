@@ -1,0 +1,276 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.BulkEmailSmsViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/bundles/CitsValidation")
+    @Scripts.Render("~/Content/Select2JS")
+    @Scripts.Render("~/Scripts/BulkEmailSMS")
+    @Scripts.Render("~/Content/JqueryRepeater")
+    @Scripts.Render("~/bundles/tinyMCEJS")
+    @Scripts.Render("~/Scripts/BaseStudentsSearch")
+}
+<link href="~/Styles/BulkEmailSMS.css" rel="stylesheet" />
+
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-12">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.Send@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.SMS/@EduSuiteUIResources.Email</h3>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<input type="hidden" id="hdnGetBulkEmailSMS" value="@Url.Action("GetBulkEmailSMS", "BulkEmailSMS")" />
+<input type="hidden" id="hdnGetBulkEmailPopUp" value="@Url.Action("GetBulkEmailPopUp", "BulkEmailSMS")" />
+<input type="hidden" id="hdnGetBulkSMSPopUp" value="@Url.Action("GetBulkSMSPopUp", "BulkEmailSMS")" />
+
+<input type="hidden" id="hdnGetCourseTypeByAcademicTerm" value="@Url.Action("GetCourseTypeByAcademicTerm", "BaseStudentSearch")" />
+<input type="hidden" id="hdnGetCourseByCourseType" value="@Url.Action("GetCourseByCourseType", "BaseStudentSearch")" />
+<input type="hidden" id="hdnGetUniversityByCourse" value="@Url.Action("GetUniversityByCourse", "BaseStudentSearch")" />
+<input type="hidden" id="hdnGetYearsByAcademicTermKey" value="@Url.Action("GetYearsByAcademicTermKey", "BaseStudentSearch")" />
+<section class="section-content mx-sm-3 mx-0">
+    <div class="GridBody">
+        <form>
+            <div class="grid-nav-bar">
+                <div class=" form-row ">
+                    <div class="col-lg-2 col-sm-4 col-6">
+                        @Html.DropDownListFor(m => m.SearchUserTypeKey, new SelectList(Model.UserTypes, "RowKey", "Text"), new { @onchange = "checkUser(this)", @class = "form-control input-control ", @InputFor = "lblBranch" })
+                    </div>
+
+
+                    <div class="col-lg-2 col-sm-3 col-4">
+                        <fieldset class="form-group">
+                            @Html.ListBoxFor(m => m.BranchKeys, new SelectList(Model.Branches, "RowKey", "Text"), new { @class = "form-control input-control selectpicker", @multiple = "multiple", @data_live_search = "true", @data_title = EduSuiteUIResources.Branch })
+                        </fieldset>
+                    </div>
+                    @if ((bool)ViewBag.ShowAcademicTerm)
+                    {
+                        <div class="col-lg-2 col-sm-3 col-4 ApplicantFilter">
+                            <fieldset class="form-group">
+                                @Html.DropDownListFor(m => m.AcademicTermKey, new SelectList(Model.AcademicTerms, "RowKey", "Text"), EduSuiteUIResources.AcademicTerm, new { @class = "form-control input-control " })
+                            </fieldset>
+                        </div>
+
+                    }
+                    else
+                    {
+                        {
+                            Model.AcademicTermKey = (byte)Model.AcademicTerms.Select(row => row.RowKey).FirstOrDefault();
+
+                        }
+                        @Html.HiddenFor(m => m.AcademicTermKey)
+                    }
+
+                    <div class="col-lg-2 col-sm-3 col-4 ApplicantFilter">
+                        <fieldset class="form-group">
+                            @Html.ListBoxFor(m => m.CourseTypeKeys, new SelectList(Model.CourseTypes, "RowKey", "Text"), new { @class = "form-control input-control selectpicker", @multiple = "multiple", @data_live_search = "true", @data_title = EduSuiteUIResources.CourseType })
+                        </fieldset>
+                    </div>
+
+                    <div class="col-lg-2 col-sm-3 col-4 ApplicantFilter">
+                        <fieldset class="form-group">
+                            @*@Html.DropDownListFor(m => m.CourseKey, new SelectList(Model.Course, "RowKey", "Text"), EduSuiteUIResources.Course, new { @class = "form-control input-control " })*@
+                            @Html.ListBoxFor(m => Model.CourseKeys, new SelectList(Model.Courses, "RowKey", "Text"), new { @class = "form-control border-radius input-control selectpicker", @multiple = "multiple", @data_live_search = "true", @data_title = EduSuiteUIResources.Course })
+                        </fieldset>
+                    </div>
+                    @if ((bool)ViewBag.ShowUniversity)
+                    {
+                        <div class="col-lg-2 col-sm-3 col-4 ApplicantFilter">
+                            <fieldset class="form-group">
+                                @Html.ListBoxFor(m => m.UniversityMasterKeys, new SelectList(Model.UniversityMasters, "RowKey", "Text"), new { @class = "form-control input-control selectpicker", @multiple = "multiple", @data_live_search = "true", @data_title = EduSuiteUIResources.University })
+                            </fieldset>
+                        </div>
+                    }
+
+                    <div class="col-lg-2 col-sm-3 col-4 ApplicantFilter">
+                        <fieldset class="form-group">
+                            @Html.ListBoxFor(m => m.CourseYearsKeys, new SelectList(Model.CourseYears, "RowKey", "Text"), new { @class = "form-control input-control selectpicker", @multiple = "multiple", @data_live_search = "true", @data_title = EduSuiteUIResources.Year })
+                        </fieldset>
+                    </div>
+                    <div class="col-lg-2 col-sm-3 col-4 ApplicantFilter">
+                        <fieldset class="form-group">
+                            @Html.ListBoxFor(m => m.BatchKeys, new SelectList(Model.Batches, "RowKey", "Text"), new { @class = "form-control input-control  selectpicker", @multiple = "multiple", @data_live_search = "true", @data_title = EduSuiteUIResources.Batch })
+                        </fieldset>
+                    </div>
+                    <div class="col-lg-2 col-sm-4 col-6 ApplicantFilter">
+                        <div class="form-group">
+                            @Html.DropDownListFor(m => m.SearchApplicationStatusKey, new SelectList(Model.ApplicationStatuses, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.ApplicationStatus, new { @class = "form-control input-control autohide-select", @data_plugin_type = "select2", @InputFor = "lblBranch", @data_live_search = "true" })
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-sm-4 col-6">
+                        @Html.TextBoxFor(m => m.SearchText, new { @class = "form-control input-control", @placeholder = EduSuiteUIResources.Search })
+                    </div>
+
+                    <div class="col-lg-2 col-sm-3 col-2 ">
+                        <fieldset class="form-group">
+                            <button type="button" id="btnSearch" class="btnForm btnSubmit btn btn-sm btn-success">@EduSuiteUIResources.Search</button>
+                        </fieldset>
+                    </div>
+
+
+                </div>
+            </div>
+            </form>
+            <div class="table-wrapper">
+                <div id="divContent">
+
+                </div>
+                <div class="col-sm-12 pull-left">
+                    <div id="page-selection-down" class="pull-right"></div>
+                </div>
+                <ul style="margin-bottom:5px;" id="selectedApplicantsDatePreview" class="selectedApplicantsDatePreview d-none"></ul>
+                <div style="float:right">
+                    @if (System.Configuration.ConfigurationManager.AppSettings["EnableSMS"] == "true")
+                    {
+                        <button type="button" onclick="BulkEmailSMS.GetBulkSMSPopUp(jsonData)" class="btn btn-primary btnBulkEmailSMS">Send SMS</button>
+                    }
+                    <button type="button" onclick="BulkEmailSMS.GetBulkEmailPopUp(jsonData)" class="btn btn-primary btnBulkEmailSMS">Send Email</button>
+                </div>
+                @*<div class="jqGrid_wrapper overflow-auto">
+                    <table id="grid"></table>
+                    <div id="pager"></div>
+                </div>*@
+            </div>
+
+
+    </div>
+</section>
+
+
+
+
+
+
+<div style="display:none" class="col-sm-12">
+    <ul class="nav nav-tabs BulkEmailSMSTab">
+        <li value="1" class="active"><a data-toggle="tab" href="#home">Bulk Email/SMS</a></li>
+        <li value="2"><a data-toggle="tab" href="#home">History</a></li>
+
+    </ul>
+</div>
+
+<div class="col-sm-12">
+    @*<div class="col-sm-8">
+            <div id="divContent">
+
+            </div>
+
+            <div class="col-sm-12 pull-left">
+                <div id="page-selection-down" class="pull-right"></div>
+            </div>
+        </div>*@
+
+
+    @using (Html.BeginForm("GetBulkEmailPopUp", "BulkEmailSMS", new { id = "" }, FormMethod.Post, new { @id = "frmBulkEmailSMS" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="col-sm-4">
+            <div style="display:none" class="col-sm-2 form-col">
+                @Html.ListBoxFor(m => m.RowKeys, new SelectList(Model.RowKeyList, "RowKey", "Text"), new { @class = "form-control input-control " })
+                @Html.ListBoxFor(m => m.RoleKeys, new SelectList(Model.RoleKeyList, "RowKey", "Text"), new { @class = "form-control input-control " })
+                @Html.ListBoxFor(m => m.Emails, new SelectList(Model.EmailList, "RowKey", "Text"), new { @class = "form-control input-control " })
+                @Html.ListBoxFor(m => m.SMS, new SelectList(Model.SMSList, "RowKey", "Text"), new { @class = "form-control input-control " })
+            </div>
+            @*<ul style="margin-bottom:5px;" id="selectedApplicantsDatePreview" class="selectedApplicantsDatePreview"></ul>
+                <div style="float:right">
+                    @if (System.Configuration.ConfigurationManager.AppSettings["EnableSMS"] == "true")
+                    {
+                        <button type="button" onclick="BulkEmailSMS.GetBulkSMSPopUp(jsonData)" class="btn btn-primary btnBulkEmailSMS">Send SMS</button>
+                    }
+                    <button type="button" onclick="BulkEmailSMS.GetBulkEmailPopUp(jsonData)" class="btn btn-primary btnBulkEmailSMS">Send Email</button>
+                </div>*@
+        </div>
+    }
+
+
+</div>
+
+
+<script type="text/javascript">
+    var jsonData=@(Html.Raw(Json.Encode(Model)));
+
+
+    $(document).ready(function(){
+        BulkEmailSMS.GetBulkEmailSMS(jsonData,0,true);
+
+         if (!JSON.parse(('@ViewBag.ShowAcademicTerm').toLowerCase())) {
+            BaseStudentsSearch.GetCourseTypeByAcademicTerm($("#CourseTypeKeys"));
+            BaseStudentsSearch.GetYearsByAcademicTerm($("#CourseYearsKeys"));
+            BaseStudentsSearch.GetCourseByCourseType($("#CourseKeys"));
+        }
+        $("#AcademicTermKey").on("change", function () {
+
+            BaseStudentsSearch.GetCourseTypeByAcademicTerm($("#CourseTypeKeys"));
+            BaseStudentsSearch.GetYearsByAcademicTerm($("#CourseYearsKeys"));
+            BaseStudentsSearch.GetCourseByCourseType($("#CourseKeys"));
+        });
+
+        $("#CourseTypeKeys").on("change", function () {
+            BaseStudentsSearch.GetCourseByCourseType($("#CourseKeys"));
+        });
+
+        $("#CourseKeys").on("change", function () {
+            BaseStudentsSearch.GetUniversityByCourse($("#UniversityMasterKeys"));
+        });
+
+        $('#btnSearch').on("click", function () {
+            //StudentSummary.GetStudentSummary(jsonDataList);
+            BulkEmailSMS.GetBulkEmailSMS(jsonData, 0, true)
+        });
+
+        $('#SearchText').on("input", function () {
+           // StudentSummary.GetStudentSummary(jsonDataList);
+            BulkEmailSMS.GetBulkEmailSMS(jsonData, 0, true)
+        });
+
+    });
+
+
+</script>
+
+
+<script>
+
+    checkUser($("#SearchUserTypeKey"));
+    function checkUser(_this)
+    {
+
+
+        $("#RowKeys").val("");
+        $("#RoleKeys").html("");
+        $("#Emails").html("");
+        $("#SMS").html("");
+        $('#selectedApplicantsDatePreview').html("");
+
+        if(_this.value=='@DbConstants.Role.Staff')
+        {
+            $(".ApplicantFilter").hide();
+        }
+
+       
+
+        if(_this.value=='@DbConstants.Role.Students')
+        {
+            $(".ApplicantFilter").show();
+        }
+        else
+        {
+            $(".ApplicantFilter").hide();
+            $("#SearchCountryKey").val("");
+            $("#SearchInTakeKey").val("");
+            $("#SearchApplicationStatusKey").val("");
+        }
+
+    }
+</script>

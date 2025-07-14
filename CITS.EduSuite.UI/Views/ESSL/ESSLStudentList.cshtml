@@ -1,0 +1,82 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.ESSLStudentsDetailsViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+@using System.Web.Mvc
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Scripts/ESSLStudents")
+}
+
+<input type="hidden" id="hdnGetESSLStudent" value="@Url.Action("GetESSLStudent", "ESSL")" />
+<div class="card-header">
+    <header class="section-header">
+        <div class="row justify-content-between px-1">
+            <div class="col-sm-6 col-12">
+                <div class="tbl">
+                    <div class="tbl-row">
+                        <div class="tbl-cell">
+                            <h3>Students</h3>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+</div>
+<div class="card-body">
+    <section class="section-content mx-sm-3 mx-0">
+        <div class="GridBody">
+
+            <div class="grid-nav-bar">
+                <div class="form-row">
+
+
+                    <div class="col-lg-2 col-sm-4 col-6">
+                        <div class="form-group">
+                            <input id="txtSearchApplicantName" type="text" name="focus" class="form-control gridSearchTextBox" placeholder="@EduSuiteUIResources.Search" /> @* Change Search TextBox Placeholder*@
+                            <span id="iconSpan" class="iconSpan"><i class="fa fa-times-circle" aria-hidden="true"></i></span>
+                        </div>
+                    </div>
+                    <div class="col-sm-2 form-col">
+                        <div class="checkbox-bird green inline-block mr-5 mt-1">
+                            @Html.CheckBox("IsConnected", new { @InputFor = "lblConsession", @class = "switch-input", @onclick = "ESSLStudents.GetESSLStudents()" })
+                            <label for="IsConnected">Connceted</label>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-sm-4 col-6 float-right">
+                        <a class="btn btn-info btn-sm float-right " onclick='window.location.reload()'>
+                            <i class="fa fa-refresh"></i>   Refresh
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+            <div class="table-wrapper">
+
+                <div class="jqGrid_wrapper overflow-auto">
+                    <table id="grid"></table>
+                    <div id="pager"></div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#txtSearchApplicantName").on("input", function () {
+            ESSLStudents.GetESSLStudents();
+        });
+        $("#iconSpan").click(function () {
+            $('#txtSearchApplicantName').val('');
+            ESSLStudents.GetESSLStudents();
+        });
+     
+        
+        ESSLStudents.GetESSLStudents();
+    });
+</script>

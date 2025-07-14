@@ -1,0 +1,77 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.DocumentTrackViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+@using System.Web.Mvc
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Scripts/Shared")
+    @Scripts.Render("~/Content/JqueryRepeater")
+}
+
+<input type="hidden" id="hdnGetDocumentTrackList" value="@Url.Action("GetDocumentTrackList", "Shared")" />
+
+
+<div class="modal-header">
+    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+    <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.DocumentTrack</h4>
+</div>
+
+<div class="modal-body bottomLine">
+   
+    <div class="card-body">
+        <section class="section-content mx-sm-3 mx-0">
+            <div class="GridBody">
+                @Html.HiddenFor(m => m.DocumentType)
+                @Html.HiddenFor(m => m.RowDataKey)
+                <div class="grid-nav-bar">
+                    <div class="form-row">
+
+                        @*<div class="col-lg-2 col-sm-4 col-6">
+                                <div class="form-group">
+                                    @Html.DropDownListFor(m => m.BatchKey, new SelectList(Model.Batches, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Batch, new { @class = "form-control input-control autohide-select", @data_plugin_type = "select2", @InputFor = "lblBranch", @data_live_search = "true" })
+                                </div>
+                            </div>*@
+                        <div class="col-lg-2 col-sm-4 col-6">
+                            <div class="form-group">
+                                <input id="txtSearchText" type="text" name="focus" class="form-control gridSearchTextBox" placeholder="@EduSuiteUIResources.Search" /> @* Change Search TextBox Placeholder*@
+                                <span id="iconSpan" class="iconSpan"><i class="fa fa-times-circle" aria-hidden="true"></i></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-sm-4 col-6 float-right">
+                            <a class="btn btn-info btn-sm float-right " onclick='Shared.GetDocumentTrack()'>
+                                <i class="fa fa-refresh"></i>   @EduSuiteUIResources.Refresh
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="table-wrapper">
+
+                    <div class="jqGrid_wrapper overflow-auto">
+                        <table id="gridStudentView"></table>
+                        <div id="StudentViewpager"></div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $("#txtSearchText").on("input", function () {
+                Shared.GetDocumentTrack();
+            });
+
+            $("#iconSpan").click(function () {
+                $('#txtSearchText').val('');
+                Shared.GetDocumentTrack();
+            });
+
+            Shared.GetDocumentTrack();
+
+        });
+    </script>
+

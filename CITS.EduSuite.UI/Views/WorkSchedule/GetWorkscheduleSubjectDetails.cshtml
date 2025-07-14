@@ -1,0 +1,130 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.WorkScheduleViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+
+<div id="dynamicRepeater" class="repeater">
+    <table class="table  table-stripped">
+        <thead class="thead-light">
+            <tr>
+                <th>
+                    @Html.Label(EduSuiteUIResources.Topic, htmlAttributes: new { @class = "form-label" })
+                </th>                
+                <th>
+                    @Html.Label(EduSuiteUIResources.Duration, htmlAttributes: new { @class = "form-label" })
+                </th>
+                <th>
+                    @Html.Label(EduSuiteUIResources.Status, htmlAttributes: new { @class = "form-label" })
+                </th>
+                <th>
+
+                </th>
+
+            </tr>
+        </thead>
+        <tbody data-repeater-list id="DivWorkScheduleDetails">
+            @for (int i = 0; i < Model.WorkscheduleSubjectmodel.Count(); i++)
+            {
+                if (i == 0 || (i != 0 && Model.WorkscheduleSubjectmodel[i].SubjectModuleKey != Model.WorkscheduleSubjectmodel[i - 1].SubjectModuleKey))
+                {
+                    <tr class="w3-light-grey">
+                        <th colspan="5">
+                            @Model.WorkscheduleSubjectmodel[i].ModuleName
+                        </th>
+                    </tr>
+
+                }
+                <tr data-repeater-item>
+                    <td class="px-1">
+                        @Html.DisplayFor(m => m.WorkscheduleSubjectmodel[i].TopicName, new { @class = "form-control input-control smallFont", @readonly = "true" })
+                        @Html.HiddenFor(m => m.WorkscheduleSubjectmodel[i].MasterRowKey, new { @class = "rowKeyClass" })
+                        @Html.HiddenFor(m => m.WorkscheduleSubjectmodel[i].TopicKey)
+                        @Html.HiddenFor(m => m.WorkscheduleSubjectmodel[i].SubjectModuleKey)
+                    </td>
+                    <td class="px-1">
+                        <span id="spnTotalWorkDuration"></span>
+                        @Html.HiddenFor(m => m.WorkscheduleSubjectmodel[i].TotalWorkDuration)
+                    </td>
+                    <td class="px-1">
+                        <span id="spnTotalProgressStatus"></span>
+                        @Html.HiddenFor(m => m.WorkscheduleSubjectmodel[i].ProgressStatus)
+                        <div class="progress">
+                            <div id="dynamic" class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                                <span id="current-progress"></span>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-1">
+                        @if (Model.WorkscheduleSubjectmodel[i].ProgressStatus == null || Model.WorkscheduleSubjectmodel[i].ProgressStatus < 100)
+                        {
+                            <button type="button" class="btn btn-primary btn-sm mx-1" onclick="WorkSchedule.WorkScheduleDetailsCustomPopup(this,'Add')"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+                        }
+                        @if (Model.WorkscheduleSubjectmodel[i].MasterRowKey != null && Model.WorkscheduleSubjectmodel[i].MasterRowKey != 0)
+                        {
+                            <button type="button" class="btn btn-primary btn-sm mx-1" onclick="WorkSchedule.WorkScheduleHistoryCustomPopup(this)"><i class="fa fa-history" aria-hidden="true"></i></button>
+                        }
+                    </td>
+
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+@*<div class="col-12">
+        <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+    </div>*@
+
+<script>
+
+    $(document).ready(function () {
+
+
+        AppCommon.FormatDateInput();
+        AppCommon.FormatInputCase();
+        AppCommon.FormatTimeInput();
+        $("form").removeData("validator");
+        $("form").removeData("unobtrusiveValidation");
+        $.validator.unobtrusive.parse("form");
+
+
+        $("[data-repeater-item]", $("#DivWorkScheduleDetails")).each(function (Index) {
+
+            var TotalWorkDuration = $("input[id*=TotalWorkDuration]", $(this)).val();
+            TotalWorkDuration = parseInt(TotalWorkDuration) ? parseInt(TotalWorkDuration) : 0;
+            var num = TotalWorkDuration;
+            var hours = (num / 60);
+            var rhours = Math.floor(hours);
+            var minutes = (hours - rhours) * 60;
+            var rminutes = Math.round(minutes);
+            var TotalWorkDurationText = rhours + " HR : " + rminutes + " Min.";
+            $("#spnTotalWorkDuration", $(this)).html(TotalWorkDurationText).attr("style", "color:Green;");
+
+            var ProgressStatus = $("input[id*=ProgressStatus]", $(this)).val();
+
+            ProgressStatus = parseInt(ProgressStatus) ? parseInt(ProgressStatus) : 0;
+            
+            if (ProgressStatus < 100) {
+                //$("#spnTotalProgressStatus", $(this)).html("Pending (" + ProgressStatus + " % )").attr("style", "color:Red;");
+                $("#dynamic", $(this)).css("width", ProgressStatus + "%").attr("aria-valuenow", ProgressStatus).text(ProgressStatus + "% Pending").css({ "background-color": "Red"});
+            }
+            else if (ProgressStatus == 0) {
+                //$("#spnTotalProgressStatus", $(this)).html("Completed (" + ProgressStatus + " % )").attr("style", "color:Red;");
+                $("#dynamic", $(this)).css("width", ProgressStatus + "%").attr("aria-valuenow", ProgressStatus).text(ProgressStatus + "% Complete");
+            }
+            else if (ProgressStatus >= 100) {
+                //$("#spnTotalProgressStatus", $(this)).html("Completed (" + ProgressStatus + " % )").attr("style", "color:Green;");
+
+                $("#dynamic", $(this)).css("width", ProgressStatus + "%").attr("aria-valuenow", ProgressStatus).text(ProgressStatus + "% Complete").css({ "background-color": "Green" });;
+            }
+
+        })
+
+    });
+
+</script>
+<style>
+    .progress {
+        margin: 10px;
+        width: 50%;
+    }
+</style>

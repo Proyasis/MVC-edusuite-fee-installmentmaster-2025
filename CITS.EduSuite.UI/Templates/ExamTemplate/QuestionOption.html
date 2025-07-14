@@ -1,0 +1,74 @@
+﻿
+<form id="frmQuestionOption">
+    <input name="RowKey" type="hidden" value="{{RowKey}}" />
+    <input name="QuestionTypeKey" type="hidden" value="{{QuestionTypeKey}}" />
+    <input name="QuestionNumber" type="hidden" value="{{QuestionNumber}}" />
+    <div class="modal-header">
+        <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+        <h4 class="modal-title" id="myModalLabel">Edit Option</h4>
+    </div>
+    <div class="modal-body bottomLine">
+        <div class="btn-group btn-group-toggle " data-toggle="buttons">
+            {{#QuestionTypes}}
+            {{#if Selected}}
+            <label class="btn btn-outline-primary active">
+                <input type="radio" id="rblQuestionType" name="QuestionTypeKey" checked value="{{RowKey}}" />{{Text}}
+            </label>
+            {{else}}
+            <label class="btn btn-outline-primary">
+                <input type="radio" id="rblQuestionType" name="QuestionTypeKey" value="{{RowKey}}" />{{Text}}
+            </label>
+            {{/if}}
+            {{/QuestionTypes}}
+        </div>
+        <table id="qtnGroup" data-hidden>
+            <thead>
+                <tr>
+                    <th class="w-75">
+                        Text
+                    </th>
+                    <th>
+                        Value
+                    </th>
+                    <th>
+
+                    </th>
+                </tr>
+            </thead>
+            <tbody data-repeater-list>
+                {{#QuestionOptions}}
+                <tr data-repeater-item>
+                    <td>
+                        <input id="QuestionOptions[{{@index}}].Text" name="QuestionOptions[{{@index}}].Text" type="text" class="form-control" value="{{Text}}" data-val=true />
+                    </td>
+                    <td>
+                        <input id="QuestionOptions[{{@index}}].Value" name="QuestionOptions[{{@index}}].Value" type="text" class="form-control" value="{{Value}}" data-convert="uppercase" data-val=true />
+                    </td>
+                    <td>
+                        <a data-repeater-delete class="btn btn-danger btn-sm m-1"><i class="fa fa-trash"></i></a>
+                    </td>
+                </tr>
+                {{/QuestionOptions}}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th colspan="2">
+
+                    </th>
+
+                    <th>
+                        <a data-repeater-create class="btn btn-success btn-sm m-1"><i class="fa fa-plus"></i></a>
+                    </th>
+                </tr>
+            </tfoot>
+        </table>
+
+    </div>
+    <div class="modal-footer justify-content-start">
+        <div class="form-group">
+            <button type="button" id="btnSave" class="btn btn-sm btn-success mx-1"><i class="fa fa-save"></i> Add</button>
+            <button type="button" data-dismiss="modal" class="btn btn-sm btn-danger mx-1"><i class="fa fa-close"></i>Cancel</button>
+
+        </div>
+    </div>
+</form>

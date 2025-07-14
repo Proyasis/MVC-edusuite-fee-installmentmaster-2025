@@ -1,0 +1,174 @@
+﻿@model List<CITS.EduSuite.Business.Models.ViewModels.EnquiryScheduleViewModel>
+
+@using CITS.EduSuite.Business.Models.ViewModels
+
+
+
+@for (var i = 0; i < Model.Count; i++)
+{
+    string Schedule;
+
+    if (Model[i].ScheduleTypeKey == 0)
+    {
+        Schedule = "EnquiryLead";
+    }
+    else
+    {
+        Schedule = "Enquiry";
+    }
+
+    <tr class="@Schedule">
+        <td class="px-0 checkboxColumn">
+            
+            <div class="custom-control custom-checkbox mx-2">
+                @*<input type="checkbox" class="custom-control-input AllocateMultipleLead" leadkey="@Model[i].RowKey" onchange="EnquirySchedule.CheckAllocatedCount()" id="checkmark_@Model[i].RowKey">
+        <label class="custom-control-label" for="checkmark_@Model[i].RowKey"></label>*@
+
+                <input type="checkbox" class="custom-control-input addLead" selection_value="@Model[i].RowKey" text="@Model[i].Name,@Model[i].MobileNumber" id="checkmark_@Model[i].RowKey" value="@Model[i].RowKey">
+                <label class="custom-control-label" for="checkmark_@Model[i].RowKey"></label>
+
+            </div>
+            
+            @Html.HiddenFor(m => m[i].ScheduleTypeKey)
+            @Html.HiddenFor(m => m[i].FeedbackKey)
+            @Html.HiddenFor(m => m[i].RowKey)
+            @Html.HiddenFor(m => m[i].MobileNumber)
+        </td>
+        <td class="px-1">@Model[i].RowNumber</td>
+        <td class="px-1">
+            @if ((Model[i].ScheduleStatusKey != DbConstants.ScheduleStatus.History && Model[i].ScheduleStatusKey != DbConstants.ScheduleStatus.Closed) && Model[i].IsEditable)
+            {
+                <div class="btn-group btn-group-sm">
+                    @if (Model[i].ScheduleTypeKey == 0)
+                    {
+                        <button type="button" data-modal="1" data-url="@Url.Action("AddEditEnquiryLeadFeedback", "EnquiryLead", new { id = 0, LeadKey = Model[i].RowKey })" class="btn btn-success btn-sm mx-1 rounded-circle btn3d">
+                            <span class="glyphicon glyphicon-earphone"></span>
+                        </button>
+
+                        <button type="button" class="btn btn-primary btn-sm mx-1 rounded-circle btn3d" onclick="javascript:window.location.href='@Url.Action("AddEditEnquiry", "Enquiry", new { LeadId = Model[i].RowKey })'"><span class="glyphicon glyphicon-plus"></span></button>
+                    }
+                    else
+                    {
+
+                        if (Model[i].ModuleKey == DbConstants.EnquiryModule.CounsellingSchedule || Model[i].ModuleKey == DbConstants.EnquiryModule.CounsellingCompleted)
+                        {
+
+                            <button type="button" data-modal="2" data-url="@Url.Action("AddEditEnquiryCounsellingCompletedFeedback", "Enquiry", new { id =0, EnquiryKey = Model[i].RowKey })" class="btn btn-success btn-sm mx-1 rounded-circle btn3d">
+                                <span class="glyphicon glyphicon-earphone"></span>
+                            </button>
+                        }
+                        else
+                        {
+                            <button type="button" data-modal="2" data-url="@Url.Action("AddEditEnquiryFeedback", "Enquiry", new { id =0, EnquiryKey = Model[i].RowKey })" class="btn btn-success btn-sm mx-1 rounded-circle btn3d">
+                                <span class="glyphicon glyphicon-earphone"></span>
+                            </button>
+                        }
+
+
+
+                    }
+                    @*<a id="@Model[i].MobileNumber" onclick="LoadHistory(this)" data-target="#AllHistoryModal" data-toggle="modal" class="btn btn-primary btn-sm mx-1 btnShowAllHistory2">
+                            <span class="fa fa-history"></span>
+                        </a>*@
+                </div>
+            }
+
+        </td>
+        <td class="px-1">@Model[i].Name</td>
+        <td class="px-1">
+            <a href="tel:@Model[i].MobileNumber">@Model[i].MobileNumber</a>
+        </td>
+        <td class="px-1">@Model[i].CallTypeName</td>
+        <td class="px-1">@Model[i].CallStatusName</td>
+        <td class="px-1"> @Model[i].CallDuration</td>
+        <td class="px-1">@(string.Format("{0:dd/MM/yyyy hh:mm:ss tt }", Model[i].FeedbackCreatedDate))</td>
+        <td class="px-1">@(string.Format("{0:dd/MM/yyyy}", Model[i].NextCallScheduleDate))</td>
+        <td class="px-1">@Model[i].CouncellingTime</td>
+        <td class="px-1">@Model[i].Feedback</td>
+        <td class="px-1">@Model[i].EmployeeName</td>
+        <td class="px-1">@Model[i].CreatedBy</td>
+
+    </tr>
+}
+
+
+
+
+
+<input type="hidden" id="hdnTotalRecords" value="@ViewBag.TotalRecords" />
+
+<input type="hidden" id="HdnTodaysScheduleCount" value="@ViewBag.TodaysScheduleCount" />
+<input type="hidden" id="HdnTomorrowCount" value="@ViewBag.TomorrowCount" />
+<input type="hidden" id="HdnPendingScheduleCount" value="@ViewBag.PendingScheduleCount" />
+<input type="hidden" id="HdnUpcomingScheduleCount" value="@ViewBag.UpcomingScheduleCount" />
+<input type="hidden" id="HdnHistoryCount" value="@ViewBag.HistoryCount" />
+<input type="hidden" id="HdnTodaysRecheduleCount" value="@ViewBag.TodaysRecheduleCount" />
+<input type="hidden" id="HdnCouncellingScheduleCount" value="@ViewBag.CouncellingScheduleCount" />
+<input type="hidden" id="HdnShortlistedCount" value="@ViewBag.ShortlistedCount" />
+<input type="hidden" id="HdnShortlistPendingCount" value="@ViewBag.ShortlistPendingCount" />
+
+<input type="hidden" id="HdnAllScheduleCount" value="@ViewBag.AllScheduleCount" />
+<input type="hidden" id="HdnEnquiryScheduleCount" value="@ViewBag.EnquiryScheduleCount" />
+<input type="hidden" id="HdnLeadScheduleCount" value="@ViewBag.LeadScheduleCount" />
+<input type="hidden" id="HdnNewLeadCount" value="@ViewBag.NewLeadCount" />
+<input type="hidden" id="HdnUnallocatedLeadCount" value="@ViewBag.UnallocatedLeadCount" />
+<input type="hidden" id="HdnClosedCount" value="@ViewBag.ClosedCount" />
+
+
+<script>
+    $(document).ready(function () {
+
+        selection.CheckList();
+        $('[data-modal="1"]').on("click", function () {
+            EnquiryLead.EditFeedbackPopUp($(this))
+        });
+
+        $('[data-modal="2"]').on("click", function () {
+            Enquiry.EditFeedbackPopUp($(this))
+        });
+
+        $('.ScheduleTab a[value="0"] .badge').html($("#HdnTodaysScheduleCount").val());
+        $('.ScheduleTab a[value="4"] .badge').html($("#HdnTomorrowCount").val());
+        $('.ScheduleTab a[value="1"] .badge').html($("#HdnPendingScheduleCount").val());
+        $('.ScheduleTab a[value="2"] .badge').html($("#HdnUpcomingScheduleCount").val());
+        $('.ScheduleTab a[value="3"] .badge').html($("#HdnHistoryCount").val());
+        $('.ScheduleTab a[value="6"] .badge').html($("#HdnCouncellingScheduleCount").val());
+        $('.ScheduleTab a[value="7"] .badge').html($("#HdnNewLeadCount").val());
+        $('.ScheduleTab a[value="11"] .badge').html($("#HdnClosedCount").val());
+        $('#unAllocatedLead .badge').html(@Convert.ToString(ViewBag.UnallocatedLeadCount));
+
+
+        $('.ScheduleTab [value="9"] .badge').html(@Convert.ToString(ViewBag.ShortlistedCount));
+        $('.ScheduleTab [value="10"] .badge').html(@Convert.ToString(ViewBag.ShortlistPendingCount));
+
+        $("#shortListCount").html(@Convert.ToString(ViewBag.ShortlistedCount));
+        $("#shortListPendingCount").html(@Convert.ToString(ViewBag.ShortlistPendingCount));
+
+        if ($(".ScheduleTab .active").attr("value") == 0 && $("#HdnTodaysRecheduleCount").val() != "") {
+            $("#todaysRescheduleCount").show();
+            $("#todaysRescheduleCount span").html($("#HdnTodaysRecheduleCount").val());
+        }
+        else {
+            $("#todaysRescheduleCount").hide();
+        }
+
+
+        if ($(".ScheduleTab .active").attr("value") == 0 && $("#HdnCouncellingScheduleCount").val() != "") {
+            $("#todaysCouncelling").show();
+            $("#todaysCouncelling span").html($("#HdnCouncellingScheduleCount").val());
+        }
+        else {
+            $("#todaysCouncelling").hide();
+        }
+    });
+
+   
+
+
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>

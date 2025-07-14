@@ -1,0 +1,63 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.ApplicationPersonalViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+
+<div class="col-12">
+    <input type="hidden" id="hdnDeleteApplicantPhoto" value="@Url.Action("DeleteApplicantPhoto", "Application")" />
+    <input type="hidden" id="hdnApplicationList" value="@Url.Action("ApplicationList", "Application")" />
+    <div class="form-master">
+        <div class="form-row">
+            <div class="col-12">
+                @using (Html.BeginForm("UploadPhoto", "Application", FormMethod.Post, htmlAttributes: new { @id = "frmUploadPhoto" }))
+                {
+                    @Html.HiddenFor(row => row.RowKey, new { @id = "ApplicationKey" });
+                    @Html.Partial("~/Views/Shared/PhotoUpload.cshtml")
+                    <div class="form-row mt-2">
+                        <div class="col-12">
+                            <fieldset class="form-group">
+                                <input type="button" value="Crop & Upload" id="btnPhotoUpload" class="btn btn-sm btn-success mx-1 mx-1" style="display:none" />
+                                <input type="button" id="btnPhotoCancel" value="@EduSuiteUIResources.Cancel" class="btn btn-sm btn-danger mx-1" style="display:none" />
+                                <input type="button" value="@EduSuiteUIResources.Delete" id="btnPhotoDelete" class="btn btn-sm btn-danger mx-1" style="display:none" />
+
+                            </fieldset>
+                        </div>
+                    </div>
+                }
+
+            </div>
+            @if (Model.StudentPhotoPath != null)
+            {
+                <img id="imgDummyProfile" src="@Url.Content(Model.ApplicantPhoto)?no-cache=@DateTimeUTC.Now" alt="Image" style="display:none" />
+            }
+            <div class="col-1">
+                <div class="form-group col-sm-12">
+                    <a id="btnFinish" class="btn btn-sm btn-success mx-1">@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Finish</a>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        var ApplicantPhoto = '@Model.StudentPhotoPath';
+        if (ApplicantPhoto != "") {
+            PhotoUpload.SetBaseImage($("#imgDummyProfile")[0]);
+            $("#btnPhotoDelete").show();
+        }
+        $('#btnPhotoUpload').click(function () {
+            Application.UploadPhoto($(this));
+        });
+        $('#btnPhotoDelete').click(function () {
+            Application.DeleteApplicantPhoto('@Model.RowKey');
+        });
+        $('#btnPhotoCancel').click(function () {
+            Application.ReloadData();
+        });
+        $("#btnFinish").click(function () {
+            window.location.href = '@Url.Action("ApplicationList", "Application")';
+        })
+    })
+
+</script>

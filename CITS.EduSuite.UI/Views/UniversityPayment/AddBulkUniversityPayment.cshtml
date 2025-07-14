@@ -1,0 +1,381 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.UniversityPaymentBulkViewmodel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+@using System.Web.Mvc
+
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Content/JqueryRepeater")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Scripts/Common")
+    @Scripts.Render("~/Scripts/UniversityPaymentBulk")
+    @Scripts.Render("~/bundles/CitsValidation")
+}
+
+<input type="hidden" id="hdnGetCourseTypeBySyllabus" value="@Url.Action("GetCourseTypeBySyllabus", "UniversityPayment")" />
+<input type="hidden" id="hdnGetCourseByCourseType" value="@Url.Action("GetCourseByCourseType", "UniversityPayment")" />
+<input type="hidden" id="hdnUniversityByCourse" value="@Url.Action("GetUniversityByCourse", "UniversityPayment")" />
+<input type="hidden" id="hdnGetYearsBySyllabus" value="@Url.Action("GetYearsBySyllabus", "UniversityPayment")" />
+<input type="hidden" id="hdnGetUniversityPaymentStudentsList" value="@Url.Action("GetUniversityPaymentStudentsList", "UniversityPayment")" />
+<input type="hidden" id="hdnDeleteUniversityFeeOneByOne" value="@Url.Action("DeleteUniversityFeeOneByOne", "UniversityPayment")" />
+<input type="hidden" id="hdnCheckFeeTypeModeBulk" value="@Url.Action("CheckFeeTypeModeBulk", "UniversityPayment")" />
+<input type="hidden" id="hdnGetBalance" value="@Url.Action("GetBalance", "UniversityPayment")" />
+<input type="hidden" id="hdnUniversityPaymentDetails" value="@Url.Action("UniversityPaymentDetails", "UniversityPayment")" />
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-12">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.Add @EduSuiteUIResources.Bulk @EduSuiteUIResources.AffiliationsTieUpsPayment</h3>
+                        <ol class="breadcrumb breadcrumb-simple mb-2 float-sm-right">
+                            <li><a href="#" onclick="location.href='@Url.Action("UniversityPaymentDetails", "UniversityPayment")' ">@EduSuiteUIResources.AffiliationsTieUpsPayment</a></li>
+                            <li class="active">@EduSuiteUIResources.Add @EduSuiteUIResources.Bulk @EduSuiteUIResources.AffiliationsTieUpsPayment</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="section-content mx-sm-3 mx-0">
+    <div class="form-master">
+        @using (Html.BeginForm("AddBulkUniversityPayment", "UniversityPayment", FormMethod.Post, new { @id = "frmUniversityPaymentBulk" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            @Html.HiddenFor(m => m.IsFeeTypeYear)
+            <input type="hidden" id="AccountHeadBalance" value="" />
+
+
+            <div class="form-row">
+
+                @if (Model.Branches.Count == 1)
+                {
+                    {
+                        Model.SearchBranchKey = (Model.SearchBranchKey == 0 || Model.SearchBranchKey == null) ? (short)Model.Branches.Select(x => x.RowKey).FirstOrDefault() : Model.SearchBranchKey;
+                    }
+                    @Html.HiddenFor(m => m.SearchBranchKey)
+                }
+                else
+                {
+                    <div class="col-lg-2 col-md-3 col-6 ">
+                        <fieldset class="form-group">
+                            @Html.DropDownListFor(m => m.SearchBranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Branch, new { @class = "form-control input-control", @InputFor = "lblBranch", @data_live_search = "true" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.SearchBranchKey)
+                            </span>
+                        </fieldset>
+                    </div>
+                }
+                @if ((bool)ViewBag.ShowAcademicTerm)
+                {
+                    <div class="col-lg-2 col-md-3 col-6 ">
+                        <fieldset class="form-group ">
+                            @Html.DropDownListFor(m => m.SearchAcademicTermKey, new SelectList(Model.AcademicTerms, "RowKey", "Text"), EduSuiteUIResources.AcademicTerm, new { @class = "form-control input-control selectpicker" })
+                            <span class="form-control-error-text">@Html.ValidationMessageFor(m => m.SearchAcademicTermKey)</span>
+                        </fieldset>
+                    </div>
+                }
+                else
+                {
+                    {
+                        Model.SearchAcademicTermKey = (byte)Model.AcademicTerms.Select(row => row.RowKey).FirstOrDefault();
+
+                    }
+                    @Html.HiddenFor(m => m.SearchAcademicTermKey)
+                }
+                <div class="col-lg-2 col-md-3 col-6 ">
+                    <fieldset class="form-group ">
+                        @Html.DropDownListFor(m => m.SearchCourseTypeKey, new SelectList(Model.CourseTypes, "RowKey", "Text"), EduSuiteUIResources.CourseType, new { @class = "form-control input-control selectpicker" })
+                        <span class="form-control-error-text">@Html.ValidationMessageFor(m => m.SearchCourseTypeKey)</span>
+                    </fieldset>
+                </div>
+                <div class="col-lg-2 col-md-3 col-6 ">
+                    <fieldset class="form-group ">
+                        @Html.DropDownListFor(m => m.SearchCourseKey, new SelectList(Model.Courses, "RowKey", "Text"), EduSuiteUIResources.Course, new { @class = "form-control input-control selectpicker" })
+                        <span class="form-control-error-text">@Html.ValidationMessageFor(m => m.SearchCourseKey)</span>
+                    </fieldset>
+                </div>
+                @if ((bool)ViewBag.ShowUniversity)
+                {
+                    <div class="col-lg-2 col-md-3 col-6 ">
+                        <fieldset class="form-group ">
+                            @Html.DropDownListFor(m => m.SearchUniversityKey, new SelectList(Model.Universities, "RowKey", "Text"), EduSuiteUIResources.University, new { @class = "form-control input-control selectpicker" })
+                            <span class="form-control-error-text">@Html.ValidationMessageFor(m => m.SearchUniversityKey)</span>
+                        </fieldset>
+                    </div>
+                }
+                else
+                {
+                    {
+                        Model.SearchUniversityKey = (short)Model.Universities.Select(row => row.RowKey).FirstOrDefault();
+                    }
+                    @Html.HiddenFor(m => m.SearchUniversityKey)
+                }
+
+                <div class="col-lg-2 col-md-3 col-6 ">
+                    <fieldset class="form-group ">
+                        @Html.DropDownListFor(m => m.SearchBatchKey, new SelectList(Model.Batches, "RowKey", "Text"), EduSuiteUIResources.Batch, new { @class = "form-control input-control selectpicker" })
+                        <span class="form-control-error-text">@Html.ValidationMessageFor(m => m.SearchBatchKey)</span>
+                    </fieldset>
+                </div>
+                <div class="col-lg-2 col-md-3 col-6 ">
+                    <fieldset class="form-group ">
+                        @Html.DropDownListFor(m => m.FeeTypeKey, new SelectList(Model.FeeTypes, "RowKey", "Text"), EduSuiteUIResources.FeeType, new { @class = "form-control input-control selectpicker" })
+                        <span class="form-control-error-text">@Html.ValidationMessageFor(m => m.FeeTypeKey)</span>
+                    </fieldset>
+                </div>
+                <div class="col-lg-2 col-md-3 col-6 divFeeYear">
+                    <fieldset class="form-group ">
+                        @Html.DropDownListFor(m => m.SearchYearKey, new SelectList(Model.Years, "RowKey", "Text"), EduSuiteUIResources.Year, new { @class = "form-control input-control selectpicker" })
+                        <span class="form-control-error-text">@Html.ValidationMessageFor(m => m.SearchYearKey)</span>
+                    </fieldset>
+                </div>
+                <div class="col-lg-2 col-md-3 col-6 ">
+                    <fieldset class="form-group ">
+                        <button type="button" id="btnSearch" class="btnForm btnSubmit btn btn-sm btn-success">@EduSuiteUIResources.Search</button>
+                    </fieldset>
+                </div>
+
+            </div>
+
+
+            <div class=" box-typical box-typical-padding">
+                <div class="form-row ">
+
+                    <div class="col-lg-2 col-md-3 col-6 ">
+                        <fieldset class="form-group ">
+                            @Html.Label(EduSuiteUIResources.Applied + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Date, htmlAttributes: new { @class = "form-label" })
+                            @Html.TextBoxFor(m => m.SearchUniversityPaymentDate, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_input_type = "date", @data_inputmask = "'alias': 'dd/mm/yyyy'", @placeholder = "Payment Date" })
+
+                        </fieldset>
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.SearchUniversityPaymentDate)
+                        </span>
+                    </div>
+                    <div class="col-lg-2 col-md-3 col-6 " id="dvPaymentMode">
+                        <fieldset class="form-group ">
+                            @Html.Label(EduSuiteUIResources.PaymentMode, htmlAttributes: new { @class = "form-label" })
+                            @Html.DropDownListFor(m => m.SearchPaymentModeKey, new SelectList(Model.PaymentModes, "RowKey", "Text"), EduSuiteUIResources.PaymentMode, new { @class = "form-control input-control selectpicker" })
+                            <span class="form-control-error-text">@Html.ValidationMessageFor(m => m.SearchPaymentModeKey)</span>
+                        </fieldset>
+                    </div>
+                    <div class="col-lg-2 col-md-3 col-6 dvPaymentModeSub">
+                        <fieldset class="form-group ">
+                            @Html.Label(EduSuiteUIResources.BankTransaction, htmlAttributes: new { @class = "form-label" })
+                            @Html.DropDownListFor(m => m.SearchPaymentModeSubKey, new SelectList(Model.PaymentModeSub, "RowKey", "Text"), EduSuiteUIResources.BankTransaction, new { @class = "form-control input-control selectpicker" })
+                            <span class="form-control-error-text">@Html.ValidationMessageFor(m => m.SearchPaymentModeSubKey)</span>
+                        </fieldset>
+                    </div>
+                    <div class="col-lg-2 col-md-3 col-6 divBankAccount ">
+                        <fieldset class="form-group ">
+                            @Html.Label(EduSuiteUIResources.Bank, htmlAttributes: new { @class = "form-label" })
+                            @Html.DropDownListFor(m => m.SearchBankKey, new SelectList(Model.BankAccounts, "RowKey", "Text"), EduSuiteUIResources.Bank, new { @class = "form-control input-control selectpicker" })
+                            <span class="form-control-error-text">@Html.ValidationMessageFor(m => m.SearchBankKey)</span>
+                        </fieldset>
+                    </div>
+                    <div class="col-lg-2 col-md-3 col-6 ">
+                        <fieldset class="form-group ">
+                            @Html.Label(EduSuiteUIResources.Amount, htmlAttributes: new { @class = "form-label" })
+                            <input type="text" id="AllAmount" class="form-control input-control" placeholder="Amount" />
+
+                        </fieldset>
+                    </div>
+                    <div class="col-lg-1 col-md-2 col-6 ">
+                        <fieldset class="form-group ">
+                            @Html.Label(EduSuiteUIResources.IsApplied, htmlAttributes: new { @class = "form-label" })
+                            <div class="switch-check switch">
+                                @Html.CheckBox("ChkIsAppliedAll", new { @class = "switch-input CheckIsAppliedClass" })
+                                <div class="switch-label yesno" data-on="@EduSuiteUIResources.Applied" data-off="@EduSuiteUIResources.NotApplied"></div>
+                                <div class="switch-handle"></div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <div id="dvScheduleContainer">
+                    <div id="dvRepeaterList" class="row">
+                    </div>
+                </div>
+            </div>
+
+            @*<div class="panel-header  transparent-bg Border_None">
+                    <div class="form-row">
+                        <div class="col-md-7 float-right">
+                            <div id="page-selection-down" class="float-right"></div>
+                        </div>
+                    </div>
+                </div>*@
+
+            <div class="form-row">
+                <div class="form-group col-sm-12">
+                    <div class="col-6 form-col">
+                        <div class="form-group">
+                            <button type="button" id="btnSave" class="btn btn-sm btn-success mx-1TableHeadId">@EduSuiteUIResources.Save</button>
+                        </div>
+
+                        <div class="col-12 paddingNone">
+                            <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+</section>
+
+<script>
+
+    $(document).ready(function ()
+    {
+
+        AppCommon.FormatDateInput();
+        AppCommon.FormatSelect2();
+        var jsonData=@(Html.Raw(Json.Encode(Model)));
+
+        var IsSuccessFul="@Model.IsSuccessful";
+        {
+            UniversityPaymentBulk.GetUniversityPaymentStudentsList(jsonData,jsonData["PageIndex"],true);
+        }
+        if (!JSON.parse(('@ViewBag.ShowAcademicTerm').toLowerCase()))
+        {
+            var obj = { };
+            obj.AcademicTermKey = $("#SearchAcademicTermKey").val();
+            UniversityPaymentBulk.GetCourseTypeBySyllabus(obj,$("#SearchCourseTypeKey"));
+        }
+
+        $(".dvPaymentModeSub,.divBankAccount").hide();
+
+        $("#btnSearch").on("click",function()
+        {
+            $("#dvRepeaterList").empty();
+            $(".TableHeadId").hide();
+            if($("#frmUniversityPaymentBulk").valid())
+            {
+                UniversityPaymentBulk.GetUniversityPaymentStudentsList(jsonData,0,true);
+            }
+        });
+
+        $("#btnSave").on("click",function()
+        {
+            /*$("#frmUniversityPaymentBulk").valid();*/
+            UniversityPaymentBulk.FormSubmit();
+        });
+
+        $("#SearchAcademicTermKey").on("change", function ()
+        {
+            $('#SearchCourseTypeKey').find('option[value!=""]').remove();
+            $('#SearchCourseKey').find('option[value!=""]').remove();
+            $('#SearchUniversityKey').find('option[value!=""]').remove();
+            $('#SearchYearKey').find('option[value!=""]').remove();
+            $('#SearchExamSubjectKey').find('option[value!=""]').remove();
+            var obj = {};
+            obj.AcademicTermKey= $("#SearchAcademicTermKey").val();
+            UniversityPaymentBulk.GetCourseTypeBySyllabus(obj,$("#SearchCourseTypeKey"));
+        });
+
+        $("#SearchCourseTypeKey").on("change", function ()
+        {
+            $('#SearchCourseKey').find('option[value!=""]').remove();
+            $('#SearchUniversityKey').find('option[value!=""]').remove();
+            $('#SearchYearKey').find('option[value!=""]').remove();
+            $('#SearchExamSubjectKey').find('option[value!=""]').remove();
+            var obj = {};
+            obj.CourseTypeKey = $("#SearchCourseTypeKey").val();
+            obj.AcademicTermKey=  $("#SearchAcademicTermKey").val();
+            UniversityPaymentBulk.GetCourseByCourseType(obj, $("#SearchCourseKey"));
+        });
+
+        $("#SearchCourseKey").on("change", function ()
+        {
+            $('#SearchUniversityKey').find('option[value!=""]').remove();
+            $('#SearchYearKey').find('option[value!=""]').remove();
+            $('#SearchExamSubjectKey').find('option[value!=""]').remove();
+            var obj = {};
+            obj.CourseKey = $("#SearchCourseKey").val();
+            UniversityPaymentBulk.GetUniversityByCourse(obj, $("#SearchUniversityKey"));
+            obj.AcademicTermKey=  $("#SearchAcademicTermKey").val();
+            UniversityPaymentBulk.GetYearsBySyllabus(obj,$("#SearchYearKey"));
+        });
+
+        $("#SearchUniversityPaymentDate").on("changeDate", function ()
+        {
+            $(".paymentAppliedDateClass").val(this.value);
+        });
+
+
+        $("#SearchBankKey").on("change", function ()
+        {
+            var BankKey = $(this).val();
+
+            $("[data-repeater-item]").each(function () {
+
+                var item = $(this);
+
+                $("select[id*=BankAccountKey]", $(item)).val(BankKey);
+            })
+            UniversityPaymentBulk.GetBalance();
+        });
+
+        $("#SearchPaymentModeKey", $("#dvPaymentMode")).on("change", function ()
+        {
+            $("#SearchPaymentModeSubKey,#SearchBankKey").each(function () {
+                $(this).val("")
+            });
+            $("#SearchPaymentModeSubKey,#SearchBankKey").val("");
+            $("[id*=PaymentModeKey][value=" + this.value + "]").attr("checked", true).trigger("change");
+            UniversityPaymentBulk.CheckPaymentMode($(this).val());
+            UniversityPaymentBulk.GetBalance();
+        });
+
+        $("#SearchPaymentModeSubKey").on("change", function () {
+
+            var PaymentModeSubKey = $(this).val();
+            $("#dvRepeaterList [data-repeater-item]").each(function () {
+
+                var item = $(this).closest("[data-repeater-item]");
+                //var paymentmode = $("[id*=PaymentModeSubKey]", $(item)).val();
+                //$("select[id*=PromotionStatusKey]", $(item)).val(PaymentModeSubKey)
+
+                $("select[id*=PaymentModeSubKey]", $(item)).prop('selectedIndex', PaymentModeSubKey).trigger("change");
+            })
+        });
+
+        $("#AllAmount").on("input",function()
+        {
+            $(".amountClass").val(this.value);
+            UniversityPaymentBulk.CalculateFee()
+        });
+
+        $("#ChkIsAppliedAll").on("change", function ()
+        {
+            if(this.checked==true)
+            {
+                $(".ChkIsAppliedClass").prop('checked', true);
+            }
+            else
+            {
+                $(".ChkIsAppliedClass").prop('checked', false);
+            }
+            UniversityPaymentBulk.CheckIsApplied();
+        });
+
+        $("#FeeTypeKey").on("change",function()
+        {
+            UniversityPaymentBulk.CheckFeeTypeMode(this);
+        });
+
+        $("#SearchBranchKey").on("change", function () {
+            $("#dvRepeaterList").empty();
+            $(".TableHeadId").hide();
+            if ($("#frmUniversityPaymentBulk").valid()) {
+                UniversityPaymentBulk.GetUniversityPaymentStudentsList(jsonData, 0, true);
+            }
+            UniversityPaymentBulk.GetBalance();
+        })
+    });
+</script>

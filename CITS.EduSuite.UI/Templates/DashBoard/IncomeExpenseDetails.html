@@ -1,0 +1,110 @@
+﻿<div class="w-100">
+
+    <div class="table-responsive">
+        <table class="table table-hover txtcenter">
+            <thead>
+                <tr>
+                    <th class="border-top-0">Item</th>
+                    <th class="border-top-0">Income</th>
+                    <th class="border-top-0">Expense</th>
+                    <th class="border-top-0">Balance</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="txt-oflo">Cash </td>
+                    <td><span class="badge bg-success rounded-pill white">{{currency TodayCashIn}}</span> </td>
+                    <td><span class="badge bg-danger rounded-pill white">{{currency TodayCashOut}}</span></td>
+                    <td><span class="badge bg-danger rounded-pill white">{{currency TodayCashBalance}}</span></td>
+                </tr>
+                <tr>
+                    <td class="txt-oflo">Bank </td>
+                    <td><span class="badge bg-success rounded-pill white">{{currency TodayBankIn}}</span> </td>
+                    <td><span class="badge bg-danger rounded-pill white">{{currency TodayBankOut}}</span></td>
+                    <td><span class="badge bg-danger rounded-pill white">{{currency TodayBankBalance}}</span></td>
+
+                </tr>
+                <tr>
+                    <td class="txt-oflo">Total </td>
+                    <td><span class="badge bg-success rounded-pill white">{{currency TodayIncome}}</span></td>
+                    <td><span class="badge bg-danger rounded-pill white">{{currency TodayExpense}}</span></td>
+                    <td><span class="badge bg-danger rounded-pill white">{{currency TodayIncomExpenseBalance}}</span></td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        <span class="badge bg-success rounded-pill white">{{currency PaidStudentCount}}</span> Stuednts Paid on {{IEDateText}}  and Get <span class="badge bg-success rounded-pill white">{{currency PaidStudentAmount}}</span> Rupees
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+
+<style>
+    .card {
+        border: 1px solid transparent;
+        background-clip: border-box;
+        border-radius: 5px;
+        box-shadow: 0 8px 24px #e5e4e6;
+    }
+
+    .number-font {
+        font-weight: 600 !important;
+    }
+
+    .bg-primary {
+        background: #5e2dd8 !important;
+    }
+
+    .bg-secondary {
+        background: #d43f8d !important;
+    }
+
+    .bg-success {
+        background: #09ad95 !important;
+    }
+
+    .bg-info {
+        background: #0774f8 !important;
+    }
+
+    .img-card:before {
+        content: '';
+        position: absolute;
+        background: url(../../Images/circle.svg);
+        background-position: right;
+        background-repeat: no-repeat;
+        width: 100%;
+        height: 100%;
+        opacity: 0.5;
+    }
+
+    .txt-increase {
+        color: #05ec3a !important;
+        font-size: 14px;
+    }
+
+    .txt-decrease {
+        color: #fc1d3c !important;
+        font-size: 14px;
+    }
+
+    .red {
+        color: #fc1d3c !important;
+    }
+
+    .green {
+        color: #05ec3a !important;
+    }
+
+    .white {
+        color: white !important;
+    }
+
+    .txtcenter {
+        text-align: center !important;
+    }
+</style>

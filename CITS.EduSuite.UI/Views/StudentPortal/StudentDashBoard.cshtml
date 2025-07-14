@@ -1,0 +1,428 @@
+﻿@using CITS.EduSuite.Business.Models.ViewModels
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/CitsValidation")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Content/JqueryRepeater")
+    @Scripts.Render("~/Content/momentJS")
+    @Scripts.Render("~/Scripts/StudentPortal")
+    @Scripts.Render("~/Scripts/ChartJS")
+    @Scripts.Render("~/Content/BootstrapTableJS")
+    @Scripts.Render("~/Content/FullCalendarJS")
+    @Styles.Render("~/Content/FullCalendarCSS")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Content/momentJS")
+}
+<script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+<script src="~/Scripts/DataTables/dataTables.bootstrap4.min.js"></script>
+<script src="~/Scripts/DataTables/dataTables.responsive.min.js"></script>
+<script src="~/Scripts/DataTables/responsive.bootstrap4.min.js"></script>
+@*<link href="~/Content/DataTables/css/jquery.dataTables.min.css" rel="stylesheet" />*@
+<link href="~/Content/DataTables/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+
+<input type="hidden" id="hdnPersonalDetailsPath" value=@Url.Content("~/Templates/Student/PersonalDetails.html") />
+<input type="hidden" id="hdnGetPersonalDetails" value="@Url.Action("GetPersonalDetails", "StudentPortal")" />
+<input type="hidden" id="hdnAttendanceDetails" value="@Url.Action("GetAttendanceCount", "StudentPortal")" />
+<input type="hidden" id="hdnGetExamResults" value="@Url.Action("GetExamResults", "StudentPortal")" />
+<input type="hidden" id="hdnGetAllEvents" value="@Url.Action("GetAllEvents", "StudentPortal")" />
+<input type="hidden" id="hdnApplicationSubjectsPath" value=@Url.Content("~/Templates/Components/Tabs.html") />
+<input type="hidden" id="hdnFillApplicationSubjects" value="@Url.Action("FillApplicationSubjects", "SelectList")" />
+<input type="hidden" id="hdnGetUnitExamResults" value="@Url.Action("GetUnitExamResults", "StudentPortal")" />
+<input type="hidden" id="hdnGetNotification" value="@Url.Action("GetNotification", "StudentPortal")" />
+<input type="hidden" id="hdnStudentNotificationsPath" value=@Url.Content("~/Templates/Student/StudentNotifications.html") />
+
+
+<header class="section-header d-none">
+    <div class="row justify-content-between px-1">
+        <div class="col-sm-6 col-12">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.Students<span id="spnClassName"></span></h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</header>
+@Html.Hidden("ApplicationKey", DbConstants.User.ApplicationKey)
+@*@Html.Hidden("ClassDetailsKey", DbConstants.User.ClassDetailsKey)*@
+<section class="section-content mx-sm-3 mx-0">
+    <div class="form-master ">
+
+        <div class="form-row mb-3 headerpanel d-none">
+            <div class="col-xl-3 col-lg-6 mb-3">
+                <div class="card l-bg-cherry">
+                    <div class="card-statistic-3 p-4">
+                        <div class="card-icon card-icon-large"><i class="fa fa-shopping-cart"></i></div>
+                        <div class="mb-4">
+                            <h5 class="card-title mb-0">New Orders</h5>
+                        </div>
+                        <div class="row align-items-center mb-2 d-flex">
+                            <div class="col-8">
+                                <h2 class="d-flex align-items-center mb-0">
+                                    3,243
+                                </h2>
+                            </div>
+                            <div class="col-4 text-right">
+                                <span>12.5% <i class="fa fa-arrow-up"></i></span>
+                            </div>
+                        </div>
+                        <div class="progress mt-1 " data-height="8" style="height: 8px;">
+                            <div class="progress-bar l-bg-cyan" role="progressbar" data-width="25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-6 mb-3">
+                <div class="card l-bg-blue-dark">
+                    <div class="card-statistic-3 p-4">
+                        <div class="card-icon card-icon-large"><i class="fa fa-users"></i></div>
+                        <div class="mb-4">
+                            <h5 class="card-title mb-0">Customers</h5>
+                        </div>
+                        <div class="row align-items-center mb-2 d-flex">
+                            <div class="col-8">
+                                <h2 class="d-flex align-items-center mb-0">
+                                    15.07k
+                                </h2>
+                            </div>
+                            <div class="col-4 text-right">
+                                <span>9.23% <i class="fa fa-arrow-up"></i></span>
+                            </div>
+                        </div>
+                        <div class="progress mt-1 " data-height="8" style="height: 8px;">
+                            <div class="progress-bar l-bg-green" role="progressbar" data-width="25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-6 mb-3">
+                <div class="card l-bg-green-dark">
+                    <div class="card-statistic-3 p-4">
+                        <div class="card-icon card-icon-large"><i class="fa fa-ticket-alt"></i></div>
+                        <div class="mb-4">
+                            <h5 class="card-title mb-0">Ticket Resolved</h5>
+                        </div>
+                        <div class="row align-items-center mb-2 d-flex">
+                            <div class="col-8">
+                                <h2 class="d-flex align-items-center mb-0">
+                                    578
+                                </h2>
+                            </div>
+                            <div class="col-4 text-right">
+                                <span>10% <i class="fa fa-arrow-up"></i></span>
+                            </div>
+                        </div>
+                        <div class="progress mt-1 " data-height="8" style="height: 8px;">
+                            <div class="progress-bar l-bg-orange" role="progressbar" data-width="25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-6 mb-3">
+                <div class="card l-bg-orange-dark">
+                    <div class="card-statistic-3 p-4">
+                        <div class="card-icon card-icon-large"><i class="fa fa-dollar-sign"></i></div>
+                        <div class="mb-4">
+                            <h5 class="card-title mb-0">Revenue Today</h5>
+                        </div>
+                        <div class="row align-items-center mb-2 d-flex">
+                            <div class="col-8">
+                                <h2 class="d-flex align-items-center mb-0">
+                                    $11.61k
+                                </h2>
+                            </div>
+                            <div class="col-4 text-right">
+                                <span>2.5% <i class="fa fa-arrow-up"></i></span>
+                            </div>
+                        </div>
+                        <div class="progress mt-1 " data-height="8" style="height: 8px;">
+                            <div class="progress-bar l-bg-cyan" role="progressbar" data-width="25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="Student-portal form-row d-none">
+            <div class="col-lg-3">
+                <div class="dashboard-summery-one" style="background:linear-gradient(40deg,#ff6ec4,#7873f5) !important; box-shadow: 0 12px 15px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19) !important;">
+                    <div class="row ">
+                        <div class="col-6">
+                            <div class="item-icon bg-light-magenta">
+                                <i class="fa fa-money" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="item-content">
+                                <div class="item-title">Due Fee</div>
+                                <div class="item-number"><span class="counter" data-num="12">7600</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="dashboard-summery-one" style="background:linear-gradient(40deg,#ffd86f,#fc6262) !important; box-shadow: 0 12px 15px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19) !important;">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="item-icon bg-light-magenta">
+                                <i class="fa fa-calendar" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="item-content">
+                                <div class="item-title">Due Installment</div>
+                                <div class="item-number"><span class="counter" data-num="12">3</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="dashboard-summery-one" style="background:linear-gradient(40deg,#2096ff,#05ffa3) !important; box-shadow: 0 12px 15px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19) !important;">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="item-icon bg-light-blue">
+                                <i class="flaticon-calendar text-blue"></i>
+
+                                <i class="fa fa-calendar" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="item-content">
+                                <div class="item-title">Events</div>
+                                <div class="item-number"><span class="counter" data-num="06">06</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="dashboard-summery-one" style="background:linear-gradient(to top,#5ee7df 0,#b490ca 100%); box-shadow: 0 12px 15px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19) !important;">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="item-icon bg-light-yellow">
+                                <i class="fa fa-percent" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="item-content">
+                                <div class="item-title">Attendance</div>
+                                <div class="item-number"><span class="counter" id="spnAttendancePercentage"></span><span>%</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="divContent2" class="Student-portal form-row d-none">
+
+            <div class="col-4-xxxl col-xl-6 col-12">
+                <div class="card dashboard-card-three">
+                    <div class="card-body">
+                        <div class="heading-layout1">
+                            <div class="item-title">
+                                <h3>Attendance</h3>
+                            </div>
+
+                        </div>
+                        <div id="divAttendanceCount" class="doughnut-chart-wrap">
+                            <canvas id="student-doughnut-chart" width="100" height="270"></canvas>
+                        </div>
+                        <div class="student-report">
+                            <div class="student-count pseudo-bg-blue">
+                                <h4 class="item-title">Absent</h4>
+                                <div class="item-number" id="AbsentPerc"></div>
+                            </div>
+                            <div class="student-count pseudo-bg-yellow">
+                                <h4 class="item-title">Present</h4>
+                                <div class="item-number" id="presentPerc"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-xl-6 col-8-xxxl">
+                <div class="card dashboard-card-four ">
+                    <div class="card-body">
+                        <div class="heading-layout1">
+                            <div class="item-title">
+                                <h3>Event Calender</h3>
+                            </div>
+
+                        </div>
+                        <div class="card-body p-0">
+                            <div id="calendar" class="fc fc-unthemed fc-ltr calender">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4-xxxl col-xl-6 col-12">
+                <div class="card dashboard-card-six">
+                    <div class="card-body">
+                        <div class="heading-layout1 mg-b-17">
+                            <div class="item-title">
+                                <h3>Notifications</h3>
+                            </div>
+                            <div class="dropdown">
+                                <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                                   aria-expanded="false">Color</a>
+
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a class="dropdown-item bg-skyblue">
+                                        <i class="fa fa-sticky-note"></i>Diary
+                                    </a>
+                                    <a class="dropdown-item bg-yellow">
+                                        <i class="fa fa-calendar"></i>Events and Holidays
+                                    </a>
+                                    <a class="dropdown-item bg-pink">
+                                        <i class="fa fa-group"></i>Parents Meet
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="notice-box-wrap" id="divStudentNotifications">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-12 col-xl-6 col-8-xxxl">
+                <div class="card dashboard-card-two ">
+                    <div class="card-body">
+                        <div class="heading-layout1">
+                            <div class="item-title">
+                                <h3>Unit Test</h3>
+                            </div>
+
+                        </div>
+                        <div id="divSubjects">
+
+                        </div>
+                        <div class="expense-chart-wrap" id="divUnitTestChart">
+                            <canvas id="expense-bar-chart" width="100" height="300"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="Student-portal form-row ">
+            <div id="dvContent" class="col-lg-4 col-sm-6 col-12">
+            </div>
+
+            <div class="col-lg-8 d-none">
+                <div class="form-row">
+
+
+                    <div class="card dashboard-card-eleven">
+                        <div class="card-body">
+                            <div class="heading-layout1">
+                                <div class="item-title">
+                                    <h3>All Exam Results</h3>
+                                </div>
+
+                            </div>
+                            <div class="table-box-wrap">
+
+                                <div class=" result-table-box ">
+                                    <div class="dataTables_wrapper no-footer">
+                                        <table id="tblAllExamResult" class="table display data-table text-nowrap"></table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+<script>
+    if (!$('body').hasClass('sidebar-hidden')) {
+        $('body').addClass('sidebar-hidden');
+    } else {
+        $('body').removeClass('sidebar-hidden');
+    }
+    $(document).ready(function () {
+
+        StudentPortal.GetPersonalDetails();
+        StudentPortal.GetAttendanceDetaills();
+        StudentPortal.GetExamResults();
+        StudentPortal.GetEventDetails();
+        StudentPortal.GetSubjects();
+        StudentPortal.GetNotifications();
+
+
+    });
+</script>
+@*<style>
+    .headerpanel .card {
+        background-color: #fff;
+        border-radius: 10px;
+        border: none;
+        position: relative;
+        margin-bottom: 30px;
+        box-shadow: 0 0.46875rem 2.1875rem rgba(90,97,105,0.1), 0 0.9375rem 1.40625rem rgba(90,97,105,0.1), 0 0.25rem 0.53125rem rgba(90,97,105,0.12), 0 0.125rem 0.1875rem rgba(90,97,105,0.1);
+    }
+
+    .l-bg-cherry {
+        background: linear-gradient(to right, #493240, #f09) !important;
+        color: #fff;
+    }
+
+    .l-bg-blue-dark {
+        background: linear-gradient(to right, #373b44, #4286f4) !important;
+        color: #fff;
+    }
+
+    .l-bg-green-dark {
+        background: linear-gradient(to right, #0a504a, #38ef7d) !important;
+        color: #fff;
+    }
+
+    .l-bg-orange-dark {
+        background: linear-gradient(to right, #a86008, #ffba56) !important;
+        color: #fff;
+    }
+
+    .card .card-statistic-3 .card-icon-large .fa, .card .card-statistic-3 .card-icon-large .far, .card .card-statistic-3 .card-icon-large .fab, .card .card-statistic-3 .card-icon-large .fal {
+        font-size: 110px;
+    }
+
+    .card .card-statistic-3 .card-icon {
+        text-align: center;
+        line-height: 50px;
+        margin-left: 15px;
+        color: #000;
+        position: absolute;
+        right: -5px;
+        top: 20px;
+        opacity: 0.1;
+    }
+
+    .l-bg-cyan {
+        background: linear-gradient(135deg, #289cf5, #84c0ec) !important;
+        color: #fff;
+    }
+
+    .l-bg-green {
+        background: linear-gradient(135deg, #23bdb8 0%, #43e794 100%) !important;
+        color: #fff;
+    }
+
+    .l-bg-orange {
+        background: linear-gradient(to right, #f9900e, #ffba56) !important;
+        color: #fff;
+    }
+
+    .l-bg-cyan {
+        background: linear-gradient(135deg, #289cf5, #84c0ec) !important;
+        color: #fff;
+    }
+</style>*@

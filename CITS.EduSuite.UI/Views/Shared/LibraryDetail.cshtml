@@ -1,0 +1,40 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.MemberPlanDetailsViewModel
+
+
+@if (Model.MemberFullName != null)
+{
+    <div class="row">
+        <div class="col-12">
+            <div class="card w3-teal">
+                <div class="card-block">
+                    <div class="row">
+
+                        <div class="col-lg-2 col-md-4 text-center">
+                            @if (Model.MemberPhoto != null && Model.MemberPhoto != "")
+                            {
+                                <img src="@Url.Content(Model.MemberPhoto)" class="img-thumbnail img-fluid rounded-circle" alt="User profile picture" style="height:100px" />
+                            }
+                            else
+                            {
+                                <img src="~/Images/no-photo.png" alt="User profile picture" class="img-thumbnail img-fluid rounded-circle" style="height:100px" />
+
+                            }
+
+                        </div>
+                        <div class="col-lg-10 col-md-8">
+                            <h2 class="card-title w3-text-light-grey"><strong>@Model.MemberFullName</strong></h2>
+                            <p class="card-text form-row">
+                                <span class="col"><strong>@EduSuiteUIResources.Mobile : </strong> @Model.MobilleNo</span>
+                                <span class="col"><strong>@EduSuiteUIResources.ApplicationType : </strong> @Model.ApplicationTypeName </span>
+                            </p>
+                            <p class="card-text form-row">
+                                <span class="col"><strong>@EduSuiteUIResources.CardId: </strong>@Model.CardId </span>
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

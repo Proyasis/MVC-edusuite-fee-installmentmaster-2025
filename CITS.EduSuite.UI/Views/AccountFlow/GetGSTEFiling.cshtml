@@ -1,0 +1,231 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.AccountFlowViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+
+<input type="hidden" id="hdnGetGSTPayable" value="@Url.Action("GetGSTPayable", "AccountFlow")" />
+<div id="dvGstFilingList" class="col-sm-12 form-col paddingNone">
+
+    <table id="ledgerTable" class="table table-bordered">
+
+        @if (Model.GSTEFilingList.Count > 0)
+        {
+            <thead>
+                <tr class="ledgerSubHead">
+                    <td class="col-sm-1">
+                        @EduSuiteUIResources.InvoiceNumber
+                    </td>
+                    <td class="col-sm-1"> 
+                        @EduSuiteUIResources.InvoiceDate
+                    </td>
+                    @*<td class="col-sm-1">
+                            @EduSuiteUIResources.GSTFlow
+                        </td>*@
+                    <td class="col-sm-1">
+                        @EduSuiteUIResources.Party@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Name
+                    </td>
+                    <td class="col-sm-1">
+                        @EduSuiteUIResources.GSTINNumber
+                    </td>
+                    <td class="col-sm-1">
+                        @EduSuiteUIResources.HSNCode
+                    </td>
+                    @*<td class="col-sm-1">
+                        @EduSuiteUIResources.Quantity
+                    </td>*@
+                    <td class="col-sm-1">
+                        @EduSuiteUIResources.Rate
+                    </td>
+                    <td class="col-sm-1">
+                        @EduSuiteUIResources.TaxableAmount
+                    </td>
+                    <td class="col-sm-1" colspan="2">
+                        @EduSuiteUIResources.SGST
+                    </td>
+                    <td class="col-sm-1" colspan="2">
+                        @EduSuiteUIResources.CGST
+                    </td>
+                    <td class="col-sm-1" colspan="2">
+                        @EduSuiteUIResources.IGST
+                    </td>
+                    <td class="col-sm-1">
+                        @EduSuiteUIResources.Net@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Amount
+                    </td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td colspan="15" class="table-group-head">B2B</td></tr>
+                @foreach (var item in Model.GSTEFilingList.Where(row => (row.GSTINNumber ?? "") != ""))
+                {
+                    <tr>
+                        <td>
+                            @item.InvoiceNumber
+                        </td>
+                        <td>
+                            @(string.Format("{0:dd/MM/yyyy}", item.InvoiceDate))
+                        </td>
+                        @*<td>
+                                @item.GSTFlow
+                            </td>*@
+                        <td>
+                            @item.PartyName
+                        </td>
+                        <td>
+                            @item.GSTINNumber
+                        </td>
+                        <td>
+                            @item.HSNCode
+                        </td>
+                        <td>
+                            @(string.Format("{0:G29}", item.Quantity))
+                        </td>
+                        <td>
+                            @(string.Format("{0:G29}", item.Rate))
+                        </td>
+                        <td>
+                            @(string.Format("{0:G29}", item.Total))
+                        </td>
+                        <td style="width: 55px">
+                            @if (item.SGSTPer != null && item.SGSTPer != 0)
+                            {
+                                @(string.Format("{0:G29}", item.SGSTPer) + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.PercentageSymbol)
+                            }
+                        </td>
+                        <td>
+                            @(string.Format("{0:G29}", item.SGSTAmt))
+                        </td>
+                        <td style="width: 55px">
+                            @if (item.CGSTPer != null && item.CGSTPer != 0)
+                            {
+                                @(string.Format("{0:G29}", item.CGSTPer) + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.PercentageSymbol)
+                            }
+                        </td>
+                        <td>
+                            @(string.Format("{0:G29}", item.CGSTAmt))
+                        </td>
+                        <td style="width: 55px">
+                            @if (item.IGSTPer != null && item.IGSTPer != 0)
+                            {
+                                @(string.Format("{0:G29}", item.IGSTPer) + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.PercentageSymbol)
+                            }
+                        </td>
+                        <td>
+                            @(string.Format("{0:G29}", item.IGSTAmt))
+                        </td>
+                        <td>
+                            @(string.Format("{0:G29}", item.NetAmount))
+                        </td>
+
+                    </tr>
+
+                }
+
+                <tr><td colspan="15" class="table-group-head">B2C</td></tr>
+                @foreach (var item in Model.GSTEFilingList.Where(row => (row.GSTINNumber ?? "") == ""))
+                {
+                    <tr>
+                        <td>
+                            @item.InvoiceNumber
+                        </td>
+                        <td>
+                            @(string.Format("{0:dd/MM/yyyy}", item.InvoiceDate))
+                        </td>
+                        @*<td>
+                                @item.GSTFlow
+                            </td>*@
+                        <td>
+                            @item.PartyName
+                        </td>
+                        <td>
+                            @item.GSTINNumber
+                        </td>
+                        <td>
+                            @item.HSNCode
+                        </td>
+                        <td>
+                            @(string.Format("{0:G29}", item.Quantity))
+                        </td>
+                        <td>
+                            @(string.Format("{0:G29}", item.Rate))
+                        </td>
+                        <td>
+                            @(string.Format("{0:G29}", item.Total))
+                        </td>
+                        <td style="width: 55px">
+                            @if (item.SGSTPer != null && item.SGSTPer != 0)
+                            {
+                                @(string.Format("{0:G29}", item.SGSTPer) + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.PercentageSymbol)
+                            }
+                        </td>
+                        <td>
+                            @(string.Format("{0:G29}", item.SGSTAmt))
+                        </td>
+                        <td style="width: 55px">
+                            @if (item.CGSTPer != null && item.CGSTPer != 0)
+                            {
+                                @(string.Format("{0:G29}", item.CGSTPer) + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.PercentageSymbol)
+                            }
+                        </td>
+                        <td>
+                            @(string.Format("{0:G29}", item.CGSTAmt))
+                        </td>
+                        <td style="width: 55px">
+                            @if (item.IGSTPer != null && item.IGSTPer != 0)
+                            {
+                                @(string.Format("{0:G29}", item.IGSTPer) + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.PercentageSymbol)
+                            }
+                        </td>
+                        <td>
+                            @(string.Format("{0:G29}", item.IGSTAmt))
+                        </td>
+                        <td>
+                            @(string.Format("{0:G29}", item.NetAmount))
+                        </td>
+                    </tr>
+
+                }
+
+            </tbody>
+        }
+    </table>
+
+</div>
+<div class="pull-right">
+    <button id="btnExportSumary" type="button" class="btn btn-success btn-sm" title="Excel"><i class="fa fa-file-excel-o"></i></button>
+    <button id="btnPrintSumary" type="button" class="btn btn-primary btn-sm" title="Print"><i class="fa fa-print"></i></button>
+</div>
+<div id="GSTEFilingTotalList">
+</div>
+
+<script>
+    $(document).ready(function () {
+        var date = $("#Date").val()
+        var arr = date.split('/')
+        var month = arr[0]
+        var year = arr[1]
+        var obj = {};
+        obj.month = month
+        obj.year = year
+        $(".RightContentMaster").mLoading()
+        $("#GSTEFilingTotalList").load($("#hdnGetGSTPayable").val() + "?" + $.param(obj), function () {
+            $(".RightContentMaster").mLoading("destroy")
+        })
+        //Export To Excel
+        var objSummary = { HtmlCntrl: $("#GSTEFilingTotalList") };
+        $("#btnExportSumary").on("click", function () {
+            objSummary.ContainerId = $('#ledgerTable', $("#GSTEFilingTotalList"))
+            setExportSummaryTitle(objSummary)
+            AppCommon.ExportTableToExcel(objSummary);
+        });
+        $("#btnPrintSumary").on("click", function () {
+            objSummary.ContainerId = $('#ledgerTable', $("#GSTEFilingTotalList"))
+            setExportSummaryTitle(objSummary)
+            AppCommon.PrintHtml(objSummary);
+        });
+
+    });
+    function setExportSummaryTitle(obj) {
+        obj.Title = '@EduSuiteUIResources.GSTEFiling@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Details' + ($("#BranchKey").find("option:selected").text() ? ' - ' + $("#BranchKey").find("option:selected").text() : "");
+        obj.SubTitle = $("#Date").val();
+        obj.FileName = (obj.Title + "_" + obj.SubTitle).replace(/-/g, '_')
+    }
+</script>

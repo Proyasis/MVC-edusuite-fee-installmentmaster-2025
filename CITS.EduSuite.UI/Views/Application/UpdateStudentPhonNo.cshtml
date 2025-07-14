@@ -1,0 +1,47 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.ApplicationPersonalViewModel
+@using CITS.EduSuite.UI
+
+<div class="modal-header">
+    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+    <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace @EduSuiteUIResources.MobileNumber</h4>
+</div>
+@using (Html.BeginForm("UpdateStudentPhonNo", "Application", FormMethod.Post, new { @id = "frmUpdateStudentPhonNo" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.RowKey)
+    @Html.ValidationSummary(true)
+
+    <div class="modal-body">
+        <div class="form-master">
+            <div class="form-row">
+                <div class="paddingNone">
+                    <span class="ValidateDataMsg"> @Html.ValidationMessage("error_msg")  </span>
+                </div>
+            </div>
+            <div class="form-row">
+
+
+                <div class="col-12 col-sm-3 col-lg-7">
+                    <fieldset class="form-group ">
+                        @Html.Label(EduSuiteUIResources.MobileNumber, htmlAttributes: new { @class = "form-label" })
+                        @Html.TextBoxFor(m => m.MobileNumber, new { @class = "form-control input-control", @InputFor = "lblMobileNumber", @type = "tel" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.MobileNumber)
+                        </span>
+                    </fieldset>
+                </div>
+
+               
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer justify-content-start">
+        <div class="form-group">
+            <input type="submit" value="@EduSuiteUIResources.Submit" id="btnSave" class="btn btn-sm btn-success mx-1" />
+            <button type="button" data-dismiss="modal" class="btn btn-sm btn-danger mx-1">@EduSuiteUIResources.Cancel</button>
+
+        </div>
+    </div>
+}
+

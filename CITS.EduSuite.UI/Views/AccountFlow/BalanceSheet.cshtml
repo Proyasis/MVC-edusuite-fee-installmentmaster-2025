@@ -1,0 +1,178 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.AccountFlowViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Content/Select2JS")
+    @Scripts.Render("~/Scripts/AccountHead")
+}
+@{
+    ViewBag.Title = EduSuiteUIResources.BalanceSheet;
+}
+
+@Html.AntiForgeryToken()
+@Html.HiddenFor(m => m.RowKey)
+@Html.ValidationSummary(true)
+<input type="hidden" id="hdnGetBalanceSheet" value="@Url.Action("GetBalanceSheet", "AccountFlow")" />
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-12">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.BalanceSheet</h3>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</header>
+<section class="section-content mx-sm-3 mx-0">
+    <div class="ledgerTable">
+        <form id="frmBalanceSheet">
+            <div class="grid-nav-bar">
+                <div class="form-row">
+                    <div class="col-lg-2 col-sm-3 col-6 d-none">
+                        <div class="form-group">
+                            @Html.Label(EduSuiteUIResources.FromDate, htmlAttributes: new { @class = "form-label" })
+                            @Html.TextBoxFor(m => m.FromDate, "{0:dd/MM/yyyy}", new { @class = "form-control", @data_inputmask = "'alias': 'dd/mm/yyyy'", @data_input_type = "date" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.FromDate)
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-sm-3 col-6">
+                        <div class="form-group ">
+                            @Html.Label(EduSuiteUIResources.ToDate, htmlAttributes: new { @class = "form-label" })
+                            @Html.TextBoxFor(m => m.ToDate, "{0:dd/MM/yyyy}", new { @class = "form-control", @data_inputmask = "'alias': 'dd/mm/yyyy'", @data_input_type = "date" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.ToDate)
+                            </span>
+                        </div>
+                    </div>
+
+                    @*@if (Model.Branches.Count == 1)
+                    {
+                        {
+                            Model.BranchKey = (Model.BranchKey ?? 0) == 0 ? (short)Model.Branches.Select(x => x.RowKey).FirstOrDefault() : Model.BranchKey;
+                        }
+                        @Html.HiddenFor(m => m.BranchKey)
+                    }
+                    else
+                    {
+
+                        <div class="col-12 col-sm-3 col-lg-2">
+                            <fieldset class="form-group">
+                                @Html.Label(EduSuiteUIResources.Branch, htmlAttributes: new { @class = "form-label" })
+                                @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), new { @class = "form-control input-control", @InputFor = "lblBranch", @data_live_search = "true" })
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => m.BranchKey)
+                                </span>
+                            </fieldset>
+                        </div>
+
+                    }*@
+
+
+
+                    <div class="col-2">
+                        <div class="form-group">
+                            <br />
+                            <input type="button" value="@EduSuiteUIResources.View" id="btnView" class="btn btn-sm btn-success mt-1 float-right " />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-12">
+                        <div class="button-group float-right">
+                            <button id="btnPrint" type="button" class="btn btn-primary btn-sm"><i class="fa fa-print btn-blue" aria-hidden="true"></i></button>
+                            <button id="btnExport" type="button" class="btn btn-success btn-sm"><i class="fa fa-file-excel-o fa-align-right" aria-hidden="true"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="table-wrapper">
+
+            <div id="BalanceSheetList" class="jqGrid_wrapper overflow-auto">
+
+            </div>
+        </div>
+    </div>
+
+</section>
+
+
+<script>
+    $(document).ready(function () {
+
+        AppCommon.FormatDateInput();
+        AppCommon.FormatInputCase();
+        AppCommon.FormatSelect2();
+
+        LoadReport()
+        $("#btnView").on("click", function () {
+            var valid = $("#frmBalanceSheet").valid()
+            if (valid) {
+                LoadReport();
+            }
+        });
+
+        $("#BranchKey").on("change", function () {
+            var valid = $("#frmBalanceSheet").valid()
+            if (valid) {
+                LoadReport();
+            }
+        });
+        //Export To Excel
+        var obj = { HtmlCntrl: $("#BalanceSheetList") };
+        $("#btnExport").on("click", function () {
+            obj.ContainerId = $('#BalanceSheetTable'),
+            setExportTitle(obj)
+            AppCommon.ExportTableToExcel(obj);
+        });
+        $("#btnPrint").on("click", function () {
+            obj.ContainerId = $('#BalanceSheetTable'),
+            setExportTitle(obj)
+            AppCommon.PrintHtml(obj);
+        });
+
+    });
+    function setExportTitle(obj) {
+        obj.Title = '@EduSuiteUIResources.BalanceSheet' + ($("#BranchKey").find("option:selected").text() ? ' - ' + $("#BranchKey").find("option:selected").text() : "");
+        obj.SubTitle = $("#FromDate").val() === $("#ToDate").val() ? $("#FromDate").val() : $("#FromDate").val() + " - " + $("#ToDate").val();
+        obj.FileName = (obj.Title + "_" + obj.SubTitle).replace(/-/g, '_')
+        //obj.ExtraHead='<style type="text/css"> @@media print { .col-sm-1, .col-sm-2, .col, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12 { float: left; } .col-sm-12 { width: 100%; } .col-sm-11 { width: 91.66666667%; } .col-sm-10 { width: 83.33333333%; } .col-sm-9 { width: 75%; } .col-sm-8 { width: 66.66666667%; } .col-sm-7 { width: 58.33333333%; } .col-sm-6 { width: 50%; } .col-sm-5 { width: 41.66666667%; } .col-sm-4 { width: 33.33333333%; } .col { width: 25%; } .col-sm-2 { width: 16.66666667%; } .col-sm-1 { width: 8.33333333%; } }</style>'
+    }
+
+    function LoadReport()
+    {
+        var obj = {};
+        obj.fromDate = $("#FromDate").val()
+        obj.toDate = $("#ToDate").val()
+        obj.branchKey = 0;
+        $(".section-content").mLoading()
+
+        $.ajax({
+            type:"POST",
+            url:$("#hdnGetBalanceSheet").val() ,
+            data:$("#frmBalanceSheet").serializeArray(),
+            success:function(response){
+                $("#BalanceSheetList").html(response);
+            },
+            error:function(xhr)
+            {
+
+            },
+            complete:function(){
+                $(".section-content").mLoading("destroy")
+            }
+
+        })
+    }
+
+</script>
+

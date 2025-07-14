@@ -1,0 +1,196 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.FeeTypeViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+<div class="modal-header">
+    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+    <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.Add @EduSuiteUIResources.Sla @EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace @EduSuiteUIResources.FeeType</h4>
+</div>
+@using (Html.BeginForm("AddEditFeeType", "FeeType", FormMethod.Post, new { @id = "frmFeeType" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.RowKey)
+    @Html.HiddenFor(m => m.AllowFeetypeOnlyIncome)
+    @Html.ValidationSummary(true)
+    <input type="hidden" id="hdnFillAccountHeadType" value="@Url.Action("FillAccountHeadType", "FeeType")" />
+
+    <div class="modal-body">
+        <div class="form-master">
+            <div class="form-row">
+                <div class="col-12">
+                    <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+                </div>
+            </div>
+
+            <div class="form-row">
+
+                <div class="col-4">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.FeeType + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Mode, htmlAttributes: new { @id = "lblAccountHeadType", @class = "form-label" })
+                        <div class="required-icon"><div class="text">*</div></div>
+                        @Html.DropDownListFor(m => m.FeeTypeModeKey, new SelectList(Model.FeeTypeMode, "RowKey", "Text", Model.FeeTypeModeKey), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.FeeType, new { @class = "form-control input-control", @InputFor = "lblAccountHeadType", @id = "ddlAccountHeadType" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.FeeTypeModeKey)
+                        </span>
+                    </fieldset>
+                </div>
+                <div class="col-4">
+                    <fieldset class="form-group ">
+                        @Html.Label(EduSuiteUIResources.FeeType, htmlAttributes: new { @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                        @Html.TextBoxFor(m => m.FeeTypeName, new { @class = "form-control input-control", @data_convert = "uppercase" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.FeeTypeName)
+                        </span>
+                    </fieldset>
+                </div>
+                @if (!Model.AllowFeetypeOnlyIncome)
+                {
+                    <div class="col-6 col-lg-4">
+                        <div class="form-group">
+                            @Html.Label(EduSuiteUIResources.Account + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Group, htmlAttributes: new { @id = "lblAccountHeadType", @class = "form-label" })
+                            <div class="required-icon"><div class="text">*</div></div>
+                            @Html.DropDownListFor(m => m.AccountGroupKey, new SelectList(Model.AccountGroup, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Account + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Group, new { @class = "form-control input-control" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.AccountGroupKey)
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-6 col-lg-4">
+                        <div class="form-group">
+                            @Html.Label(EduSuiteUIResources.AccountHeadType, htmlAttributes: new { @id = "lblAccountHeadType", @class = "form-label" })
+                            <div class="required-icon"><div class="text">*</div></div>
+                            @Html.DropDownListFor(m => m.AccountHeadTypeKey, new SelectList(Model.AccountHeadType, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.AccountHeadType, new { @class = "form-control input-control", @InputFor = "lblAccountHeadType" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.AccountHeadTypeKey)
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="col-4">
+                        <fieldset class="form-group ">
+                            @Html.Label(EduSuiteUIResources.CashFlowType, htmlAttributes: new { @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                            @Html.DropDownListFor(m => m.CashFlowTypeKey, new SelectList(Model.CashFlowTypeList, "RowKey", "Text", Model.CashFlowTypeKey), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.CashFlowType, new { @class = "form-control border-radius input-control autoselect-select" })<span class="form-control-error-text">
+
+                                @Html.ValidationMessageFor(m => m.CashFlowTypeKey)
+                            </span>
+                        </fieldset>
+
+                    </div>
+                }
+                else
+                {
+                    @Html.HiddenFor(m => m.AccountGroupKey)
+                    @Html.HiddenFor(m => m.AccountHeadTypeKey)
+                    @Html.HiddenFor(m => m.CashFlowTypeKey)
+                }
+
+                <div class="col-4">
+                    <fieldset class="form-group ">
+                        @Html.Label(EduSuiteUIResources.ToUniversity, new { @class = "form-label" })
+                        <div class="switch-check my-2">
+                            @Html.CheckBoxFor(m => m.IsUniverisity, new { @class = "switch-input" })
+                            <div class="switch-label redgreen" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                            <div class="switch-handle"></div>
+                        </div>
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.IsUniverisity)
+                        </span>
+
+                    </fieldset>
+                </div>
+                @if (ApplicationSettingModel.TaxEnabled)
+                {
+                    <div class="col-4">
+                        <fieldset class="form-group ">
+                            @Html.Label(EduSuiteUIResources.Taxable, new { @class = "form-label" })
+                            <div class="switch-check my-2">
+                                @Html.CheckBoxFor(m => m.IsTax, new { @class = "switch-input" })
+                                <div class="switch-label redgreen" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                                <div class="switch-handle"></div>
+                            </div>
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.IsTax)
+                            </span>
+
+                        </fieldset>
+                    </div>
+                }
+                else
+                {
+                    {
+                        Model.IsTax = false;
+                    }
+                    @Html.HiddenFor(m => m.IsTax)
+                }
+                <div id="DivHSNCode" class="col-4">
+                    <fieldset class="form-group ">
+                        @Html.Label(EduSuiteUIResources.HSNCode, htmlAttributes: new { @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                        @Html.DropDownListFor(m => m.GSTMasterkey, new SelectList(Model.HSNCodes, "RowKey", "Text", Model.GSTMasterkey), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.HSNCode, new { @class = "form-control border-radius input-control autoselect-select" })<span class="form-control-error-text">
+
+                            @Html.ValidationMessageFor(m => m.GSTMasterkey)
+                        </span>
+                    </fieldset>
+                </div>
+                <div class="col-4" data-customise>
+                    <fieldset class="form-group ">
+                        @Html.Label(EduSuiteUIResources.ReceiptType, htmlAttributes: new { @class = "form-label" })
+                        @Html.DropDownListFor(m => m.ReceiptNumberConfigurationKey, new SelectList(Model.ReceiptTypes, "RowKey", "Text", Model.ReceiptNumberConfigurationKey), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.ReceiptType, new { @class = "form-control border-radius input-control autoselect-select" })<span class="form-control-error-text">
+
+                            @Html.ValidationMessageFor(m => m.ReceiptNumberConfigurationKey)
+                        </span>
+                    </fieldset>
+                </div>
+
+                <div class="col-4">
+                    <fieldset class="form-group ">
+                        @Html.Label(EduSuiteUIResources.IsActive, new { @class = "form-label" })
+                        <div class="switch-check my-2">
+                            @Html.CheckBoxFor(m => m.IsActive, new { @class = "switch-input" })
+                            <div class="switch-label redgreen" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                            <div class="switch-handle"></div>
+                        </div>
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.IsActive)
+                        </span>
+
+                    </fieldset>
+                </div>
+                @if (!Model.AllowHideFeeBalance)
+                {
+                    <div class="col-5">
+                        <fieldset class="form-group ">
+                            @Html.Label("Hide Balance in Fee Receipt", new { @class = "form-label" })
+                            <div class="switch-check my-2">
+                                @Html.CheckBoxFor(m => m.IsDeduct, new { @class = "switch-input" })
+                                <div class="switch-label redgreen" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                                <div class="switch-handle"></div>
+                            </div>
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.IsDeduct)
+                            </span>
+
+                        </fieldset>
+                    </div>
+                }
+                else
+                {
+                    {
+                        Model.IsDeduct = false;
+                    }
+                    @Html.HiddenFor(m => m.IsDeduct)
+                }
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="modal-footer justify-content-start">
+        <div class="form-group">
+            <input type="submit" value="@EduSuiteUIResources.Submit" id="btnSave" class="btn btn-sm btn-success mx-1" />
+            <button type="button" data-dismiss="modal" class="btn btn-sm btn-danger mx-1">@EduSuiteUIResources.Cancel</button>
+
+        </div>
+    </div>
+}

@@ -1,0 +1,209 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.RackViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/Scripts/Publisher")
+    @Scripts.Render("~/Content/JqueryRepeater")
+    @Scripts.Render("~/Scripts/Rack")
+
+
+}
+<div class="modal-header">
+    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+    <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.Add @EduSuiteUIResources.Sla @EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace @EduSuiteUIResources.Wardrobe</h4>
+</div>
+
+<input type="hidden" id="hdnDeleteSubRack" value="@Url.Action("DeleteSubRack", "Rack")" />
+<input type="hidden" id="hdnRackList" value="@Url.Action("RackList", "Rack")" />
+
+
+
+
+@using (Html.BeginForm("AddEditRack", "Rack", FormMethod.Post, new { @id = "frmRackDetails" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.MasterRowKey)
+    @Html.ValidationSummary(true)
+
+    <div class="modal-body">
+        <div class="form-master">
+
+            <div class="form-row">
+                @if (Model.Branches.Count == 1)
+                {
+                    {
+                        Model.BranchKey = Model.BranchKey == 0 ? (short)Model.Branches.Select(x => x.RowKey).FirstOrDefault() : Model.BranchKey;
+                    }
+                    @Html.HiddenFor(m => m.BranchKey)
+                }
+                else
+                {
+                    if (DbConstants.Role.AdminUserTypes.Contains(DbConstants.User.RoleKey))
+                    {
+                        <div class="col-6 col-sm-3 col-lg-4 ">
+                            <fieldset class="form-group">
+                                @Html.Label(EduSuiteUIResources.Branch, htmlAttributes: new { @class = "form-label" })
+                                <div class="required-icon"><div class="text">*</div></div>
+                                @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Branch, new { @class = "form-control input-control", @InputFor = "lblBranch", @data_live_search = "true" })
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => m.BranchKey)
+                                </span>
+                            </fieldset>
+                        </div>
+
+                    }
+                    else
+                    {
+                        <div class="col-6 col-sm-3 col-lg-4">
+                            <fieldset class="form-group">
+                                @Html.Label(EduSuiteUIResources.Branch, htmlAttributes: new { @class = "form-label" })
+                                <div class="required-icon"><div class="text">*</div></div>
+                                @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), new { @class = "form-control input-control", @InputFor = "lblBranch" })
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => m.BranchKey)
+                                </span>
+                            </fieldset>
+                        </div>
+                    }
+
+                }
+                <div class="col-6 col-sm-3 col-lg-4">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.Wardrobe + @EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Name, htmlAttributes: new { @class = "form-label" })
+                        <div class="required-icon"><div class="text">*</div></div>
+                        @Html.TextBoxFor(m => m.RackName, new { @class = "form-control border-radius" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.RackName)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-6 col-sm-3 col-lg-4">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.Wardrobe + @EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Code, htmlAttributes: new { @class = "form-label" })
+                        <div class="required-icon"><div class="text">*</div></div>
+                        @Html.TextBoxFor(m => m.RackCode, new { @class = "form-control border-radius" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.RackCode)
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-6 col-sm-3 col-lg-4">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.Remarks, htmlAttributes: new { @class = "form-label" })
+                        @Html.TextAreaFor(m => m.Remarks, new { @class = "form-control border-radius" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.Remarks)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-6 col-sm-3 col-lg-4 text-lg-center">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.IsActive, new { @class = "form-label" })
+
+                        <div class="switch-check my-2">
+                            @Html.CheckBoxFor(m => m.IsActive, new { @class = "switch-input" })
+                            <div class="switch-label redgreen" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                            <div class="switch-handle"></div>
+                        </div>
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.IsActive)
+                        </span>
+                    </fieldset>
+
+                </div>
+            </div>
+            <div id="dynamicRepeater" class="repeater">
+                <table class="table table-responsive table-stripped">
+                    <thead>
+                        <tr>
+                            <th>
+
+                            </th>
+                            <th class="w-25">
+                                @Html.Label(EduSuiteUIResources.Rack + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Code, htmlAttributes: new { @class = "form-label" })
+                            </th>
+                            <th>
+                                @Html.Label(EduSuiteUIResources.Rack + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Name, htmlAttributes: new { @class = "form-label" })
+                            </th>
+
+
+                        </tr>
+
+                    </thead>
+                    <tbody data-repeater-list>
+                        @for (int i = 0; i < Model.SubRackDetailsModel.Count(); i++)
+                        {
+                            <tr data-repeater-item>
+                                <td>
+
+                                    <span data-repeater-delete="" class="btn btn-danger btn-sm btnDeleteRow">
+                                        <span class="fa fa-remove "></span>
+                                    </span>
+
+                                </td>
+
+                                <td>
+                                    <fieldset class="form-group">
+                                        @Html.TextBoxFor(m => m.SubRackDetailsModel[i].SubRackCode, new { @class = "form-control input-control", @data_convert = "uppercase" })
+                                        <span class="form-control-error-text">
+                                            @Html.ValidationMessageFor(m => m.SubRackDetailsModel[i].SubRackCode)
+                                        </span>
+                                    </fieldset>
+
+                                </td>
+
+                                <td>
+                                    <fieldset class="form-group">
+                                        @Html.TextBoxFor(m => m.SubRackDetailsModel[i].SubRackName, new { @class = "form-control input-control", @data_convert = "uppercase" })
+                                        <span class="form-control-error-text">
+                                            @Html.ValidationMessageFor(m => m.SubRackDetailsModel[i].SubRackName)
+                                        </span>
+                                        @Html.HiddenFor(m => m.SubRackDetailsModel[i].RowKey)
+
+
+                                    </fieldset>
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3">
+                                <span data-repeater-create class="btn btn-info btn-sm">
+                                    <span class="fa fa-plus"></span>
+                                </span>
+                            </td>
+                        </tr>
+
+                    </tfoot>
+
+                </table>
+
+
+            </div>
+            <span class="w3-text-red"> @Html.ValidationMessage("error_msg")  </span>
+        </div>
+    </div>
+
+    <div class="modal-footer justify-content-start">
+        <div class="form-group">
+            <input type="submit" value="@EduSuiteUIResources.Submit" id="btnSave" class="btn btn-sm btn-success mx-1" onclick="Rack.FormSubmit()" />
+            <button type="button" data-dismiss="modal" class="btn btn-sm btn-danger mx-1">@EduSuiteUIResources.Cancel</button>
+
+        </div>
+    </div>
+}
+
+<script>
+    var jsonData=@(Html.Raw(Json.Encode(Model)));
+
+    $(document).ready(function () {
+        AppCommon.FormatInputCase();
+        AppCommon.CustomRepeaterRemoteMethod();
+        Rack.GetSubRackDetails(jsonData);
+    });
+
+</script>

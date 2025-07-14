@@ -1,0 +1,190 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.LibraryReportViewModel
+
+<div class="modal-header">
+    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+    <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.Member@EduSuiteUIResources.BlankSpace @EduSuiteUIResources.Details</h4>
+</div>
+<div class="modal-body">
+    <div class="form-master">
+        @if (Model.CardId != null)
+        {
+            <div class="form-row">
+                <div class="col-12">
+                    <div class="card w3-teal">
+                        <div class="card-block">
+                            <div class="row">
+
+                                <div class="col-lg-2 col-md-4 text-center">
+                                    @if (Model.MemberPhoto != null)
+                                    {
+                                        <img src="@Url.Content(Model.MemberphotoPath)" class="img-thumbnail img-fluid rounded-circle" alt="User profile picture" style="height:100px" />
+                                    }
+                                    else
+                                    {
+                                        <img src="~/Images/no-photo.png" alt="User profile picture" class="img-thumbnail img-fluid rounded-circle" style="height:100px" />
+
+                                    }
+
+                                </div>
+                                <div class="col-lg-10 col-md-8">
+                                    <h2 class="card-title w3-text-light-grey text-capitalize"><strong>@Model.MemberName</strong></h2>
+                                    <p class="card-text form-row">
+                                        <span class="col"><strong>@EduSuiteUIResources.Mobile : </strong> @Model.MobileNo</span>
+                                        <span class="col"><strong>@EduSuiteUIResources.ApplicationType : </strong> @Model.ApplicationTypeName </span>
+                                    </p>
+                                    <p class="card-text form-row">
+                                        <span class="col"><strong>@EduSuiteUIResources.CardId: </strong>@Model.CardId </span>
+                                    </p>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            if (Model.LibraryReportBookDetailsmodel.Count > 0)
+            {
+            <div class="form-row mt-3">
+                <section class="card">
+                    <header class="card-header w3-indigo">
+                        @EduSuiteUIResources.Book @EduSuiteUIResources.BlankSpace @EduSuiteUIResources.Details
+                    </header>
+                    <div class="card-body p-2 overflow-auto" id="dynamicRepeater">
+                        <table class="table table-bordered table-sm">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        @EduSuiteUIResources.IssueDate
+                                    </th>
+                                    <th>
+                                        @EduSuiteUIResources.SlNo
+                                    </th>
+                                    <th>
+                                        @EduSuiteUIResources.Book
+                                    </th>
+                                    <th>
+                                        @EduSuiteUIResources.BookCopy
+                                    </th>
+                                    <th>
+                                        @EduSuiteUIResources.ISBN
+                                    </th>
+                                    <th>
+                                        @EduSuiteUIResources.Edition
+                                    </th>
+                                    <th>
+                                        @EduSuiteUIResources.Author
+                                    </th>
+                                    <th>
+                                        @EduSuiteUIResources.IssuedDate
+                                    </th>
+                                    <th>
+                                        @EduSuiteUIResources.DueDate
+                                    </th>
+                                    <th>
+                                        @EduSuiteUIResources.ReturnDate
+                                    </th>
+                                    <th>
+                                        @EduSuiteUIResources.Status
+                                    </th>
+                                    <th>
+                                        @EduSuiteUIResources.Remarks
+                                    </th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (var i = 0; i < Model.LibraryReportBookDetailsmodel.Count; i++)
+                                {
+
+                                    <tr data-repeater-item>
+                                        @if (i == 0 || (i != 0 && Convert.ToDateTime(Model.LibraryReportBookDetailsmodel[i].IssuedDate).Date != Convert.ToDateTime(Model.LibraryReportBookDetailsmodel[i - 1].IssuedDate).Date))
+                                        {
+                                            <td rowspan="@(Model.LibraryReportBookDetailsmodel.Count(row => Convert.ToDateTime(row.IssuedDate).Date == Convert.ToDateTime(Model.LibraryReportBookDetailsmodel[i].IssuedDate).Date))">
+                                                <strong>  @(string.Format("{0:dd/MM/yyyy}", Model.LibraryReportBookDetailsmodel[i].IssuedDate))</strong>
+                                            </td>
+                                        }
+                                        <td>
+                                            @(i + 1)
+                                        </td>
+                                        <td>
+                                            @Model.LibraryReportBookDetailsmodel[i].BookName
+                                        </td>
+                                        <td>
+                                            @Model.LibraryReportBookDetailsmodel[i].BookCopySlNo
+                                        </td>
+                                        <td>
+                                            @Model.LibraryReportBookDetailsmodel[i].ISBN
+                                        </td>
+                                        <td>
+                                            @Model.LibraryReportBookDetailsmodel[i].BookEdition
+                                        </td>
+
+                                        <td>
+                                            @Model.LibraryReportBookDetailsmodel[i].AuthorName
+                                        </td>
+                                        <td>
+                                            @string.Format("{0:dd/MM/yyyy}", Model.LibraryReportBookDetailsmodel[i].IssuedDate)
+                                            @Html.HiddenFor(m => m.LibraryReportBookDetailsmodel[i].IssuedDate)
+                                            @Html.HiddenFor(m => m.LibraryReportBookDetailsmodel[i].DueDate)
+                                            @Html.HiddenFor(m => m.LibraryReportBookDetailsmodel[i].ReturnDate)
+                                        </td>
+                                        <td duedate>
+                                            @string.Format("{0:dd/MM/yyyy}", Model.LibraryReportBookDetailsmodel[i].DueDate)
+                                        </td>
+                                        <td>
+                                            @string.Format("{0:dd/MM/yyyy}", Model.LibraryReportBookDetailsmodel[i].ReturnDate)
+                                        </td>
+                                        <td>
+                                            @Model.LibraryReportBookDetailsmodel[i].BookStatusName
+
+                                        </td>
+                                        <td>
+                                            @Model.LibraryReportBookDetailsmodel[i].Remarks
+                                        </td>
+
+                                    </tr>
+                                }
+                            </tbody>
+
+                        </table>
+
+
+                    </div>
+                </section>
+            </div>
+            }
+            else
+            {
+            
+               
+                <div class="alert alert-info mt-4" role="alert">
+                    <strong>Info !</strong> So far no books has been given to him.
+                </div>
+            }
+        }
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("[data-repeater-item]").each(function () {
+            
+            var item = $(this)
+            var IssuedDate = $("[id*=IssuedDate]", $(item)).val();
+            var ReturnDate = $("[id*=ReturnDate]", $(item)).val();
+            var DueDate = $("[id*=DueDate]", $(item)).val();
+            var momentA = moment(ReturnDate, "DD/MM/YYYY");
+            var momentB = moment(DueDate, "DD/MM/YYYY");
+            var now = moment();
+            if (momentA != "Invalid date") {
+                if (now > momentB) {
+                    $("[duedate]", $(item)).attr('style', 'color:red;font-weight:bold;');
+                }
+                else {
+                    $("[duedate]", $(item)).attr('style', 'color:green;font-weight:bold;');
+                }
+            }         
+
+        })
+    })
+</script>

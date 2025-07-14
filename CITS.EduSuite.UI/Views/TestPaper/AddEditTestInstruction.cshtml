@@ -1,0 +1,84 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.TestPaperViewModel
+
+@using CITS.EduSuite.Business.Models.ViewModels
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/TestPaper")
+    @Scripts.Render("~/Content/tinyMCEJS")
+}
+
+<script src="~/Scripts/tinymce/tinymce.js"></script>
+<input type="hidden" id="hdnTestPaperList" value="@Url.Action("TestPaperList", "TestPaper")" />
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-12">
+            <div class="tbl">
+                <div class="tbl-row  px-1">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.Add@EduSuiteUIResources.Hyphen@EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Instructions</h3>
+                        <ol class="breadcrumb breadcrumb-simple mb-2 float-sm-right">
+                            <li><a href="#" onclick="location.href='@Url.Action("TestPaperList", "TestPaper")' ">@EduSuiteUIResources.TestPaper</a></li>
+                            <li class="active">@EduSuiteUIResources.Add@EduSuiteUIResources.Hyphen@EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Instructions</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+@using (Html.BeginForm("AddEditTestInstruction", "TestPaper", FormMethod.Post))
+{
+    @Html.HiddenFor(m => m.RowKey)
+    @Html.HiddenFor(m => m.TestInstructionFileName)
+    <section class="section-content">
+
+        <div class="form-row">
+
+            <div class="col-sm-12 col-12">
+                @Html.TextAreaFor(m => m.TestInstruction, new { @id = "testInstructionContent", @class = "tab-content min-content-height bg-white" })
+                <span class="form-control-error-text">
+                    @Html.ValidationMessageFor(m => m.TestInstruction)
+                </span>
+            </div>
+
+        </div>
+        <div class="row mt-2">
+            <div class="col-12">
+                <div class="form-group">
+                    <button type="submit" id="btnSave" class="btn btn-sm btn-success mx-1"><i class="fa fa-save"></i> @EduSuiteUIResources.Save</button>
+                </div>
+            </div>
+            <div class="col-12">
+                <span class="ValidateDataMsg"> @Html.ValidationMessage("error_msg")  </span>
+            </div>
+        </div>
+
+    </section>
+}
+<script>
+    $(document).ready(function () {
+        AppCommon.FormatInputCase();
+        tinymce.init({
+
+            // Location of TinyMCE script
+            //script_url: $("#hdnTinyMCEJS").val(),
+            selector: 'textarea',
+            theme: "silver",
+            height: "500",
+            width: "100%",
+            verify_html: true,
+            plugins: 'print preview paste importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern noneditable help charmap quickbars emoticons preventdelete',
+            imagetools_cors_hosts: ['picsum.photos'],
+            menubar: 'edit view insert format tools table help',
+            toolbar: 'undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media template link anchor codesample | ltr rtl',
+            toolbar_sticky: true,
+
+        });
+
+
+
+    });
+    $(window).on("load", function () {
+        TestPaper.LoadTestInstructions();
+    });
+</script>

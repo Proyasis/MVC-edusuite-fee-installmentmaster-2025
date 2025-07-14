@@ -1,0 +1,372 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.ScholarshipExamScheduleViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+@using System.Web.Mvc
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Scripts/ScholarshipExamSchedule")
+    @Scripts.Render("~/bundles/CitsValidation")
+    @Scripts.Render("~/Content/Select2JS")
+
+}
+
+<input type="hidden" id="hdnGetScholarship" value="@Url.Action("GetScholarship", "ScholarshipExamSchedule")" />
+<input type="hidden" id="hdnDeleteScholarshipExam" value="@Url.Action("DeleteScholarshipExam", "ScholarshipExamSchedule")" />
+<input type="hidden" id="hdnAddEditScholarship" value="@Url.Action("AddEditScholarship", "ScholarshipExamSchedule")" />
+<input type="hidden" id="hdnGetSerchBranchByDistrict" value="@Url.Action("GetSerchBranchByDistrict", "ScholarshipExamSchedule")" />
+<input type="hidden" id="hdnGetSubBranchByBranch" value="@Url.Action("GetSubBranchByBranch", "ScholarshipExamSchedule")" />
+
+<input type="hidden" id="hdnGetHallticket" value="@Url.Action("Hallticket", "ScholarshipExamSchedule")" />
+<input type="hidden" id="hdnAddEditScholarshipExamScheduleBulk" value="@Url.Action("AddEditScholarshipExamScheduleBulk", "ScholarshipExamSchedule")" />
+
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-sm-6 col-12">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.ScholarshipExam</h3>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a class="btn btn-info btn-sm " id="lnkExamSchedule">
+            <i class="fa fa-plus"></i>@EduSuiteUIResources.Add @EduSuiteUIResources.BlankSpace @EduSuiteUIResources.ScholarshipExam
+        </a>
+        @*<div class="col-6 text-right">
+                <a href="@Url.Action("AddEditScholarshipExamScheduleBulk", "ScholarshipExamSchedule")" class="btn btn-success btn-sm "><i class="fa fa-plus-square-o"></i> <span>@EduSuiteUIResources.New @EduSuiteUIResources.BlankSpace @EduSuiteUIResources.ScholarshipExam</span></a>
+            </div>*@
+    </div>
+</header>
+
+<section class="section-content mx-sm-3 mx-0">
+    <div class="GridBody">
+        <div class="form-row tabs-section mb-2">
+            <div class="tabs-section-nav">
+                <ul id="tab-componets" class="nav nav-tabs" role="tablist">
+                    <li class="nav-item"><a data-toggle="tab" data-val="true" href="#" aria-expanded="true" class="nav-link"><span class="nav-link-in">Hall Ticket </span></a></li>
+                    <li class="nav-item "><a data-toggle="tab" data-val="false" href="#" aria-expanded="true" class="nav-link"><span class="nav-link-in">@EduSuiteUIResources.New@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.ExamSchedule</span></a></li>
+
+                </ul>
+            </div>
+        </div>
+        <div class="grid-nav-bar">
+            <form id="frmScholarshipExam">
+                <div class=" form-row ">
+
+                    <div class="col-lg-2 col-sm-4 col-6">
+                        <fieldset class="form-group">
+                            @Html.TextBoxFor(m => m.SearchName, new { @class = "form-control input-control", @placeholder = EduSuiteUIResources.Name })
+                            @*@Html.TextBoxFor(m => m.SearchName, new
+                                {
+                                    @class = "form-control input-control",
+                                    @placeholder = EduSuiteUIResources.Name,
+                                    @onkeyup = "Enquiry.GetEnquiryByText(this)",
+                                    @onclick = "Enquiry.GetEnquiryByText(this)",
+                                    @autocomplete = "off"
+                                })*@
+                        </fieldset>
+                    </div>
+                    <div class="col-lg-2 col-sm-4 col-6">
+                        <fieldset class="form-group">
+                            @Html.TextBoxFor(m => m.SearchPhone, new { @class = "form-control input-control", @placeholder = EduSuiteUIResources.Phone })
+                        </fieldset>
+                    </div>
+                    <div class="col-lg-2 col-sm-4 col-6">
+                        <fieldset class="form-group">
+                            @Html.TextBoxFor(m => m.SearchFromDate, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_input_type = "date", @data_inputmask = "'alias': 'dd/mm/yyyy'", @placeholder = EduSuiteUIResources.CreatedDateFrom })
+                        </fieldset>
+                    </div>
+                    <div class="col-lg-2 col-sm-4 col-6">
+                        <fieldset class="form-group">
+                            @Html.TextBoxFor(m => m.SearchToDate, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_input_type = "date", @data_inputmask = "'alias': 'dd/mm/yyyy'", @placeholder = EduSuiteUIResources.CreatedDateTo })
+                        </fieldset>
+                    </div>
+                   @if (DbConstants.Role.AdminUserTypes.Contains(DbConstants.User.RoleKey))
+                    {
+                        <div class="col-lg-2 col-sm-4 col-6">
+                            <fieldset class="form-group">
+                                @Html.DropDownListFor(m => m.SearchDistrictKey, new SelectList(Model.Districts, "RowKey", "Text"), EduSuiteUIResources.BlankSpace + EduSuiteUIResources.District, new { @class = "form-control input-control selectpicker", @data_live_search = "true" })
+                            </fieldset>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-lg-2 col-sm-4 col-6">
+                            <fieldset class="form-group">
+                                @Html.DropDownListFor(m => m.SearchDistrictKey, new SelectList(Model.Districts, "RowKey", "Text"), new { @class = "form-control input-control selectpicker", @data_live_search = "true" })
+                            </fieldset>
+                        </div>
+                    }
+                   @if (DbConstants.Role.AdminUserTypes.Contains(DbConstants.User.RoleKey))
+                    {
+                        <div class="col-lg-2 col-sm-4 col-6">
+                            <fieldset class="form-group">
+                                @Html.DropDownListFor(m => m.SearchBranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.center, new { @class = "form-control input-control selectpicker", @data_live_search = "true" })
+                            </fieldset>
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.SearchBranchKey)
+                            </span>
+                        </div>
+
+
+                    }
+                    else
+                    {
+                        <div class="col-lg-2 col-sm-4 col-6 ">
+                            <fieldset class="form-group">
+                                @Html.DropDownListFor(m => m.SearchBranchKey, new SelectList(Model.Branches, "RowKey", "Text"), new { @class = "form-control input-control selectpicker", @data_live_search = "true" })
+                            </fieldset>
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.SearchBranchKey)
+                            </span>
+                        </div>
+                    }
+                    <div class="col-lg-2 col-sm-4 col-6 ">
+                        <fieldset class="form-group">
+                            @Html.DropDownListFor(m => m.SubBranchKey, new SelectList(Model.ExamSubCenters, "RowKey", "Text"), EduSuiteUIResources.BlankSpace + EduSuiteUIResources.SubCenter, new { @class = "form-control input-control selectpicker", @data_live_search = "true" })
+                        </fieldset>
+                    </div>
+
+                    <div class="col-lg-2 col-sm-4 col-6">
+                        <fieldset class="form-group">
+                            @Html.DropDownListFor(m => m.SearchScholarshipTypeKey, new SelectList(Model.ScholarshipTypes, "RowKey", "Text"), EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Scholarship + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Type, new { @class = "form-control input-control autoselect-select" })
+                        </fieldset>
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.SearchScholarshipTypeKey)
+                        </span>
+                    </div>
+                    <div class="col-lg-2 col-sm-4 col-6">
+                        <fieldset class="form-group">
+                            @Html.TextBoxFor(m => m.ExamDate, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_input_type = "date", @data_inputmask = "'alias': 'dd/mm/yyyy'", @placeholder = EduSuiteUIResources.ExamDate })
+                        </fieldset>
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.ExamDate)
+                        </span>
+                    </div>
+                    <div class="col-lg-2 col-sm-4 col-6 d-none">
+                        <fieldset class="form-group">
+                            @Html.TextBoxFor(m => m.ExamStartTime, new { @class = "form-control input-control", @data_input_type = "time", @data_inputmask = "'alias':'hh:mm t','hourFormat': '12'", @InputFor = "lblCallDuration" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.ExamStartTime)
+                            </span>
+                        </fieldset>
+                    </div>
+                    <div class="col-lg-2 col-sm-4 col-6 d-none">
+                        <fieldset class="form-group">
+                            @Html.TextBoxFor(m => m.ExamEndTime, new { @class = "form-control input-control", @data_input_type = "time", @data_inputmask = "'alias':'hh:mm t','hourFormat': '12'", @InputFor = "lblCallDuration" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.ExamEndTime)
+                            </span>
+                        </fieldset>
+                    </div>
+
+                    @*<div class="col-sm-6 col-12">
+                            <a class="btn btn-info btn-sm float-right " onclick='Scholarship.GetScholarship()'>
+                                <i class="fa fa-refresh"></i>   @EduSuiteUIResources.Refresh
+                            </a>
+                        </div>*@
+                </div>
+                <div class="form-row justify-content-end">
+
+                 
+                    <div class="col-lg-2 col-sm-3 col-4">
+                        <div class="button-group float-right">
+                            <button id="btnPrint" type="button" onclick="ScholarshipExamSchedule.PrintExamSchedule()" class="btn btn-primary btn-sm"><i class="fa fa-print btn-blue" aria-hidden="true"></i></button>
+                           
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="table-wrapper">
+
+            <div class="jqGrid_wrapper overflow-auto">
+                <table id="grid"></table>
+                <div id="pager"></div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+<script>
+    var jsonData=@(Html.Raw(Json.Encode(Model)));
+    $(document).ready(function () {
+        AppCommon.AutoHideDropdown();
+        $("#ExamDate").val("");
+        $("#tab-componets li:first-child a").addClass('active');
+
+
+        HideButtons();
+
+        $('#tab-componets a[data-toggle="tab"]').on('shown.bs.tab', function (e)
+        {
+            //$('#grid').jqGrid("GridUnload");
+            //var ToggleValue = $("#tab-componets li a.active").data('val');
+
+            HideButtons();
+
+            ScholarshipExamSchedule.GetScholarshipExamSchedule();
+        });
+
+
+        $("[data-input-type=time]").each(function () {
+            
+            if ($(this).val() != "") {
+                $(this).val(moment($(this).val(), ["HH:mm:ss"]).format("hh:mm A"));
+            }
+        })
+        AppCommon.FormatDateInput();
+        AppCommon.FormatInputCase();
+        AppCommon.FormatTimeInput();
+        $("form").removeData("validator");
+        $("form").removeData("unobtrusiveValidation");
+        $.validator.unobtrusive.parse("form");
+
+        $("#SearchName,#SearchPhone").on("input", function () {
+
+          
+            ScholarshipExamSchedule.GetScholarshipExamSchedule();
+        });
+
+        $("#iconSpan").click(function () {
+            $('#txtsearch').val('');
+            ScholarshipExamSchedule.GetScholarshipExamSchedule();
+        });
+        $("#SearchFromDate,#SearchToDate").on("changeDate", function () {
+
+          
+            ScholarshipExamSchedule.GetScholarshipExamSchedule();
+        });
+
+        $("#SearchBranchKey,#SearchDistrictKey,#SearchScholarshipTypeKey,#SearchName,#SearchPhone,#SearchFromDate,#SearchToDate,#SubBranchKey").on("change", function () {
+           
+            ScholarshipExamSchedule.GetScholarshipExamSchedule();
+        })
+        ScholarshipExamSchedule.GetScholarshipExamSchedule();
+
+        $("#SearchDistrictKey").on("change",function(){
+            var obj = {};
+            obj.id = $(this).val() != "" ? $(this).val() : 0;
+            AppCommon.BindDropDownbyId(obj, $("#hdnGetSerchBranchByDistrict").val(), $("#SearchBranchKey"),  Resources.center, "Branches");
+
+        });
+        $("#SearchBranchKey").on("change",function(){
+            var obj = {};
+            obj.id = $(this).val() != "" ? $(this).val() : 0;
+            AppCommon.BindDropDownbyId(obj, $("#hdnGetSubBranchByBranch").val(), $("#SubBranchKey"),  Resources.SubCenter, "ExamSubCenters");
+
+        });
+
+        //AppCommon.EditGridPopup($("#addEditScholarship"), ScholarshipPopupLoad)
+
+
+
+        $("#lnkExamSchedule").on("click",function(){
+            
+            var valid = $("#frmScholarshipExam").valid()
+
+            if (valid) {
+
+                var myGrid = $('#grid');
+                var ids = $("#grid").jqGrid('getDataIDs');
+                var selRowIds = myGrid.jqGrid("getGridParam", "selarrrow"), n, rowData;
+                var cbs = $("tr.jqgrow > td > input.cbox:disabled", "selarrrow"), n, rowData;
+                //var cbs = $("tr.jqgrow > td > input.cbox:disabled", grid[0]);
+
+                var TotalRecords = myGrid.getGridParam("reccount")
+
+                if (TotalRecords > 0)
+                {
+                    var URL = $("#hdnAddEditScholarshipExamScheduleBulk").val();
+                    if (selRowIds && selRowIds.length > 0)
+                    {
+                        // URL = URL + "?keys=" + selRowIds;
+                        var $form = $("#frmScholarshipExam")
+
+                        var formData = $form.serializeToJSON({
+                            associativeArrays: false
+                        });
+                        $(formData).each(function (i) {
+                            if (formData[i]) {
+                                var name = formData[i]['name'];
+                                var keyName = name.match(/\].*/) ? name.match(/\].*/)[0].replace("].", "") : name;
+
+                                if (TimeKeys.indexOf(keyName) > -1) {
+                                    formData[i]['value'] = (formData[i]['value'] != "" ? moment(formData[i]['value'].toUpperCase(), ["hh:mm A"]).format("HH:mm") : null);
+                                }
+                            }
+                        })
+                        formData.ScholarshipKeyList=selRowIds;
+                        //var model=selRowIds;
+
+                        var result = EduSuite.Confirm2({
+                            title: Resources.Confirmation,
+                            content:" Are you sure you want to Schedule this "+ selRowIds.length+" Scholarship details to Exam?",
+                            actionUrl: $("#hdnAddEditScholarshipExamScheduleBulk").val(),
+                            parameters: formData,
+                            dataRefresh: function () { $("#grid").jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid'); }
+                        });
+
+
+                        //$.customPopupform.CustomPopup({
+                        //    modalsize: "modal-lg",
+                        //    load: function ()
+                        //    {
+
+                        //    },
+                        //    rebind: function (result)
+                        //    {
+                        //        Application.GetApplication();
+                        //    }
+                        //}, URL);
+                    }
+                    else
+                    {
+                        //URL = URL + "?keys=" + ids;
+                        //$.customPopupform.CustomPopup({
+                        //    modalsize: "modal-lg",
+                        //    load: function ()
+                        //    {
+
+                        //    },
+                        //    rebind: function (result)
+                        //    {
+                        //        Application.GetApplication();
+                        //    }
+                        //}, URL);
+
+                        //alert("Please Select Atleast one")
+                        EduSuite.AlertMessage({ title: Resources.Warning, content: "Please Select Atleast one", type: 'orange' })
+                    }
+
+                }}
+        })
+
+
+
+    });
+
+    function HideButtons(){
+        var scheduleStatus = $("#tab-componets li a.active").data('val');
+        scheduleStatus = scheduleStatus ? JSON.parse(scheduleStatus) : false;
+        if(scheduleStatus){
+            $("#lnkExamSchedule").hide();
+        }
+        else
+        {
+            $("#lnkExamSchedule").show();
+        }
+
+    }
+
+
+
+</script>

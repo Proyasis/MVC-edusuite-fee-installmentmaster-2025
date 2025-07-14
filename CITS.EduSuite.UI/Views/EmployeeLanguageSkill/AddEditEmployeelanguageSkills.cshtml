@@ -1,0 +1,131 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.EmployeeLanguageSkillViewModel
+
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+
+    @Scripts.Render("~/Content/JqueryRepeater")
+    @Scripts.Render("~/Scripts/EmployeeLanguageSkill")
+
+}
+
+<input type="hidden" id="hdnDeleteEmployeeLanguageSkill" value="@Url.Action("DeleteEmployeeLanguageSkill", "EmployeeLanguageSkill")" />
+@using (Html.BeginForm("AddEditEmployeeLanguageSkills", "EmployeeLanguageSkill", FormMethod.Post, new AjaxOptions { UpdateTargetId = "Rules", OnBegin = "onBegin", OnComplete = "onComplete" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.EmployeeKey)
+    @Html.ValidationSummary(true)
+
+
+
+    <div class="box-typical box-typical-padding">
+
+        <div class="repeater  overflow-auto">
+            <table class="table table-stripped">
+                <thead class="thead-light">
+                    <tr style="text-align:center">
+                        <th></th>
+                        <th>@EduSuiteUIResources.Language</th>
+                        <th>@EduSuiteUIResources.Read</th>
+                        <th>@EduSuiteUIResources.Write</th>
+                        <th>@EduSuiteUIResources.Speak</th>
+                        <th>@EduSuiteUIResources.Skill@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Level</th>
+                    </tr>
+                </thead>
+                <tbody data-repeater-list style="text-align:center">
+                    @for (int i = 0; i < Model.EmployeeLanguageSkills.Count(); i++)
+                    {
+                        <tr data-repeater-item>
+                            <td class="p-1">
+                                <span data-repeater-delete="" class="btn btn-danger btn-sm btnDeleteRow">
+                                    <span class=" fa fa-remove"></span>
+                                </span>
+                            </td>
+                            <td class="p-1">
+                                @Html.DropDownListFor(m => Model.EmployeeLanguageSkills[i].LanguageKey, new SelectList(Model.EmployeeLanguageSkills[i].Languages, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Language, new { @class = "form-control border-radius input-control", @InputFor = "lblLanguageName" })
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => Model.EmployeeLanguageSkills[i].LanguageKey)
+                                </span>
+                                @Html.HiddenFor(m => Model.EmployeeLanguageSkills[i].RowKey)
+                            </td>
+                            <td class="p-1 text-center">
+                                <div class="checkbox-bird green inline-block mt-2">
+                                    @Html.CheckBoxFor(m => m.EmployeeLanguageSkills[i].IsRead, new { @InputFor = "lblIsRead", @class = "custom-control-input" })
+                                    <label for="IsRead" class="label-for-check form-label">
+                                    </label>
+                                </div>
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => Model.EmployeeLanguageSkills[i].IsRead)
+                                </span>
+
+                            </td>
+                            <td class="p-1 text-center">
+                                <div class=" checkbox-bird green inline-block mt-2">
+                                    @Html.CheckBoxFor(m => m.EmployeeLanguageSkills[i].IsWrite, new { @InputFor = "lblIsWrite", @class = "custom-control-input" })
+                                    <label for="IsWrite" class="label-for-check form-label">
+                                    </label>
+                                </div>
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => Model.EmployeeLanguageSkills[i].IsWrite)
+                                </span>
+
+                            </td>
+                            <td class="p-1 text-center">
+                                <div class="checkbox-bird green inline-block mt-2">
+                                    @Html.CheckBoxFor(m => m.EmployeeLanguageSkills[i].IsSpeak, new { @InputFor = "lblIsSpeak", @class = "custom-control-input" })
+                                    <label for="IsSpeak" class="label-for-check form-label">
+                                    </label>
+                                </div>
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => Model.EmployeeLanguageSkills[i].IsSpeak)
+                                </span>
+
+                            </td>
+                            <td class="p-1">
+
+                                @Html.DropDownListFor(m => Model.EmployeeLanguageSkills[i].SkillLevelKey, new SelectList(Model.EmployeeLanguageSkills[i].SkillLevels, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Language + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Skill + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Level, new { @class = "form-control border-radius input-control", @InputFor = "lblLanguageSkillLevel" })
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => Model.EmployeeLanguageSkills[i].SkillLevelKey)
+                                </span>
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th class="px-1" colspan="6">
+                            <span data-repeater-create class="btn btn-info btn-sm">
+                                <span class="fa fa-plus"></span>
+                            </span>
+                        </th>
+                    </tr>
+                </tfoot>
+            </table>
+
+        </div>
+        <div class="row mt-2">
+            <div class="col-10 form-col">
+                <div class="form-group">
+                    <input type="button" value="@EduSuiteUIResources.Save" id="btnSave" class="btn btn-sm btn-success mx-1" />
+                    <input type="button" value="@EduSuiteUIResources.Skip" id="btnSkip" onclick="   $('#tab-profile  li a.active').parent().nextAll('li:visible').first().find('a').trigger('click');" class="btnForm btnSubmit btn btn-sm btn-danger " />
+                    <a id="btnFinish" class="btn btn-sm btn-success mx-1" onclick="location.href='@Url.Action("EmployeeList", "Employee")'">@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Finish</a>
+
+                </div>
+                <div class="col-12 paddingNone">
+                    <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<script>
+    var jsonData=@(Html.Raw(Json.Encode(Model)));
+    $(document).ready(function () {
+        EmployeeLanguageSkills.GetEmployeeLanguageSkills(jsonData);
+        AppCommon.CustomRepeaterRemoteMethod();
+    });
+</script>
+
+

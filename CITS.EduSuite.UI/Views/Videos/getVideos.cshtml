@@ -1,0 +1,28 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.VideoViewModel
+
+
+<input type="hidden" id="hdnVideosTotalRecords" value="@Model.TotalRecords" />
+
+<ul id="VideoCategories" class="list-group">
+
+    @foreach (var item in Model.Videos)
+    {
+        <li onclick="ViewVideoUpload.GetVideosDetailsList(jsonData, 1, true,@item.RowKey)" class="list-group-item VideosList">
+            <div class="row">
+                <div class="col-10 col-sm-10 col-lg-10">
+                    <a> <i style="color: #cdbb63;font-size: 18px;" class=" fa fa-folder"></i> @item.VideoTitle </a>
+                </div>
+                <div class="col-2 col-sm-2 col-lg-2 float-right">
+                    <span class="pull-right"><b> @item.VideoCount Lectures</b></span>
+                </div>
+            </div>
+        </li>
+
+    }
+
+</ul>
+<div class="form-row">
+    <div class="col-md-7">
+        <div id="page-selection-down" class=" m-0"></div>
+    </div>
+</div>

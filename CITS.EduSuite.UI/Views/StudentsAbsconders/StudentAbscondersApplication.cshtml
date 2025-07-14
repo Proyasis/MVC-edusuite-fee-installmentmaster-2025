@@ -1,0 +1,47 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.ApplicationPersonalViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+@using CITS.EduSuite.UI
+<input type="hidden" id="hdnAddEditStudentAbsconders" value="@Url.Action("AddEditStudentAbsconders", "StudentsAbsconders", new { id = "" })" />
+<input type="hidden" id="hdnBindStudentAbscondersDetails" value="@Url.Action("BindStudentAbscondersDetails", "StudentsAbsconders", new { id = Model.ApplicationKey })" />
+
+<div class="form-row">
+
+
+  
+    <div class="col-sm-5 col-lg-4 col-12">
+        <div id="dvFeeDetails">
+
+        </div>
+
+
+    </div>
+    <div class="col-sm-7 col-lg-8  col-12">
+        @if ((Model.ApplicationKey != 0) || !String.IsNullOrEmpty(Model.AdmissionNo))
+        {
+            @Html.Action("StudentDetail", "Shared", new { id = (Model.ApplicationKey ?? 0), AdmissionNo = Model.AdmissionNo })
+        }
+
+
+        <div id="dvStudentAbscondersDetails">
+
+        </div>
+    </div>
+
+
+</div>
+<div class="col-12">
+    <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+</div>
+
+<script>
+    $(document).ready(function () {
+        setTimeout(function(){
+            if (@Model.ApplicationKey != 0 && @Model.ApplicationKey != null)
+            {
+                StudentAbsconders.BindStudentAbscondersDetails();
+                StudentAbsconders.AddEditStudentAbsconders(null, @Model.ApplicationKey);
+            }
+        },500)
+
+    })
+</script>

@@ -1,0 +1,111 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.NotificationTemplateViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/bundles/tinyMCEJS")
+
+}
+@{
+    ViewBag.Title = EduSuiteUIResources.Add + EduSuiteUIResources.Sla + EduSuiteUIResources.Edit + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.NotificationTemplate;
+}
+
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-12">
+            <div class="tbl">
+                <div class="tbl-row  px-1">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.Add@EduSuiteUIResources.Hyphen@EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.NotificationTemplate</h3>
+                        <ol class="breadcrumb breadcrumb-simple mb-2 float-sm-right">
+                            <li><a href="#" onclick="location.href='@Url.Action("NotificationTemplateList", "NotificationTemplate")' ">@EduSuiteUIResources.NotificationTemplate</a></li>
+                            <li class="active">@EduSuiteUIResources.Add@EduSuiteUIResources.Hyphen@EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.NotificationTemplate</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="section-content mx-sm-3 mx-0">
+    <div class="form-master">
+
+        @using (Html.BeginForm("AddEditEmailNotification", "NotificationTemplate", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            @Html.HiddenFor(m => m.RowKey)
+            @Html.HiddenFor(m => m.EmailTemplateFileName)
+            <div class="form-row">
+                <div class="col-sm-9">
+                    <div class="form-row">
+                        <div class="col-lg-2 col-md-3  col-sm-6 col-12">
+                            @Html.Label(EduSuiteUIResources.Status, htmlAttributes: new { @id = "lblMaterialDetailName", @class = "form-label" })
+                            @Html.DropDownListFor(m => m.AutoEmailValue, new SelectList(Model.NotificationStatuses, "RowKey", "Text"), new { @class = "form-control input-control" })
+                            <span class="red">
+                                @Html.ValidationMessageFor(m => m.AutoEmailValue)
+                            </span>
+                        </div>
+                        <div class="col-lg-2 col-md-3  col-sm-6 col-12">
+                            @Html.Label(EduSuiteUIResources.Subject, htmlAttributes: new { @id = "lblMaterialDetailName", @class = "form-label" })
+                            @Html.TextBoxFor(m => m.EmailSubject, new { @class = "form-control input-control" })
+                            <span class="red">
+                                @Html.ValidationMessageFor(m => m.EmailSubject)
+                            </span>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        @Html.EditorFor(m => m.EmailTemplate)
+                        <span class="red">
+                            @Html.ValidationMessageFor(m => m.EmailTemplate)
+                        </span>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="@EduSuiteUIResources.Save" id="btnSave" class="btn btn-sm btn-success mx-1 mt-3" />
+                    </div>
+
+                </div>
+                <div class="col-sm-3">
+                    <div id="keywords">
+                        @for (var i = 0; i < Model.NotificationColumns.Count; i++)
+                        {
+                            if (i == 0 || Model.NotificationColumns[i].NotificationColumnGroupKey != Model.NotificationColumns[i - 1].NotificationColumnGroupKey)
+                            {
+                                <div>
+                                    <h3 class="Margin_TopNone">@Model.NotificationColumns[i].NotificationColumnGroupName</h3>
+                                </div>
+
+                            }
+                            <div style="margin-bottom:5px;display:inline-block">
+                                <a class="btn btn-primary  btn-xs" data-val="{{@Model.NotificationColumns[i].NotificationColumnKey}}">@Model.NotificationColumns[i].NotificationColumnName</a>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+            </div>
+
+        }
+    </div>
+</section>
+
+
+<script>
+
+    $(document).ready(function () {
+
+
+        $("#keywords a").on("dblclick", function () {
+            
+            $('#EmailTemplate').tinymce().execCommand('mceInsertContent', false, "<label contenteditable='false'>" + $(this).data("val") + "</key>");
+        })
+
+
+
+    });
+
+</script>

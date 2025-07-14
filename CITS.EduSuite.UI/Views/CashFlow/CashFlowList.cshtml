@@ -1,0 +1,179 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.CashFlowViewModel
+
+@using CITS.EduSuite.Business.Models.ViewModels
+@using System.Web.Mvc
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Scripts/CashFlow")
+    @Scripts.Render("~/Content/Select2JS")
+    @Scripts.Render("~/Scripts/PrintInvoice")
+    @Scripts.Render("~/Content/MultiselectJs")
+    @Scripts.Render("~/bundles/CitsValidation")
+    @Scripts.Render("~/Content/TimePickerJS")
+    @Scripts.Render("~/Content/JqueryRepeater")
+    @Scripts.Render("~/Scripts/Common")
+    @Scripts.Render("~/Content/momentJS")
+    @Scripts.Render("~/Scripts/AccountHead")
+
+}
+@{
+    ViewBag.Title = EduSuiteUIResources.DailyTransaction;
+}
+
+
+<input type="hidden" id="hdnGetCashFlows" value="@Url.Action("GetCashFlows", "CashFlow")" />
+<input type="hidden" id="hdnAddEditCashFlow" value="@Url.Action("AddEditCashFlow", "CashFlow")" />
+<input type="hidden" id="hdnPrintRecieptList" value="@Url.Action("PrintRecieptList", "CashFlow")" />
+<input type="hidden" id="hdnGetPartyByPartyType" value="@Url.Action("GetPartyByPartyType", "CashFlow")" />
+<input type="hidden" id="hdnGetBalanceByParty" value="@Url.Action("GetBalanceByParty", "CashFlow")" />
+<input type="hidden" id="hdnDeleteCashFlow" value="@Url.Action("DeleteCashFlow", "CashFlow")" />
+<input type="hidden" id="hdnPrintReciept" value="@Url.Action("PrintReciept", "PrintInvoice")" />
+<input type="hidden" id="hdnVoucherPath" value=@Url.Content("~/UploadedFiles/InvoiceTemplate/Voucher.html") />
+<input type="hidden" id="hdnDummyReceiptPath" value=@Url.Content("~/UploadedFiles/InvoiceTemplate/Receipt.html") />
+<input type="hidden" id="hdnReceiptPath" value=@Url.Content("~/UploadedFiles/InvoiceTemplate/Receipt.html") />
+
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-sm-6 col-12">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.DailyTransaction</h3>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-3 text-right">
+            <a onclick="CashFlow.EditPopup(true,null)" class="btn btn-success btn-sm "><i class="fa fa-plus-square-o"></i> <span>@EduSuiteUIResources.Payment</span></a>
+
+            <a onclick="CashFlow.EditPopup(false,null)" class="btn btn-primary btn-sm "><i class="fa fa-plus-square-o"></i> <span>@EduSuiteUIResources.Receipt</span></a>
+
+        </div>
+    </div>
+</header>
+<section class="section-content mx-sm-3 mx-0">
+    <div class="GridBody">
+
+        <div class="grid-nav-bar">
+
+            <div class="form-row">
+                @if (Model.Branches.Count == 1)
+                {
+                    {
+                        Model.BranchKey = Model.BranchKey == 0 ? (short)Model.Branches.Select(x => x.RowKey).FirstOrDefault() : Model.BranchKey;
+                    }
+                    @Html.HiddenFor(m => m.BranchKey)
+                }
+                else
+                {
+
+                    <div class="col-12 col-sm-3 col-lg-2 ">
+                        <fieldset class="form-group">
+                            @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Branch, new { @class = "form-control input-control", @InputFor = "lblBranch", @data_live_search = "true" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.BranchKey)
+                            </span>
+                        </fieldset>
+                    </div>
+                }
+
+
+                <div class="col-12 col-sm-3 col-lg-2 ">
+                    <fieldset class="form-group">
+                        @Html.DropDownListFor(m => m.CashFlowTypeKey, new SelectList(Model.CashFlowTypes, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.CashFlowType, new { @class = "form-control input-control" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.CashFlowTypeKey)
+                        </span>
+                    </fieldset>
+                </div>
+                <div class="col-12 col-sm-3 col-lg-2 ">
+                    <fieldset class="form-group">
+                        @Html.DropDownListFor(m => m.AccountHeadKey, new SelectList(Model.AccountHeads, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.AccountHead, new { @class = "form-control input-control", @data_live_search = "true" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.AccountHeadKey)
+                        </span>
+                    </fieldset>
+                </div>
+                <div class="col-12 col-sm-3 col-lg-2 ">
+                    <fieldset class="form-group">
+                        @Html.TextBoxFor(m => m.SearchDate, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_input_type = "date", @data_inputmask = "'alias': 'dd/mm/yyyy'", @placeholder = "" + @EduSuiteUIResources.Date + "" })
+                        <span id="iconSpandate" class="iconSpan"><i class="fa fa-times-circle" aria-hidden="true"></i></span>
+                    </fieldset>
+                </div>
+                <div class="col-lg-2 col-6">
+                    <input id="txtsearch" type="text" name="focus" class="form-control gridSearchTextBox" placeholder="@EduSuiteUIResources.Search @EduSuiteUIResources.AccountHead @EduSuiteUIResources.Coma @EduSuiteUIResources.VoucherNumber" /> @* Change Search TextBox Placeholder*@
+                    <span id="iconSpantext" class="iconSpan"><i class="fa fa-times-circle" aria-hidden="true"></i></span>
+                </div>
+
+                <div class="col-lg-1 col-4">
+                    <a class="btn btn-info btn-sm float-right " onclick='window.location.reload()'>
+                        <i class="fa fa-refresh"></i>   @EduSuiteUIResources.Refresh
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="table-wrapper">
+
+            <div class="jqGrid_wrapper overflow-auto">
+                <table id="grid"></table>
+                <div id="pager"></div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <div id='myModal' class='modal fade in'>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div id='myModalContent'></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    $(document).ready(function () {
+
+        AppCommon.FormatDateInput();
+        $("#iconSpantext").click(function () {
+            $('#txtsearch').val('');
+            CashFlow.GetCashFlows();
+        });
+        $("#iconSpandate").click(function () {
+            $('#SearchDate').val('');
+            CashFlow.GetCashFlows();
+        });
+        $("#txtsearch").on("input", function () {
+            CashFlow.GetCashFlows();
+        });
+        $("#SearchDate").on("changeDate", function () {
+            CashFlow.GetCashFlows();
+        });
+        setURL();
+
+        $("#BranchKey").on("change", function () {
+            CashFlow.GetCashFlows();
+            setURL();
+        });
+        $("#CashFlowTypeKey").on("change", function () {
+            CashFlow.GetCashFlows();
+            setURL();
+        });
+        $("#AccountHeadKey").on("change", function () {
+            CashFlow.GetCashFlows();
+            setURL();
+        });
+        CashFlow.GetCashFlows();
+    });
+    function setURL() {
+        var obj = {};
+        obj.BranchKey = $("#BranchKey").val();
+        CashFlow.SetUrlParam($("#addEditCashFlow"), obj);
+    }
+</script>
+

@@ -1,0 +1,661 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.FutureTransactionViewModel
+
+
+
+@section scripts{
+    @Scripts.Render("~/Content/JqueryRepeater")
+    @Scripts.Render("~/Scripts/FutureTransaction")
+    @Scripts.Render("~/Content/momentJS")
+}
+
+
+@Html.AntiForgeryToken()
+@Html.HiddenFor(m => m.RowKey)
+
+<div class="modal-header">
+    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+    <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.View@EduSuiteUIResources.BlankSpace @EduSuiteUIResources.FutureTransactions</h4>
+</div>
+
+
+<div class="modal-body">
+    <input type="hidden" id="hdnDeleteFutureTransactionPayment" value="@Url.Action("DeleteFutureTransactionPayment", "FutureTransaction")" />
+    <div class="form-master">
+
+
+        <div class="card">
+            <div class="card-header w3-light-blue">
+                @EduSuiteUIResources.FutureTransactions @EduSuiteUIResources.Details
+            </div>
+            <div class="card-body">
+                <div class="form-row">
+                    <div class="col-lg-3 col-12 col-sm-6">
+                        <fieldset class="form-group">
+                            @Html.Label(EduSuiteUIResources.AccountHead, htmlAttributes: new { @class = "form-label" })
+                            @Html.TextBox("AccountHeadName", Model.AccountHeadName, new { @class = "form-control input-control", @readonly = "readonly" })
+                        </fieldset>
+                    </div>
+
+                    <div class="col-lg-3 col-12 col-sm-6">
+                        <fieldset class="form-group">
+                            @Html.Label(EduSuiteUIResources.State, htmlAttributes: new { @class = "form-label" })
+                            @Html.TextBox("StateName", Model.StateName, new { @class = "form-control input-control", @readonly = "readonly" })
+                        </fieldset>
+                    </div>
+
+                    <div class="col-lg-3 col-12 col-sm-6">
+                        <fieldset class="form-group">
+                            @Html.Label(EduSuiteUIResources.BillNo, htmlAttributes: new { @class = "form-label" })
+                            @Html.TextBox("BillNo", Model.BillNo, new { @class = "form-control input-control", @readonly = "readonly" })
+                        </fieldset>
+                    </div>
+
+                    <div class="col-lg-3 col-12 col-sm-6">
+                        <fieldset class="form-group">
+                            @Html.Label(EduSuiteUIResources.Date, htmlAttributes: new { @class = "form-label" })
+                            @Html.TextBox("BillDate", Model.BillDate, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @readonly = "readonly" })
+                        </fieldset>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        
+
+        @* FutureTransaction Other Charges *@
+        @if (Model.FutureTransactionOtherAmountTypes.Count() > 0)
+        {
+            <div class="card mt-2">
+                <div class="card-header w3-yellow" data-toggle="collapse" href="#FutureTransactionOtherAmountTypes" aria-expanded="false">
+                    @EduSuiteUIResources.Other@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Expense@EduSuiteUIResources.Sla@EduSuiteUIResources.Income
+                    <div class="exportbutton">
+                        <div class="form-group ">
+                            <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body collapse" id="FutureTransactionOtherAmountTypes" > 
+                    <table class="table table-bordered table-responsive-sm">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @EduSuiteUIResources.SlNo
+                                </th>
+                                <th>
+                                    @EduSuiteUIResources.OtherCharges
+                                </th>
+                                <th>
+                                    @EduSuiteUIResources.Amount
+                                </th>
+                                <th>
+                                    @EduSuiteUIResources.Amount @EduSuiteUIResources.BlankSpace  @EduSuiteUIResources.PercentageSymbol
+                                </th>
+
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (var i = 0; i < Model.FutureTransactionOtherAmountTypes.Count; i++)
+                            {
+
+                                <tr data-repeater-item>
+
+                                    <td>
+                                        @(i + 1)
+                                    </td>
+                                    <td>
+                                        @Model.FutureTransactionOtherAmountTypes[i].AccountHeadName
+                                    </td>
+                                    <td class="text-right">
+                                        @string.Format("{0:G29}", @Model.FutureTransactionOtherAmountTypes[i].Amount)
+
+                                    </td>
+                                    <td>
+                                        @string.Format("{0:G29}", @Model.FutureTransactionOtherAmountTypes[i].AmountPer)
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+        }
+
+        <div class="card mt-2">
+            <div class="card-header w3-cyan" data-toggle="collapse" href="#FutureTransactionPayments" aria-expanded="false">             
+
+                <div class="form-row">
+                    @EduSuiteUIResources.FutureTransactions @EduSuiteUIResources.Payment
+                    <div class="exportbutton">
+                        <div class="form-group ">                          
+                            <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                        </div>
+                    </div>                   
+                </div>
+
+            </div>
+            <div class="card-body collapse" id="FutureTransactionPayments">
+                <div class="form-row">
+                    <div class="col-lg-2 col-12 col-sm-6">
+                        <fieldset class="form-group">
+                            @Html.Label(EduSuiteUIResources.Amount, htmlAttributes: new { @class = "form-label" })
+                            @Html.TextBox("Amount", Model.Amount, "{0:G29}", new { @class = "form-control input-control text-right", @readonly = "readonly" })
+                        </fieldset>
+                    </div>
+                    @if (Model.IsTax == true)
+                    {
+                        if (Model.IGSTAmt != null && Model.IGSTAmt != 0)
+                        {
+                            <div class="col-lg-2 col-12">
+                                <fieldset class="form-group">
+                                    @Html.Label(EduSuiteUIResources.IGST, htmlAttributes: new { @class = "form-label" })
+                                    @Html.TextBox("IGSTAmt", Model.IGSTAmt, "{0:G29}", new { @class = "form-control input-control text-right", @readonly = "readonly" })
+                                </fieldset>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-lg-2 col-12">
+                                <fieldset class="form-group">
+                                    @Html.Label(EduSuiteUIResources.CGST, htmlAttributes: new { @class = "form-label" })
+                                    @Html.TextBox("CGSTAmt", Model.CGSTAmt, "{0:G29}", new { @class = "form-control input-control text-right", @readonly = "readonly" })
+
+                                </fieldset>
+                            </div>
+
+                            <div class="col-lg-2 col-12">
+                                <fieldset class="form-group">
+                                    @Html.Label(EduSuiteUIResources.SGST, htmlAttributes: new { @class = "form-label" })
+                                    @Html.TextBox("SGSTAmt", Model.SGSTAmt, "{0:G29}", new { @class = "form-control input-control text-right", @readonly = "readonly" })
+
+                                </fieldset>
+                            </div>
+                        }
+                    }
+                    @if (Model.DeductAmount != null && Model.DeductAmount != 0)
+                    {
+                        <div class="col-lg-2 col-12">
+                            <fieldset class="form-group">
+                                @Html.Label(EduSuiteUIResources.Deduct + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Amount, htmlAttributes: new { @class = "form-label" })
+                                @Html.TextBox("DeductAmount", Model.DeductAmount, "{0:G29}", new { @class = "form-control input-control text-right", @readonly = "readonly" })
+                            </fieldset>
+                        </div>
+                    }
+                    @if (Model.EarningAmount != null && Model.EarningAmount != 0)
+                    {
+                        <div class="col-lg-2 col-12 col-sm-6">
+                            <fieldset class="form-group">
+                                @Html.Label(EduSuiteUIResources.Add + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Amount, htmlAttributes: new { @class = "form-label" })
+                                @Html.TextBox("EarningAmount", Model.EarningAmount, "{0:G29}", new { @class = "form-control input-control text-right", @readonly = "readonly" })
+                            </fieldset>
+                        </div>
+                    }
+                    <div class="col-lg-2 col-12 col-sm-6">
+                        <fieldset class="form-group">
+                            @Html.Label(EduSuiteUIResources.TotalAmount, htmlAttributes: new { @class = "form-label" })
+                            @Html.TextBox("TotalAmount", Model.TotalAmount, "{0:G29}", new { @class = "form-control input-control text-right", @readonly = "readonly" })
+                        </fieldset>
+                    </div>
+                    <div class="col-lg-2 col-12 col-sm-6">
+                        <fieldset class="form-group">
+                            @Html.Label(EduSuiteUIResources.AmountPaid, htmlAttributes: new { @class = "form-label" })
+                            @Html.TextBox("TotalOutAmount", Model.TotalOutAmount, "{0:G29}", new { @class = "form-control input-control text-right", @readonly = "readonly" })
+                        </fieldset>
+                    </div>
+                    <div class="col-lg-2 col-12 col-sm-6">
+                        <fieldset class="form-group">
+                            @Html.Label(EduSuiteUIResources.ReceivedAmount, htmlAttributes: new { @class = "form-label" })
+                            @Html.TextBox("TotalInAmount", Model.TotalInAmount, "{0:G29}", new { @class = "form-control input-control text-right", @readonly = "readonly" })
+                        </fieldset>
+                    </div>
+
+
+
+                </div>
+
+               
+                    @if (Model.FutureTransactionPaidAmounts.Count() > 0)
+                    {
+                        <div class="card mt-2">
+                            <div class="card-header w3-light-blue" data-toggle="collapse" href="#FutureTransactionPaid">
+                                @EduSuiteUIResources.AmountPaid @EduSuiteUIResources.Details
+                                <div class="exportbutton">
+                                    <div class="form-group ">
+                                        <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body" id="FutureTransactionPaid">
+                                <table class="table table-bordered table-responsive-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                @EduSuiteUIResources.SlNo
+                                            </th>
+                                            <th>
+                                                @EduSuiteUIResources.PaymentDate
+                                            </th>
+                                            <th>
+                                                @EduSuiteUIResources.Purpose
+                                            </th>
+                                            <th>
+                                                @EduSuiteUIResources.PaymentMode
+                                            </th>
+                                            <th>
+                                                @EduSuiteUIResources.AmountPaid
+                                            </th>
+                                            <th>
+                                                @EduSuiteUIResources.BalanceAmount
+                                            </th>
+                                            <th>
+                                                @EduSuiteUIResources.Action
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @for (var i = 0; i < Model.FutureTransactionPaidAmounts.Count; i++)
+                                        {
+
+                                        <tr data-repeater-item>
+
+                                            <td>
+                                                @(i + 1)
+                                            </td>
+                                            <td>
+                                                @string.Format("{0:dd/MM/yyyy}", Model.FutureTransactionPaidAmounts[i].PaymentDate)
+                                            </td>
+                                            <td>
+                                                @Model.FutureTransactionPaidAmounts[i].Purpose
+                                            </td>
+                                            <td>
+                                                @Model.FutureTransactionPaidAmounts[i].PaymentModeDetail
+                                            </td>
+                                            <td class="text-right">
+                                                @string.Format("{0:G29}", @Model.FutureTransactionPaidAmounts[i].ReceivedAmount)
+                                            </td>
+                                            <td class="text-right">
+                                                @string.Format("{0:G29}", @Model.FutureTransactionPaidAmounts[i].BalanceAmount)
+                                            </td>
+                                            <td>
+                                                <span data-repeater-delete="" class="btn btn-danger btn-sm" onclick="deleteFutureTransactionPayment(this,@Model.FutureTransactionPaidAmounts[i].RowKey)">
+                                                    <span class="fa fa-remove "></span>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        }
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+                    }
+             
+                    @if (Model.FutureTransactionRecievedAmounts.Count() > 0)
+                    {
+                        <div class="card mt-2">
+                            <div class="card-header w3-light-blue" data-toggle="collapse" href="#FutureTransactionRecieved">
+                                @EduSuiteUIResources.AmountReceived @EduSuiteUIResources.Details
+                                <div class="exportbutton">
+                                    <div class="form-group ">
+                                        <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body" id="FutureTransactionRecieved">
+                                <table class="table table-bordered table-responsive-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                @EduSuiteUIResources.SlNo
+                                            </th>
+                                            <th>
+                                                @EduSuiteUIResources.PaymentDate
+                                            </th>
+                                            <th>
+                                                @EduSuiteUIResources.Purpose
+                                            </th>
+                                            <th>
+                                                @EduSuiteUIResources.PaymentMode
+                                            </th>
+                                            <th>
+                                                @EduSuiteUIResources.AmountPaid
+                                            </th>
+                                            <th>
+                                                @EduSuiteUIResources.BalanceAmount
+                                            </th>
+                                            <th>
+                                                @EduSuiteUIResources.Action
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @for (var i = 0; i < Model.FutureTransactionRecievedAmounts.Count; i++)
+                                        {
+
+                                            <tr data-repeater-item>
+
+                                                <td>
+                                                    @(i + 1)
+                                                </td>
+                                                <td>
+                                                    @string.Format("{0:dd/MM/yyyy}", Model.FutureTransactionRecievedAmounts[i].PaymentDate)
+                                                </td>
+                                                <td>
+                                                    @Model.FutureTransactionRecievedAmounts[i].Purpose
+                                                </td>
+                                                <td>
+                                                    @Model.FutureTransactionRecievedAmounts[i].PaymentModeDetail
+                                                </td>
+                                                <td class="text-right">
+                                                    @string.Format("{0:G29}", @Model.FutureTransactionRecievedAmounts[i].ReceivedAmount)
+                                                </td>
+                                                <td class="text-right">
+                                                    @string.Format("{0:G29}", @Model.FutureTransactionRecievedAmounts[i].BalanceAmount)
+                                                </td>
+                                                <td>
+                                                    <span data-repeater-delete="" class="btn btn-danger btn-sm" onclick="deleteFutureTransactionPayment(this,@Model.FutureTransactionRecievedAmounts[i].RowKey)">
+                                                        <span class="fa fa-remove "></span>
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+                    }
+              
+            </div>
+        </div>
+
+        <div class="form-master border_fieldset d-none">
+            
+
+            <fieldset id="FutureTransactionPayments" class="salesOrderView panel-collapse in " aria-expanded="true">
+                
+                @if (Model.FutureTransactionPaidAmounts.Count() > 0)
+                    {
+                        <div class="row" data-toggle="collapse" href="#FutureTransactionPaid">
+                            <div class="col-sm-12 btn-primary  text-center">
+                                <span>@EduSuiteUIResources.AmountPaid@EduSuiteUIResources.BlankSpace @EduSuiteUIResources.Details</span><i class="fa fa-toggle-down pull-right" aria-hidden="true">View</i>
+
+                            </div>
+                        </div>
+                        <fieldset id="FutureTransactionPaid" class="salesOrderView  collapse " aria-expanded="true">
+                            <div class="row bottomLine gridHead">
+
+                                <div class="col-sm-2 form-col">
+                                    @Html.Label(EduSuiteUIResources.Payment + EduSuiteUIResources.Date, htmlAttributes: new { @class = "form-label" })
+                                </div>
+                                <div class="col-sm-3 form-col">
+                                    @Html.Label(EduSuiteUIResources.Purpose, htmlAttributes: new { @class = "form-label" })
+                                </div>
+
+                                <div class="col-sm-2 form-col">
+                                    @Html.Label(EduSuiteUIResources.PaymentMode, htmlAttributes: new { @class = "form-label" })
+
+                                </div>
+                                <div class="col-sm-2 form-col text-right">
+                                    @Html.Label(EduSuiteUIResources.AmountPaid, htmlAttributes: new { @class = "form-label" })
+                                </div>
+                                <div class="col-sm-2 form-col  text-right">
+                                    @Html.Label(EduSuiteUIResources.BalanceAmount, htmlAttributes: new { @class = "form-label" })
+                                </div>
+
+                            </div>
+
+                            @for (int i = 0; i < Model.FutureTransactionPaidAmounts.Count(); i++)
+                            {
+                                <div class="row bottomLine salesOrderView  ">
+                                    <div class="col-sm-2 form-col">
+                                        @string.Format("{0:dd/MM/yyyy}", Model.FutureTransactionPaidAmounts[i].PaymentDate)
+                                    </div>
+                                    <div class="col-sm-3 form-col ">
+                                        @string.Format("{0:G29}", Model.FutureTransactionPaidAmounts[i].Purpose)
+                                    </div>
+                                    <div class="col-sm-2 form-col">
+                                        @string.Format("{0:G29}", Model.FutureTransactionPaidAmounts[i].PaymentModeDetail)
+                                    </div>
+                                    <div class="col-sm-2 form-col text-right">
+                                        @string.Format("{0:G29}", Model.FutureTransactionPaidAmounts[i].ReceivedAmount)
+                                    </div>
+                                    <div class="col-sm-2 form-col text-right">
+                                        @string.Format("{0:G29}", Model.FutureTransactionPaidAmounts[i].BalanceAmount)
+                                    </div>
+                                    <div class=" col-sm-1 form-col">
+                                        <span data-repeater-delete="" class="btn btn-danger btn-xs pull-right" onclick="deleteFutureTransactionPayment(this,@Model.FutureTransactionPaidAmounts[i].RowKey)">
+                                            <span class="glyphicon glyphicon-remove"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            }
+                        </fieldset>
+                    }
+                    @if (Model.FutureTransactionRecievedAmounts.Count() > 0)
+                    {
+                        <div class="row" data-toggle="collapse" href="#FutureTransactionRecieved">
+                            <div class="col-sm-12 btn-primary  text-center">
+                                <span>@EduSuiteUIResources.AmountReceived@EduSuiteUIResources.BlankSpace @EduSuiteUIResources.Details</span><i class="fa fa-toggle-down pull-right" aria-hidden="true">View</i>
+
+                            </div>
+                        </div>
+                        <fieldset id="FutureTransactionRecieved" class="salesOrderView  collapse " aria-expanded="true">
+                            <div class="row bottomLine gridHead">
+
+                                <div class="col-sm-2 form-col">
+                                    @Html.Label(EduSuiteUIResources.Payment + EduSuiteUIResources.Date, htmlAttributes: new { @class = "form-label" })
+                                </div>
+                                <div class="col-sm-3 form-col">
+                                    @Html.Label(EduSuiteUIResources.Purpose, htmlAttributes: new { @class = "form-label" })
+                                </div>
+
+                                <div class="col-sm-2 form-col">
+                                    @Html.Label(EduSuiteUIResources.PaymentMode, htmlAttributes: new { @class = "form-label" })
+
+                                </div>
+                                <div class="col-sm-2 form-col text-right">
+                                    @Html.Label(EduSuiteUIResources.AmountPaid, htmlAttributes: new { @class = "form-label" })
+                                </div>
+                                <div class="col-sm-2 form-col  text-right">
+                                    @Html.Label(EduSuiteUIResources.BalanceAmount, htmlAttributes: new { @class = "form-label" })
+                                </div>
+                            </div>
+                            @for (int i = 0; i < Model.FutureTransactionRecievedAmounts.Count(); i++)
+                            {
+                                <div class="row bottomLine salesOrderView  ">
+                                    <div class="col-sm-2 form-col">
+                                        @string.Format("{0:dd/MM/yyyy}", Model.FutureTransactionRecievedAmounts[i].PaymentDate)
+                                    </div>
+                                    <div class="col-sm-3 form-col ">
+                                        @string.Format("{0:G29}", Model.FutureTransactionRecievedAmounts[i].Purpose)
+                                    </div>
+                                    <div class="col-sm-2 form-col">
+                                        @string.Format("{0:G29}", Model.FutureTransactionRecievedAmounts[i].PaymentModeDetail)
+                                    </div>
+                                    <div class="col-sm-2 form-col text-right">
+                                        @string.Format("{0:G29}", Model.FutureTransactionRecievedAmounts[i].ReceivedAmount)
+                                    </div>
+                                    <div class="col-sm-2 form-col text-right">
+                                        @string.Format("{0:G29}", Model.FutureTransactionRecievedAmounts[i].BalanceAmount)
+                                    </div>
+                                    <div class=" col-sm-1 form-col">
+                                        <span data-repeater-delete="" class="btn btn-danger btn-xs pull-right" onclick="deleteFutureTransactionPayment(this,@Model.FutureTransactionRecievedAmounts[i].RowKey)">
+                                            <span class="glyphicon glyphicon-remove"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            }
+                        </fieldset>
+                    }
+            </fieldset>
+        </div>
+
+
+        @if (Model.IsInstallment == true)
+        {
+
+            <div class="card mt-2">
+                <div class="card-header w3-dark-gray" data-toggle="collapse" href="#FutureTransactionInstallment">
+                    @EduSuiteUIResources.Installment @EduSuiteUIResources.Details
+                    <div class="exportbutton">
+                        <div class="form-group ">
+                            <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body collapse" id="FutureTransactionInstallment" aria-expanded="false">
+                    <div class="form-row">
+                        <div class="col-lg-2 col-12 col-sm-6">
+                            <fieldset class="form-group">
+                                @Html.Label(EduSuiteUIResources.Down + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Payment, htmlAttributes: new { @class = "form-label" })
+                                @Html.TextBox("DownPayment", Model.DownPayment, new { @class = "form-control input-control", @readonly = "readonly" })
+                                @Html.Hidden("InstallmentFlowKey", Model.InstallmentFlowKey)
+                                @Html.Hidden("InstallmentTypeKey", Model.InstallmentTypeKey)
+                            </fieldset>
+                        </div>
+                        <div class="col-lg-2 col-12 col-sm-6">
+                            <fieldset class="form-group">
+                                @Html.Label(EduSuiteUIResources.Installment + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Type, htmlAttributes: new { @id = "lblAccountHead", @class = "form-label" })
+                                @Html.TextBox("InstallmentTypeName", Model.InstallmentTypeName, new { @class = "form-control input-control", @readonly = "readonly" })
+                            </fieldset>
+                        </div>
+                        <div class="col-lg-2 col-12 col-sm-6">
+                            <fieldset class="form-group">
+                                @Html.Label(EduSuiteUIResources.Period, htmlAttributes: new { @class = "form-label" })
+                                @Html.TextBox("InstallmentPeriod", Model.InstallmentPeriod, new { @class = "form-control input-control", @readonly = "readonly" })
+                            </fieldset>
+                        </div>
+                        <div class="col-lg-3 col-12 col-sm-6">
+                            <fieldset class="form-group">
+                                @Html.Label(EduSuiteUIResources.NoOf + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Installment, htmlAttributes: new { @class = "form-label" })
+                                @Html.TextBox("NoOfInstallment", Model.NoOfInstallment, new { @class = "form-control input-control", @readonly = "readonly" })
+                            </fieldset>
+                        </div>
+                        <div class="col-lg-3 col-12 col-sm-6">
+                            <fieldset class="form-group">
+                                @Html.Label(EduSuiteUIResources.Installment + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Amt, htmlAttributes: new { @class = "form-label" })
+                                @Html.TextBox("InstallmentAmount", Model.InstallmentAmount, new { @class = "form-control input-control text-right", @readonly = "readonly" })
+                            </fieldset>
+                        </div>
+                    </div>
+                    <div class="form-row">
+
+                        <table class="table table-bordered table-responsive">
+                            <thead>
+                                <tr>
+                                    <th>@EduSuiteUIResources.SlNo</th>
+                                    <th>
+                                        @EduSuiteUIResources.Installment  @EduSuiteUIResources.BlankSpace  @EduSuiteUIResources.Number
+                                    </th>
+                                    <th>
+                                        @EduSuiteUIResources.Installment @EduSuiteUIResources.BlankSpace  @EduSuiteUIResources.Date
+                                    </th>
+                                    <th>
+                                        @EduSuiteUIResources.Installment @EduSuiteUIResources.BlankSpace  @EduSuiteUIResources.Amount
+                                    </th>
+                                    <th>
+                                        @EduSuiteUIResources.AmountPaid
+                                    </th>
+
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (var i = 0; i < Model.NoOfInstallment; i++)
+                                {
+
+                                    <tr data-repeater-item installmentitem>
+
+                                        <td>
+                                            @(i + 1)
+                                        </td>
+                                        <td>
+                                            <fieldset class="form-group">
+                                                @Html.TextBox("InstallMentNumber", i + 1, new { @class = "form-control input-control", @readonly = "readonly" })
+                                            </fieldset>
+                                        </td>
+                                        <td>
+                                            <fieldset class="form-group">
+                                                @Html.TextBox("InstallmentDate", "", new { @class = "form-control input-control", @readonly = "readonly" })
+                                            </fieldset>
+                                        </td>
+                                        <td>
+                                            <fieldset class="form-group">
+                                                @Html.TextBox("InstallmentAmount", Model.InstallmentAmount, new { @class = "form-control input-control text-right", @readonly = "readonly" })
+                                            </fieldset>
+                                        </td>
+                                        <td>
+                                            <fieldset class="form-group">
+                                                @Html.TextBox("InstallmentPaid", "", new { @class = "form-control input-control text-right", @readonly = "readonly" })
+                                            </fieldset>
+                                        </td>
+
+                                    </tr>
+                                }
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            
+        }
+
+
+    </div>
+</div>
+
+<style>
+    .form-master {
+        background: #ffffff;
+    }
+
+    .salesOrderView {
+        font-family: initial;
+    }
+
+        .salesOrderView .gridHead {
+            background: #e6e6e6;
+        }
+
+    .modal {
+        overflow: scroll;
+    }
+</style>
+
+<script>
+
+    $(document).ready(function () {
+        FutureTransaction.InstallmentView()
+    })
+
+    function divToggle(e) {
+        var id = $(e).attr('id');
+        //$(".divtoggle").hide();
+        $("#divProductionChild_" + id).toggle();
+    }
+
+    function changePrintHtml(key) {
+        if (key != Resources.CashFlowTypeIn) {
+            $("#hdnReceiptPath").val($("#hdnVoucherPath").val())
+        }
+        else {
+            $("#hdnReceiptPath").val($("#hdnDummyReceiptPath").val())
+        }
+    }
+
+</script>
+
+
+<style>
+  
+    .exportbutton {
+        position: absolute;
+        right: 11px;
+        top: 11px;
+    }
+</style>

@@ -1,0 +1,116 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.BatchViewModel
+
+
+<div class="modal-header">
+    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+    <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.Add @EduSuiteUIResources.Sla @EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace @EduSuiteUIResources.Batch</h4>
+</div>
+@using (Html.BeginForm("AddEditBatch", "Batch", FormMethod.Post, new { @id = "frmBatch" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.Rowkey)
+    @Html.ValidationSummary(true)
+
+    <div class="modal-body">
+        <div class="form-master">
+            <div class="form-row">
+                <div class="paddingNone">
+                    <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="col-12 col-sm-4 col-lg-4">
+                    <fieldset class="form-group ">
+                        @Html.Label(EduSuiteUIResources.Batch + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Code, htmlAttributes: new { @class = "form-label" })
+                        <div class="required-icon"><div class="text">*</div></div>
+                        @Html.TextBoxFor(m => m.BatchCode, new { @class = "form-control input-control", @data_convert = "uppercase" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.BatchCode)
+                        </span>
+                    </fieldset>
+
+                </div>
+                <div class="col-12 col-sm-4 col-lg-4">
+                    <fieldset class="form-group ">
+                        @Html.Label(EduSuiteUIResources.Batch + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Name, htmlAttributes: new { @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                        @Html.TextBoxFor(m => m.BatchName, new { @class = "form-control input-control", @data_convert = "uppercase" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.BatchName)
+                        </span>
+                    </fieldset>
+
+                </div>
+                <div class="col-12 col-sm-4 col-lg-4  d-none">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.DurationFromYear, htmlAttributes: new { @class = "form-label" })
+                        @Html.TextBoxFor(m => m.DurationFromYear, new { @class = "form-control input-control" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.DurationFromYear)
+                        </span>
+                    </fieldset>
+                </div>
+                <div class="col-12 col-sm-4 col-lg-4  d-none">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.DurationToYear, htmlAttributes: new { @class = "form-label" })
+                        @Html.TextBoxFor(m => m.DurationToYear, new { @class = "form-control input-control" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.DurationToYear)
+                        </span>
+                    </fieldset>
+                </div>
+                <div class="col-12 col-sm-4 col-lg-4  d-none">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.FromDate, htmlAttributes: new { @id = "lblDateOfApplication", @class = "form-label" })
+                        <div class="required-icon"><div class="text">*</div></div>
+                        @Html.TextBoxFor(m => m.DurationFromDate, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_input_type = "date", @data_inputmask = "'alias': 'dd/mm/yyyy'" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.DurationFromDate)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-4 col-lg-4  d-none">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.ToDate, htmlAttributes: new { @id = "lblDateOfApplication", @class = "form-label" })
+                        <div class="required-icon"><div class="text">*</div></div>
+                        @Html.TextBoxFor(m => m.DurationToDate, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_input_type = "date", @data_inputmask = "'alias': 'dd/mm/yyyy'" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.DurationToDate)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.IsActive, new { @class = "form-label" })
+
+                        <div class="switch-check my-2">
+                            @Html.CheckBoxFor(m => m.IsActive, new { @class = "switch-input" })
+                            <div class="switch-label redgreen" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                            <div class="switch-handle"></div>
+                        </div>
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.IsActive)
+                        </span>
+                    </fieldset>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer justify-content-start">
+        <div class="form-group">
+            <input type="submit" value="@EduSuiteUIResources.Submit" id="btnSave" class="btn btn-sm btn-success mx-1" />
+            <button type="button" data-dismiss="modal" class="btn btn-sm btn-danger mx-1">@EduSuiteUIResources.Cancel</button>
+
+        </div>
+    </div>
+}
+
+<script>
+    $(document).ready(function () {
+        setTimeout(function () {
+            AppCommon.FormatDateInput();
+        }, 500)
+    });
+</script>

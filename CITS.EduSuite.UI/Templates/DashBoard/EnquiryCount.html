@@ -1,0 +1,203 @@
+﻿<div class="col-md-12 col-xl-4">
+    <!-- table card start -->
+    <div class="card table-card">
+        <div class="">
+            <div class="row-table">
+                <div class="col-sm-6 card-block-big br" style="padding-top:15px;padding-bottom:15px">
+                    <a href="/EnquirySchedule/ScheduleList/{{ScheduleStatusNewLead}}">
+                        <div class="row">
+                            <!--<div class="col-sm-4">
+                                <i class="icofont icofont-table text-success"></i>
+                            </div>-->
+                            <div class="col-sm-12 text-center leadNew">
+                                <div class="form-row">
+                                    <div class="col-12">
+                                        <h6>{{TotalLeadCount}}</h6>
+                                        <span>New Lead</span>
+                                    </div>
+
+                                    <div class="col-6">
+                                        <h6>{{AllocatedLeadCount}}</h6>
+                                        <span>Allocated</span>
+                                    </div>
+                                    <div class="col-6">
+                                        <h6>{{UnallocatedLeadCount}}</h6>
+                                        <span>Un</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-sm-6 card-block-big" style="padding-top:15px;padding-bottom:15px">
+                    <a href="/EnquiryLead/LeadsList/">
+                        <div class="row">
+                            <!--<div class="col-sm-4">
+                                <i class="icofont icofont-not-allowed text-danger"></i>
+                            </div>-->
+                            <div class="col-sm-12 text-center leadNew">
+                                <div class="form-row">
+                                    <div class="col-12">
+                                        <h6>{{TotalOnlineLeadCount}}</h6>
+                                        <span>Online Lead</span>
+                                    </div>
+
+                                    <div class="col-6">
+                                        <h6>{{AllocatedOnlineLeadCount}}</h6>
+                                        <span>Allocated</span>
+                                    </div>
+                                    <div class="col-6">
+                                        <h6>{{UnallocatedOnlineLeadCount}}</h6>
+                                        <span>Un</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="">
+            <div class="row-table">
+                <div class="col-sm-6 card-block-big br">
+                    <a href="/EnquirySchedule/ScheduleList/{{ScheduleStatusHistory}}">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <i class="icofont icofont-ui-call text-info"></i>
+                            </div>
+                            <div class="col-sm-8 text-center">
+                                <h5>{{TotalCallCount}}</h5>
+                                <span>Total Call</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-sm-6 card-block-big">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <i class="icofont icofont-close-circled text-warning"></i>
+                        </div>
+                        <div class="col-sm-8 text-center">
+                            <h5>{{ClosedCount}}</h5>
+                            <span>Closed</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- table card end -->
+</div>
+<div class="col-md-12 col-xl-4">
+    <!-- table card start -->
+    <div class="card table-card">
+        <div class="">
+            <div class="row-table">
+
+                <div class="col-sm-6 card-block-big br">
+                    <a href="/EnquirySchedule/ScheduleList/{{ScheduleStatusToday}}">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <i class="fa fa-calendar-o text-success" cal-day-title="{{dateformat DateTimeNow 'DD'}}"></i>
+                            </div>
+                            <div class="col-sm-8 text-center">
+                                <h5>{{TodayCount}}</h5>
+                                <span>Today </span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-sm-6 card-block-big">
+                    <a href="/EnquirySchedule/ScheduleList/{{ScheduleStatusTomorrow}}">
+                        <div class="row ">
+                            <div class="col-sm-4">
+                                <i class="fa fa-calendar-o text-primary" cal-day-title="{{dateformat DateTimeTomorrow 'DD'}}"></i>
+                            </div>
+                            <div class="col-sm-8 text-center">
+                                <h5>{{TomorrowCount}}</h5>
+                                <span>Tomorrow </span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="">
+            <div class="row-table">
+                <div class="col-sm-6 card-block-big br">
+                    <a href="/EnquirySchedule/ScheduleList/{{ScheduleStatusPending}}">
+                        <div class="row ">
+                            <div class="col-sm-4">
+                                <i class="fa fa-calendar-o text-danger" cal-day-title="↶"></i>
+                            </div>
+                            <div class="col-sm-8 text-center">
+                                <h5>{{PendingCount}}</h5>
+                                <span>Pending</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-sm-6 card-block-big">
+                    <a href="/EnquirySchedule/ScheduleList/{{ScheduleStatusUpcoming}}">
+                        <div class="row ">
+                            <div class="col-sm-4">
+                                <i class="fa fa-calendar-o text-secondary" cal-day-title="↷"></i>
+                            </div>
+                            <div class="col-sm-8 text-center">
+                                <h5>{{UpComingCount}}</h5>
+                                <span>UpComing</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- table card end -->
+</div>
+<div class="col-md-12 col-xl-4">
+    <!-- widget primary card start -->
+    <div class="card table-card widget-primary-card">
+        <div class="form-row">
+            <a href="/EnquirySchedule/CounsellingScheduleList/{{ScheduleStatusCounsellingSchedule}}" class="col-6">
+                <div class="row-table">
+                    <div class="col-sm-3 card-block-big">
+                        <i class="icofont icofont-star"></i>
+                    </div>
+                    <div class="col-sm-9">
+                        <h4 class="text-white">{{CounsilingCount}}</h4>
+                        <h6 class="text-white">Counselling</h6>
+                    </div>
+                </div>
+            </a>
+            <a href="/EnquirySchedule/CounsellingCompletedScheduleList/{{ScheduleStatusCounsellingSchedule}}" class="col-6">
+                <div class="row-table">
+                    <div class="col-sm-3 card-block-big">
+                        <i class="icofont icofont-star"></i>
+                    </div>
+                    <div class="col-sm-9">
+                        <h4 class="text-white">{{CounsilingCompletedCount}}</h4>
+                        <h6 class="text-white">Counselling Completed</h6>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <!-- widget primary card end -->
+    <!-- widget-success-card start -->
+    <div class="card table-card widget-success-card">
+        <div class="">
+            <div class="row-table">
+                <div class="col-sm-3 card-block-big">
+                    <i class="icofont icofont-trophy-alt"></i>
+                </div>
+                <div class="col-sm-9">
+                    <h4>{{AdmissionTakenCount}}</h4>
+                    <h6>Admission Taken</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- widget-success-card end -->
+</div>

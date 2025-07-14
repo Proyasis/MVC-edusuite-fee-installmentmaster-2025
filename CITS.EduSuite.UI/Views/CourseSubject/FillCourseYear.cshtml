@@ -1,0 +1,35 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.CourseSubjectMasterViewModel
+
+
+<div id="tab-classyear" class="form-row tabs-section mb-2">
+    <div class="tabs-section-nav">
+        <ul class="nav ScheduleTab1" role="tablist">
+            @for (int i = 0; i < Model.CourseYear.Count; i++)
+            {
+                <li class="nav-item">
+                        <a class="nav-link" href="#@Model.CourseYear[i].RowKey" data-val="@Model.CourseYear[i].RowKey" role="tab" data-toggle="tab">
+                            <span class="nav-link-in">
+                                @Model.CourseYear[i].Text
+                            </span>
+                        </a>
+                </li>
+                @Html.HiddenFor(m => m.CourseYearKey)
+            }
+
+        </ul>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+                
+        $("#tab-classyear li:first-child a").addClass('active');
+
+        CourseSubject.LoadData(jsonData);
+        $('#tab-classyear a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            
+            CourseSubject.LoadData(jsonData);
+        });
+    })
+</script>
+

@@ -1,0 +1,158 @@
+﻿@using CITS.EduSuite.UI.Resources
+@model CITS.EduSuite.Business.Models.ViewModels.PartyViewModel
+@using System.Web.Mvc
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Content/TimePickerJS")
+    @Scripts.Render("~/Scripts/Party")
+    @Scripts.Render("~/Content/Select2JS")
+    @Scripts.Render("~/Content/MultiselectJs")
+}
+@{
+    ViewBag.Title = EduSuiteUIResources.Party;
+}
+<input type="hidden" id="hdnGetPartyList" value="@Url.Action("GetParty", "Party")" />
+<input type="hidden" id="hdnDeleteParty" value="@Url.Action("DeleteParty", "Party")" />
+<input type="hidden" id="hdnAddEditParty" value="@Url.Action("AddEditParty", "Party")" />
+<input type="hidden" id="hdnViewPartyOrders" value="@Url.Action("ViewPartyOrders", "Party")" />
+
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-sm-6 col-12">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.Party</h3>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 text-right">
+            <a data-modal="" data-href="@Url.Action("AddEditParty", "Party")" class="btn btn-success btn-sm ">
+                <i class="fa fa-plus" aria-hidden="true"></i> @EduSuiteUIResources.AddNew@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Party
+            </a>
+        </div>
+    </div>
+</header>
+
+<section class="section-content mx-sm-3 mx-0">
+    <div class="GridBody">
+
+        <div class="grid-nav-bar form-row justify-content-between">
+            @if (Model.Branches.Count > 1)
+            {
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.Branch, htmlAttributes: new { @class = "lblControlHead" })
+                        @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Branch, new { @class = "form-control SearchDropDown" })
+                    </div>
+                </div>
+            }
+            else
+            {
+                @Html.HiddenFor(m => m.BranchKey)
+
+            }
+            <div class="col-sm-2">
+                <div class="form-group">
+                    @Html.DropDownListFor(m => m.PartyTypeKey, new SelectList(Model.PartyTypes, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.PartyType, new { @class = "form-control gridSearchTextBox", @id = "gridPartyType" })
+                </div>
+            </div>
+            <div class="col-lg-3 col-6">
+                <input id="txtsearch" type="text" name="focus" class="form-control" placeholder="@EduSuiteUIResources.Search@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Party" /> @* Change Search TextBox Placeholder*@
+                <span id="iconSpan" class="iconSpan"><i class="fa fa-times-circle" aria-hidden="true"></i></span>
+            </div>
+            <div class="col-6">
+                <a class="btn btn-info btn-sm float-right" onclick='Party.GetParty();'>
+                    <i class="fa fa-refresh"></i>   Refresh
+                </a>
+            </div>
+        </div>
+
+        <div class="table-wrapper">
+            <div class="jqGrid_wrapper overflow-auto">
+                <table id="grid"></table>
+                <div id="pager"></div>
+            </div>
+        </div>
+
+    </div>
+</section>
+<div id='myModal' class='modal fade in'>
+    <div class="modal-dialog  ">
+        <div class="modal-content">
+            <div id='myModalContent'></div>
+        </div>
+    </div>
+</div>
+
+<div id='myModal1' class='modal fade in'>
+    <div class="modal-dialog ViewPartyOrder">
+        <div class="modal-content">
+            <div id='myModalContent1'></div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#txtsearch").on("input", function () {
+            Party.GetParty();
+        });
+
+        $("[id*=gridPartyType],[id*=BranchKey]").on("change", function () {
+            Party.GetParty();
+        });
+        Party.GetParty();
+
+        $(window).on("resize", function () {
+            var $grid = $("#grid"),
+            newWidth = $grid.closest(".ui-jqgrid").parent().width();
+            $grid.jqGrid("setGridWidth", newWidth, true);
+        });
+
+        //Export To Excel
+        var obj = { ContainerId: $("#grid") };
+        $("#btnExport,#btnPrint").on("click", function () {
+            SetExportData(obj)
+            AppCommon.ExportPrintAjax(obj, $(this).data("type"));
+        });
+    });
+    function SetExportData(obj) {
+        
+        obj.Title = '@EduSuiteUIResources.Party' + ($("#BranchKey").find("option:selected").text() ? ' - ' + $("#BranchKey").find("option:selected").text() : "");
+        obj.SubTitle = $("#txtsearchFromDate").val() === $("#txtsearchToDate").val() ? $("#txtsearchFromDate").val() : $("#txtsearchFromDate").val() + " - " + $("#txtsearchToDate").val();
+        obj.FileName = (obj.Title + (obj.SubTitle ? ("_" + obj.SubTitle) : "")).replace(/-/g, '_');
+        obj.ajaxUrl = $("#hdnGetPartyList").val();
+        obj.ajaxType = "Get";
+        obj.ajaxData = {
+            searchText: $('#txtsearch').val(),
+            PartyTypeKey: $('#gridPartyType').val(),
+            branchKey: $('#BranchKey').val(),
+            sidx: 'RowKey',
+            sord: 'desc',
+            page: 0,
+            rows: 0
+
+        }
+    }
+</script>
+
+<script type="text/javascript">
+
+
+    $(function () {
+        $.ajaxSetup({ cache: false });
+
+        $("a[data-modal]").on("click", function (e) {
+            e.preventDefault();
+            Party.EditPopup($(this));
+        });
+
+
+    });
+
+
+</script>

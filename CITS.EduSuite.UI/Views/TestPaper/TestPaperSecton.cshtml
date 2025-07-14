@@ -1,0 +1,12 @@
+﻿@model List< CITS.EduSuite.Business.Models.ViewModels.SelectListModel>
+@foreach (var item in Model)
+{
+    <li class="nav-item d-none">
+        <a href="#@item.RowKey" aria-controls="discover" role="tab" class='@(item.Selected ? "nav-link active" : "nav-link")' data-toggle="tab" data-val="@item.RowKey">
+
+            <span class="nav-link-in">
+                @item.Text
+            </span>
+        </a>
+    </li>
+}

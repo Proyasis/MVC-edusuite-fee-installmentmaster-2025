@@ -1,0 +1,84 @@
+﻿@model List<CITS.EduSuite.Business.Models.ViewModels.ApplicationFeePaymentViewModel>
+@using CITS.EduSuite.Business.Models.ViewModels
+
+
+@if (Model.Count > 0)
+{
+    <section class="card">
+        <header class="card-header  w3-indigo">
+            @EduSuiteUIResources.FeeInstallment
+        </header>
+        <div class="card-body p-2 overflow-auto">
+            <table class="table table-bordered table-sm" id="divInstallmentFeeDetails">
+
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.Label(EduSuiteUIResources.Month, htmlAttributes: new { @class = "form-label" })
+                        </th>
+                        <th>
+                            @Html.Label(EduSuiteUIResources.Amount, htmlAttributes: new { @class = "form-label" })
+                        </th>
+
+                        <th>
+                            @Html.Label(EduSuiteUIResources.Amount + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Paid, htmlAttributes: new { @class = "form-label" })
+                        </th>
+
+                        <th>
+                            @Html.Label(EduSuiteUIResources.Balance + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Due, htmlAttributes: new { @class = "form-label" })
+                        </th>
+
+                        <th>
+                            @Html.Label(EduSuiteUIResources.Due + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Date, htmlAttributes: new { @class = "form-label" })
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.Count; i++)
+                    {
+                        if (i == 0 || (i != 0 && Model[i].InitialPaymentYear != Model[i - 1].InitialPaymentYear))
+                        {
+                            <tr class="w3-light-grey">
+                                <th colspan="5">
+                                    @Model[i].InitialPaymentYearText
+                                </th>
+                            </tr>
+
+                        }
+
+                        <tr>
+                            <td>
+                                @Model[i].InitialPaymentMonth
+                                @Html.HiddenFor(m => m[i].InitialPaymentMonth)
+                            </td>
+
+                            <td>
+                                @String.Format("{0:G29}", Model[i].InitialPaymentAmount)
+
+
+                            </td>
+                            <td>
+                                @String.Format("{0:G29}", Model[i].InitialPaymentAmountPaid)
+                            </td>
+                            <td>
+
+                                @String.Format("{0:G29}", Model[i].InitialPaymentbalanceDue)
+
+                            </td>
+                            <td>
+
+                                @String.Format("{0:dd/MM/yyyy}", Model[i].InitialPaymentDueDate)
+
+                            </td>
+                        </tr>
+
+
+                    }
+                </tbody>
+
+
+            </table>
+        </div>
+    </section>
+}

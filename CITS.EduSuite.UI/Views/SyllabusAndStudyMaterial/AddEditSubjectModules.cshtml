@@ -1,0 +1,255 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.SyllabusAndStudyMaterialViewModel
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Content/JqueryRepeater")
+    @Scripts.Render("~/Scripts/Common")
+    @Scripts.Render("~/Scripts/SyllabusAndStudyMaterial")
+}
+
+
+<input type="hidden" id="hdnDeleteSubjectModules" value="@Url.Action("DeleteSubjectModules", "SyllabusAndStudyMaterial")" />
+<input type="hidden" id="hdnSyllabusAndStudyMaterialList" value="@Url.Action("SyllabusAndStudyMaterialList", "SyllabusAndStudyMaterial")" />
+<input type="hidden" id="hdnGetModuleTopics" value="@Url.Action("GetModuleTopics", "SyllabusAndStudyMaterial")" />
+<input type="hidden" id="hdnAddEditModuleTopics" value="@Url.Action("AddEditModuleTopics", "SyllabusAndStudyMaterial")" />
+<input type="hidden" id="hdnDeleteModuleTopic" value="@Url.Action("DeleteModuleTopic", "SyllabusAndStudyMaterial")" />
+<input type="hidden" id="hdnDeleteModuleTopicAll" value="@Url.Action("DeleteModuleTopicAll", "SyllabusAndStudyMaterial")" />
+
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-12">
+            <div class="tbl">
+                <div class="tbl-row  px-1">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.Add@EduSuiteUIResources.Hyphen@EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Subject@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Module</h3>
+                        <ol class="breadcrumb breadcrumb-simple mb-2 float-sm-right">
+                            <li><a href="#" onclick="location.href='@Url.Action("SyllabusAndStudyMaterialList", "SyllabusAndStudyMaterial")' ">@EduSuiteUIResources.Subject@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Module</a></li>
+                            <li class="active">@EduSuiteUIResources.Add@EduSuiteUIResources.Hyphen@EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Subject@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Module</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="section-content mx-sm-3 mx-0">
+
+    <div class="form-master">
+
+        @using (Html.BeginForm("AddEditSubjectModules", "SyllabusAndStudyMaterial", FormMethod.Post, new { @id = "frmSubjectModules" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            @Html.HiddenFor(m => m.SubjectKey)
+
+            <div class="card-body p-0 ">
+                <table class="table table-sm">
+
+                    <thead class="w3-indigo">
+                        <tr>
+                            <th class=" text-white align-middle text-center">
+                                @Html.Label(EduSuiteUIResources.Course, htmlAttributes: new { @class = "form-label" })
+                            </th>
+                            <th class=" text-white align-middle text-center">
+                                @Html.Label(EduSuiteUIResources.Year, htmlAttributes: new { @class = "form-label" })
+                            </th>
+                            <th class=" text-white align-middle text-center">
+                                @Html.Label(EduSuiteUIResources.Subject + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Code, htmlAttributes: new { @class = "form-label" })
+                            </th>
+                            <th class=" text-white align-middle text-center">
+                                @Html.Label(EduSuiteUIResources.Subject + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Name, htmlAttributes: new { @class = "form-label" })
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-primary align-middle text-center font-weight-bold border-right border-primary">
+                                <span>@Model.UniversityCourse</span>
+                            </td>
+                            <td class="align-middle text-center font-weight-bold border-right border-primary">
+                                <span>@Model.SubjectYearText</span>
+                            </td>
+                            <td class="text-danger align-middle text-center font-weight-bold border-right border-primary">
+                                <span>@Model.SubjectCode</span>
+                            </td>
+                            <td class="w3-text-cyan w3-white align-middle text-center font-weight-bold border-right">
+                                <span>@Model.SubjectName</span>
+                            </td>
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-body p-0 overflow-auto ">
+                <table id="dynamicRepeater" class="table table-sm">
+                    <thead class="w3-light">
+                        <tr>
+                            <th>
+                            </th>
+                            <th class="text-center">
+                                @EduSuiteUIResources.Module@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Name
+                                <div class="input-group-transparent">
+                                    <span class="input-group-addon-end" style="cursor: pointer; left: 93px; color: red; top: -25px; font-size: 22px;" data-gap="18">*</span>
+                                </div>
+                            </th>
+                            <th class="text-center">
+                                @EduSuiteUIResources.DurationInMinut
+                            </th>
+
+                            <th class="text-center">
+                                @EduSuiteUIResources.HasTopics
+                            </th>
+                            <th class="text-center">
+                                @EduSuiteUIResources.IsActive
+                            </th>
+                            <th class="text-center">
+                                @EduSuiteUIResources.Topics
+
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody data-repeater-list id="dvCourseSubjectDetailsList">
+                        @for (int i = 0; i < Model.SubjectModulesModel.Count(); i++)
+                        {
+                            <tr data-repeater-item class="mb-2">
+                                <td>
+
+                                    <span data-repeater-delete="" class="btn btn-danger btn-sm">
+                                        <span class="fa fa-remove"></span>
+                                    </span>
+
+                                </td>
+                                <td class="px-1">
+                                    <fieldset class="form-group">
+                                        @Html.TextBoxFor(m => m.SubjectModulesModel[i].ModuleName, new { @class = "form-control input-control", @data_convert = "uppercase", @onchange = "SyllabusAndStudyMaterial.HasSubjectModuleEvent(this)", @data_unique = true })
+                                        <span class="form-control-error-text">
+                                            @Html.ValidationMessageFor(m => m.SubjectModulesModel[i].ModuleName)
+                                        </span>
+                                        @Html.HiddenFor(m => m.SubjectModulesModel[i].RowKey)
+                                        @Html.HiddenFor(m => m.SubjectModulesModel[i].SubjectKey)
+
+                                    </fieldset>
+                                </td>
+
+                                <td class="px-1">
+                                    <fieldset class="form-group">
+                                        @Html.TextBoxFor(m => m.SubjectModulesModel[i].Duration, new { @class = "form-control input-control", @onchange = "SyllabusAndStudyMaterial.HasSubjectModuleEvent(this)", @data_unique = true })
+                                        <span class="form-control-error-text">
+                                            @Html.ValidationMessageFor(m => m.SubjectModulesModel[i].Duration)
+                                        </span>
+                                    </fieldset>
+                                </td>
+
+
+                                <td class="text-center">
+                                    <fieldset class=" form-group ">
+                                        <div class=" switch-check my-2">
+                                            @Html.CheckBoxFor(m => m.SubjectModulesModel[i].HasTopics, new { @class = "switch-input", @onchange = "SyllabusAndStudyMaterial.HasSubjectModuleEvent(this)" })
+                                            <div class="switch-label redgreen" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                                            <div class="switch-handle"></div>
+                                        </div>
+                                        <span class="form-control-error-text">
+                                            @Html.ValidationMessageFor(m => m.SubjectModulesModel[i].HasTopics)
+                                        </span>
+
+                                    </fieldset>
+                                </td>
+
+
+                                <td class="text-center">
+                                    <fieldset class=" form-group ">
+                                        <div class=" switch-check my-2">
+                                            @Html.CheckBoxFor(m => m.SubjectModulesModel[i].IsActive, new { @class = "switch-input" })
+                                            <div class="switch-label redgreen" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                                            <div class="switch-handle"></div>
+                                        </div>
+                                        <span class="form-control-error-text">
+                                            @Html.ValidationMessageFor(m => m.SubjectModulesModel[i].IsActive)
+                                        </span>
+
+                                    </fieldset>
+                                </td>
+                                <td>
+                                    <div id="dvModuleTopics">
+                                        @if (Model.SubjectModulesModel[i].HasTopics)
+                                        {
+                                            @Html.Partial("GetModuleTopics", Model.SubjectModulesModel[i], new ViewDataDictionary { { "Index", i } })
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td>
+                                <span data-repeater-create class="btn btn-info btn-sm  btnadd pull-left btnadd">
+                                    <span class="fa fa-plus-square-o"></span>
+                                </span>
+                            </td>
+                        </tr>
+
+                    </tfoot>
+
+
+                </table>
+
+            </div>
+            <div class="form-row">
+
+            </div>
+
+
+
+            <div class="row mt-2">
+                <div class="form-group">
+                    <div class="col-12">
+                        <fieldset class="form-group">
+                            <input type="button" value="@EduSuiteUIResources.Save" id="btnSave" class="btn btn-sm btn-success mx-1" />
+                            <input type="button" value="@EduSuiteUIResources.Cancel" onclick="location.href='@Url.Action("SyllabusAndStudyMaterialList", "SyllabusAndStudyMaterial")' " class="btn btn-sm btn-danger mx-1" />
+                        </fieldset>
+                        <div class="col-12 paddingNone">
+                            <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</section>
+
+<script>
+    var jsonData=@(Html.Raw(Json.Encode(Model)));
+
+    $(document).ready(function () {
+        
+        setTimeout(function ()
+        {
+            SyllabusAndStudyMaterial.GetSubjectModuleDetail(jsonData);
+        }, 500)
+        AppCommon.CustomRepeaterRemoteMethod();
+
+        AppCommon.FormatInputCase()
+
+        //$("form").removeData("validator");
+        //$("form").removeData("unobtrusiveValidation");
+        //$.validator.unobtrusive.parse("form");
+        $("#btnSave").on("click",function()
+        {
+            
+            SyllabusAndStudyMaterial.FormSubmit(jsonData);
+        });
+
+        AppCommon.CustomRepeaterRemoteMethod();
+
+
+    });
+
+
+</script>
+

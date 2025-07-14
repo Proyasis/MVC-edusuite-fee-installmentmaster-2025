@@ -1,0 +1,1087 @@
+﻿
+<div id="dvPrintContainer" class="maindiv ">
+    <div printheader>
+    <fieldset>
+
+            <table class="table-100">
+                <tr>
+                    <td class="print-logo">
+                        <img alt="" src="{{CompanyImageUrl}}" />
+                    </td>
+
+                    <td class="table-40">
+                        <table class="table-100 pull-right">
+                            <tr>
+                                <td class="address text-right lblControlHead">
+                                    <span>
+                                        {{breaklines CompanyAddress}}
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="address text-right lblControlHead">
+                                    <span>
+                                        {{CompanyMobileNumbers}}
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="address text-right lblControlHead" style="font-size: 10px;">
+                                    <span>
+                                        {{CompanyWebsite}}
+                                    </span>
+                                    <br />
+                                    <span>
+                                        Email ID :  {{CompanyEmailId}}
+                                    </span>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+    <fieldset>
+            <table class="table-100">
+                <tr class="row">
+                    <td class="lblControlHeadBold text-center  table-30" rowspan="2"></td>
+                    <td class="lblControlHeadBold text-center  table-40" rowspan="2">
+                        <span>Invoice {{InvoiceType}}</span>
+                    </td>
+                    <td>
+                        <b>
+                            <span class="pull-left lblControlHead">GSTIN No&nbsp;&nbsp;:&nbsp;&nbsp; </span>
+                        </b>
+                        <span id="GSTNumber" class="pull-right lblControlHead">{{CompanyGSTINNumber}}</span>
+                    </td>
+
+                </tr>
+                <tr class="row">
+                    <td>
+                        <b>
+                            <span class="pull-left lblControlHead">PAN No&nbsp;&nbsp;:&nbsp;&nbsp; </span>
+                        </b>
+                        <span id="PanNumber" class="pull-right lblControlHead">{{CompanyPANNumber}}</span>
+                    </td>
+                </tr>
+
+            </table>
+        </fieldset>
+
+    <fieldset>
+            <table class="table-100">
+                <tr>
+                    <td rowspan="6" class=" lblControlHead table-50 form-control">
+                        <span>
+                            Party Name
+                        </span>
+                        <span>
+                            : {{PartyName}}
+                        </span>
+                        <br />
+                        <span class="spantd">
+                            Address
+                        </span>
+                        <span>
+                            : {{PartyAddress}}
+                        </span>
+                        <br />
+                        <span class="spantd">
+                            MobileNumber
+                        </span>
+                        <span>
+                            : {{PartyMobile}}
+                        </span>
+                        <br />
+                        <span class="spantd">
+                            State
+                        </span>
+                        <span>
+                            : {{PartyState}}
+
+                        </span>
+                        <br />
+                        <span class="spantd">
+                            GSTIN No
+                        </span>
+                        <span>
+                            : {{PartyGSTINNumber}}
+                        </span>
+                    </td>
+
+                    <td class=" lblControlHead form-control">Invoice No</td>
+                    <td class=" lblControlHead form-control">{{InvoiceNumber}}</td>
+
+                </tr>
+                <tr>
+                    <td class=" lblControlHead form-control">Invoice Date</td>
+                    <td class=" lblControlHead form-control">{{InvoiceDate}}</td>
+
+                </tr>
+                <tr>
+                    <td colspan="2" class=" lblControlHead form-control">PO No:</td>
+                </tr>
+                {{#if IsNormalInvoice}})
+                {
+                <tr>
+                    <td colspan="2" class=" lblControlHead form-control">Job No&nbsp;&nbsp;:&nbsp;&nbsp;{{OrderNumber}}</td>
+                </tr>
+                {{/if}}
+                {{#if JobTitle}}
+
+                <tr>
+                    <td colspan="2" class=" lblControlHead form-control">Job Title&nbsp;&nbsp;:&nbsp;&nbsp;{{JobTitle}}</td>
+                </tr>
+                {{/if}}
+                <tr>
+                    <td colspan="2" class=" lblControlHead form-control">Job Order Date : {{OrderDate}}</td>
+                </tr>
+                <tr>
+                    <td colspan="2" class=" lblControlHead form-control">
+                        <span>State : {{CompanyState}} </span>
+                        <br />
+                        <span class="spantd">State Code : </span>
+                        <span id="StateCode"> </span>
+                        <br />
+                        <span class="spantd">VehicleNo : </span>
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+    </div>
+    <fieldset>
+        <table class="table-100">
+            <tr class="row bottomLine tableColHead">
+                <td class=" lblControlHead width5">
+                    S.No
+                </td>
+                <td class=" lblControlHead">
+                    Description of Product
+                </td>
+                <td class=" lblControlHead width10">
+                    HSN/SAC
+                </td>
+                {{#if IsShowGst}}
+                <td class="form-col lblControlHead width5" style="text-align:  center;">
+                    GST Rate
+                </td>
+                {{/if}}
+                <td class="form-col lblControlHead width10" style="text-align:  center;">
+                    Size (WxH)
+                </td>
+                <td class=" lblControlHead width5">
+                    Qty
+
+                </td>
+                <td class=" lblControlHead width5">
+                    SQ.FT
+                </td>
+                <td class=" lblControlHead width10">
+                    Rate
+
+                </td>
+                <td class=" lblControlHead width10">
+                    Total
+                </td>
+            </tr>
+            <tbody printitem>
+                {{#SalesOrderDetails}}
+                <tr class="row">
+                    <td class=" form-control">
+                        {{math @index "+" 1}}
+                    </td>
+                    <td class=" form-control">
+                        {{MaterialProductFullName}}
+                        {{#if OtherSpecifications}}
+
+                        <br />
+                        <span style="padding-left: 5px;color: #7a7a7a;font-size: 11px;">
+                            {{OtherSpecifications}}
+                        </span>
+
+                        {{else}}
+
+                        <br />
+                        {{/if}}
+                        {{#if  SalesOrderDetailsWorkTypes}}
+                        <span style="padding-left: 5px;color: #7a7a7a;font-size: 11px;">
+                            {{SalesOrderDetailsWorkTypes}}
+                        </span>
+                        {{/if}}
+                    </td>
+                    <td class=" form-control">
+                        {{HSNCode}}
+                    </td>
+                    {{#if IsShowGst}}
+                    <td class=" form-control text-center ">
+                        {{G29 GSTPer}}%
+                    </td>
+                    {{/if}}
+                    <td class="form-control text-center ">
+                        {{#if StandardSizeKey}}
+                        {{G29 SizeOfFrameWidth}} x {{G29 SizeOfFrameHeight}} {{MeasurementOfUnitCode}}
+                        {{/if}}
+                    </td>
+                    <td class=" form-control text-center ">
+                        {{G29 NoOfCopies}}
+                    </td>
+
+                    <td class=" form-control text-center ">
+
+                        {{#if TotalSqFeet}}
+
+                        {{G29 TotalSqFeet}}
+
+                        {{/if}}
+                    </td>
+
+                    <td class=" form-control text-center ">
+                        {{G29 SqFeetRate}}
+
+                    </td>
+                    <td class=" form-control text-right ">
+                        {{G29 Amount}}
+                    </td>
+                </tr>
+                {{/SalesOrderDetails}}
+            </tbody>
+            <tr printitemtotal>
+                {{#if IsShowGst}}
+                <td colspan="9" class="form-control text-center">Total</td>
+                {{else}}
+                <td colspan="8" class="form-control text-center">Total</td>
+                {{/if}}
+
+
+                <td class="form-control text-right">
+                    {{sum SalesOrderDetails 'Amount'}}
+                </td>
+            </tr>
+        </table>
+
+    </fieldset>
+
+    <fieldset printtotal>
+        <table class="table-100">
+            <tr>
+                {{#if IsIGST}}
+                <td class="table-60 GstSubHead" rowspan="4">
+                    <table class="table-100 table-inner text-center" style="min-height:124px">
+                        {{else}}
+                        {{#if CessAmount}}
+                        <td class="table-60 GstSubHead" rowspan="6">
+                            <table class="table-100 table-inner text-center" style="min-height:140px">
+                                {{else}}
+                                <td class="table-60 GstSubHead" rowspan="5">
+                                    <table class="table-100 table-inner text-center" style="min-height:140px">
+                                        {{/if}}
+                                        {{/if}}
+                                        <tr>
+                                            <td class=" lblControlHead form-control" rowspan=" 2">
+                                                <b>
+                                                    HSN/SAC
+                                                </b>
+                                            </td>
+                                            <td rowspan="2" class="form-control">
+                                                <b>
+                                                    Taxable Value
+                                                </b>
+                                            </td>
+
+                                            <td colspan="2" class="form-control lblControlHead">
+                                                <b>
+                                                    Central Tax
+                                                </b>
+                                            </td>
+                                            <td colspan="2" class="form-control lblControlHead">
+                                                <b>
+                                                    State Tax
+                                                </b>
+                                            </td>
+                                            <td rowspan="2" class="form-controlwithoutbottom" style=" border-bottom: solid 1px black;border-right: 0;font-size:11px">
+
+                                                <b>
+                                                    Total Amt
+                                                </b>
+                                            </td>
+                                        </tr>
+                                        <tr>
+
+                                            <td class="form-control">
+                                                <b>
+                                                    Rate
+                                                </b>
+                                            </td>
+                                            <td class="form-control">
+                                                <b>
+                                                    Amount
+                                                </b>
+                                            </td>
+                                            <td class="form-control">
+                                                <b>
+                                                    Rate
+                                                </b>
+                                            </td>
+                                            <td class="form-control">
+                                                <b>
+                                                    Amount
+                                                </b>
+                                            </td>
+                                        </tr>
+                                        {{#SalesOrderGstDetails}}
+
+                                        <tr>
+                                            <td class="form-controlwithoutbottom text-center">
+                                                {{HSNCode}}
+                                            </td>
+                                            <td class="form-controlwithoutbottom text-center">
+                                                {{G29 Amount}}
+                                            </td>
+
+                                            <td class="form-controlwithoutbottom text-center">
+                                                {{#if IsIGST}}
+                                                {{G29 IGSTPer}}%
+
+                                                {{else}}
+                                                {{G29 CGSTPer}}%
+                                                {{/if}}
+                                            </td>
+                                            <td class="form-controlwithoutbottom text-center">
+                                                {{#if IsIGST}}
+                                                {{G29 IGSTAmount}}
+
+                                                {{else}}
+                                                {{G29 CGSTAmount}}
+                                                {{/if}}
+                                            </td>
+
+                                            <td class="form-controlwithoutbottom text-center">
+
+                                                {{#if SGSTPer}}
+                                                {{G29 SGSTPer}}%
+                                                {{else}}
+                                                0%
+                                                {{/if}}
+                                            </td>
+                                            <td class="form-controlwithoutbottom text-center">
+                                                {{#if SGSTAmount}}
+                                                {{G29 SGSTAmount}}
+                                                {{else}}
+                                                0
+                                                {{/if}}
+                                            </td>
+                                            <td class="form-controlwithoutbottom text-center">
+                                                {{G29 RowTotal}}
+                                            </td>
+                                        </tr>
+                                        {{/SalesOrderGstDetails}}
+                                    </table>
+
+                                </td>
+                                {{#if IsIGST}}
+                                <td class=" lblControlHead form-control">IGST</td>
+                                <td class=" lblControlHead form-control text-right">{{G29 IGSTAmount}}</td>
+                                {{else}}
+                                <td class=" lblControlHead form-control">CGST</td>
+                                <td class=" lblControlHead form-control text-right">{{G29 CGSTAmount}}</td>
+
+                                {{/if}}
+</tr>
+            {{#if IsIGST}}
+
+            {{else}}
+            <tr>
+
+                <td class=" lblControlHead form-control">SGST</td>
+                <td class=" lblControlHead form-control text-right">{{G29 SGSTAmount}}</td>
+
+            </tr>
+            {{/if}}
+            {{#if CessAmount}}
+            <tr>
+
+                <td class=" lblControlHead form-control">Kerala Flood Cess @{{G29 CessPercentage}}%</td>
+                <td class=" lblControlHead form-control text-right">{{G29 CessAmount}}</td>
+
+            </tr>
+            {{/if}}
+
+            <tr>
+                <td class=" lblControlHead form-control">RoundOff</td>
+                <td class=" lblControlHead form-control text-right"> {{G29 RoundOff}}</td>
+            </tr>
+            <tr>
+                <td class=" lblControlHead form-control">Discount</td>
+                <td class=" lblControlHead form-control text-right"> {{G29 Discount}}</td>
+            </tr>
+            <tr>
+                <td class=" lblControlHead form-control">Grand Total</td>
+                <td class=" lblControlHead form-control text-right">
+                    {{G29 TotalAmount}}
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class=" lblControlHead form-control text-center" style="border-bottom: none;">
+                    <span id="amountWords">{{AmountInWords}}</span>
+                </td>
+            </tr>
+        </table>
+
+        <table class="table-100">
+            <tr>
+                <td class=" lblControlHead table-40 form-control">
+                    <span>
+                        <b>
+                            Bank Details :
+                        </b>
+                    </span>
+                    <br />
+                    <span class="spantd">
+                        A/C Name :
+                    </span>
+                    <span>
+                        {{NameInAccount}}
+                    </span>
+                    <br />
+                    <span class="spantd">
+                        A/C No :
+                    </span>
+                    <span>
+                        {{AccountNumber}}
+                    </span>
+                    <br />
+                    <span class="spantd">
+                        Bank Name :
+                    </span>
+                    <span>
+                        {{BankName}}
+                    </span>
+                    <br />
+                    <span class="spantd">
+                        Branch :
+                    </span>
+                    <span>
+                        {{BankLocation}}
+
+                    </span>
+                    <br />
+                    <span class="spantd">
+                        IFSC Code :
+                    </span>
+                    <span>
+                        {{BankIFSCCode}}
+                    </span>
+                </td>
+
+                <td class=" lblControlHead form-control table-30"></td>
+                <td class=" lblControlHead form-control text-center">
+                    <span class="autorizedSignatory">
+                        <span class="autorizedSignatoryfor">For, </span>{{CompanyName}}'s
+                    </span>
+                    <span><br />  Authorized Signatory</span>
+                </td>
+
+            </tr>
+
+        </table>
+
+    </fieldset>
+    <style>
+        fieldset {
+            border: none;
+        }
+
+        .maindiv {
+            min-height: 50px;
+            background-color: white;
+            margin: auto;
+        }
+
+        .lblControlHead {
+            color: black;
+            padding-left: 2px;
+            font-size: 12px;
+        }
+
+        .lblControlHeadBold {
+            color: black;
+            padding-left: 2px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .address {
+            font-size: 18px !important;
+        }
+
+        .form-control {
+            background-color: #fff;
+            -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+            height: 25px;
+            padding: 0px;
+            text-indent: 5px;
+            color: black;
+            outline: none !important;
+            font-size: 13px;
+            width: 30mm;
+            display: table-cell !important;
+            border: solid 1px black;
+        }
+
+        .form-controlwithoutbottom {
+            background-color: #fff;
+            -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+            height: 25px;
+            padding: 0px;
+            text-indent: 5px;
+            color: black;
+            outline: none !important;
+            box-shadow: none !important;
+            font-size: 12px;
+            width: 30mm;
+            display: table-cell !important;
+            border-left: solid 1px black;
+            border-right: solid 1px black;
+        }
+
+        .form-controlbottom {
+            background-color: #fff;
+            -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+            height: 25px;
+            padding: 0px;
+            text-indent: 5px;
+            color: black;
+            outline: none !important;
+            box-shadow: none !important;
+            font-size: 12px;
+            width: 30mm;
+            display: table-cell !important;
+            border-bottom: solid 1px black;
+        }
+
+        .form-controlborderNone {
+            background-color: #fff;
+            -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+            height: 25px;
+            padding: 0px;
+            text-indent: 5px;
+            color: black;
+            outline: none !important;
+            box-shadow: none !important;
+            font-size: 12px;
+            width: 30mm;
+            display: table-cell !important;
+        }
+
+        .form-controlBold {
+            background-color: #fff;
+            -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+            height: 25px;
+            padding: 0px;
+            text-indent: 5px;
+            color: black;
+            outline: none !important;
+            box-shadow: none !important;
+            font-size: 12px;
+            width: 30mm;
+            display: table-cell !important;
+            border: solid 3px black;
+        }
+
+
+
+        .row {
+            margin-top: 0px;
+            padding: 11px 0px;
+            padding-top: 4px;
+            margin-bottom: 0px;
+        }
+
+        .bottomLine.row {
+            border-bottom: solid #f2f2f2 1px;
+        }
+
+        .table-100 {
+            width: 100%;
+            border-spacing: 0;
+        }
+
+        .table-90 {
+            width: 90%;
+        }
+
+        .table-50 {
+            width: 50%;
+        }
+
+        .table-60 {
+            width: 60%;
+        }
+
+        .table-40 {
+            width: 40%;
+        }
+
+        .table-35 {
+            width: 35%;
+        }
+
+        .table-30 {
+            width: 30%;
+        }
+
+        .table-20 {
+            width: 20%;
+        }
+
+
+        .table-70 {
+            width: 70%;
+        }
+
+        .table-16 {
+            width: 16%;
+        }
+
+        .table-10 {
+            width: 10%;
+        }
+
+        .text-center {
+            text-align: center;
+            padding-right: 5px;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .text-left {
+            text-align: left;
+        }
+
+
+
+        .pull-left {
+            float: left;
+        }
+
+        .pull-right {
+            float: right;
+        }
+
+        .print-logo img {
+            height: 100px;
+        }
+
+        .print-logo-title {
+            padding: 0px !important;
+            padding-top: 0px !important;
+            font-size: 30px !important;
+            color: rebeccapurple;
+            font-weight: bold;
+            letter-spacing: 1px;
+            word-spacing: 3px;
+        }
+
+        .tableHead {
+            text-align: center;
+            width: 100%;
+            text-align: center;
+            width: 100%;
+        }
+
+            .tableHead td {
+                text-align: center;
+                width: 100%;
+                font-weight: bold;
+                text-align: center;
+                width: 100%;
+                font-weight: bold;
+                font-size: 21px;
+            }
+
+        .tableColHead td {
+            height: 25px;
+            text-align: center;
+            font-weight: 700;
+            border: solid 1px black;
+            background-color: darkblue;
+            color: white;
+        }
+
+        .borderBottomBold {
+            border-bottom: 3px solid;
+        }
+
+        .width5 {
+            width: 5%;
+        }
+
+        .width10 {
+            width: 10%;
+        }
+
+        .width20 {
+            width: 20%;
+        }
+
+        .spantd {
+            padding-left: 3pt;
+            line-height: 18px;
+        }
+
+        .autorizedSignatory {
+            display: block;
+            padding-bottom: 65px;
+            font-size: 16px;
+            font-weight: 600;
+            color: black;
+        }
+
+        .autorizedSignatoryfor {
+            font-size: 14px;
+        }
+
+        .GstSubHead {
+            border-bottom: none !important;
+            border-top: solid 1px !important;
+            border-left: solid 1px !important;
+            padding: 0px !important;
+            -webkit-print-color-adjust: exact;
+            height: auto !important;
+        }
+
+        .table-inner {
+            height: 100% !important;
+        }
+
+        .text-right {
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+
+
+        @media print {
+            .text-right {
+                font-weight: 600;
+                font-size: 16px !important;
+            }
+
+            .maindiv {
+                min-height: 50px;
+                background-color: white;
+                margin: auto;
+            }
+
+
+            .spanPaddingLeft {
+                padding-left: 3pt;
+            }
+
+            .row {
+                margin-top: 0px;
+                padding: 11px 0px;
+                padding-top: 4px;
+                margin-bottom: 0px;
+            }
+
+            .bottomLine.row {
+                border-bottom: solid #f2f2f2 1px;
+            }
+
+            body {
+            }
+
+            .maindiv {
+                min-height: 50px;
+                background-color: #e6e6e6;
+                margin: auto;
+            }
+
+            .lblControlHeadBold {
+                color: black;
+                padding-left: 2px;
+                font-size: 18px;
+                font-weight: 600;
+            }
+
+            .lblControlHead {
+                color: black;
+                padding-left: 2px;
+                font-size: 12px;
+            }
+
+            .form-control {
+                background-color: #fff;
+                -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+                padding: 0px;
+                text-indent: 5px;
+                color: black;
+                outline: none !important;
+                box-shadow: none !important;
+                font-size: 12px;
+                width: 30mm;
+                display: table-cell !important;
+                border: solid 1px black;
+            }
+
+
+            .form-controlborderNone {
+                background-color: #fff;
+                -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+                padding: 0px;
+                text-indent: 5px;
+                color: black;
+                outline: none !important;
+                box-shadow: none !important;
+                font-size: 12px;
+                width: 30mm;
+                display: table-cell !important;
+            }
+
+            .form-controlbottom {
+                background-color: #fff;
+                -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+                padding: 0px;
+                text-indent: 5px;
+                color: black;
+                outline: none !important;
+                box-shadow: none !important;
+                font-size: 12px;
+                width: 30mm;
+                display: table-cell !important;
+                border-bottom: solid 1px black;
+            }
+
+            .form-controlBold {
+                background-color: #fff;
+                -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+                padding: 0px;
+                text-indent: 5px;
+                color: black;
+                outline: none !important;
+                box-shadow: none !important;
+                font-size: 12px;
+                width: 30mm;
+                display: table-cell !important;
+                border: solid 3px black;
+            }
+
+            .row {
+                margin-top: 0px;
+                padding: 11px 0px;
+                padding-top: 4px;
+                margin-bottom: 0px;
+            }
+
+            .maindiv .row:before, .maindiv .row:after {
+                content: '' !important;
+            }
+
+            .bottomLine.row {
+                border-bottom: solid #f2f2f2 1px;
+            }
+
+            .table-100 {
+                width: 100%;
+                border-spacing: 0;
+            }
+
+            .table-90 {
+                width: 90%;
+            }
+
+            .table-50 {
+                width: 50%;
+            }
+
+            .table-60 {
+                width: 60%;
+            }
+
+            .table-40 {
+                width: 40%;
+            }
+
+            .table-70 {
+                width: 70%;
+            }
+
+            .table-16 {
+                width: 16%;
+            }
+
+            .table-10 {
+                width: 10%;
+            }
+
+            .text-center {
+                text-align: center;
+            }
+
+            .text-right {
+                text-align: right;
+                padding-right: 5px;
+            }
+
+            .text-left {
+                text-align: left;
+            }
+
+            .pull-left {
+                float: left;
+            }
+
+            .pull-right {
+                float: right;
+            }
+
+
+
+            .print-logo img {
+                height: 100px;
+            }
+
+            .print-logo-title {
+                padding: 0px !important;
+                padding-top: 0px !important;
+                font-size: 30px !important;
+                color: rebeccapurple;
+                font-weight: bold;
+                letter-spacing: 1px;
+                word-spacing: 3px;
+            }
+
+            .tableHead {
+                text-align: center;
+                width: 100%;
+                text-align: center;
+                width: 100%;
+            }
+
+                .tableHead td {
+                    text-align: center;
+                    width: 100%;
+                    font-weight: bold;
+                    text-align: center;
+                    width: 100%;
+                    font-weight: bold;
+                    font-size: 21px;
+                }
+
+
+
+            .tableColHead td {
+                box-shadow: 0px 1px 9px;
+                height: 25px;
+                text-align: center;
+                font-weight: 700;
+                box-shadow: none !important;
+                border: solid 1px black;
+                background-color: darkblue !important;
+                color: white !important;
+                -webkit-print-color-adjust: exact;
+                -moz-print-color-adjust: exact;
+            }
+
+            .borderBottomBold {
+                border-bottom: 3px solid;
+            }
+
+            .width5 {
+                width: 5%;
+            }
+
+            .width10 {
+                width: 10%;
+            }
+
+            .width20 {
+                width: 20%;
+            }
+
+            .autorizedSignatory {
+                display: block;
+                padding-bottom: 65px;
+                font-size: 16px;
+                font-weight: 600;
+                color: black;
+            }
+
+            .autorizedSignatoryfor {
+                font-size: 14px;
+            }
+
+            .GstSubHead {
+                border-bottom: none !important;
+                border-top: solid 1px !important;
+                border-left: solid 1px !important;
+                padding: 0px !important;
+                -webkit-print-color-adjust: exact;
+                height: auto !important;
+            }
+
+                .GstSubHead .form-control {
+                    height: auto !important;
+                }
+
+
+            .table-inner {
+                height: 100% !important;
+            }
+
+                .table-inner tr:first-child td {
+                    border-top: none;
+                }
+
+                .table-inner tr:last-child td {
+                    border-bottom: none;
+                }
+
+                .table-inner tr td:first-child {
+                    border-left: none;
+                }
+
+                .table-inner tr td:last-child {
+                    border-right: none;
+                }
+
+                .table-inner td {
+                    color: black;
+                }
+
+            fieldset {
+                display: inline-block;
+                margin-left: 0px;
+                margin-right: 0px;
+                padding-top: 0.35em;
+                padding-bottom: 0.625em;
+                padding-left: 0.75em;
+                padding-right: 0.75em;
+                -webkit-box-sizing: initial;
+                -moz-box-sizing: initial;
+                box-sizing: initial;
+                width: 95%;
+            }
+        }
+
+        .print-logo-title {
+            padding: 0px !important;
+            padding-top: 0px !important;
+            font-size: 30px !important;
+            color: rebeccapurple;
+            font-weight: bold;
+            letter-spacing: 1px;
+            word-spacing: 3px;
+        }
+
+        .table-100 {
+            width: 100%;
+            border-collapse: collapse;
+        }
+    </style>
+
+
+</div>

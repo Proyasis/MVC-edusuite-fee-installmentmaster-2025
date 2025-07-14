@@ -1,0 +1,196 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.BankReconciliationViewModel
+@using CITS.EduSuite.Business.Models.ViewModels;
+
+
+
+<div class="modal-header">
+    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+    <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.BankReconciliation@EduSuiteUIResources.BlankSpace @EduSuiteUIResources.Item</h4>
+</div>
+<div class="modal-body">
+    <div class="form-master">
+        <div id="bankStatementRepeater" class="repeater">
+            <input type="hidden" id="searchTag" />
+            <div data-repeater-list>
+                @for (int i = 0; i < Model.BankReconciliationDetails.Count(); i++)
+                {
+                    <div data-index="2" data-repeater-item class="form-row">
+                        <div leftitem class="col-5">
+                            @if (Model.BankReconciliationDetails[i].StatementAmount != null)
+                            {
+                                <div bank-statement-panel>
+                                    <div class="card">
+                                        <div class="card-heading bg-primary text-white p-2">
+                                            <div class="col-9">
+                                                @Model.BankReconciliationDetails[i].StatementParticulars
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <table class="table table-borderless">                                               
+                                                <tbody>
+                                                    <tr>
+                                                        <td>@Html.Label(EduSuiteUIResources.Reference + EduSuiteUIResources.Sla + EduSuiteUIResources.Cheque + EduSuiteUIResources.FullColon, htmlAttributes: new { @id = "lblOrderNumber", @class = "form-label" })</td>
+                                                        <td>@Model.BankReconciliationDetails[i].StatementReferenceKey</td>
+                                                        <td>@Html.Label(EduSuiteUIResources.Date + EduSuiteUIResources.FullColon, htmlAttributes: new { @id = "lblOrderNumber", @class = "form-label" })</td>
+                                                        <td>@string.Format("{0:dd/MM/yyyy}", Model.BankReconciliationDetails[i].StatementTransactionDate)</td>
+                                                     </tr>                                                    
+                                                    <tr>
+                                                        <td>@Html.Label(EduSuiteUIResources.Amount + EduSuiteUIResources.FullColon, htmlAttributes: new { @id = "lblOrderNumber", @class = "form-label" })</td>
+                                                        <td>@string.Format("{0:G29}", Model.BankReconciliationDetails[i].StatementAmount)@EduSuiteUIResources.OpenBracket@Model.BankReconciliationDetails[i].StatementCashFlowTypeName@EduSuiteUIResources.CloseBracket</td>
+                                                        <td>@Html.Label(EduSuiteUIResources.Type + EduSuiteUIResources.FullColon, htmlAttributes: new { @id = "lblOrderNumber", @class = "form-label" })</td>
+                                                        <td>@Model.BankReconciliationDetails[i].StatementBankTransactionTypeName</td>
+                                                     </tr>
+                                                </tbody>
+                                            </table>
+                                            @*<div class="form-row">
+                                                <div class="col-3 ">
+                                                    @Html.Label(EduSuiteUIResources.Reference + EduSuiteUIResources.Sla + EduSuiteUIResources.Cheque + EduSuiteUIResources.FullColon, htmlAttributes: new { @id = "lblOrderNumber", @class = "form-label" })
+                                                </div>
+                                                <div class="col-3 ">
+                                                    @Model.BankReconciliationDetails[i].StatementReferenceKey
+                                                </div>
+                                                <div class="col-2 ">
+                                                    @Html.Label(EduSuiteUIResources.Date + EduSuiteUIResources.FullColon, htmlAttributes: new { @id = "lblOrderNumber", @class = "form-label" })
+                                                </div>
+                                                <div class="col-4 ">
+                                                    @string.Format("{0:dd/MM/yyyy}", Model.BankReconciliationDetails[i].StatementTransactionDate)
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="col-3 ">
+                                                    @Html.Label(EduSuiteUIResources.Amount + EduSuiteUIResources.FullColon, htmlAttributes: new { @id = "lblOrderNumber", @class = "form-label" })
+                                                </div>
+                                                <div class="col-3 ">
+                                                    @string.Format("{0:G29}", Model.BankReconciliationDetails[i].StatementAmount)@EduSuiteUIResources.OpenBracket@Model.BankReconciliationDetails[i].StatementCashFlowTypeName@EduSuiteUIResources.CloseBracket
+                                                </div>
+                                                <div class="col-2 ">
+                                                    <div class="form-group">
+                                                        @Html.Label(EduSuiteUIResources.Type + EduSuiteUIResources.FullColon, htmlAttributes: new { @id = "lblOrderNumber", @class = "form-label" })
+                                                    </div>
+                                                </div>
+                                                <div class="col-4 ">
+                                                    @Model.BankReconciliationDetails[i].StatementBankTransactionTypeName
+                                                </div>
+                                            </div>*@
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+
+                        <div event class="col-1">
+                            @if (@Model.BankReconciliationDetails[i].ProcessStatusKey == DbConstants.ProcessStatus.Approved)
+                            {
+                                <a match class="btn btn-success btn-xs">
+                                    @Model.BankReconciliationDetails[i].Status
+                                </a>
+                            }
+                            else
+                            {
+                                <a match class="btn btn-danger btn-xs">
+                                    @Model.BankReconciliationDetails[i].Status
+                                </a>
+                            }
+                        </div>
+
+                        <div rightitem class="col-5">
+                            <div default-bank-panel>
+                                <div class="card ">
+                                    <div class="card-heading bg-primary text-white p-2 ">
+                                        <div class=" col-9 ">
+                                            @Model.BankReconciliationDetails[i].DefaultParticulars
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <table class="table table-borderless">
+                                            <tbody>
+                                                <tr>
+                                                    <td>@Html.Label(EduSuiteUIResources.Reference + EduSuiteUIResources.Sla + EduSuiteUIResources.Cheque + EduSuiteUIResources.FullColon, htmlAttributes: new { @id = "lblOrderNumber", @class = "form-label" })</td>
+                                                    <td>@Model.BankReconciliationDetails[i].DefaultReferenceKey</td>
+                                                    <td>@Html.Label(EduSuiteUIResources.Date + EduSuiteUIResources.FullColon, htmlAttributes: new { @id = "lblOrderNumber", @class = "form-label" })</td>
+                                                    <td>@string.Format("{0:dd/MM/yyyy}", Model.BankReconciliationDetails[i].DefaultTransactionDate)</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>@Html.Label(EduSuiteUIResources.Amount + EduSuiteUIResources.FullColon, htmlAttributes: new { @id = "lblOrderNumber", @class = "form-label" })</td>
+                                                    <td>@string.Format("{0:G29}", Model.BankReconciliationDetails[i].DefaultAmount)@EduSuiteUIResources.OpenBracket@Model.BankReconciliationDetails[i].DefaultCashFlowTypeName@EduSuiteUIResources.CloseBracket</td>
+                                                    <td>@Html.Label(EduSuiteUIResources.Type + EduSuiteUIResources.FullColon, htmlAttributes: new { @id = "lblOrderNumber", @class = "form-label" })</td>
+                                                    <td>@Model.BankReconciliationDetails[i].DefaultBankTransactionTypeName</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        @*<div class="form-row">
+                                            <div class="col-3 ">
+                                                @Html.Label(EduSuiteUIResources.Reference + EduSuiteUIResources.Sla + EduSuiteUIResources.Cheque + EduSuiteUIResources.FullColon, htmlAttributes: new { @id = "lblOrderNumber", @class = "form-label" })
+                                            </div>
+                                            <div class="col-3 ">
+                                                @Model.BankReconciliationDetails[i].DefaultReferenceKey
+                                            </div>
+                                            <div class="col-2 ">
+                                                @Html.Label(EduSuiteUIResources.Date + EduSuiteUIResources.FullColon, htmlAttributes: new { @id = "lblOrderNumber", @class = "form-label" })
+                                            </div>
+                                            <div class="col-4 ">
+                                                @string.Format("{0:dd/MM/yyyy}", Model.BankReconciliationDetails[i].DefaultTransactionDate)
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="col-3 ">
+                                                @Html.Label(EduSuiteUIResources.Amount + EduSuiteUIResources.FullColon, htmlAttributes: new { @id = "lblOrderNumber", @class = "form-label" })
+                                            </div>
+                                            <div class="col-3 ">
+                                                @string.Format("{0:G29}", Model.BankReconciliationDetails[i].DefaultAmount)@EduSuiteUIResources.OpenBracket@Model.BankReconciliationDetails[i].DefaultCashFlowTypeName@EduSuiteUIResources.CloseBracket
+                                            </div>
+                                            <div class="col-2 ">
+                                                <div class="form-group">
+                                                    @Html.Label(EduSuiteUIResources.Type + EduSuiteUIResources.FullColon, htmlAttributes: new { @id = "lblOrderNumber", @class = "form-label" })
+                                                </div>
+                                            </div>
+                                            <div class="col-4 ">
+                                                @Model.BankReconciliationDetails[i].DefaultBankTransactionTypeName
+                                            </div>
+                                        </div>*@
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+@*<style>
+    [data-repeater-item] .card-body {
+        font-size: 13px;
+    }
+
+
+    [data-repeater-item] .btn-danger {
+        border-radius: 3px !important;
+        border: 1px solid transparent;
+    }
+
+    [data-repeater-item] .btn-primary {
+        border-radius: 3px !important;
+        border: 1px solid transparent;
+    }
+
+    .disablePanel.card-body {
+        background-color: #cdcdcd !important;
+    }
+</style>*@
+
+<script>
+    var jsonData=@(Html.Raw(Json.Encode(Model)));
+    $(document).ready(function () {
+
+        AppCommon.FormatDateInput();
+        //$(".btn-xs").on("click",function(){
+        //    var item=$(this).closest("[data-repeater-item]")
+        //    $(".panel-default",item).show("slide", { direction: "left" }, 1000);
+        //})
+
+    });
+</script>
+

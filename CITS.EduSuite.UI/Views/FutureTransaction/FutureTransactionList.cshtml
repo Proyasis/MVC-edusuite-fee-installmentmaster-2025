@@ -1,0 +1,134 @@
+﻿
+@model CITS.EduSuite.Business.Models.ViewModels.FutureTransactionViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+@using System.Web.Mvc
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Content/TimePickerJS")
+    @Scripts.Render("~/Content/JqueryRepeater")
+
+    @Scripts.Render("~/Scripts/Common")
+    @Scripts.Render("~/Scripts/FutureTransaction")
+    @Scripts.Render("~/Scripts/FutureTransactionPayment")
+    @Scripts.Render("~/Content/momentJS")
+    @Scripts.Render("~/bundles/CitsValidation")
+}
+@{
+    ViewBag.Title = EduSuiteUIResources.FutureTransactions;
+}
+
+<input type="hidden" id="hdnGetFutureTransaction" value="@Url.Action("GetFutureTransaction", "FutureTransaction")" />
+<input type="hidden" id="hdnDeleteFutureTransaction" value="@Url.Action("DeleteFutureTransaction", "FutureTransaction")" />
+<input type="hidden" id="hdnAddEditFutureTransactionPayment" value="@Url.Action("AddEditFutureTransactionPayment", "FutureTransaction", new { id = "" })" />
+<input type="hidden" id="hdnAddEditFutureTransaction" value="@Url.Action("AddEditFutureTransaction", "FutureTransaction")" />
+
+<input type="hidden" id="hdnViewFutureTransaction" value="@Url.Action("ViewFutureTransaction", "FutureTransaction")" />
+<input type="hidden" id="hdnGetStockSlips" value="@Url.Action("GetStockSlips", "RawMaterialStock")" />
+
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-sm-6 col-12">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.FutureTransactions</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 text-right">
+            <a data-modal="" data-href="@Url.Action("AddEditFutureTransaction", "FutureTransaction")" class="btn btn-success btn-sm ">
+                <i class="fa fa-plus-square-o" aria-hidden="true"></i> @EduSuiteUIResources.AddNew @EduSuiteUIResources.BlankSpace @EduSuiteUIResources.FutureTransactions
+            </a>
+        </div>
+    </div>
+</header>
+<section class="section-content mx-sm-3 mx-0">
+    <div class="GridBody">
+
+
+        <div class="grid-nav-bar form-row justify-content-between">
+          @if (Model.Branches.Count == 1)
+          {
+              {
+                  Model.BranchKey = Model.BranchKey == 0 ? (short)Model.Branches.Select(x => x.RowKey).FirstOrDefault() : Model.BranchKey;
+              }
+            @Html.HiddenFor(m => m.BranchKey)
+          }
+          else
+          {
+             
+                <div class="col-12 col-sm-3 col-lg-2 ">
+                    <fieldset class="form-group">
+                        @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Branch, new { @class = "form-control input-control", @InputFor = "lblBranch", @data_live_search = "true" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.BranchKey)
+                        </span>
+                    </fieldset>
+                </div>
+
+
+          }
+            <div class="col-sm-3 col-6">
+                <div class="form-group">
+                    <input id="txtsearch" type="text" name="focus" class="form-control gridSearchTextBox" placeholder="@EduSuiteUIResources.Search@EduSuiteUIResources.BlankSpace @EduSuiteUIResources.FutureTransactions" /> @* Change Search TextBox Placeholder*@
+                </div>
+            </div>
+
+            <div class="col-6">
+                <a class="btn btn-info btn-sm float-right" onclick='window.location.reload()'>
+                    <i class="fa fa-refresh"></i>   Refresh
+                </a>
+
+            </div>
+        </div>
+
+
+        <div class="table-wrapper" id="portletBody">
+            <div class='jqGrid_wrapper overflow-auto'>
+                <table id="grid"></table>
+                <div id="pager"></div>
+            </div>
+        </div>
+
+    </div>
+</section>
+<div id='myModal' class='modal fade in'>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id='myModalContent'></div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $("#txtsearch").on("input", function () {
+            FutureTransaction.GetFutureTransaction();
+        });
+
+        $("#iconSpan").click(function () {
+            $('#txtsearch').val('');
+            FutureTransaction.GetFutureTransaction();
+        });
+        $("#BranchKey").on("change", function () {
+            FutureTransaction.GetFutureTransaction();
+        });
+        FutureTransaction.GetFutureTransaction();
+
+       
+    });
+</script>
+
+<script type="text/javascript">
+    $(function () {
+        $.ajaxSetup({ cache: false });
+        $("a[data-modal]").on("click", function (e) {
+            e.preventDefault();
+            FutureTransaction.EditPopup($(this));
+        });
+    });
+</script>

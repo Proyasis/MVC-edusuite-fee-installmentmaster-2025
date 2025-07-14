@@ -1,0 +1,249 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.EmployeeSalaryAdvanceViewModel
+
+@using System.Web.Mvc
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Content/Select2JS")
+    @Scripts.Render("~/Scripts/PrintInvoice")
+    @Scripts.Render("~/Scripts/PaymentWindow")
+    @Scripts.Render("~/Scripts/EmployeeSalaryAdvance")
+    @Scripts.Render("~/Scripts/EmployeeAdvanceReturn")
+    @Scripts.Render("~/Scripts/Common")
+    @Scripts.Render("~/Content/momentJS")
+}
+
+
+
+<input type="hidden" id="hdnGetEmployeeSalaryAdvances" value="@Url.Action("GetEmployeeSalaryAdvance", "EmployeeSalary")" />
+<input type="hidden" id="hdnGetEmployeeAdvanceReturn" value="@Url.Action("GetEmployeeAdvanceReturn", "EmployeeSalary")" />
+<input type="hidden" id="hdnAddEditEmployeeSalaryAdvance" value="@Url.Action("AddEditEmployeeSalaryAdvance", "EmployeeSalary")" />
+<input type="hidden" id="hdnAddEditEmployeeAdvanceReturn" value="@Url.Action("AddEditEmployeeAdvanceReturn", "EmployeeSalary")" />
+<input type="hidden" id="hdnDeleteEmployeeSalaryAdvance" value="@Url.Action("DeleteEmployeeSalaryAdvance", "EmployeeSalary")" />
+<input type="hidden" id="hdnDeleteEmployeeAdvanceReturn" value="@Url.Action("DeleteEmployeeAdvanceReturn", "EmployeeSalary")" />
+<input type="hidden" id="hdnFillEmployees" value="@Url.Action("FillEmployees", "EmployeeSalary")" />
+<input type="hidden" id="hdnPrintReciept" value="@Url.Action("PrintReciept", "PrintInvoice")" />
+<input type="hidden" id="hdnVoucherPath" value=@Url.Content("~/UploadedFiles/InvoiceTemplate/Voucher.html") />
+<input type="hidden" id="hdnDummyReceiptPath" value=@Url.Content("~/UploadedFiles/InvoiceTemplate/Receipt.html") />
+<input type="hidden" id="hdnReceiptPath" value=@Url.Content("~/UploadedFiles/InvoiceTemplate/Receipt.html") />
+
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-sm-6 col-12">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.Salary@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Advance</h3>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 text-right">
+            <a id="addEditEmployeeSalaryAdvance" data-href="@Url.Action("AddEditEmployeeSalaryAdvance", "EmployeeSalary", new { id = Model.PaymentKey })" class="btn btn-success btn-sm ">
+                <i class="fa fa-plus-square-o"></i>
+                <span>@EduSuiteUIResources.New @EduSuiteUIResources.BlankSpace @EduSuiteUIResources.Salary@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Advance</span>
+            </a>
+
+
+        </div>
+    </div>
+</header>
+
+<section class="section-content mx-sm-3 mx-0">
+    <div class="GridBody">
+        <div class="form-master">
+            <div class="form-row tabs-section mb-2">
+                <div class="tabs-section-nav">
+                    <ul id="tab-componets" class="nav nav-tabs" role="tablist">
+                        <li class="nav-item"><a data-toggle="tab" data-val="1" href="#" aria-expanded="true" class="nav-link active"><span class="nav-link-in">@EduSuiteUIResources.Advance </span></a></li>
+                        <li class="nav-item"><a data-toggle="tab" data-val="0" href="#" aria-expanded="true" class="nav-link"><span class="nav-link-in">@EduSuiteUIResources.Return</span></a></li>
+
+                    </ul>
+                </div>
+            </div>
+            <div class="grid-nav-bar form-row">
+                @if (Model.Branches.Count == 1)
+                {
+                    <div class="col-lg-2 col-sm-4 col-6">
+                        @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), new { @class = "input-control form-control form-control-sm form-control-smSearchDropDown", @InputFor = "lblBranch", @id = "ddlBranch" })
+                    </div>
+                }
+                else
+                {
+                    <div class="col-lg-2 col-sm-4 col-6">
+                        @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Branch, new { @class = "input-control form-control form-control-sm form-control-smSearchDropDown", @InputFor = "lblBranch", @id = "ddlBranch" })
+                    </div>
+                }
+
+                <div class="col-lg-2 col-sm-4 col-6">
+                    @Html.DropDownListFor(m => m.EmployeeKey, new SelectList(Model.Employees, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Employee, new { @class = "input-control form-control form-control-sm", @InputFor = "lblEmployee", @id = "ddlEmployee" })
+                </div>
+
+                <div class="col-lg-2 col-sm-4 col-6">
+                    <div class="form-group">
+                        @Html.TextBox("txtSearchFromDate", "", new { @class = "input-control form-control form-control-sm", @data_inputmask = "'alias': 'dd/mm/yyyy'", @data_input_type = "date", @placeholder = EduSuiteUIResources.FromDate })
+
+                    </div>
+                </div>
+                <div class="col-lg-2 col-sm-4 col-6">
+                    <div class="form-group">
+
+                        @Html.TextBox("txtSearchToDate", "", new { @class = "input-control form-control form-control-sm", @data_inputmask = "'alias': 'dd/mm/yyyy'", @data_input_type = "date", @placeholder = EduSuiteUIResources.ToDate })
+
+                    </div>
+                </div>
+
+                <div class="col-sm-4 col-6">
+                    <a class="btn btn-info btn-sm float-right " onclick='window.location.reload()'>
+                        <i class="fa fa-refresh"></i>   Refresh
+                    </a>
+                </div>
+
+                <div class="pull-right">
+                    <button id="btnExport" type="button" class="btn btn-success btn-sm" title="Export" data-type="E"><i class="fa fa-file-excel-o"></i></button>
+                    <button id="btnPrint" type="button" class="btn btn-primary btn-sm" title="Print" data-type="P"><i class="fa fa-print"></i></button>
+                </div>
+            </div>
+
+
+            <div class="table-wrapper">
+
+                <div class="jqGrid_wrapper overflow-auto">
+                    <table id="grid"></table>
+                    <div id="pager"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div id='myModal' class='modal fade in'>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id='myModalContent'></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        //AppCommon.FormatSelect2();
+        AppCommon.FormatDateInput();
+
+        $("#tab-componets li a[data-val='1']").closest("li").addClass('active');
+
+        id = $("#ddlBranch");
+        EmployeeSalaryAdvance.GetEmployeesByBranchId($("#ddlBranch").val(), $("#ddlEmployee"));
+        $("#iconSpan").click(function () {
+            setGrid()
+        });
+        $("#txtSearchAccountHead").on("input", function () {
+            setGrid()
+        });
+
+        $("#ddlBranch").on("change", function () {
+            EmployeeSalaryAdvance.GetEmployeesByBranchId($(this).val(), $("#ddlEmployee"));
+            setGrid()
+        });
+
+        $("#ddlEmployee").on("change", function () {
+            setGrid()
+        });
+        $("#txtSearchFromDate,#txtSearchToDate").on("changeDate", function (e) {
+            setGrid()
+        }).on("change", function () {
+            setGrid()
+        });
+
+        setGrid()
+
+        $(window).on("resize", function () {
+            var $grid = $("#grid"),
+                newWidth = $grid.closest(".ui-jqgrid").parent().width();
+            $grid.jqGrid("setGridWidth", newWidth, true);
+        });
+        var obj = { ContainerId: $("#grid") };
+        $("#btnExport,#btnPrint").on("click", function () {
+            SetExportData(obj)
+            AppCommon.ExportPrintAjax(obj, $(this).data("type"));
+        });
+        setURL()
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            $('#grid').jqGrid("GridUnload")
+            setGrid()
+            setURL();
+        });
+
+    });
+    function SetExportData(obj) {
+
+        obj.Title = '@EduSuiteUIResources.Salary@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Advance' + ($("#ddlEmployee").val() ? ' - ' + $("#ddlEmployee").find("option:selected").text() : ($("#ddlBranch").val() ? ' - ' + $("#ddlBranch").find("option:selected").text() : ""));
+        obj.SubTitle = $("#txtSearchFromDate").val() === $("#txtSearchToDate").val() ? $("#txtSearchFromDate").val() : $("#txtSearchFromDate").val() + ($("#txtSearchFromDate").val() ? " - " + $("#txtSearchToDate").val() : $("#txtSearchToDate").val());
+        obj.FileName = (obj.Title + (obj.SubTitle ? ("_" + obj.SubTitle) : "")).replace(/-/g, '_')
+        obj.ajaxUrl = $("#hdnGetEmployeeSalaryAdvances").val();
+        obj.ajaxType = "Get";
+        obj.ajaxData = {
+            BranchKey: $('#ddlBranch').val(),
+            EmployeeKey: $('#ddlEmployee').val(),
+            FromDate: $('#txtSearchFromDate').val(),
+            ToDate: $('#txtSearchToDate').val(),
+            sidx: 'PaymentKey',
+            sord: 'desc',
+            page: 0,
+            rows: 0
+        }
+    }
+
+    function setGrid() {
+        var Key = $("#tab-componets li a.active").data('val');
+        if (Key == 1) {
+            $("#hdnReceiptPath").val($("#hdnVoucherPath").val())
+            EmployeeSalaryAdvance.GetEmployeeSalaryAdvance();
+            
+        }
+        else
+        {
+            $("#hdnReceiptPath").val($("#hdnDummyReceiptPath").val())
+            EmployeeAdvanceReturn.GetEmployeeAdvanceReturn();
+            
+        }
+    }
+
+    function setURL() {
+        var obj = {};
+        obj.Key = $("#tab-componets li a.active").data('val');
+        if (obj.Key == 1) {
+            $("#addEditEmployeeSalaryAdvance").html("Salary Advance")
+            $("#addEditEmployeeSalaryAdvance").attr("data-href", $("#hdnAddEditEmployeeSalaryAdvance").val());
+        }
+        else {
+            $("#addEditEmployeeSalaryAdvance").html("Advance Return")
+            $("#addEditEmployeeSalaryAdvance").attr("data-href", $("#hdnAddEditEmployeeAdvanceReturn").val());
+        }
+    }
+</script>
+
+
+<script type="text/javascript">
+
+
+    $(function () {
+        $.ajaxSetup({ cache: false });
+
+        $("#addEditEmployeeSalaryAdvance").on("click", function (e) {
+            e.preventDefault();
+            var Key = $("#tab-componets li a.active").data('val');
+            if (Key == 1) {
+                EmployeeSalaryAdvance.EditPopup($(this));
+            }
+            else {
+                EmployeeAdvanceReturn.EditPopup($(this));
+            }
+        });
+
+    });
+
+
+</script>

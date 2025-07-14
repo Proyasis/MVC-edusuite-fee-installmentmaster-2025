@@ -1,0 +1,296 @@
+﻿@using System.Web.Mvc
+@model CITS.EduSuite.Business.Models.ViewModels.MemberPlanDetailsViewModel
+@using CITS.EduSuite.UI
+@using CITS.EduSuite.Business.Models.ViewModels
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Content/JqueryRepeater")
+    @Scripts.Render("~/Scripts/Common")
+    @Scripts.Render("~/bundles/CitsValidation")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Scripts/MemberPlanDetails")
+}
+
+<input type="hidden" id="hdnGetMemberDetails" value="@Url.Action("GetMemberDetails", "MemberPlanDetails")" />
+<input type="hidden" id="hdnMemberPlanDetailsList" value="@Url.Action("MemberPlanDetailsList", "MemberPlanDetails")" />
+
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-12">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.Add@EduSuiteUIResources.Hyphen@EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.MemberPlanDetails</h3>
+                        <ol class="breadcrumb breadcrumb-simple mb-2 float-sm-right">
+                            <li><a href="#" onclick="location.href='@Url.Action("MemberPlanDetailsList", "MemberPlanDetails")' ">@EduSuiteUIResources.MemberPlanDetails</a></li>
+                            <li class="active">@EduSuiteUIResources.Add@EduSuiteUIResources.Hyphen@EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.MemberPlanDetails</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<section class="section-content mx-sm-3 mx-0">
+    <div class="form-master">
+
+        @using (Html.BeginForm("AddEditMemberPlans", "MemberplanDetails", FormMethod.Post, new { @id = "frmAddEditMemberPlans" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            @Html.HiddenFor(m => m.PageIndex)
+            @Html.HiddenFor(m => m.PageSize)
+            <div class=" form-row">
+
+
+
+                <div id="tab-ApplicationType" class="form-row tabs-section ml-2">
+                    <div class="tabs-section-nav">
+                        <ul class="nav nav-tabs nav-pills with-arrow  text-center" role="tablist">
+                            @for (int i = 0; i < Model.ApplicationTypes.Count; i++)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-uppercase font-weight-bold mr-sm-3 rounded-0 border" href="#@Model.ApplicationTypes[i].RowKey" data-val="@Model.ApplicationTypes[i].RowKey" role="tab" data-toggle="tab">
+                                        <span class="nav-link-in">
+                                            @Model.ApplicationTypes[i].Text
+                                        </span>
+                                    </a>
+                                </li>
+                                @Html.HiddenFor(m => m.ApplicationTypeKey)
+                            }
+
+                        </ul>
+                    </div>
+                </div>
+
+
+
+                @if (Model.Branches.Count == 1)
+                {
+                    {
+                        Model.BranchKey = Model.BranchKey == 0 ? (short)Model.Branches.Select(x => x.RowKey).FirstOrDefault() : Model.BranchKey;
+                    }
+                    @Html.HiddenFor(m => m.BranchKey)
+                }
+                else
+                {
+                    if (DbConstants.Role.AdminUserTypes.Contains(DbConstants.User.RoleKey))
+                    {
+                        <div class="col-6 col-sm-3 col-lg-2 ">
+                            <fieldset class="form-group">
+                                @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Branch, new { @class = "form-control input-control", @InputFor = "lblBranch", @data_live_search = "true" })
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => m.BranchKey)
+                                </span>
+                            </fieldset>
+                        </div>
+
+                    }
+                    else
+                    {
+                        <div class="col-6 col-sm-3 col-lg-2">
+                            <fieldset class="form-group">
+                                @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), new { @class = "form-control input-control", @InputFor = "lblBranch" })
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => m.BranchKey)
+                                </span>
+                            </fieldset>
+                        </div>
+                    }
+
+                }
+
+                <div class="col-lg-2 col-sm-4 col-6 DivStudent">
+                    <div class="form-group">
+                        @Html.DropDownListFor(m => m.CourseKey, new SelectList(Model.Courses, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Course, new { @class = "form-control input-control autohide-select", @data_plugin_type = "select2", @data_live_search = "true" })
+                    </div>
+                </div>
+                <div class="col-lg-2 col-sm-4 col-6 DivStudent">
+                    <div class="form-group">
+                        @Html.DropDownListFor(m => m.UniversityMasterKey, new SelectList(Model.Universities, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.AffiliationsTieUps, new { @class = "form-control input-control autohide-select", @data_plugin_type = "select2", @data_live_search = "true" })
+                    </div>
+                </div>
+                <div class="col-lg-2 col-sm-4 col-6 DivStudent">
+                    <div class="form-group">
+                        @Html.DropDownListFor(m => m.BatchKey, new SelectList(Model.Batches, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Batch, new { @class = "form-control input-control autohide-select", @data_plugin_type = "select2", @data_live_search = "true" })
+                    </div>
+                </div>
+
+                <div class="col-lg-2 col-sm-4 col-6">
+                    <input id="txtsearch" type="text" name="focus" class="form-control gridSearchTextBox" placeholder="@EduSuiteUIResources.Search " />
+                    <span id="iconSpan" class="iconSpan"><i class="fa fa-times-circle" aria-hidden="true"></i></span>
+                </div>
+            </div>
+            <div class="form-row mt-3">
+                <div class="col-md-5">
+                    <h6>
+                        @EduSuiteUIResources.TotalRecords  <span id="TotalRecords" class="label label-info"></span>
+
+                    </h6>
+                </div>
+                <div class="col-md-7 float-right">
+                    <div id="page-selection-up" class="float-right m-0"></div>
+                </div>
+            </div>
+            <div id="dvStudentsList"></div>
+
+            <div class="row mt-2">
+                <div class="form-group">
+                    <div class="col-12">
+                        <fieldset class="form-group">
+                            <input type="button" value="@EduSuiteUIResources.Save" id="btnSave" class="btn btn-sm btn-success mx-1" />
+                            <input type="button" value="@EduSuiteUIResources.Cancel" onclick="location.href='@Url.Action("AttendanceList", "Attendance")' " class="btn btn-sm btn-danger mx-1" />
+                        </fieldset>
+                        <div class="col-12 paddingNone">
+                            <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        }
+    </div>
+
+
+</section>
+
+
+
+
+<script>
+    var jsonData=@(Html.Raw(Json.Encode(Model)));
+    $(document).ready(function () {
+        AppCommon.FormatInputCase();
+
+        AppCommon.FormatDateInput();
+        AppCommon.CustomRemoteMethod();
+        AppCommon.FormatMonthInput();
+
+        $("#tab-ApplicationType li:first-child a").addClass('active');
+
+        var tabkey = $("#tab-ApplicationType li a.active").data('val');
+        checkApplicationType(tabkey);
+        MemberPlanDetails.LoadData(1,true);
+
+        $('#tab-ApplicationType a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            $("#CourseKey,#UniversityMasterKey,#BatchKey").each(function () {
+                $(this).val("")
+            });
+            var tabkey = $("#tab-ApplicationType li a.active").data('val');
+            checkApplicationType(tabkey);
+            MemberPlanDetails.LoadData(1, true);
+        });
+
+        $("#BranchKey,#CourseKey,#UniversityMasterKey,#BatchKey").on("change", function () {
+            MemberPlanDetails.LoadData(1, true);
+        });
+        $("#txtsearch").on("input", function () {
+            MemberPlanDetails.LoadData(1, true);
+        });
+
+        $("#iconSpan").click(function () {
+            $('#txtsearch').val('');
+            MemberPlanDetails.LoadData(1, true);
+        });
+
+        $("#btnSave").on("click",function(){
+
+            MemberPlanDetails.FormSubmitMemberPlan();
+        })
+    });
+
+    var checkApplicationType = function (type) {
+        
+        switch (parseInt(type || 0)) {
+            case 2:
+                $(".DivStudent").show();
+                $("#lblMemberType").html("Student")
+                $("#lblApplicationtype").html("Course")
+
+                break;
+            default:
+                $(".DivStudent").hide();
+                $("#lblMemberType").html("Employee")
+                $("#lblApplicationtype").html("Designation")
+
+                break;
+        }
+    }
+</script>
+
+
+<style>
+
+
+
+    .with-arrow .nav-link.active {
+        position: relative;
+    }
+
+        .with-arrow .nav-link.active::after {
+            content: '';
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 6px solid #2b90d9;
+            position: absolute;
+            bottom: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: block;
+        }
+
+    /* lined tabs */
+
+    .lined .nav-link {
+        border: none;
+        border-bottom: 3px solid transparent;
+    }
+
+        .lined .nav-link:hover {
+            border: none;
+            border-bottom: 3px solid transparent;
+        }
+
+        .lined .nav-link.active {
+            background: none;
+            color: #555;
+            border-color: #2b90d9;
+        }
+
+
+    body {
+        background: #304352;
+        background: -webkit-linear-gradient(to right, #304352, #d7d2cc);
+        background: linear-gradient(to right, #304352, #d7d2cc);
+        min-height: 100vh;
+    }
+
+    .nav-pills .nav-link {
+        color: #555;
+    }
+
+    .text-uppercase {
+        letter-spacing: 0.1em;
+    }
+
+    .tabs-section-nav .nav-link.active .nav-link-in {
+        border-bottom-color: #064475;
+    }
+
+    .tabs-section-nav .nav-link-in {
+        border-bottom: solid 4px transparent;
+        border-top: none;
+    }
+    .nav.nav-pills .nav-item
+    {
+        margin-right:0px!important;
+    }
+</style>
+

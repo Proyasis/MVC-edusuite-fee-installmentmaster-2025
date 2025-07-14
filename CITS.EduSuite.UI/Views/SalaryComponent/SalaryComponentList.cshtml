@@ -1,0 +1,136 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.SalaryComponentViewModel
+
+@using System.Web.Mvc
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+
+    @Scripts.Render("~/Scripts/SalaryComponent")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Content/Select2JS")
+}
+
+<input type="hidden" id="hdnGetSalaryComponentsByType" value="@Url.Action("GetSalaryComponentsByType", "SalaryComponent")" />
+<input type="hidden" id="hdnDeleteSalaryComponent" value="@Url.Action("DeleteSalaryComponent", "SalaryComponent")" />
+<input type="hidden" id="hdnGetEmployeesByBranchId" value="@Url.Action("GetEmployeesByBranchId", "EmployeeLoan")" />
+
+
+<div class="navbar navbar-default navbar-component navbar-xs">
+    <div class="col-sm-12 Page_Head_Master">
+        <div class="col-sm-6 Text_Left">
+            <label class="Page_Heading  ">@EduSuiteUIResources.SalaryComponent</label>
+        </div>
+
+        <div class="col-sm-6 Text_Right">
+            <a id="addEditSalaryComponent" data-href="@Url.Action("AddEditSalaryComponent", "SalaryComponent", new { id = Model.RowKey })" data-modal="" class="btn btn-danger btn-sm">
+            <i class="fa fa-plus" aria-hidden="true"></i>  @EduSuiteUIResources.AddSalaryComponent @*Change Add new button Here *@
+            </a>
+        </div>
+
+
+    </div>
+    <ul class="nav navbar-nav visible-xs-block">
+        <li class="full-width text-center">
+            <a data-target="#navbar-filter1" data-toggle="collapse" class="collapsed" aria-expanded="false">
+                <i class="icon-menu7"></i>
+            </a>
+        </li>
+    </ul>
+
+
+
+    <div class="grid-nav-bar col-sm-12">
+        <div class="col-sm-3">
+            @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Branch, new { @class = "input-control form-control form-control-sm form-control-sm", @InputFor = "lblBranch", @id = "ddlBranch" })
+        </div>
+        <div class="col-sm-3">
+            @Html.DropDownListFor(m => m.EmployeeKey, new SelectList(Model.Employees, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Employee, new { @class = "input-control form-control form-control-sm", @data_plugin_type = "select2", @InputFor = "lblEmployee", @id = "ddlEmployee" })
+        </div>
+        <div class="col-sm-6 F_Right">
+            <a class="btn btn-info btn-sm F_Right btn_Refresh" onclick='SalaryComponent.GetSalaryComponentByType();'>
+                <i class="fa fa-refresh"></i>   Refresh
+            </a>
+        </div>
+
+    </div>
+
+    <div class="col-sm-12 salaryComp_tab">
+        <div id="tab-componets" class="navbar-collapse collapse">
+            <ul class="nav nav-tabs MyTab">
+                @for (var i = 0; i < Model.SalaryComponentTypes.Count(); i++)
+                {
+                    if (Model.SalaryComponentTypes[i].GroupName == "A")
+                    {
+                        <li><a data-toggle="tab" data-val="@Model.SalaryComponentTypes[i].RowKey" href="#" aria-expanded="true">@Model.SalaryComponentTypes[i].Text@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.OpenBracket@EduSuiteUIResources.PlusSymbol@EduSuiteUIResources.CloseBracket</a></li>
+                    }
+                    else
+                    {
+                        <li><a data-toggle="tab" data-val="@Model.SalaryComponentTypes[i].RowKey" href="#" aria-expanded="true">@Model.SalaryComponentTypes[i].Text@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.OpenBracket@EduSuiteUIResources.MinusSymbol@EduSuiteUIResources.CloseBracket</a></li>
+                    }
+                }
+
+            </ul>
+        </div>
+    </div>
+
+    <div id="tabContent" class="tab-content min-content-height">
+
+
+        <div class="GridBody">
+
+
+
+            <div class="portlet-body" id="portletBody">
+                <div class='table-scrollable'>
+                    <table id="grid"></table>
+                    <div id="pager"></div>
+                </div>
+            </div>
+
+
+
+        </div>
+
+
+
+
+    </div>
+</div>
+
+
+
+
+<script>
+    $(document).ready(function () {
+        $("#tab-componets li:first-child").addClass('active');
+        SalaryComponent.GetSalaryComponentByType();
+        setURL();
+        AppCommon.FormatSelect2();
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            SalaryComponent.GetSalaryComponentByType();
+            setURL();
+        });
+        $("#ddlEmployee").on("change", function () {
+            SalaryComponent.GetSalaryComponentByType();
+            setURL();
+        });
+        $("#ddlBranch").on("change", function () {
+            SalaryComponent.GetEmployeesByBranchId($(this).val(), $("#ddlEmployee"));
+            SalaryComponent.GetSalaryComponentByType();
+            setURL();
+        });
+        AppCommon.EditGridPopup($("#addEditSalaryComponent"));
+        $(window).on("resize", function () {
+            var $grid = $("#grid"),
+            newWidth = $grid.closest(".ui-jqgrid").parent().width();
+            $grid.jqGrid("setGridWidth", newWidth, true);
+        });
+    });
+    function setURL() {
+        var obj = {};
+        obj.ComponentTypeKey = $("#tab-componets li.active a").attr('data-val');
+        obj.BranchKey = $("#ddlBranch").val();
+        obj.EmployeeKey = $("#ddlEmployee").val();
+        SalaryComponent.SetUrlParam($("#addEditSalaryComponent"), obj);
+    }
+</script>

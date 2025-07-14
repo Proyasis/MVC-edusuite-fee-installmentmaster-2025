@@ -1,0 +1,189 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.BuildingViewModel
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Content/JqueryRepeater")
+    @Scripts.Render("~/Scripts/Common")
+    @Scripts.Render("~/Scripts/BuildingDetails")
+}
+
+<input type="hidden" id="hdnGetRoomDetails" value="@Url.Action("GetRoomDetails", "Building")" />
+
+<input type="hidden" id="hdnDeleteBuildingDetails" value="@Url.Action("DeleteBuildingDetails", "Building")" />
+<input type="hidden" id="hdnBuildingDetailsList" value="@Url.Action("BuildingDetailsList", "Building")" />
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-12">
+            <div class="tbl">
+                <div class="tbl-row  px-1">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.Add@EduSuiteUIResources.Hyphen@EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Building</h3>
+                        <ol class="breadcrumb breadcrumb-simple mb-2 float-sm-right">
+                            <li><a href="#" onclick="location.href='@Url.Action("BuildingDetailsList", "Building")' ">@EduSuiteUIResources.Building</a></li>
+                            <li class="active">@EduSuiteUIResources.Add@EduSuiteUIResources.Hyphen@EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Building</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="section-content mx-sm-3 mx-0">
+    <div class="form-master">
+
+        @using (Html.BeginForm("AddEditBuildingDetails", "Building", FormMethod.Post, new { @id = "frmBuildingDetails" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            @Html.HiddenFor(m => m.RowKey)
+            <div class="form-row">
+
+
+
+                <div class="col-lg-3 col-4">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.Building + EduSuiteUIResources.Name, htmlAttributes: new { @id = "lblFeeDate", @class = "form-label" })
+
+                        @Html.TextBoxFor(m => m.BuildingMasterName, new { @class = "form-control input-control", @data_convert = "uppercase" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.BuildingMasterName)
+                        </span>
+                    </fieldset>
+
+                </div>
+                <div class="col-lg-2 col-4">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.RoomCount, htmlAttributes: new { @id = "lblFeeDate", @class = "form-label" })
+
+                        @Html.TextBoxFor(m => m.RoomCount, new { @class = "form-control input-control", @onClick = "this.setSelectionRange(0, this.value.length)" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.RoomCount)
+                        </span>
+                    </fieldset>
+                </div>
+                <div class="col-2">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.IsActive, new { @class = "form-label" })
+
+                        <div class="switch-check my-2">
+                            @Html.CheckBoxFor(m => m.IsActive, new { @class = "switch-input" })
+                            <div class="switch-label redgreen" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                            <div class="switch-handle"></div>
+                        </div>
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.IsActive)
+                        </span>
+                    </fieldset>
+
+                </div>
+
+            </div>
+            <div id="dvStudentsList">@Html.Action("GetRoomDetails", "Building", new { id = Model.RowKey })</div>
+
+
+    <div class="row mt-2">
+        <div class="form-group">
+            <div class="col-12">
+                <fieldset class="form-group">
+                    <input type="button" value="@EduSuiteUIResources.Save" id="btnSave" class="btn btn-sm btn-success mx-1" />
+                    <input type="button" value="@EduSuiteUIResources.Cancel" onclick="location.href='@Url.Action("BuildingDetailsList", "Building")' " class="btn btn-sm btn-danger mx-1" />
+                </fieldset>
+                <div class="col-12 paddingNone">
+                    <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+        }
+    </div>
+</section>
+<script>
+    var jsonData=@(Html.Raw(Json.Encode(Model)));
+
+    $(document).ready(function () {
+        AppCommon.FormatInputCase()
+
+
+        $("[data-repeater-list]").find("input,select,textarea").each(function () {
+            $(this).attr("name", "BuildingDetails" + $(this).attr("name"));
+            $(this).attr("id", $(this).attr("name"));
+        });
+
+        //BuildingDetails.GetBuildingAdvanceDetail(jsonData);
+        // BuildingDetails.LoadData(jsonData);
+
+        AppCommon.CustomRepeaterRemoteMethod();
+
+        $("#RoomCount").on('change',function()
+        {
+
+            //var count=0;
+            //var rowcount= $(this).val();
+            //$("[data-repeater-list]").find("input[name*=RowKey]").each(function () {
+
+            //    if($(this).val()!="0")
+            //    {
+            //        count++;
+            //    }
+            //});
+
+            //if(count>rowcount)
+            //{
+            //    $("#RoomCount").val(count)
+            //}
+            //else
+            //{
+            //    BuildingDetails.LoadData();
+            //}
+
+
+
+            
+            var count = 0;
+            var countS = 0;
+            var rowcount = $(this).val();
+            if (rowcount == "0" || rowcount == "") {
+                rowcount = "1";
+                $("#RoomCount").val(rowcount);
+            }
+            else if (rowcount > 10) {
+                rowcount = "10";
+                $("#AttendanceTypeCount").val(rowcount);
+            }
+            if ($.isNumeric(rowcount)) {
+
+                count = $("[data-repeater-list]").find("input[id*=RowKey]").filter(function () {
+                    return this.value != 0;
+                }).length;
+
+                $("[data-repeater-list]").find("input[name*=RowKey]").each(function () {
+
+                    if ($(this).val() != "0") {
+                        countS++;
+                    }
+                });
+
+
+                if (count > rowcount) {
+                    $("#RoomCount").val(count)
+                }
+                else {
+                   
+                    BuildingDetails.LoadData();
+                }
+            }
+
+        });
+
+        $("#btnSave").click(function(){
+            BuildingDetails.FormSubmit($(this));
+        });
+    });
+
+
+</script>

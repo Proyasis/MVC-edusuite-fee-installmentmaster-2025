@@ -1,0 +1,49 @@
+﻿
+<div class="col-xs-12 col-md-12">
+    <table class="test-table table">
+        <tbody>
+            <tr>
+                <td class="bg-transparent border-0 w-25"></td>
+                {{#Modules}}
+                <td class="p-0 ">
+                    <div class="test-table-item">
+                        <div class="test-table-item-head {{color}}">
+                            <i class="fa {{icon}} fa-2x"></i>
+                            <p>{{TestName}}</p>
+
+                        </div>
+
+                    </div>
+                </td>
+                {{/Modules}}
+              
+            </tr>
+            {{#Applications}}
+           
+            {{#ExamTests}}
+            <tr class="test-table-list">
+                <td>{{../ApplicantName}}</td>
+               {{#ExamModules}}
+                <td>
+                    {{#if TotalScore}}
+                    <a style="cursor:pointer" onclick="TestPaper.ProcessValuation('{{../TestKey}}','{{ModuleKey}}','{{../../ApplicantKey}}')">{{G29 TotalScore}}</a>
+                    {{else}}
+                    {{#if ExamTestSectionKey}}
+                    <button type="button" class="btn btn-sm btn-primary" onclick="TestPaper.ProcessValuation('{{../TestKey}}','{{ModuleKey}}','{{../../ApplicantKey}}')">
+                        Process
+                    </button>
+                    {{else}}
+                    Not Attended
+                    {{/if}}
+                    {{/if}}
+                </td>
+                {{/ExamModules}}
+               
+            </tr>
+            {{/ExamTests}}
+            {{/Applications}}
+
+
+        </tbody>
+    </table>
+</div>

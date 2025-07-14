@@ -1,0 +1,84 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.EmployeePersonalViewModel
+@using CITS.EduSuite.UI
+
+@section scripts{
+
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/Scripts/Common")
+    @Scripts.Render("~/bundles/CitsValidation")
+    @Scripts.Render("~/Content/Select2JS")
+    @Scripts.Render("~/Content/JqueryRepeater")
+    @Scripts.Render("~/Scripts/EmployeeClassAllocation")
+    @Scripts.Render("~/Content/DatePickerJS")
+
+}
+<input type="hidden" id="hdnDeleteApplicationFeeInstallment" value="@Url.Action("DeleteFeeInstallment", "EmployeeClassAllocation")" />
+<input type="hidden" id="hdnUrl" value="@Url.Action("EmployeeClassDetails", "EmployeeClassAllocation")" />
+<input type="hidden" id="hdnEmployeeClass" value="@Url.Action("EmployeeClass", "EmployeeClassAllocation", new { id = "" })" />
+<input type="hidden" id="hdnAutoCompleteEmployeeCode" value="@Url.Action("AutoCompleteEmployeeCode", "SelectList")" />
+
+
+    @Html.HiddenFor(m => Model.EmployeeKey)
+    <header class="section-header">
+        <div class="row justify-content-between px-1">
+            <div class="col-12">
+                <div class="tbl">
+                    <div class="tbl-row">
+                        <div class="tbl-cell">
+                            <h3>@EduSuiteUIResources.Employee@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.ClassAllocation</h3>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <section class="section-content mx-sm-3 mx-0">
+        <div class="form-master">
+            <div class="form-row ">
+                <div class="col-12 col-sm-4 col-lg-2">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.Employee + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Code, htmlAttributes: new { @id = "lblEmployeecode", @class = "form-label" })
+
+                        @Html.TextBox("EmployeeCode", "", new { @class = "form-control input-control", @InputFor = "lblAdmissionNo", @data_plugin_type = "autocomplete", @data_url = Url.Action("AutoCompleteEmployeeCode", "SelectList") })
+
+                    </div>
+                </div>
+            </div>
+
+            <div id="DivEmployeeDetails">
+
+
+            </div>
+
+
+
+        </div>
+    </section>
+
+
+<script>
+    var jsonData=@(Html.Raw(Json.Encode(Model)));
+
+
+    $(document).ready(function () {
+
+        AppCommon.FormatInputCase();
+
+        AppCommon.FormatDateInput();
+        AppCommon.CustomRemoteMethod();
+
+        if ($("#EmployeeKey").val())
+        EmployeeClassAllocation.LoadData();
+
+        AppCommon.FormatAutoComplete();
+        var emp = $("#EmployeeCode");
+        $("#EmployeeCode").on("change", function () {
+
+            EmployeeClassAllocation.LoadData();
+
+        });
+    });
+
+</script>

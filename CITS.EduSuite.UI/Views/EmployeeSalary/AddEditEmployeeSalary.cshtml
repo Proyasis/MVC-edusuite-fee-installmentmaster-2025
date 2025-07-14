@@ -1,0 +1,216 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.EmployeeSalaryMasterViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Content/Select2JS")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Content/JqueryRepeater")
+    @Scripts.Render("~/Content/ExcelSheetJS")
+    @Scripts.Render("~/Scripts/EmployeeSalary")
+    @Scripts.Render("~/Scripts/PaymentWindow")
+    @Scripts.Render("~/bundles/CitsValidation")
+    @*@Scripts.Render("~/Content/Mustache")*@
+    @Scripts.Render("~/Content/momentJS")
+
+
+}
+<input type="hidden" id="hdnAddEditEmployeeSalary" value="@Url.Action("AddEditEmployeeSalary", "EmployeeSalary", new { id=""})" />
+<input type="hidden" id="hdnDeleteEmployeeSalaryDetail" value="@Url.Action("DeleteEmployeeSalaryDetail", "EmployeeSalary" )" />
+<input type="hidden" id="hdnEmployeeSalaryList" value="@Url.Action("EmployeeSalaryList", "EmployeeSalary" )" />
+<input type="hidden" id="hdnGetSalaryComponentsByMonth" value="@Url.Action("GetSalaryComponentsByMonth", "EmployeeSalary" )" />
+<input type="hidden" id="hdnGetOperationByAdditionalComponent" value="@Url.Action(" GetOperationByAdditionalComponent", "EmployeeSalary" )" />
+<input type="hidden" id="hdnAddEditEmployeeSalaryPayment" value="@Url.Action("AddEditEmployeeSalaryPayment", "EmployeeSalary", new {id="" })" />
+<input type="hidden" id="hdnSalaryPaySlip" value=@Url.Action("SalaryPaySlip", "EmployeeSalary") />
+<input type="hidden" id="hdnGetEmployeesByBranchId" value="@Url.Action("GetEmployeesByBranchId", "EmployeeSalary")" />
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-12">
+            <div class="tbl">
+                <div class="tbl-row  px-1">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.Add@EduSuiteUIResources.Hyphen@EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.EmployeeSalary</h3>
+                        <ol class="breadcrumb breadcrumb-simple mb-2 float-sm-right">
+                            <li><a href="#" onclick="location.href='@Url.Action("EmployeeSalaryList","EmployeeSalary")' ">@EduSuiteUIResources.EmployeeSalary</a></li>
+                            <li class="active">@EduSuiteUIResources.Add@EduSuiteUIResources.Hyphen@EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.EmployeeSalary</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="section-content mx-sm-3 mx-0">
+    <div class="form-master">
+        @using (Html.BeginForm("AddEditEmployeeSalary", "EmployeeSalary", FormMethod.Post, htmlAttributes: new { @id = "frmEmployeeSalary" }))
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.ValidationSummary(true)
+
+        <div class="form-row">
+
+            <div class="col-lg-2 col-sm-3 col-6">
+                <div class="form-group ">
+                    @Html.Label(EduSuiteUIResources.Branch, htmlAttributes: new { @id = "lblBranch", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                    @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Branch, new { @class = "input-control form-control form-control-sm form-control-sm", @InputFor = "lblBranch", @data_live_search = "true" })
+                    <span class="form-control-error-text">
+                        @Html.ValidationMessageFor(m => m.BranchKey)
+                    </span>
+                </div>
+            </div>
+
+            <div class="col-lg-2 col-sm-3 col-6">
+
+                <div class="form-group">
+                    @Html.Label(EduSuiteUIResources.Employee, htmlAttributes: new { @id = "lblEmployee", @class = "form-label" })
+                    <div class="required-icon"><div class="text">*</div></div>
+                    @Html.DropDownListFor(m => m.EmployeeKey, new SelectList(Model.Employees, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Employee, new { @class = "input-control form-control form-control-sm", @InputFor = "lblEmployee", @data_live_search = "true" })
+                    <span class="form-control-error-text">
+                        @Html.ValidationMessageFor(m => m.EmployeeKey)
+                    </span>
+                </div>
+            </div>
+            @*<div class="col-lg-2 col-sm-3 col-6">
+                <div class="form-group ">
+                    @Html.Label(EduSuiteUIResources.SalaryType, htmlAttributes: new { @id = "lblSalaryType", @class = "form-label", @for = "SalaryType" })<div class="required-icon"><div class="text">*</div></div>
+                    @Html.DropDownListFor(m => m.SalaryTypeKey, new SelectList(Model.Salarytypelist, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.SalaryType, new { @class = "input-control form-control form-control-sm form-control-sm", @InputFor = "lblBranch", @data_live_search = "true" })
+                    <span class="form-control-error-text">
+                        @Html.ValidationMessageFor(m => m.SalaryTypeKey)
+                    </span>
+                </div>
+            </div>*@
+
+            <div class="col-lg-2 col-sm-3 col-6">
+                <div class="form-group">
+                    
+                    
+                        @Html.Label(EduSuiteUIResources.SalaryyMonth, htmlAttributes: new { @id = "lblSalaryYearMontly", @class = "form-label" })
+                    
+
+                    @*<div id="dailySalary" style="display: none;">
+                        @Html.Label(EduSuiteUIResources.SalaryDaily, htmlAttributes: new { @id = "lblSalaryYearDaily", @class = "form-label" })
+                    </div>*@
+
+                    @*<div id="hourlySalary" style="display: none;">
+                        @Html.Label(EduSuiteUIResources.SalaryHourly, htmlAttributes: new { @id = "lblSalaryYearHouly", @class = "form-label" })
+                    </div>*@
+                    <div class="required-icon"><div class="text">*</div></div>
+                    @Html.TextBoxFor(m => m.SalaryMonth, "{0:MMM yyyy}", new { @class = "input-control form-control form-control-sm w3-white", @data_input_type = "month", @readonly = "readonly", @InputFor = "lblSalaryYear" })
+                    @Html.HiddenFor(m => m.SalaryMonth, "{0:MMM yyyy}")
+
+                    <span class="form-control-error-text">
+                        @Html.ValidationMessageFor(m => m.SalaryMonth)
+                    </span>
+                </div>
+            </div>
+        </div>
+            <div class="card">
+                <div id="dvSalaryDetails">
+                    @Html.Action("EmployeeSalaryDetails", "EmployeeSalary", new { id = Model.SalaryMasterKey, employeeKey = Model.EmployeeKey, branchKey = Model.BranchKey, salaryMonthKey = Model.SalaryMonthKey, salaryYearKey = Model.SalaryYearKey })
+
+                </div>
+                <div class="card-footer p-2">
+                    <div class="form-row mt-2">
+                        <div class="col">
+                            <div class="form-group">
+                                <button type="button" id="btnSave" class="btn btn-sm btn-success mx-1"><i class="fa fa-save"></i> @EduSuiteUIResources.Save</button>
+                            </div>
+                            <div id="salarywarning" class="alert alert-warning" role="alert">
+                                Please set Monthly Salary !..
+                            </div>
+                        </div>                       
+                    </div>
+                </div>
+            </div>
+        }
+
+
+    </div>
+
+</section>
+
+<script>
+
+
+    $(document).ready(function () {
+        AppCommon.FormatSelect2();
+        AppCommon.FormatMonthInput();
+        AppCommon.PaymentPopupWindow($("#btnPaymentWindow"), $("#hdnAddEditEmployeeSalaryPayment").val(), "@EduSuiteUIResources.Add @EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Salary@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Payment");
+        var jsonData=@(Html.Raw(Json.Encode(Model)));
+        if($("#OvertimePerAHour").val()!=0&&$("#OvertimePerAHour").val()!="")
+        {
+            $("#dvOvertime").show()
+        }
+        else
+        {
+            $("#dvOvertime").hide()
+        }
+        @*if (@Model.SalaryTypeKey)==="1" 
+        {
+            debugger;
+            $('#SalaryType').change(function () {
+                var selectedValue = $(this).val();
+                var label = $('#lblSalaryYear');
+
+                // Check the selected value and update label accordingly
+                if (selectedValue === "1") {
+                    label.text("Hourly Salary");
+        }*@
+
+        $("#btnSave").click(function () {
+            debugger
+            $("[disabled]", $("form")).removeAttr("disabled");
+            $.each(jsonData, function(key, value){
+                var crntrl=$("[name="+key+"]")[0];
+                if(crntrl!=undefined)
+                {
+
+                    jsonData[key]=$(crntrl).val();
+
+                }
+                $("#SalaryMonthKey").val(moment($("#SalaryMonth").val(), ["MMM YYYY"]).format("M"));
+                $("#SalaryYearKey").val(moment($("#SalaryMonth").val(), ["MMM YYYY"]).format("Y"));
+            })
+            EmployeeSalary.FormSubmit(jsonData);
+        })
+
+
+        $("input#SalaryMonth").on('changeDate', function(ev){
+
+            $("input#SalaryMonth:hidden").val($(this).val());
+            //var month = AppCommon.ParseMMMYYYYDate($("input#SalaryMonth").val());
+            //jsonData["EmployeeKey"]=$("[name=EmployeeKey]").val();
+            //jsonData["SalaryMonthKey"]=moment(month).month()+1;
+            //jsonData["SalaryYearKey"]=moment(month).year();
+            //EmployeeSalary.GetSalaryComponentsByMonth(jsonData,$(SalaryComponentItem)[0]);
+            $("#EmployeeKey").trigger("change")
+        });
+
+        $("#EmployeeKey").on("change",function(){
+            var obj = {};
+            obj.id = @Model.SalaryMasterKey;
+            obj.employeeKey = $("#EmployeeKey").val()!=""?$("#EmployeeKey").val():0;
+            obj.branchKey = $("#BranchKey").val()!=""?$("#BranchKey").val():0;
+            var month = AppCommon.ParseMMMYYYYDate($("input#SalaryMonth").val());
+            obj.salaryMonthKey = moment(month).month()+1;
+            obj.salaryYearKey = moment(month).year();
+            $("#dvSalaryDetails").html("")
+            $("#dvSalaryDetails").mLoading();
+            $("#dvSalaryDetails").load('@Url.Action("EmployeeSalaryDetails", "EmployeeSalary")' +'?'+$.param(obj),function(){
+
+            });
+
+        });
+        $("#BranchKey").on("change", function () {
+            EmployeeSalary.GetEmployeesByBranchId($(this).val(), $("#EmployeeKey"));
+        });
+    });
+
+
+</script>
+

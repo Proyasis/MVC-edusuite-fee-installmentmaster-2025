@@ -1,0 +1,230 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.EmployeePersonalViewModel
+
+@using CITS.EduSuite.Business.Models.ViewModels
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Content/ExcelSheetJS")
+
+    @Scripts.Render("~/Scripts/Employee")
+    @Scripts.Render("~/Scripts/EmployeePersonal")
+    @Scripts.Render("~/Scripts/EmployeeContact")
+    @Scripts.Render("~/Scripts/EmployeeExperience")
+    @Scripts.Render("~/Scripts/EmployeeEducation")
+    @Scripts.Render("~/Content/JqueryRepeater")
+    @Scripts.Render("~/Scripts/EmployeeIdentity")
+    @Scripts.Render("~/Scripts/EmployeeLanguageSkill")
+    @Scripts.Render("~/Scripts/EmployeeSalarySettings")
+    @Scripts.Render("~/Scripts/EmployeeAccount")
+    @Scripts.Render("~/bundles/CitsValidation")
+    @*@Scripts.Render("~/Content/Mustache")*@
+    @Scripts.Render("~/Scripts/EmployeeClassAllocation")
+    @Scripts.Render("~/Scripts/PhotoUpload")
+    @Scripts.Render("~/Content/JCropJS")
+}
+<input type="hidden" id="hdnAddEditEmployee" value="@Url.Action("AddEditEmployee", "Employee", new {id="" })" />
+<input type="hidden" id="hdnConfirmMobileNumber" value="@Url.Action("ConfirmMobileNumber", "EmployeePersonal")" />
+<input type="hidden" id="hdnConfirmEmailAddress" value="@Url.Action("ConfirmEmailAddress", "EmployeePersonal")" />
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-12">
+            <div class="tbl">
+                <div class="tbl-row  px-1">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.Add@EduSuiteUIResources.Hyphen@EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Employee</h3>
+                        <ol class="breadcrumb breadcrumb-simple mb-2 float-sm-right">
+                            <li><a href="#" onclick="location.href='@Url.Action("EmployeeList","Employee")' ">@EduSuiteUIResources.Employee</a></li>
+                            <li class="active">@EduSuiteUIResources.Add@EduSuiteUIResources.Hyphen@EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Employee</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="tabs-section section-content p-0 mx-sm-3 mx-0">
+
+    <div class="tabs-section-nav">
+        <ul id="tab-profile" class="nav" role="tablist">
+            <li class="nav-item">
+                <a data-toggle="tab" data-href="@Url.Action("AddEditEmployeePersonal", "EmployeePersonal", new { id = Model.RowKey })" href="#personal" aria-controls="discover" role="tab" class="nav-link active">
+                    <span class="nav-link-in">
+                        <i class="font-icon font-icon-user"></i>
+                        @EduSuiteUIResources.Personal
+                    </span>
+
+                </a>
+            </li>
+            @if (EmployeeSettingModel.ContactDetailsEnabled)
+            {
+                <li class="nav-item">
+                    <a data-toggle="tab" data-href="@Url.Action("AddEditEmployeeContact", "EmployeeContact", new { id = Model.RowKey })" href="#contacts" aria-controls="strategy" role="tab" class="nav-link">
+                        <span class="nav-link-in">
+                            <i class="font-icon font-icon-contacts"></i>
+                            @EduSuiteUIResources.Contacts
+                        </span>
+                    </a>
+                </li>
+            }
+            @if (EmployeeSettingModel.EducationDetailsEnabled)
+            {
+                <li class="nav-item">
+                    <a data-toggle="tab" data-href="@Url.Action("AddEditEmployeeEducation", "EmployeeEducation", new { id = Model.RowKey })" href="#education" aria-controls="strategy" role="tab" class="nav-link">
+                        <span class="nav-link-in">
+                            <i class="font-icon font-icon-users-group"></i>
+                            @EduSuiteUIResources.Education
+                        </span>
+                    </a>
+                </li>
+            }
+            @if (EmployeeSettingModel.IdentityDetailsEnabled)
+            {
+                <li class="nav-item">
+                    <a data-toggle="tab" data-href="@Url.Action("AddEditEmployeeIdentity", "EmployeeIdentity", new { id = Model.RowKey })" href="#identity" aria-controls="discover" role="tab" class="nav-link">
+                        <span class="nav-link-in">
+                            <i class=" fa fa-user-md"></i>
+                            @EduSuiteUIResources.Identity
+                        </span>
+                    </a>
+                </li>
+            }
+            @if (EmployeeSettingModel.BankDetailsEnabled)
+            {
+                <li class="nav-item">
+                    <a data-toggle="tab" data-href="@Url.Action("AddEditEmployeeAccount", "EmployeeAccount", new { id = Model.RowKey })" href="#account" aria-controls="optimization" role="tab" class="nav-link">
+                        <span class="nav-link-in">
+                            <i class="fa fa-credit-card" aria-hidden="true"></i>
+                            @EduSuiteUIResources.BankAccount
+                        </span>
+                    </a>
+                </li>
+            }
+            @if (EmployeeSettingModel.ExperienceDetailsEnabled)
+            {
+                <li class="nav-item">
+                    <a data-toggle="tab" data-href="@Url.Action("AddEditEmployeeExperience", "EmployeeExperience", new { id = Model.RowKey })" href="#experience" aria-controls="optimization" role="tab" class="nav-link">
+                        <span class="nav-link-in">
+                            <i class="fa fa-tasks" aria-hidden="true"></i>
+                            @EduSuiteUIResources.Experience
+                        </span>
+                    </a>
+                </li>
+            }
+            @if (EmployeeSettingModel.LanguageSkillDetailsEnabled)
+            {
+                <li class="nav-item">
+                    <a data-toggle="tab" data-href="@Url.Action("AddEditEmployeeLanguageSkills", "EmployeeLanguageSkill", new { id = Model.RowKey })" href="#languageskill" aria-controls="content" role="tab" class="nav-link">
+                        <span class="nav-link-in">
+                            <i class="fa fa-language" aria-hidden="true"></i>
+                            @EduSuiteUIResources.Language @EduSuiteUIResources.BlankSpace @EduSuiteUIResources.Skill
+                        </span>
+                    </a>
+                </li>
+            }
+            @*<li class="nav-item"  style="display:none">
+                    <a data-toggle="tab" data-href="@Url.Action("AddEditEmployeeClassAllocation", "EmployeeClassAllocation", new { id = Model.RowKey })" href="#classAllocation" aria-controls="content" role="tab" class="nav-link">
+                        <span class="nav-link-in">
+                            <i class="fa fa-university" aria-hidden="true"></i>
+                            @EduSuiteUIResources.ClassAllocation
+                        </span>
+                    </a>
+                </li>*@
+            @if (EmployeeSettingModel.SalaryDetailsEnabled)
+            {
+                <li class="nav-item d-none">
+                    <a data-toggle="tab" data-href="@Url.Action("AddEditEmployeeSalarySettings", "EmployeeSalarySettings", new { id = Model.RowKey })" href="#account" aria-controls="content" role="tab" class="nav-link">
+                        <span class="nav-link-in">
+                            <i class="fa fa-money" aria-hidden="true"></i>
+                            @EduSuiteUIResources.Salary
+                        </span>
+                    </a>
+                </li>
+            }
+            @if (EmployeeSettingModel.PhotoDetailsEnabled)
+            {
+                <li class="nav-item">
+                    <a data-toggle="tab" data-href="@Url.Action("EmployeePhoto", "Employee", new { id = Model.RowKey })" href="#photoupload" aria-controls="content" role="tab" class="nav-link">
+                        <span class="nav-link-in">
+                            <i class="fa fa-image" aria-hidden="true"></i>
+                            @EduSuiteUIResources.Photo
+                        </span>
+                    </a>
+                </li>
+            }
+
+        </ul>
+    </div>
+    <div id="tabContent" class="tab-content min-content-height bottomLine">
+
+    </div>
+</section>
+
+
+<script>
+    $(document).ready(function () {
+
+        if(@Model.RowKey==0)
+        {
+            $("#tab-profile li:not(:first-child)").hide();
+        }
+        $("#tabContent").css("position","relative");
+        $("#tabContent").mLoading();
+        DisableTabs();
+        $("#tabContent").load('@Url.Action("AddEditEmployeePersonal", "EmployeePersonal", new { id = @Model.RowKey })',function (result) {
+            EnableTabs();
+            ContentLoad();
+            //Employee.AfterFormSubmit();
+
+            $("#tabContent").mLoading("destroy");
+        });
+
+        $('#tab-profile li a[data-toggle="tab"]').on("click",function(e){
+            if ($(this).parent().hasClass("disabled")) {
+                e.preventDefault();
+                return false;
+            }
+        }).on('shown.bs.tab', function (e) {
+            DisableTabs();
+            var target = $(e.target).attr("data-href")
+            $("#tabContent").mLoading();
+            $("#tabContent").load(target, function (result) {
+                EnableTabs();
+                ContentLoad();
+                //Employee.AfterFormSubmit();
+
+                $("#tabContent").mLoading("destroy");
+            });
+        });
+        function ContentLoad()
+        {
+            AppCommon.AutoHideDropdown();
+            AppCommon.FormatInputCase();
+            AppCommon.FormatDateInput();
+            $("form").removeData("validator");
+            $("form").removeData("unobtrusiveValidation");
+            $.validator.unobtrusive.parse("form");
+            $("form").on("submit", function () {
+                $(".section-content").mLoading();
+            }).bind('ajax:complete', function () {
+                $(".section-content").mLoading("destroy");
+
+            });
+        }
+        function EnableTabs()
+        {
+            $("#tab-profile li").each(function(){
+                $(this).removeClass("disabled");
+            });
+        }
+        function DisableTabs()
+        {
+            $("#tab-profile li").each(function(){
+                $(this).addClass("disabled");
+            });
+        }
+    });
+</script>

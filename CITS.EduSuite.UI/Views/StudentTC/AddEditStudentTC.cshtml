@@ -1,0 +1,136 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.StudentTCViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+@section scripts{
+
+    @Scripts.Render("~/Scripts/StudentTC")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/CitsValidation")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Content/Select2JS")
+    @Scripts.Render("~/Content/JqueryRepeater")
+}
+
+<input type="hidden" id="hdnStudentTCList" value="@Url.Action("StudentTCList", "StudentTC")" />
+<input type="hidden" id="hdnDeleteStuentTCDetails" value="@Url.Action("DeleteStuentTCDetails", "StudentTC")" />
+
+<input type="hidden" id="hdnGetTCColumnDetails" value="@Url.Action("GetTCColumnDetails", "StudentTC")" />
+<input type="hidden" id="hdnIssueStudentTC" value="@Url.Action("IssueStudentTC", "StudentTC")" />
+
+
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-12">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.AddEdit@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.StudentTC</h3>
+                        <ol class="breadcrumb breadcrumb-simple mb-2 float-sm-right">
+                            <li><a href="#" onclick="location.href='@Url.Action("StudentTCList", "StudentTC")' ">@EduSuiteUIResources.StudentTC</a></li>
+                            <li class="active">@EduSuiteUIResources.AddEdit@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.StudentTC</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="section-content mx-sm-3 mx-0">
+    <div class="GridBody">
+        @using (Html.BeginForm("AddEditStudentTC", "StudentTC", FormMethod.Post, new { @id = "frmStudentTC" }))
+        {
+            @Html.HiddenFor(m => m.ApplicationKey)
+            @Html.HiddenFor(m => m.RowKey)
+
+
+
+            <div id="dvProfileDetails" class="mb-2">
+
+            </div>
+
+            <div class="form-row">
+                <div class="col-lg-3 col-12">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.LeaveReason, htmlAttributes: new { @id = "lblBranch", @class = "form-label" })
+                        <div class="required-icon"><div class="text">*</div></div>
+                        @Html.DropDownListFor(m => m.ReasonMasterKey, new SelectList(Model.ReasonMaster, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.LeaveReason, new { @class = "form-control input-control", @InputFor = "lblBranch", @data_live_search = "true" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.ReasonMasterKey)
+                        </span>
+                    </fieldset>
+                </div>
+
+                <div class="col-lg-3 col-12">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.DateOfApplication, htmlAttributes: new { @id = "lblBranch", @class = "form-label" })
+                        <div class="required-icon"><div class="text">*</div></div>
+                        @Html.TextBoxFor(m => m.DateOfApplicationForTC, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_inputmask = "'alias': 'dd/mm/yyyy'", @data_input_type = "date" })
+
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.DateOfApplicationForTC)
+                        </span>
+                    </fieldset>
+                </div>
+                <div class="col-lg-3 col-12">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.GenerateDate, htmlAttributes: new { @id = "lblBranch", @class = "form-label" })
+                        <div class="required-icon"><div class="text">*</div></div>
+                        @Html.TextBoxFor(m => m.GeneratedDate, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_inputmask = "'alias': 'dd/mm/yyyy'", @data_input_type = "date" })
+
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.GeneratedDate)
+                        </span>
+                    </fieldset>
+                </div>
+
+            </div>
+
+            <div class="form-row" id="dvStudentTCDetails">
+
+
+
+
+            </div>
+
+            <div class="form-row mt-2">
+                <div class="form-group">
+                    <div class="col-12">
+                        <fieldset class="form-group">
+                            <input type="button" value="@EduSuiteUIResources.Save" id="btnSave" class="btn btn-sm btn-success mx-1" />
+                            <input type="button" value="@EduSuiteUIResources.Cancel" onclick="location.href='@Url.Action("StudentTCList", "StudentTC")' " class="btn btn-sm btn-danger mx-1" />
+                        </fieldset>
+                        <div class="col-12 paddingNone">
+                            <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+        }
+    </div>
+</section>
+<script>
+
+      var jsonData=@(Html.Raw(Json.Encode(Model)));
+    $(document).ready(function () {
+        AppCommon.FormatInputCase();
+
+        AppCommon.FormatDateInput();
+        AppCommon.CustomRemoteMethod();
+
+        Shared.GetProfileDetails('@Url.Action("StudentDetail", "Shared", new { id = (Model.ApplicationKey), AdmissionNo = "" })')
+
+        StudentTC.LoadData(jsonData);
+
+        $("#btnSave").on("click", function () {
+            StudentTC.FormSubmit();
+        });
+        })
+</script>
+
+
+

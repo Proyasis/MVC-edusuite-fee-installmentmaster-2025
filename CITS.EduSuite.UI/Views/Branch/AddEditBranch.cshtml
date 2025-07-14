@@ -1,0 +1,345 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.BranchViewModel
+
+<div class="modal-header">
+    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+    <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.Add @EduSuiteUIResources.Sla @EduSuiteUIResources.Edit @EduSuiteUIResources.Branch</h4>
+</div>
+
+@using (Html.BeginForm("AddEditBranch", "Branch", FormMethod.Post, new { enctype = "multipart/form-data", @id = "frmBranch" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.RowKey, new { @class = "hidBranchKey" })
+    @Html.HiddenFor(m => m.BranchLogo)
+
+    @Html.ValidationSummary(true)
+
+    <input type="hidden" id="hdnDeleteBranchLogo" value="@Url.Action("DeleteBranchLogo", "Branch")" />
+    <input type="hidden" id="hdnGetProvinceAndCodeByCountry" value="@Url.Action("GetProvinceAndCodeByCountry", "Branch")" />
+    <input type="hidden" id="hdnGetDistrictByProvince" value="@Url.Action("GetDistrictByProvince", "Branch")" />
+    <div class="modal-body">
+        <div class="form-master">
+            <div class="form-row">
+                <div class="paddingNone">
+                    <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-12 col-lg-3 col-sm-3">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.Branch + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Code, htmlAttributes: new { @id = "lblBranchCode", @class = "form-label" })
+                        @Html.TextBoxFor(m => m.BranchCode, new { @class = "form-control input-control", @InputFor = "lblBranchCode", @data_convert = "uppercase" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.BranchCode)
+                        </span>
+                    </fieldset>
+                </div>
+                <div class="col-12 col-lg-9 col-sm-7">
+                    <fieldset class="form-group">
+                        @Html.LabelFor(m => m.BranchName, htmlAttributes: new { @id = "lblBranchName", @class = "form-label" })
+                        <div class="required-icon"><div class="text">*</div></div>
+                        @Html.TextBoxFor(m => m.BranchName, new { @class = "form-control input-control", @InputFor = "lblBranchName", @data_convert = "uppercase" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.BranchName)
+                        </span>
+                    </fieldset>
+                </div>
+                @*<div class="col-5">
+                        <div class="form-group">
+                            @Html.Label(EduSuiteUIResources.Branch + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Local + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Name, htmlAttributes: new { @id = "lblBranchNameLocal", @class = "form-label" })
+                            @Html.TextBoxFor(m => m.BranchNameLocal, new { @class = "form-control input-control", @InputFor = "lblBranchNameLocal" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.BranchNameLocal)
+                            </span>
+                        </div>
+                    </div>*@
+            </div>
+
+            <div class="form-row">
+                <div class="col-12 col-lg-6">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.AddressLine1, htmlAttributes: new { @id = "lblAddressLine1", @class = "form-label" })
+                        <div class="required-icon"><div class="text">*</div></div>
+                        @Html.TextBoxFor(m => m.AddressLine1, new { @class = "form-control input-control", @InputFor = "lblAddressLine1", @data_convert = "uppercase" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.AddressLine1)
+                        </span>
+                    </fieldset>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.AddressLine2, htmlAttributes: new { @id = "lblAddressLine2", @class = "form-label" })
+                        @Html.TextBoxFor(m => m.AddressLine2, new { @class = "form-control input-control", @InputFor = "lblAddressLine2", @data_convert = "uppercase" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.AddressLine2)
+                        </span>
+                    </fieldset>
+                </div>
+                <div class="col-12 col-lg-4">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.AddressLine3, htmlAttributes: new { @id = "lblAddressLine3", @class = "form-label" })
+                        @Html.TextBoxFor(m => m.AddressLine3, new { @class = "form-control input-control", @InputFor = "lblAddressLine3", @data_convert = "uppercase" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.AddressLine3)
+                        </span>
+                    </fieldset>
+                </div>
+
+                @*@if (Model.Countries.Count == 1)
+                {
+                    {
+                        Model.CountryKey = (Model.CountryKey == 0) ? (short)Model.Countries.Select(x => x.RowKey).FirstOrDefault() : Model.CountryKey;
+                    }
+                    @Html.HiddenFor(m => m.CountryKey)
+                }
+                else
+                {*@
+                    <div class="col-12 col-lg-4">
+                        <fieldset class="form-group">
+                            @Html.Label(EduSuiteUIResources.Country, htmlAttributes: new { @id = "lblCountry", @class = "form-label" })
+                            <div class="required-icon"><div class="text">*</div></div>
+                            @Html.DropDownListFor(m => m.CountryKey, new SelectList(Model.Countries, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Country, new { @class = "form-control input-control", @InputFor = "lblCountry" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.CountryKey)
+                            </span>
+                        </fieldset>
+                    </div>
+                @*}
+                @if (Model.Provinces.Count == 1)
+                {
+                    {
+                        Model.ProvinceKey = (Model.ProvinceKey == 0) ? (short)Model.Provinces.Select(x => x.RowKey).FirstOrDefault() : Model.ProvinceKey;
+                    }
+                    @Html.HiddenFor(m => m.ProvinceKey)
+                }
+                else
+                {*@
+                    <div class="col-12 col-lg-4">
+                        <fieldset class="form-group">
+                            @Html.Label(EduSuiteUIResources.Province, htmlAttributes: new { @id = "lblProvince", @class = "form-label" })
+                            <div class="required-icon"><div class="text">*</div></div>
+                            @Html.DropDownListFor(m => m.ProvinceKey, new SelectList(Model.Provinces, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Province, new { @class = "form-control input-control", @InputFor = "lblProvince" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.ProvinceKey)
+                            </span>
+                        </fieldset>
+                    </div>
+                @*}*@
+
+                <div class="col-12 col-lg-4">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.District, htmlAttributes: new { @id = "lblDistrict", @class = "form-label" })
+                        <div class="required-icon"><div class="text">*</div></div>
+                        @Html.DropDownListFor(m => m.DistrictKey, new SelectList(Model.Districts, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.District, new { @class = "form-control input-control", @InputFor = "lblDistrict" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.DistrictKey)
+                        </span>
+                    </fieldset>
+                </div>
+                <div class="col-12 col-lg-4">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.City, htmlAttributes: new { @id = "lblCityName", @class = "form-label" })
+                        @Html.TextBoxFor(m => m.CityName, new { @class = "form-control input-control", @InputFor = "lblCityName", @data_convert = "uppercase" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.CityName)
+                        </span>
+                    </fieldset>
+                </div>
+
+                <div class="col-12 col-lg-4">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.PostalCode, htmlAttributes: new { @id = "lblPostalCode", @class = "form-label" })
+                        @Html.TextBoxFor(m => m.PostalCode, new { @class = "form-control input-control", @InputFor = "lblPostalCode" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.PostalCode)
+                        </span>
+                    </fieldset>
+                </div>
+                <div class="col-12 col-lg-4">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.PhoneNumber, htmlAttributes: new { @id = "lblPhoneNumber1", @class = "form-label" })
+                        <div class="required-icon"><div class="text">*</div></div>
+                        <div class="input-group-transparent">
+                            @Html.TextBoxFor(m => m.PhoneNumber1, new { @class = "form-control input-control", @InputFor = "lblPhoneNumber1" })
+                            <span class="input-group-addon-start telephone-code">@Html.DisplayFor(m => m.TelephoneCode)</span>
+
+                        </div>
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.PhoneNumber1)
+                        </span>
+                    </fieldset>
+                </div>
+                <div class="col-12 col-lg-4">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.PhoneNumber2, htmlAttributes: new { @id = "lblPhoneNumber2", @class = "form-label" })
+                        <div class="input-group-transparent">
+                            @Html.TextBoxFor(m => m.PhoneNumber2, new { @class = "form-control input-control", @InputFor = "lblPhoneNumber2" })
+                            <span class="input-group-addon-start telephone-code">@Html.DisplayFor(m => m.TelephoneCode)</span>
+                        </div>
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.PhoneNumber2)
+                        </span>
+                    </fieldset>
+                </div>
+                <div class="col-12 col-lg-4">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.FaxNumber, htmlAttributes: new { @id = "lblFaxNumber", @class = "form-label" })
+                        @Html.TextBoxFor(m => m.FaxNumber, new { @class = "form-control input-control", @InputFor = "lblFaxNumber" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.FaxNumber)
+                        </span>
+                    </fieldset>
+                </div>
+
+                <div class="col-12 col-lg-4">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.Email, htmlAttributes: new { @id = "lblEmailAddress", @class = "form-label" })
+                        @Html.TextBoxFor(m => m.EmailAddress, new { @class = "form-control input-control", @InputFor = "lblEmailAddress", @data_convert = "lowercase" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.EmailAddress)
+                        </span>
+                    </fieldset>
+                </div>
+
+                <div class="col-12 col-lg-4 d-none">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.Departments, new { @id = "lblDepartment", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                        @Html.ListBoxFor(m => Model.DepartmentKeys, new SelectList(Model.Departments, "RowKey", "Text"), new { @class = "form-control border-radius input-control selectpicker", @multiple = "multiple", @data_live_search = "true", @InputFor = "lblDepartment", @data_title = EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Departments })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => Model.DepartmentKeys)
+                        </span>
+                    </fieldset>
+
+                </div>
+            </div>
+            <div class="form-row">
+
+                <div class="col-12 col-lg-4 d-none">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.OpeningBalance, htmlAttributes: new { @id = "lblOpeningCashBalance", @class = "form-label" })
+                        @Html.TextBoxFor(m => m.OpeningCashBalance, "{0:G29}", new { @class = "form-control input-control", @InputFor = "lblOpeningCashBalance" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.OpeningCashBalance)
+                        </span>
+
+                    </fieldset>
+                </div>
+                <div class="col-12 col-lg-4">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.IsActive, new { @class = "form-label" })
+
+                        <div class="switch-check my-2">
+                            @Html.CheckBoxFor(m => m.IsActive, new { @class = "switch-input" })
+                            <div class="switch-label redgreen" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                            <div class="switch-handle"></div>
+                        </div>
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.IsActive)
+                        </span>
+                    </fieldset>
+                </div>
+                <div class="col-12 col-lg-4">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.IsFranchise, new { @class = "form-label" })
+
+                        <div class="switch-check my-2">
+                            @Html.CheckBoxFor(m => m.IsFranchise, new { @class = "switch-input" })
+                            <div class="switch-label redgreen" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                            <div class="switch-handle"></div>
+                        </div>
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.IsFranchise)
+                        </span>
+                    </fieldset>
+                </div>
+                <div class="col-lg-2 col-12">
+                    <div class="form-group MemberPhotoUpload" style="width: 150px; height: 200px;">
+
+                        @if (Model.BranchLogoPath != null)
+                        {
+                            <img id="BranchLogos" src="@Url.Content(Model.BranchLogoPath)" alt="Image" class="img-thumbnail" />
+                        }
+
+                        <div class="custom-file">
+                            @Html.TextBoxFor(m => m.PhotoFile, new { type = "file", @class = "custom-file-input" })
+                            <label class="custom-file-label" for="MFile">Choose file</label>
+                        </div>
+
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.PhotoFile)
+                        </span>
+                        <input type="button" value="@EduSuiteUIResources.Delete" id="btnPhotoDelete" class="btn btn-sm btn-danger mx-1" style="display:none" />
+                    </div>
+                    
+                </div>
+            </div>
+            <fieldset class="mt-2 d-none">
+                <legend>@EduSuiteUIResources.ContactPerson@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Details</legend>
+
+                <div class="form-row">
+                    <div class="col-12 col-lg-4">
+                        <fieldset class="form-group">
+                            @Html.Label(EduSuiteUIResources.ContactPerson + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Name, htmlAttributes: new { @id = "lblContactPersonName", @class = "form-label" })
+                            @Html.TextBoxFor(m => m.ContactPersonName, new { @class = "form-control input-control", @InputFor = "lblContactPersonName" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.ContactPersonName)
+                            </span>
+                        </fieldset>
+                    </div>
+                    <div class="col-12 col-lg-4">
+                        <fieldset class="form-group">
+                            @Html.Label(EduSuiteUIResources.ContactPerson + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Phone, htmlAttributes: new { @id = "lblContactPersonPhone", @class = "form-label" })
+                            @Html.TextBoxFor(m => m.ContactPersonPhone, new { @class = "form-control input-control", @InputFor = "lblContactPersonPhone" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.ContactPersonPhone)
+                            </span>
+                        </fieldset>
+                    </div>
+                    <div class="col-12 col-lg-4">
+                        <fieldset class="form-group">
+                            @Html.Label(EduSuiteUIResources.Designation + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Name, htmlAttributes: new { @id = "lblDesignation", @class = "form-label" })
+                            @Html.DropDownListFor(m => m.DesignationKey, new SelectList(Model.Designations, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Designation, new { @class = "form-control input-control", @InputFor = "lblDesignation" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.DesignationKey)
+                            </span>
+                        </fieldset>
+                    </div>
+                </div>
+            </fieldset>
+
+        </div>
+    </div>
+
+    <div class="modal-footer justify-content-start">
+        <div class="form-group">
+            <input type="button" value="@EduSuiteUIResources.Save" id="btnSave" onclick="Branch.FormSubmit()" class="btn btn-sm btn-success mx-1" />
+            <button type="button" data-dismiss="modal" class="btn btn-sm btn-danger mx-1">@EduSuiteUIResources.Cancel</button>
+
+        </div>
+    </div>
+
+
+
+}
+
+
+
+
+
+
+<script>
+    $(document).ready(function () {
+        
+        var BranchLogo = '@Model.BranchLogo';
+        if (BranchLogo != "") {
+            $("#btnPhotoDelete").show();
+        }
+
+        $('#btnPhotoDelete').click(function () {
+            Branch.DeleteBranchLogo('@Model.RowKey');
+        });
+
+    })
+
+</script>
+
+

@@ -1,0 +1,72 @@
+﻿@model List<CITS.EduSuite.Business.Models.ViewModels.VideoViewModel>
+@using CITS.EduSuite.Business.Models
+
+
+
+<div class="modal-header">
+    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+    <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.Videos</h4>
+</div>
+
+
+<div class="modal-body bottomLine">
+
+    @foreach (var master in Model)
+    {
+        <div class="form-row">
+
+            <div class="col-12 col-sm-12 col-lg-12">
+                <span><b> @EduSuiteUIResources.Title:</b> @master.VideoTitle </span> |<span>
+                    <b> @EduSuiteUIResources.IsActive</b>
+                    @if (master.IsActive == true)
+                    {
+                        <span style="color:greenyellow">Active</span>
+                    }
+                    else
+                    {
+                        <span style="color:orangered">InActive</span>
+
+                    }
+                </span>
+
+            </div>
+            @foreach (var item in master.VideoList)
+            {
+                <div class="col-12 col-sm-5 col-lg-5">
+
+                    <video width="100%" controls>
+                        <source src="~/UploadFiles/Videos/@master.RowKey/@item.VideoFileName" type="video/mp4">
+                    </video>
+
+                    <div class="col-12 col-sm-12 col-lg-12">
+                        <span> <b> @EduSuiteUIResources.Description:</b>   @item.VideoDecription </span>
+                    </div>
+                    <div class="col-12 col-sm-12 col-lg-12">
+                        <span>
+                            <b> @EduSuiteUIResources.IsActive:</b>
+                            @if (item.IsActive == true)
+                            {
+                                <span style="color:greenyellow">Active</span>
+                            }
+                            else
+                            {
+                                <span style="color:orangered">InActive</span>
+
+                            }
+                        </span>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+
+
+
+<style>
+    .modal-dialog.modal-dialog-zoom.modal-lg80 {
+        max-width: 95%;
+        width: 95%;
+    }
+</style>

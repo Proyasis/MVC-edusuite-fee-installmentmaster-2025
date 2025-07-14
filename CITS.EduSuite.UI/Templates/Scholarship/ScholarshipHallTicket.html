@@ -1,0 +1,523 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title></title>
+</head>
+<body class="hallticket">
+    <div class="text-center">
+        <img src="../../Images/jobtrackLogo.png" />
+        <h4 style="margin: 5px 0px;">
+            JMT – PSC ‘19- JOBTRACK MERIT & SCHOLARSHIP EXAM
+        </h4>
+        <h5>HALL TICKET</h5>
+    </div>
+    <table class="table-progresscard">
+        <tr>
+            <td class="no-border-right" style="width:150px">
+                Name of
+                Candidate
+                <br />
+                (In Block letter)
+            </td>
+            <td class="no-border-left" style="text-transform:uppercase">{{Name}}</td>
+            <td rowspan="3" style="width:180px">
+                <div style="border:solid 1px #000;height:4.5cm;width:3.5cm; margin:auto;text-align:center">
+                    <span style="display: block;display: table-cell;vertical-align:middle;text-align:center;height: 170px;">
+                        Affix Recent
+                        Passport size
+                        Photo
+                    </span>
+                </div>
+            </td>
+
+        </tr>
+        <tr>
+            <td class="no-border-right">
+                Register No
+            </td>
+            <td class="no-border-left">{{ExamRegNo}}</td>
+
+
+        </tr>
+        <tr>
+            <td class="no-border-right">Date of Birth  </td>
+            <td class="no-border-left">{{DateOfBirth}}</td>
+
+
+        </tr>
+        <tr>
+            <td colspan="3">
+                <h5 class="text-center">
+                    Address (To be filled
+                    by the candidate)
+                </h5>
+                <table class="table-marklist">
+                    <tr>
+                        <td colspan="2" class="no-border-left no-border-right no-border-top">
+                            <span style="width:60px;" class="full-colon-after">House</span>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td class="no-border-left no-border-right no-border-top"><span style="width:60px;" class="full-colon-after">Place</span></td>
+                        <td class="no-border-left no-border-right no-border-top"><span style="width:60px;" class="full-colon-after">Post</span></td>
+                    </tr>
+                    <tr>
+                        <td class="no-border-left no-border-right no-border-top"><span style="width:60px;" class="full-colon-after">Taluk</span></td>
+                        <td class="no-border-left no-border-right no-border-top"><span style="width:60px;" class="full-colon-after">District</span> <span>{{DistrictName}}</span></td>
+                    </tr>
+                    <tr>
+                        <td class="no-border-left no-border-right no-border-top"><span style="width:60px;" class="full-colon-after">Phone</span><span>{{MobileNumber}}</span></td>
+                        <td class="no-border-left no-border-right no-border-top"><span style="width:60px;" class="full-colon-after">Pincode</span></td>
+                    </tr>
+                </table>
+            </td>
+
+
+
+        </tr>
+        <tr>
+            <td>
+                Date & Time of
+                Exam
+            </td>
+            <td colspan="2">
+                28-09-2019 (Saturday) 9.30am – 11.30am<br />
+                (First 30 Minutes for verification of ID & Admission Ticket)<br />
+                Candidates Reporting after 9.30 am will not be admitted to the Examination
+            </td>
+
+
+
+        </tr>
+        <tr>
+            <td>Examination Centre</td>
+            <td colspan="2">
+                {{BranchName}} <br />
+                {{#if AddressLine1}}
+                {{AddressLine1}} <br />
+                {{/if}}
+                {{#if AddressLine2}}
+                {{AddressLine2}} <br />
+                {{/if}}
+                {{#if AddressLine3}}
+                {{AddressLine3}}<br />
+                {{/if}}
+
+                {{CityName}},
+                {{DistrictName}} dist,
+                {{Provincename}} <br />
+                {{PhoneNumber1}}
+                {{#if PhoneNumber2}}
+                ,{{PhoneNumber2}}
+                {{/if}}
+                <!--MASTERS ACADEMY OF PROFESSIONAL STUDIES (MAPS), Near Co-operative Hospital
+                Karimpanappalam, VADAKARA Ph:9446683445, 7034990011-->
+            </td>
+
+
+
+        </tr>
+    </table>
+    <ol class="hallticket-point">
+        <li>
+            Candidates shall occupy the seats allotted to them in the Examination Hall before the time specified on the
+            Admission Ticket. <strong>LATE COMERS WILL NOT BE ADMITTED TO THE EXAMINATION</strong>.
+        </li>
+        <li>
+            Candidates shall bring Admission Ticket, Identity proof and ball point pen with blue or black ink into Examination Hall.
+            Candidates shall not bring with them any electronic/communication device such as Calculator, Mobile Phone,
+            Digital Diary etc. in the Examination Hall. Usage of smart watch is strictly prohibited in the Examination Hall.
+        </li>
+        <li>
+            Candidates shall put their signature at the bottom side, across the photo in the address list provided in the
+            Examination Hall. <strong>DO NOT SIGN OVER THE FACE.</strong>
+        </li>
+        <li>
+            Candidates should produce a photo affixed Identity Proof in original. Only the following 5 documents will be accepted
+            as identity proof. 1) Voters ID issued by Election Commission 2) Driving Licence 3) ID Card issued by Social Welfare
+            Dept. of Govt. of Kerala to Differently Abled persons 4) Photo affixed Passbook issued by Nationalised Banks 5) PAN
+            Card. Candidates who fail to produce Identity Proof in original will not be permitted to attend the examination.
+        </li>
+        <li>
+            Candidates should not misbehave with the officials engaged in examination duty or commit any sort of malpractice
+            or resort to any unfair means during the course of the examination. The answer scripts of the candidates who violate
+            the above instructions will be invalidated and legal action will be taken against them.
+        </li>
+        <li>
+            No change of examination centre will be allowed under any circumstances.
+        </li>
+    </ol>
+    <hr class="hr-text" data-content="cut here" />
+    <div class="watermark">
+        <h5 class="text-center">JMT – PSC ‘19 - JOBTRACK MERIT & SCHOLARSHIP EXAM – 28-09-2019 </h5>
+        <table style="width:70%;margin: 1em 3em;">
+            <tr>
+                <td style="width:130px">Name of Candidate </td>
+                <td style="width:7px">:</td>
+                <td style="border-bottom:dashed 1px;text-transform:uppercase">{{Name}}</td>
+            </tr>
+            <tr>
+                <td>Register No </td>
+                <td>:</td>
+                <td style="border-bottom:dashed 1px">{{ExamRegNo}}</td>
+            </tr>
+        </table>
+        <span></span>
+        <span>            </span>
+    </div>
+
+</body>
+</html>
+<style>
+    #tbl {
+        width: 100%;
+    }
+</style>
+<style>
+    #dvProgressCard {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        border: solid 5px #41417ecc;
+        width: 100%;
+        height: 100%;
+        background: #fff;
+    }
+
+    .hr-text {
+        line-height: 1em;
+        position: relative;
+        outline: 0;
+        border: 0;
+        color: black;
+        text-align: center;
+        height: 1.5em;
+        opacity: .5;
+    }
+
+        .hr-text:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            width: 100%;
+            height: 1px;
+            border-top: dashed 1px;
+        }
+
+        .hr-text:after {
+            content: attr(data-content);
+            position: relative;
+            display: inline-block;
+            color: black;
+            padding: 0 .5em;
+            line-height: 1.5em;
+            background-color: #fcfcfa;
+        }
+
+    .hallticket h5 {
+        margin: 0;
+    }
+
+    .hallticket-point li {
+        margin-bottom: 5px;
+        font-size: 12px;
+    }
+
+    .vertical-align {
+        vertical-align: top;
+    }
+
+    .profile-user-info {
+        display: table;
+        width: 100%;
+    }
+
+    .profile-info-row {
+        display: table-row;
+    }
+
+    .profile-info-name,
+    .profile-info-value {
+        display: table-cell;
+        border-top: 1px dotted #403636;
+    }
+
+    .profile-info-name, .profile-name {
+        text-align: right;
+        padding: 6px 10px 6px 4px;
+        font-weight: 400;
+        color: #667E99;
+        background-color: transparent;
+        width: 110px;
+        vertical-align: middle;
+    }
+
+
+    .profile-info-value {
+        padding: 6px 4px 6px 6px;
+    }
+
+        .profile-info-value > span + span:before {
+            display: inline;
+            content: ",";
+            margin-left: 1px;
+            margin-right: 3px;
+            color: #666;
+            border-bottom: 1px solid #FFF;
+        }
+
+        .profile-info-value > span + span.editable-container:before {
+            display: none;
+        }
+
+    .profile-info-row:first-child .profile-info-name,
+    .profile-info-row:first-child .profile-info-value {
+        border-top: none;
+    }
+
+    .profile-user-info-striped {
+        border: 1px solid #DCEBF7;
+    }
+
+        .profile-user-info-striped .profile-info-name {
+            color: #336199;
+            background-color: #EDF3F4;
+            border-top: 1px solid #F7FBFF;
+        }
+
+        .profile-user-info-striped .profile-info-value {
+            border-top: 1px dotted #DCEBF7;
+            padding-left: 12px;
+        }
+
+    .profile-picture {
+        background-color: #FFF;
+        padding: 4px;
+        display: inline-block;
+        max-width: 100%;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        box-shadow: 1px 1px 1px rgba(0, 0, 0, .15);
+        border: none;
+    }
+
+        .profile-picture span {
+            display: block;
+            padding: 3px 0px;
+            text-align: center;
+            width: 100%;
+            color: #444484;
+        }
+
+    .table-progresscard {
+        max-width: 2480px;
+        width: 100%;
+    }
+
+    .table-progresscard, .table-marklist {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .table-progresscard td, .table-progresscard th {
+            border: solid 1px #403636;
+            padding: 10px 3px;
+        }
+
+
+
+        .table-marklist th {
+            background: #ad8585 !important;
+            color: #fff !important;
+            -webkit-print-color-adjust: exact !important;
+        }
+
+        .table-marklist th, .table-marklist td {
+            padding: 5px 3px;
+            -webkit-print-color-adjust: exact !important;
+            font-size: 0.8em;
+        }
+
+
+            .table-marklist td span {
+                display: inline-block;
+            }
+
+    .signature-row tr {
+        padding-top: 10px;
+    }
+
+    .no-border {
+        border: none;
+    }
+
+    .full-colon-after {
+        display: block;
+    }
+
+        .full-colon-after:after {
+            content: ':';
+            margin: 0px 5px;
+            float: right;
+        }
+
+    @page {
+        size: A4;
+    }
+
+    html, body {
+        width: 210mm;
+        height: 297mm;
+    }
+
+
+
+    .profile-title {
+        background: #41417ecc !important;
+        color: #fff !important;
+        font-weight: bold;
+        padding: 10px;
+    }
+
+    .profile-sub-title {
+        background: #ad8585 !important;
+        color: #fff !important;
+        font-weight: bold;
+        padding: 10px;
+        -webkit-print-color-adjust: exact !important;
+    }
+
+    .profile-name {
+        width: 100%;
+        text-align: left;
+        margin: 0;
+        text-indent: 10px;
+        font-weight: bold;
+        color: #444484;
+        background: #e0e0e0;
+        -webkit-print-color-adjust: exact !important;
+    }
+
+    .no-border {
+        border: none !important;
+    }
+
+    .no-border-top {
+        border-top: none !important;
+    }
+
+    .no-border-left {
+        border-left: none !important;
+    }
+
+    .no-border-right {
+        border-right: none !important;
+    }
+
+    .no-border-bottom {
+        border-bottom: none !important;
+    }
+
+    .text-center {
+        text-align: center !important;
+    }
+
+    .watermark:after {
+        content: "";
+        background: url(../../Images/jobtrackLogo.png);
+        opacity: 0.2;
+        top: 13px;
+        left: 12.5em;
+        bottom: 0;
+        right: 0;
+        position: absolute;
+        z-index: -1;
+        background-repeat: no-repeat;
+        -webkit-print-color-adjust: exact !important; /* Chrome, Safari */
+        color-adjust: exact !important;
+    }
+
+    .watermark {
+        display: block;
+        position: relative;
+    }
+
+    @media print {
+        .hallticket h4, .hallticket h5 {
+            margin: 0 !important;
+        }
+
+        .profile-name {
+            width: 100%;
+            text-align: left;
+            margin: 0;
+            text-indent: 10px;
+            font-weight: bold;
+            color: #444484;
+            background: #e0e0e0;
+            -webkit-print-color-adjust: exact !important;
+        }
+
+        .progressmain-title, .progresssub-title {
+            color: #41417ecc !important;
+            font-weight: bold;
+            -webkit-print-color-adjust: exact !important;
+        }
+
+        .progresssub-title {
+            margin: 5px 0px;
+        }
+
+        .no-border {
+            border: none !important;
+        }
+
+        .no-border-top {
+            border-top: none !important;
+        }
+
+        .no-border-left {
+            border-left: none !important;
+        }
+
+        .no-border-right {
+            border-right: none !important;
+        }
+
+        .no-border-bottom {
+            border-bottom: none !important;
+        }
+
+        .profile-title {
+            background: #41417ecc !important;
+            color: #fff !important;
+            -webkit-print-color-adjust: exact !important;
+        }
+
+        .table-marklist th, .table-marklist td {
+            -webkit-print-color-adjust: exact !important;
+        }
+
+        .watermark:after {
+            content: "";
+            background: url(../../Images/jobtrackLogo.png);
+            opacity: 0.2;
+            top: 13px;
+            left: 12.5em;
+            bottom: 0;
+            right: 0;
+            position: absolute;
+            z-index: -1;
+            background-repeat: no-repeat;
+            -webkit-print-color-adjust: exact !important; /* Chrome, Safari */
+            color-adjust: exact !important;
+        }
+
+        .watermark {
+            display: block;
+            position: relative;
+        }
+    }
+</style>

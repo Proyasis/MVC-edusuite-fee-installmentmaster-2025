@@ -1,0 +1,146 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.DesignationViewModel
+@using CITS.EduSuite.UI.Resources
+
+@section scripts{
+    @Scripts.Render("~/Content/OrgChartJS")
+    @Scripts.Render("~/Scripts/Designation")
+}
+<input type="hidden" id="hdnGetDesignationChart" value="@Url.Action("GetDesignationChart", "Designation")" />
+
+
+<div class="row bottomLine">
+    <div class="col-sm-12 Page_Head_Master">
+        <div class="col-sm-6 Text_Left">
+            <label class="Page_Heading  ">@EduSuiteUIResources.DesignationChart</label>
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="col-sm-12 form-master">
+    <div class="topMarginSpace  form-master fnone">
+
+        <div class="row bottomLine">
+
+            <div class="col-sm-12">
+                <div id="dvDesignationChart" class="jstree-inline" style="overflow-x:auto"></div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="form-group">
+                <input type="button" value="@EduSuiteUIResources.Save" id="btnSave" class="btnForm btnSubmit btn btn-sm btn-default pull-left " />
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var jsonData=@(Html.Raw(Json.Encode(Model)));
+    $(document).ready(function () {
+        var response = AjaxHelper.ajax("Get", $("#hdnGetDesignationChart").val(),
+                            {
+
+                            });
+
+
+        var designationChart = $("#dvDesignationChart")[0];
+        var ordgChart = $(designationChart).orgchart({
+            'data': ModifyData(response)[0],
+            'nodeTitle': 'name',
+            'nodeContent': false,
+            'toggleSiblingsResp': true,
+            'visibleLevel': 999,
+            'exportButton': true,
+            'exportFilename': 'OrgChart',
+            'exportFileextension': 'png',
+            'draggable': true,
+            'pan': true,
+            'zoom': true,
+            'zoominLimit': 7,
+            'zoomoutLimit': 0.1,
+
+
+        });
+        var childId = "", parentId = "";
+        @*$(designationChart).find(".node").bindFirst("drop", function (ev) {
+            var obj = {};
+            obj.RowKey = childId;
+            obj.HigherDesignationKey = $(this).prop("id");
+            var response = AjaxHelper.ajax("Get", '@Url.Action("CheckEmployeeHierarchy","Employee")' + "?" + $.param(obj))
+            if (!response.IsSuccessful) {
+                toastr.warning("Not Allowed",Resources.Failed);
+                ev.stopImmediatePropagation();
+            }
+
+        })
+        $(designationChart).find(".node").on("drag", function (ev) {
+            childId = $(this).prop("id");
+
+        })*@
+        $("#btnSave").on("click", function () {
+            var returnData = ordgChart.getHierarchy();
+            var result = [];
+            createChildModel(result,returnData.id,returnData.children)
+
+            $(".RightContentMaster").mLoading();
+            setTimeout(function(){
+                var response=AjaxHelper.ajax("POST","@Url.Action("AddEditDesignationChart", "Designation")",result);
+                if(response.IsSuccessful)
+                {
+                    toastr.success(Resources.Success, response.Message);
+                }
+                $(".RightContentMaster").mLoading("destroy");
+            },500)
+
+        })
+
+    });
+    function createChildModel(result,parentId,data)
+    {
+        $(data).each(function(){
+            var objItem=$.extend(true,{},jsonData);
+            objItem.HigherDesignationKey=parentId;
+            objItem.RowKey=this.id;
+            result.push(objItem)
+            if(this.children&&this.children.length>0)
+            {
+                createChildModel(result,this.id,this.children)
+            }
+
+        });
+    }
+    function ModifyData(array) {
+        var map = []
+        //var newArray=array.filter(function (el) {
+        //    return !el.HigherDesignationKey;
+        //});
+        map.push(getNestedChildren(array,null));
+        return map[0];
+    }
+
+    function getNestedChildren(arr, parent) {
+        var out = []
+        for(var i in arr) {
+            if(arr[i].HigherDesignationKey == parent) {
+                var children = getNestedChildren(arr, arr[i].RowKey)
+                var newObj = {};
+                var obj = arr[i];
+                if(children.length) {
+                    newObj.children = children;
+                }
+
+                newObj.relationship = [];
+                newObj.name = obj.DesignationName;
+                newObj.id = obj.RowKey;
+                newObj.parent = obj.HigherDesignationKey;
+                out.push(newObj)
+            }
+        }
+        return out
+    }
+
+
+</script>

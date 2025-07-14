@@ -1,0 +1,20 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.StudentStudyMaterialViewModel
+
+
+<input type="hidden" id="hdnStudyMaterialCategoryKey" value="@Model.SubjectKey" />
+
+<ul  id="StudyMaterialCategories" class="list-group">
+
+    @foreach (var item in Model.SubjectsList)
+    {
+        <li  onclick="ViewStudyMaterialUpload.GetStudyMaterialsList(jsonData, 1, true,@item.SubjectKey)"  class="list-group-item StudyMaterialCategory">
+            <a>@item.SubjectName</a>
+        </li>
+
+    }
+
+</ul>
+
+
+
+

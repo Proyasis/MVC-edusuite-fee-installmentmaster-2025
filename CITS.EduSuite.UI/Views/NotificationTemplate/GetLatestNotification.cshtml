@@ -1,0 +1,38 @@
+﻿@model List<CITS.EduSuite.Business.Models.ViewModels.NotificationDataViewModel>
+
+@foreach (var item in Model)
+{
+    <li>
+        <a href="@item.PushNotificationRedirectUrl" target="_blank">
+            <span class="time">@String.Format("{0:dd/MM/yyyy hh:mm tt}", item.CreatedDate)</span>
+            <span class="details @(item.PushNotificationRead ? "" : "uread")">
+                @if (item.PushNotificationType == "success")
+                {
+                    <span class="label label-sm label-icon label-success">
+                        <i class="fa fa-plus"></i>
+                    </span>
+                }
+                else if (item.PushNotificationType == "warning")
+                {
+                    <span class="label label-sm label-icon label-warning">
+                        <i class="fa fa-bell-o"></i>
+                    </span>
+                }
+                else if (item.PushNotificationType == "info")
+                {
+                    <span class="label label-sm label-icon label-info">
+                        <i class="fa fa-bullhorn"></i>
+                    </span>
+                }
+                else if (item.PushNotificationType == "error")
+                {
+                    <span class="label label-sm label-icon label-danger">
+                        <i class="fa fa-bolt"></i>
+                    </span>
+                }
+
+                @Html.Raw(item.PushNotificationContent)
+            </span>
+        </a>
+    </li>
+}

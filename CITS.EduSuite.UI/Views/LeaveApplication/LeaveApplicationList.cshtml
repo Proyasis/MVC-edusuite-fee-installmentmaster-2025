@@ -1,0 +1,78 @@
+﻿
+@using System.Web.Mvc
+@model CITS.EduSuite.Business.Models.ViewModels.LeaveApplicationViewModel
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/CitsValidation")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Content/Select2JS")
+    @Scripts.Render("~/Scripts/LeaveApplication")
+}
+<input type="hidden" id="hdnGetLeaveApplicationsList" value="@Url.Action("GetLeaveApplication", "LeaveApplication")" />
+<input type="hidden" id="hdnDeleteLeaveApplication" value="@Url.Action("DeleteLeaveApplication", "LeaveApplication")" />
+<input type="hidden" id="hdnGetEmployeesByBranchId" value="@Url.Action("GetEmployeesByBranchId", "LeaveApplication")" />
+<input type="hidden" id="hdnApproveLeaveApplication" value="@Url.Action("ApproveLeaveApplication", "LeaveApplication")" />
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-sm-6 col-12">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.LeaveApplication</h3>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 text-right">
+            <a id="addEditLeaveApplication" data-href="@Url.Action("AddEditLeaveApplication", "LeaveApplication")" onclick="LeaveApplication.EditPopup(this)" class="btn btn-success btn-sm "><i class="fa fa-plus-square-o"></i> <span>@EduSuiteUIResources.New @EduSuiteUIResources.BlankSpace @EduSuiteUIResources.LeaveApplication</span></a>
+        </div>
+    </div>
+</header>
+<section class="section-content mx-sm-3 mx-0">
+    <div class="GridBody">
+
+        <div class="grid-nav-bar form-row justify-content-between">
+            <div class="col-lg-3 col-5">
+                @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Branch, new { @class = "input-control form-control form-control-sm form-control-sm", @InputFor = "lblBranch", @id = "ddlBranch" })
+            </div>
+            <div class="col-lg-3 col-5">
+                @Html.DropDownListFor(m => m.EmployeeKey, new SelectList(Model.Employees, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Employee, new { @class = "input-control form-control form-control-sm", @data_live_search = true, @InputFor = "lblEmployee", @id = "ddlEmployee" })
+            </div>
+
+            <div class="col-lg-6 col-2">
+                <a class="btn btn-info btn-sm float-right " onclick='window.location.reload()'>
+                    <i class="fa fa-refresh"></i>   Refresh
+                </a>
+            </div>
+
+        </div>
+
+        <div class="table-wrapper">
+
+            <div class="jqGrid_wrapper overflow-auto">
+                <table id="grid"></table>
+                <div id="pager"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script>
+    $(document).ready(function () {
+        LeaveApplication.GetLeaveApplication();
+        $("#ddlBranch").on("change", function () {
+            LeaveApplication.GetEmployeesByBranchId($(this).val(), $("#ddlEmployee"));
+            LeaveApplication.GetLeaveApplication();
+
+        });
+
+        $("#ddlEmployee").on("change", function () {
+            LeaveApplication.GetLeaveApplication();
+
+        });
+    });
+
+</script>

@@ -1,0 +1,115 @@
+﻿@using System.Web.Mvc
+@model CITS.EduSuite.Business.Models.ViewModels.HolidayViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Content/momentJS")
+    @Scripts.Render("~/Content/FullCalendarJS")
+    @Scripts.Render("~/Scripts/Holiday")
+    @Scripts.Render("~/Content/MultiselectJs")
+
+}
+
+<input type="hidden" id="hdnGetHolidays" value="@Url.Action("GetHolidays", "Holiday")" />
+<input type="hidden" id="hdnGetHolidayByDate" value="@Url.Action("GetHolidayByDate", "Holiday")" />
+<input type="hidden" id="hdnDeleteHoliday" value="@Url.Action("DeleteHoliday", "Holiday")" />
+<input type="hidden" id="hdnAddEditHoliday" value="@Url.Action("AddEditHoliday", "Holiday")" />
+
+
+@Styles.Render("~/Content/FullCalendarCSS")
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-sm-6 col-12">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.Holiday</h3>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-12 text-right">
+        </div>
+    </div>
+</header>
+
+<section class="section-content mx-sm-3 mx-0">
+    <div class="GridBody">
+
+        <div class="grid-nav-bar">
+            <div class=" form-row ">
+
+
+                @if (Model.Branches.Count == 1)
+                {
+                    {
+                        Model.BranchKey = Model.BranchKey == 0 ? (short)Model.Branches.Select(x => x.RowKey).FirstOrDefault() : Model.BranchKey;
+                    }
+                    @Html.HiddenFor(m => m.BranchKey)
+                }
+                else
+                {
+                    if (DbConstants.Role.AdminUserTypes.Contains(DbConstants.User.RoleKey))
+                    {
+                        <div class="col-lg-2 col-sm-4 col-6">
+                            <fieldset class="form-group">
+                                @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Branch, new { @class = "form-control input-control", @InputFor = "lblBranch", @data_live_search = "true" })
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => m.BranchKey)
+                                </span>
+                            </fieldset>
+                        </div>
+
+                    }
+                    else
+                    {
+                        <div class="col-lg-2 col-sm-4 col-6">
+                            <fieldset class="form-group">
+                                @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), new { @class = "form-control input-control", @InputFor = "lblBranch" })
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => m.BranchKey)
+                                </span>
+                            </fieldset>
+                        </div>
+                    }
+
+                }
+
+                <div class="col-lg-2 col-sm-4 col-6">
+                    <div class="form-group">
+                        @Html.TextBoxFor(m => m.HolidayMonth, "{0:MMM yyyy}", new { @class = "input-control form-control form-control-sm", @data_input_type = "month", @readonly = "readonly", @InputFor = "lblMonthKey" })
+                    </div>
+                </div>
+
+            </div>
+
+
+
+        </div>
+        <div class="table-wrapper">
+
+            <div class="jqGrid_wrapper overflow-auto">
+                <div id="calender"></div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<script>
+    $(document).ready(function () {
+        AppCommon.FormatMonthInput();
+        Holiday.GetHolidays();
+        $("#BranchKey").on("change", function () {
+            Holiday.GetHolidays();
+        });
+        $("input#HolidayMonth").on('changeDate', function (ev) {
+            Holiday.GetHolidays();
+
+        });
+
+    })
+</script>

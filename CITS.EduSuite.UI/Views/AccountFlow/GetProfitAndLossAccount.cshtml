@@ -1,0 +1,217 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.ProfitAndLossAccountViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+
+
+
+    <table id="ledgerTable" class="table table-bordered">
+
+        <thead>
+            <tr class="ledgerSubHead">
+                <td >
+                    @EduSuiteUIResources.Particulars
+                </td>
+                <td >
+                    @EduSuiteUIResources.Amount
+                </td>
+                <td >
+                    @EduSuiteUIResources.Particulars
+                </td>
+                <td >
+                    @EduSuiteUIResources.Amount
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+
+            @for (int i = 0; i < (Model.DirectExpenses.Count > Model.DirectIncomes.Count ? Model.DirectExpenses.Count : Model.DirectIncomes.Count); i++)
+            {
+                <tr>
+
+                    @if (Model.DirectExpenses.Count >= (i + 1))
+                    {
+                        <td >
+                            To @Model.DirectExpenses[i].AccountHeadName
+                        </td>
+                        <td >
+                            @Model.DirectExpenses[i].Amount
+                        </td>
+                    }
+                    else
+                    {
+                        <td ></td>
+                        <td ></td>
+                    }
+                    @if (Model.DirectIncomes.Count >= (i + 1))
+                    {
+                        <td >
+                            By @Model.DirectIncomes[i].AccountHeadName
+                        </td>
+                        <td >
+                            @Model.DirectIncomes[i].Amount
+                        </td>
+                    }
+                    else
+                    {
+                        <td ></td>
+                        <td ></td>
+                    }
+                </tr>
+            }
+            <tr>
+                @if (Model.Gross > 0)
+                {
+                    <td >
+                        To Gross Profit c/d
+                    </td>
+                    <td >
+                        @Model.Gross
+                    </td>
+                    <td ></td>
+                    <td ></td>
+                }
+                else
+                {
+                    <td ></td>
+                    <td ></td>
+                    <td >
+                        By Gross Loss c/d
+                    </td>
+                    <td >
+                        @(-Model.Gross)
+                    </td>
+                }
+            </tr>
+            <tr class="ledgerTotal">
+                @if (Model.Gross > 0)
+                {
+                    <td ></td>
+                    <td >
+                        @(Model.DirectExpenses.Select(x => x.Amount).DefaultIfEmpty().Sum() + Model.Gross)
+                    </td>
+                    <td ></td>
+                    <td >
+                        @(Model.DirectIncomes.Select(x => x.Amount).DefaultIfEmpty().Sum())
+                    </td>
+                }
+                else
+                {
+                    <td ></td>
+                    <td >
+                        @(Model.DirectExpenses.Select(x => x.Amount).DefaultIfEmpty().Sum())
+                    </td>
+                    <td ></td>
+                    <td >
+                        @(Model.DirectIncomes.Select(x => x.Amount).DefaultIfEmpty().Sum() + -(Model.Gross))
+                    </td>
+                }
+            </tr>
+            <tr>
+                @if (Model.Gross > 0)
+                {
+                    <td ></td>
+                    <td ></td>
+                    <td >
+                        By Gross Profit b/d
+                    </td>
+                    <td >
+                        @Model.Gross
+                    </td>
+                }
+                else
+                {
+                    <td >
+                        To Gross Loss b/d
+                    </td>
+                    <td >
+                        @(-Model.Gross)
+                    </td>
+                    <td ></td>
+                    <td ></td>
+                }
+            </tr>
+            @for (int i = 0; i < (Model.IndirectExpenses.Count > Model.IndirectIncomes.Count ? Model.IndirectExpenses.Count : Model.IndirectIncomes.Count); i++)
+            {
+                <tr>
+
+                    @if (Model.IndirectExpenses.Count >= (i + 1))
+                    {
+                        <td >
+                            To @Model.IndirectExpenses[i].AccountHeadName
+                        </td>
+                        <td >
+                            @Model.IndirectExpenses[i].Amount
+                        </td>
+                    }
+                    else
+                    {
+                        <td ></td>
+                        <td ></td>
+                    }
+                    @if (Model.IndirectIncomes.Count >= (i + 1))
+                    {
+                        <td >
+                            By @Model.IndirectIncomes[i].AccountHeadName
+                        </td>
+                        <td >
+                            @Model.IndirectIncomes[i].Amount
+                        </td>
+                    }
+                    else
+                    {
+                        <td ></td>
+                        <td ></td>
+                    }
+                </tr>
+            }
+            <tr>
+                @if (Model.Net > 0)
+                {
+                    <td >
+                        To Net Profit Transfered to B/S
+                    </td>
+                    <td >
+                        @Model.Net
+                    </td>
+                    <td ></td>
+                    <td ></td>
+                }
+                else
+                {
+                    <td ></td>
+                    <td ></td>
+                    <td >
+                        By Net Loss Transfered to B/S
+                    </td>
+                    <td >
+                        @(-Model.Gross)
+                    </td>
+                }
+            </tr>
+            <tr class="ledgerTotal">
+                @if (Model.Gross > 0)
+                {
+                    <td ></td>
+                    <td >
+                        @(Model.IndirectExpenses.Select(x => x.Amount).DefaultIfEmpty().Sum() + (Model.Net > 0 ? Model.Net : 0))
+                    </td>
+                    <td ></td>
+                    <td >
+                        @(Model.IndirectIncomes.Select(x => x.Amount).DefaultIfEmpty().Sum() + (Model.Gross))
+                    </td>
+                }
+                else
+                {
+                    <td ></td>
+                    <td >
+                        @(Model.IndirectExpenses.Select(x => x.Amount).DefaultIfEmpty().Sum()+-(Model.Gross))
+                    </td>
+                    <td ></td>
+                    <td >
+                        @(Model.IndirectIncomes.Select(x => x.Amount).DefaultIfEmpty().Sum() + (Model.Net < 0 ? -(Model.Net) : 0))
+                    </td>
+                }
+            </tr>
+        </tbody>
+    </table>
+

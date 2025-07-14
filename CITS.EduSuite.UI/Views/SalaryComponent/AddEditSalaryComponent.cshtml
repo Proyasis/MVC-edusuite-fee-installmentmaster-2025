@@ -1,0 +1,120 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.SalaryComponentViewModel
+
+
+<div class="modal-header">
+    <i data-dismiss="modal" class="fa fa-remove close"></i>
+    @if (Model.OperationType == "A")
+    {
+        <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.Add @EduSuiteUIResources.Sla @EduSuiteUIResources.Edit @Model.SalaryComponentTypeName@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.OpenBracket@EduSuiteUIResources.PlusSymbol@EduSuiteUIResources.CloseBracket</h4>
+    }
+    else
+    {
+        <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.Add @EduSuiteUIResources.Sla @EduSuiteUIResources.Edit @Model.SalaryComponentTypeName@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.OpenBracket@EduSuiteUIResources.MinusSymbol@EduSuiteUIResources.CloseBracket</h4>
+
+    }
+
+</div>
+
+@using (Html.BeginForm("AddEditSalaryComponent", "SalaryComponent", FormMethod.Post, htmlAttributes: new { @id = "frmSalaryComponent" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.RowKey, new { @class = "hidSalaryComponentKey" })
+    @Html.HiddenFor(m => m.SalaryComponentTypeKey)
+
+    @Html.ValidationSummary(true)
+
+    <div class="modal-body bottomLine">
+        <div class="topMarginSpace  form-master fnone">
+            <div class="row">
+                <div class="paddingNone">
+                    <span class="ValidateDataMsg"> @Html.ValidationMessage("error_msg")  </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 mandatoryHead ">
+                    <span>@EduSuiteUIResources.FieldsMarkedAs<span class="mandatoryStar"> * </span>@EduSuiteUIResources.AreMandatory</span>
+
+                </div>
+            </div>
+            <div class="row bottomLine">
+                <div class="col-sm-6 form-col">
+                    <div class="form-group ">
+                        @Html.Label(EduSuiteUIResources.Branch, htmlAttributes: new { @id = "lblBranch", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                        @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Branch, new { @class = "input-control form-control form-control-sm form-control-sm", @InputFor = "lblBranch" })
+                         <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.BranchKey)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-sm-6 form-col">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Employee, htmlAttributes: new { @id = "lblEmployee", @class = "form-label" })
+                        <div class="required-icon"><div class="text">*</div></div>
+                        @Html.DropDownListFor(m => m.EmployeeKey, new SelectList(Model.Employees, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Employee, new { @class = "input-control form-control form-control-sm", @data_plugin_type = "select2", @InputFor = "lblEmployee" })
+                         <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.EmployeeKey)
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6 form-col">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.Amount, htmlAttributes: new { @id = "lblAmountUnit", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                        @Html.TextBoxFor(m => m.AmountUnit, new { @class = "input-control form-control form-control-sm", @InputFor = "lblAmountUnit" })
+                         <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.AmountUnit)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-sm-6 form-col" id="divLeaveTo">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.Date, htmlAttributes: new { @id = "lblSalaryComponentDate", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                        @Html.TextBoxFor(m => m.SalaryComponentDate, "{0:dd/MM/yyyy}", new { @class = "input-control form-control form-control-sm", @data_input_type = "date", @InputFor = "lblSalaryComponentDate", @data_inputmask = "'alias': 'dd/mm/yyyy'" })
+                         <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.SalaryComponentDate)
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 form-col">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.Remarks, htmlAttributes: new { @id = "lblRemarks", @class = "form-label" })
+                        @Html.TextAreaFor(m => m.Remarks, new { @class = "input-control form-control form-control-sm", @InputFor = "lblRemarks" })
+                         <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.Remarks)
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row ButtonRow">
+                <div class="form-group">
+                    <input type="submit" value="@EduSuiteUIResources.Save" id="btnSaveCopy" class="btnForm btnSubmit btn btn-sm btn-default " />
+                    <button type="button" data-dismiss="modal" class="btnForm btnCancel btn btn-sm btn-default ">@EduSuiteUIResources.Cancel</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+}
+
+
+<script>
+    $(document).ready(function () {
+        AppCommon.AutoHideDropdown();
+        if(@Model.RowKey==0)
+        {
+            SalaryComponent.GetEmployeesByBranchId($("#BranchKey").val(), $("#EmployeeKey"));
+        }
+        AppCommon.FormatDateInput();
+        AppCommon.FormatSelect2();
+        $("#BranchKey").on("change", function () {
+            SalaryComponent.GetEmployeesByBranchId($(this).val(),$("#EmployeeKey"));
+        });
+    });
+</script>

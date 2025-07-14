@@ -1,0 +1,46 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.EmployeePersonalViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+@using CITS.EduSuite.UI
+<input type="hidden" id="hdnAddEditWorkSchedule" value="@Url.Action("AddEditWorkSchedule", "WorkSchedule", new { id = "" })" />
+<input type="hidden" id="hdnBindEmployeeSubjectModule" value="@Url.Action("BindEmployeeSubjectModule", "EmployeeSubjectModule", new { id = Model.EmployeeKey })" />
+
+<div class="form-row">
+
+
+   
+    <div class="col-sm-8 col-lg-8  col-12">
+        @if ((Model.EmployeeKey != 0) || !String.IsNullOrEmpty(Model.EmployeeCode))
+        {
+            @Html.Action("EmployeeDetail", "Shared", new { id = (Model.EmployeeKey ?? 0), AdmissionNo = Model.EmployeeCode })
+        }
+        <div id="dvInstallmentDetails">
+
+        </div>
+
+
+    </div>
+    <div class="col-sm-4 col-lg-4  col-12">
+        <div id="dvFeeDetails">
+
+        </div>
+
+
+    </div>
+
+
+</div>
+<div class="col-12">
+    <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+</div>
+
+<script>
+    $(document).ready(function () {
+        setTimeout(function(){
+            if (@Model.EmployeeKey != 0 && @Model.EmployeeKey != null)
+            {
+                EmployeeSubjectModule.BindEmployeeSubjectModule();
+            }
+        },500)
+
+    })
+</script>

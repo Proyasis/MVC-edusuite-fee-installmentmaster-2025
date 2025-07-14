@@ -1,0 +1,155 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.AccountFlowViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+
+
+<table id="ledgerTable" class="table table-bordered w3-border-red">
+
+    <thead class="w3-deep-purple">
+        <tr class="ledgerSubHead">
+            <th>
+                @EduSuiteUIResources.Date
+            </th>
+            <th>
+                @EduSuiteUIResources.Particulars
+            </th>
+            <th>
+                @EduSuiteUIResources.VoucherType
+            </th>
+            <th>
+                @EduSuiteUIResources.Debit
+            </th>
+            <th>
+                @EduSuiteUIResources.Credit
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+
+        @for (int i = 0; i < Model.CreditAccountFlow.Count; i++)
+        {
+            if (Model.CreditAccountFlow[i].CashFlowTypeKey != 0 && Model.CreditAccountFlow[i].CashFlowTypeKey != 3)
+            {
+        <tr>
+            @if (i == 0 || (i != 0 && Convert.ToDateTime(Model.CreditAccountFlow[i].TransactionDate).Date != Convert.ToDateTime(Model.CreditAccountFlow[i - 1].TransactionDate).Date))
+            {
+                <td rowspan="@(Model.CreditAccountFlow.Count(row=>row.TransactionDate.Date==Model.CreditAccountFlow[i].TransactionDate.Date)-1)">
+
+                    @(string.Format("{0:dd/MM/yyyy}", Model.CreditAccountFlow[i].TransactionDate))
+                </td>
+            }
+            @if (Model.CreditAccountFlow[i].IsDummy ?? false)
+            {
+                <td class="text-right" style="border:0px !important">
+                    @Model.CreditAccountFlow[i].Purpose
+                </td>
+                <td>
+                </td>
+            }
+            else
+            {
+                if ((i - 1) != Model.CreditAccountFlow.Count)
+                {
+                    if ((Model.CreditAccountFlow[i + 1].IsDummy ?? false))
+                    {
+                        <td style="border:0px !important">
+                            @Model.CreditAccountFlow[i].Purpose
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            @Model.CreditAccountFlow[i].Purpose
+                        </td>
+                    }
+                }
+                else
+                {
+                    <td>
+                        @Model.CreditAccountFlow[i].Purpose
+                    </td>
+                }
+                <td>
+                    @Model.CreditAccountFlow[i].VoucherTypeName
+                </td>
+            }
+
+
+            <td class="text-right">
+                @if (Model.CreditAccountFlow[i].CashFlowTypeKey == DbConstants.CashFlowType.In)
+                {
+                    @Model.CreditAccountFlow[i].Amount
+                }
+            </td>
+            <td class="text-right">
+                @if (Model.CreditAccountFlow[i].CashFlowTypeKey == DbConstants.CashFlowType.Out)
+                {
+                    @Model.CreditAccountFlow[i].Amount
+                }
+            </td>
+        </tr>
+            }
+            else if (Model.CreditAccountFlow[i].CashFlowTypeKey == 0)
+            {
+                <tr class="ledgerTotal w3-pale-red">
+                    @if (i == 0 || (i != 0 && Convert.ToDateTime(Model.CreditAccountFlow[i].TransactionDate).Date != Convert.ToDateTime(Model.CreditAccountFlow[i - 1].TransactionDate).Date))
+                    {
+                        <th rowspan="@(Model.CreditAccountFlow.Count(row=>row.TransactionDate.Date==Model.CreditAccountFlow[i].TransactionDate.Date)-1)">
+
+                            @(string.Format("{0:dd/MM/yyyy}", Model.CreditAccountFlow[i].TransactionDate))
+
+                        </th>
+                    }
+                    else
+                    {
+                        <th></th>
+                    }
+                    <th>
+                        @Model.CreditAccountFlow[i].Purpose
+                    </th>
+                    <th>
+                        @Model.CreditAccountFlow[i].VoucherTypeName
+                    </th>
+
+
+                    <th class="text-right">
+                        @Model.CreditAccountFlow[i].Amount
+                    </th>
+                    <th class="text-right">
+                        @Model.CreditAccountFlow[i].Amount
+                    </th>
+                </tr>
+            }
+
+            else if (Model.CreditAccountFlow[i].CashFlowTypeKey == 3)
+            {
+    <tr>
+        @if (i == 0 || (i != 0 && Convert.ToDateTime(Model.CreditAccountFlow[i].TransactionDate).Date != Convert.ToDateTime(Model.CreditAccountFlow[i - 1].TransactionDate).Date))
+        {
+            <th rowspan="@(Model.CreditAccountFlow.Count(row=>row.TransactionDate.Date==Model.CreditAccountFlow[i].TransactionDate.Date)-1)">
+
+                @(string.Format("{0:dd/MM/yyyy}", Model.CreditAccountFlow[i].TransactionDate))
+
+            </th>
+        }
+        <th>
+            @Model.CreditAccountFlow[i].Purpose
+        </th>
+        <th>
+            @Model.CreditAccountFlow[i].VoucherTypeName
+        </th>
+
+
+        <th class="text-right ledgerSubTotal">
+            @Model.CreditAccountFlow[i].TotalDebitAmount
+        </th>
+        <th class="text-right ledgerSubTotal">
+            @Model.CreditAccountFlow[i].TotalCreditAmount
+        </th>
+    </tr>
+            }
+        }
+
+    </tbody>
+</table>

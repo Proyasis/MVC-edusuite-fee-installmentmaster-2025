@@ -1,0 +1,98 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.EmployeeSalaryAdvanceReturnViewModel
+
+
+<table class="tbSalaryAdvance table-bordered">
+    <thead>
+        <tr>
+            <th colspan="5" class="text-center">
+                <strong> Salary Advances</strong>
+            </th>
+        </tr>
+        <tr class="white-bg">
+            <th class="text-center">
+                Payment Date
+            </th>
+            <th class="text-center">
+                Purpose
+            </th>
+            <th class="text-center">
+                Deduct Amount
+            </th>
+            <th class="text-center">
+                Balance
+            </th>
+            <th class="text-center">
+                Is Deduct?
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < Model.ReturnDetails.Count; i++)
+        {
+
+            <tr advancerepeater="">
+                <td class="text-center">
+                    @Html.HiddenFor(m => m.ReturnDetails[i].RowKey)
+                    @Html.HiddenFor(m => m.ReturnDetails[i].AdvanceKey)
+                    @Html.HiddenFor(m => m.ReturnDetails[i].PaymentDate)
+                    @string.Format("{0:dd/MM/yyyy}", Model.ReturnDetails[i].PaymentDate)
+                </td>
+                <td class="text-center">
+                    @Model.ReturnDetails[i].Purpose
+                </td>
+                <td class="text-center">
+                    @Html.HiddenFor(m => m.ReturnDetails[i].BeforeTakenAdvance)
+                    @Html.TextBoxFor(m => m.ReturnDetails[i].ReturnAmount, "{0:G29}", new { @class = "input-control text-right full-width", @onClick = "this.setSelectionRange(0, this.value.length)" })
+                </td>
+                <td advancebalance class="text-center">
+                    @string.Format("{0:G29}", Model.ReturnDetails[i].AdvanceBalance)
+                </td>
+                <td>
+                    <div class="switch-check">
+                        @Html.CheckBoxFor(m => m.ReturnDetails[i].IsDeduct, new { @class = "switch-input" })
+                        <div class="switch-label" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                        <div class="switch-handle"></div>
+                    </div>
+                </td>
+            </tr>
+
+        }
+    </tbody>
+    <tfoot>
+        <tr style="background-color: #d0f7e0;">
+            <th colspan="2" class="text-center">
+                Total
+            </th>
+            <th totaladvance class="text-center">
+                @Model.ReturnDetails.Select(x => x.ReturnAmount).DefaultIfEmpty().Sum()
+            </th>
+            <th totalbalance class="text-center">
+                @Model.ReturnDetails.Select(x => x.AdvanceBalance).DefaultIfEmpty().Sum()
+            </th>
+            <th class="text-center">
+            </th>
+        </tr>
+    </tfoot>
+</table>
+<style>
+    .tbSalaryAdvance tbody {
+        display: block;
+        max-height: 186px;
+        overflow-y: scroll;
+        width: 103%;
+    }
+
+        .tbSalaryAdvance thead, .tbSalaryAdvance tfoot, .tbSalaryAdvance tbody tr {
+            display: table;
+            width: 97.5%;
+            table-layout: fixed; /* even columns width , fix width of table too*/
+        }
+
+    .tbSalaryAdvance tfoot, .tbSalaryAdvance thead {
+        width: calc( 100% - 1em ); /* scrollbar is average 1em/16px width, remove it from thead width */
+    }
+
+    .tbSalaryAdvance table {
+        width: 400px;
+    }
+</style>

@@ -1,0 +1,78 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.DepartmentShiftViewModel
+
+@using System.Web.Mvc
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Content/momentJS")
+    @Scripts.Render("~/Scripts/DepartmentShift")
+}
+<input type="hidden" id="hdnGetDepartmentShifts" value="@Url.Action("GetDepartmentShifts", "DepartmentShift")" />
+<input type="hidden" id="hdnDeleteDepartmentShift" value="@Url.Action("DeleteDepartmentShift", "DepartmentShift")" />
+<input type="hidden" id="hdnAddEditDepartmentShift" value="@Url.Action("AddEditDepartmentShift", "DepartmentShift")" />
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-sm-6 col-12">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.DepartmentShift</h3>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 text-right">
+            <a id="addEditDepartmentShift" data-href="@Url.Action("AddEditDepartmentShift", "DepartmentShift")" onclick="DepartmentShift.EditPopup(this)" class="btn btn-success btn-sm"><i class="fa fa-plus-square-o"></i> <span>@EduSuiteUIResources.New @EduSuiteUIResources.BlankSpace @EduSuiteUIResources.DepartmentShift</span></a>
+        </div>
+    </div>
+</header>
+<section class="section-content mx-sm-3 mx-0">
+    <div class="GridBody">
+
+        <div class="grid-nav-bar form-row justify-content-between">
+            <div class="col-lg-3 col-6">
+
+                <input id="txtsearch" type="text" name="focus" class="input-control form-control form-control-sm" placeholder="@EduSuiteUIResources.Search@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Shift" /> @* Change Search TextBox Placeholder*@
+                <span id="iconSpan" class="iconSpan"><i class="fa fa-times-circle" aria-hidden="true"></i></span>
+            </div>
+
+            <div class="col-6">
+                <a class="btn btn-info btn-sm float-right" onclick='DepartmentShift.GetEmployeeShift()'>
+                    <i class="fa fa-refresh"></i>   @EduSuiteUIResources.Refresh
+                </a>
+            </div>
+
+        </div>
+
+        <div class="table-wrapper">
+            <div class="jqGrid_wrapper overflow-auto">
+                <table id="grid"></table>
+                <div id="pager"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<script>
+    $(document).ready(function () {
+
+        $("#txtsearch").keydown(function () {
+            DepartmentShift.GetDepartmentShifts();
+        });
+        $("#txtsearch").keyup(function () {
+            DepartmentShift.GetDepartmentShifts();
+        });
+
+        $("#iconSpan").click(function () {
+            $('#txtsearch').val('');
+            DepartmentShift.GetDepartmentShifts();
+        });
+        DepartmentShift.GetDepartmentShifts();
+
+    });
+</script>

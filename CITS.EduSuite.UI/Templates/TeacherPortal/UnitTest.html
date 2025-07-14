@@ -1,0 +1,56 @@
+﻿<form action="/UnitTest/AddEditUnitTestScheduleSubmit" id="frmUnitTestSchedule" method="post">
+    <div class="form-row">
+        <input id="BranchKey" name="BranchKey" type="hidden" value="{{BranchKey}}">
+        <input id="ClassDetailsKey" name="ClassDetailsKey" type="hidden" value="{{ClassDetailsKey}}">
+        <input id="ExamDate" name="ExamDate" type="hidden" value="{{ExamDate}}">
+        <div class="col-lg-2 col-sm-4 col-6">
+            <fieldset class="form-group ">
+                <label class="form-label" for="Subject">Subject</label>
+                <div class="required-icon"><div class="text">*</div></div>
+                <select class="form-control form-control-sm input-control" data-live-search="true" data-val="true" data-val-number="The field SubjectKey must be a number." data-val-required="Please Select Subject" id="SubjectKey" name="SubjectKey"></select>
+            </fieldset>
+        </div>
+      
+        <div class="col-lg-2 col-md-3 col-6">
+            <fieldset class="form-group ">
+                <label class="form-label" for="Minimum_Mark">Minimum Mark</label><div class="required-icon"><div class="text">*</div></div>
+                <input class="form-control form-control-sm input-control" data-val="true" data-val-number="The field MinimumMark must be a number." data-val-required="Please Enter Minimum Mark" id="MinimumMark" name="MinimumMark" placeholder="Minimum Mark" type="text" value="">
+                <span class="form-control-error-text">
+                    <span class="field-validation-valid" data-valmsg-for="MinimumMark" data-valmsg-replace="true"></span>
+                </span>
+            </fieldset>
+
+        </div>
+        <div class="col-lg-2 col-md-3 col-6">
+            <fieldset class="form-group ">
+                <label class="form-label" for="Maximum_Mark">Maximum Mark</label><div class="required-icon"><div class="text">*</div></div>
+                <input class="form-control form-control-sm input-control" data-val="true" data-val-is="Maximum Mark cannot be Less than Minimum Mark" data-val-is-dependentproperty="MinimumMark" data-val-is-operator="GreaterThan" data-val-is-passonnull="True" data-val-number="The field MaximumMark must be a number." data-val-required="Please Enter Maximum Mark" id="MaximumMark" name="MaximumMark" placeholder="Maximum Mark" type="text" value="">
+                <span class="form-control-error-text">
+                    <span class="field-validation-valid" data-valmsg-for="MaximumMark" data-valmsg-replace="true"></span>
+                </span>
+            </fieldset>
+
+        </div>
+
+
+
+    </div>
+    <div id="dvStudentsList">
+
+    </div>
+    <div class="row mt-2">
+        <div class="form-group">
+            <div class="col-12">
+                <fieldset class="form-group">
+                    <input type="button" value="Save" id="btnSave" class="btn btn-sm btn-success mx-1">
+                </fieldset>
+                <div class="col-12 paddingNone">
+                    <span class="ValidateDataMsg"> <span class="field-validation-valid" data-valmsg-for="error_msg" data-valmsg-replace="true"></span>  </span>
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+</form>

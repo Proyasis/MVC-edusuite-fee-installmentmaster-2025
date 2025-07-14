@@ -1,0 +1,113 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.AttendanceTypeViewModel
+
+<div class="modal-header">
+    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+    <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.Add @EduSuiteUIResources.Sla @EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace @EduSuiteUIResources.AttendanceType</h4>
+</div>
+
+
+<input type="hidden" id="hdnDeleteAttendanceTypeDescreption" value="@Url.Action("DeleteAttendanceTypeDescreption", "AttendanceType")" />
+<input type="hidden" id="hdnAttendaceTypeList" value="@Url.Action("AttendanceTypeList", "AttendanceType") " />
+
+
+
+
+@using (Html.BeginForm("AddEditAttendanceType", "AttendanceType", FormMethod.Post, new { @id = "frmAttendanceType" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(m => m.RowKey)
+
+    <div class="modal-body bottomLine">
+        <div class="form-master">
+            <div class="form-row">
+
+                <div class="col-lg-4">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.Type + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Name, htmlAttributes: new { @id = "lblFeeDate", @class = "form-label" })
+
+                        @Html.TextBoxFor(m => m.AttendanceTypeName, new { @class = "form-control input-control", @data_convert = "uppercase" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.AttendanceTypeName)
+                        </span>
+                    </fieldset>
+                </div>
+                <div class="col-lg-4">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.StartTime, htmlAttributes: new { @id = "lblFeeAmount", @class = "form-label" })
+                        @Html.TextBoxFor(m => m.StartTime, new { @class = "form-control input-control", @data_input_type = "time", @data_inputmask = "'alias':'hh:mm t','hourFormat': '12'", @InputFor = "lblCallDuration" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.StartTime)
+                        </span>
+                    </fieldset>
+                </div>
+                <div class="col-lg-4">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.EndTime, htmlAttributes: new { @id = "lblFeeAmount", @class = "form-label" })
+                        @Html.TextBoxFor(m => m.EndTime, new { @class = "form-control input-control", @data_input_type = "time", @data_inputmask = "'alias':'hh:mm t','hourFormat': '12'", @InputFor = "lblCallDuration" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.EndTime)
+                        </span>
+                    </fieldset>
+                </div>
+                <div class="col-lg-4 d-none">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.GraceTime + EduSuiteUIResources.OpenBracketWithSpace + EduSuiteUIResources.Min + EduSuiteUIResources.ClosingBracketWithSpace, htmlAttributes: new { @id = "lblFeeDate", @class = "form-label" })
+                        @Html.TextBoxFor(m => m.GraceTime, new { @class = "form-control input-control", @onClick = "this.setSelectionRange(0, this.value.length)" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.GraceTime)
+                        </span>
+                    </fieldset>
+                </div>
+                <div class="col-lg-4">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.IsActive, new { @class = "form-label" })
+
+                        <div class="switch-check my-2">
+                            @Html.CheckBoxFor(m => m.IsActive, new { @class = "switch-input" })
+                            <div class="switch-label redgreen" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                            <div class="switch-handle"></div>
+                        </div>
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.IsActive)
+                        </span>
+                    </fieldset>
+
+                </div>
+            </div>
+
+            <div class="form-row">
+                <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer justify-content-start">
+        <div class="form-group">
+            <input type="button" value="@EduSuiteUIResources.Submit" id="btnSave" onclick="AttendanceType.FormSubmit()" class="btn btn-sm btn-success mx-1" />
+            <button type="button" data-dismiss="modal" class="btn btn-sm btn-danger mx-1">@EduSuiteUIResources.Cancel</button>
+
+        </div>
+    </div>
+}
+
+<script>
+    var jsonData=@(Html.Raw(Json.Encode(Model)));
+
+    $(document).ready(function () {
+
+            $("[data-input-type=time]").each(function ()
+            {
+
+                if ($(this).val() != "")
+                {
+                    $(this).val(moment($(this).val(), ["HH:mm:ss"]).format("hh:mm A").toLowerCase());
+                }
+            })
+
+            AppCommon.FormatDateInput();
+            AppCommon.FormatInputCase();
+            AppCommon.FormatTimeInput();
+    });
+
+
+</script>

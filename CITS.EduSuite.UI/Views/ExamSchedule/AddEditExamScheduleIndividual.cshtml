@@ -1,0 +1,217 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.ExamScheduleViewModel
+
+@using CITS.EduSuite.Business.Models.ViewModels
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Content/JqueryRepeater")
+    @Scripts.Render("~/Scripts/Common")
+    @Scripts.Render("~/bundles/CitsValidation")
+    @Scripts.Render("~/Scripts/ExamSchedule")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Content/BootstrapSelectJS")
+}
+
+
+<input type="hidden" id="hdnFillCourse" value="@Url.Action("FillCourse", "ExamSchedule")" />
+<input type="hidden" id="hdnFillCourseYear" value="@Url.Action("FillCourseYear", "ExamSchedule")" />
+<input type="hidden" id="hdnFillUniversity" value="@Url.Action("FillUniversity", "ExamSchedule")" />
+<input type="hidden" id="hdnStudentPromotionList" value="@Url.Action("ExamScheduleList", "ExamSchedule")" />
+<input type="hidden" id="hdnFillBatch" value="@Url.Action("FillBatch", "ExamSchedule")" />
+<input type="hidden" id="hdnGetExamScheduleIndividual" value="@Url.Action("GetExamScheduleIndividual", "ExamSchedule", new { id = "" })" />
+<input type="hidden" id="hdnResetExamSchedule" value="@Url.Action("ResetExamSchedule", "ExamSchedule")" />
+<input type="hidden" id="hdnFillSubjects" value="@Url.Action("FillSubjects", "ExamSchedule")" />
+
+
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-12">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.Add@EduSuiteUIResources.Hyphen@EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.ExamSchedule</h3>
+                        <ol class="breadcrumb breadcrumb-simple float-right mb-2">
+                            <li><a href="#" onclick="location.href='@Url.Action("ExamScheduleList", "ExamSchedule")' ">@EduSuiteUIResources.ExamSchedule</a></li>
+                            <li class="active">@EduSuiteUIResources.Add@EduSuiteUIResources.Hyphen@EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.ExamSchedule</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="section-content mx-sm-3 mx-0">
+    <div class="form-master">
+
+        @using (Html.BeginForm("AddEditExamSchedule", "ExamSchedule", FormMethod.Post, new { @id = "frmExamSchedule" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            @Html.HiddenFor(m => m.ApplicationKey)
+            @Html.HiddenFor(m => m.IsMultipleExamSchedule)
+            @Html.HiddenFor(m => m.BranchKey)
+            @Html.HiddenFor(m => m.AcademicTermKey)
+            @Html.HiddenFor(m => m.CourseTypeKey)
+            @Html.HiddenFor(m => m.CourseKey)
+            @Html.HiddenFor(m => m.UniversityMasterKey)
+            @Html.HiddenFor(m => m.CourseYear)
+            @Html.HiddenFor(m => m.BatchKey)
+            @Html.HiddenFor(m => m.TemplateKey)
+            @Html.HiddenFor(m => m.StudentEmail)
+            @Html.HiddenFor(m => m.StudentPhone)
+            @Html.HiddenFor(m => m.CourseName)
+            @Html.HiddenFor(m => m.UniversityName)
+            @Html.HiddenFor(m => m.BatchName)
+
+            <div class="form-row">
+               
+
+                <div class="col-lg-2 col-sm-4 col-6">
+                    <fieldset class="form-group ">
+                        @Html.Label(EduSuiteUIResources.ExamRegNo, htmlAttributes: new { @class = "form-label" })
+                        @Html.TextBoxFor(m => m.ExamRegisterNumber, new { @class = "form-control input-control", @InputFor = "lblCallDuration", @disabled = "disabled" })
+                    </fieldset>
+                </div>
+                <div class="col-lg-2 col-sm-4 col-6">
+                    <fieldset class="form-group ">
+                        @Html.Label(EduSuiteUIResources.StudentName, htmlAttributes: new { @class = "form-label" })
+                        @Html.TextBoxFor(m => m.StudentName, new { @class = "form-control input-control", @InputFor = "lblCallDuration", @disabled = "disabled" })
+                    </fieldset>
+                </div>
+                <div class="col-lg-2 col-sm-4 col-6">
+                    <fieldset class="form-group ">
+                        @Html.Label(EduSuiteUIResources.ExamTerm, htmlAttributes: new { @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                        @Html.DropDownListFor(m => m.ExamTermKey, new SelectList(Model.ExamTerm, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.ExamTerm, new { @class = "form-control border-radius input-control autoselect-select" })<span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.ExamTermKey)
+                        </span>
+                    </fieldset>
+                </div>
+
+            </div>
+            <div id="dvStudentsList"></div>
+            <div class="col-sm-6 text-left">
+                @if (ApplicationSettingModel.SMSEnabled)
+                {
+                    if (!(Model.AutoSMS ?? true))
+                    {
+                        <div class="checkbox-bird green inline-block">
+                            @Html.CheckBox("AutoSMS", (Model.AutoSMS ?? false))
+                            <label for="AutoSMS">@EduSuiteUIResources.SendSms</label>
+                        </div>
+                    }
+                    else
+                    {
+                        @Html.Hidden("AutoSMS", (Model.AutoSMS ?? false), new { @class = "pull-left" })
+                    }
+                }
+
+
+                @if (ApplicationSettingModel.EmailEnabled)
+                {
+                    if (!(Model.AutoEmail ?? true))
+                    {
+                        <div class="checkbox-bird green inline-block">
+                            @Html.CheckBox("AutoEmail", (Model.AutoEmail ?? false), new { @class = "pull-left" })
+                            <label for="AutoEmail">@EduSuiteUIResources.SendEmail</label>
+                        </div>
+                    }
+                    else
+                    {
+                        @Html.Hidden("AutoEmail", (Model.AutoEmail ?? false))
+                    }
+                }
+
+            </div>
+
+            <div class="row mt-2">
+                <div class="form-group">
+                    <div class="col-12">
+                        <fieldset class="form-group">
+                            <input type="button" value="@EduSuiteUIResources.Save" id="btnSave" class="btn btn-sm btn-success mx-1" />
+                            <input type="button" value="@EduSuiteUIResources.Cancel" onclick="location.href='@Url.Action("ExamScheduleList", "ExamSchedule")' " class="btn btn-sm btn-danger mx-1" />
+                        </fieldset>
+                        <div class="col-12 paddingNone">
+                            <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+        }
+    </div>
+</section>
+<script>
+    var jsonData=@(Html.Raw(Json.Encode(Model)));
+
+    $(document).ready(function () {
+        AppCommon.FormatInputCase();
+        AppCommon.FormatMultiSelect();
+        AppCommon.FormatDateInput();
+        AppCommon.CustomRemoteMethod();
+
+        ExamSchedule.GetIndividualdata(jsonData);
+
+        $("#btnSave").on("click",function(){
+
+            ExamSchedule.FormSubmit(jsonData);
+
+        })
+
+        // Bind Subject
+
+        $("#AcademicTermKey,#CourseKey,#UniversityMasterKey,#CourseYear").on("change",function() {
+            var obj = {};
+            obj.AcademicTermKey = $("#AcademicTermKey").val();
+            obj.CourseKey = $("#CourseKey").val();
+            obj.UniversityMasterKey = $("#UniversityMasterKey").val();
+            obj.CourseYear = $("#CourseYear").val();
+            ExamSchedule.GetclassDetails(obj,$("#SubjectKey"));
+            //AppCommon.BindDropDownbyId(obj, $("#hdnFillSubjects").val(), $("#SubjectKey"), Resources.Subject);
+        });
+
+        //Bind Course
+
+        $("#CourseTypeKey").on("change", function () {
+            var obj={};
+            obj.key=$(this).val()!=""?$(this).val():0;
+            AppCommon.BindDropDownbyId(obj, $("#hdnFillCourse").val(), $("#CourseKey"), Resources.Course);
+        });
+
+        //Bind University and Year
+
+        $("#AcademicTermKey,#CourseKey").on("change", function () {
+
+            var obj={};
+            obj.key=$("#CourseKey").val()!=""?$("#CourseKey").val():0;
+            obj.AcademicTermKey=$("#AcademicTermKey").val()!=""?$("#AcademicTermKey").val():0;
+            AppCommon.BindDropDownbyId(obj, $("#hdnFillUniversity").val(), $("#UniversityMasterKey"), Resources.AffiliationsTieUps);
+            AppCommon.BindDropDownbyId(obj, $("#hdnFillCourseYear").val(), $("#CourseYear"), Resources.Year);
+        });
+
+        //Bind Batch
+
+
+        $("#CourseKey,#BranchKey,#UniversityMasterKey").on("change", function () {
+
+            var obj={};
+            obj.Branchkey=$("#BranchKey").val()!=""?$("#BranchKey").val():0;
+            obj.CourseKey=$("#CourseKey").val()!=""?$("#CourseKey").val():0;
+            obj.UniversityMasterKey=$("#UniversityMasterKey").val()!=""?$("#UniversityMasterKey").val():0;
+            AppCommon.BindDropDownbyId(obj, $("#hdnFillBatch").val(), $("#BatchKey"), Resources.Batch);
+            //ExamSchedule.GetBatchByClass(obj,$("#BatchKey"));
+        });
+
+        $("#CourseYear,#ExamTermKey").on("change", function () {
+            ExamSchedule.GetIndividualdata(jsonData);
+        });
+
+
+
+
+    });
+
+
+</script>

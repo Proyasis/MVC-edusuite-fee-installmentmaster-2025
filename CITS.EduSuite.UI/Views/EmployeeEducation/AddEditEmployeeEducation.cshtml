@@ -1,0 +1,141 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.EmployeeEducationViewModel
+
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+
+    @Scripts.Render("~/Content/JqueryRepeater")
+    @Scripts.Render("~/Scripts/EmployeeEducation")
+
+}
+<input type="hidden" id="hdnDeleteEmployeeEducation" value="@Url.Action("DeleteEmployeeEducation", "EmployeeEducation")" />
+
+@using (Html.BeginForm("AddEditEmployeeEducation", "EmployeeEducation", FormMethod.Post, new AjaxOptions { UpdateTargetId = "Rules", OnBegin = "onBegin", OnComplete = "onComplete" }))
+{
+
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.EmployeeKey)
+    @Html.ValidationSummary(true)
+
+    <div class="box-typical box-typical-padding">
+        <div class="repeater  overflow-auto">
+            <table class="table table-stripped">
+                <thead class="thead-light">
+                    <tr>
+                        <th></th>
+                        <th class="w-25">@EduSuiteUIResources.EducationType</th>
+                        <th>@EduSuiteUIResources.Course</th>
+                        <th>@EduSuiteUIResources.CertifiedBy</th>
+                        <th>@EduSuiteUIResources.CompletedYear</th>
+                        <th class="d-none">@EduSuiteUIResources.GradingSystem</th>
+                        <th>@EduSuiteUIResources.Mark</th>
+                        <th>@EduSuiteUIResources.Attachment</th>
+                    </tr>
+                </thead>
+                <tbody  data-repeater-list>
+                    @for (int i = 0; i < Model.EmployeeEducations.Count(); i++)
+                    {
+                        <tr data-repeater-item>
+                            <td class="p-1">
+                                <span data-repeater-delete="" class="btn btn-danger btn-sm btnDeleteRow">
+                                    <span class=" fa fa-remove"></span>
+                                </span>
+                            </td>
+                            <td class="p-1">
+                                @Html.DropDownListFor(m => Model.EmployeeEducations[i].EducationTypeKey, new SelectList(Model.EmployeeEducations[i].EducationType, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.EducationType, new { @class = "form-control border-radius input-control", @InputFor = "lblAddressType" })
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => Model.EmployeeEducations[i].EducationTypeKey)
+                                </span>
+                                @Html.HiddenFor(m => Model.EmployeeEducations[i].RowKey)
+
+                            </td>
+                            <td class="p-1">
+                                @Html.TextBoxFor(m => Model.EmployeeEducations[i].SubjectName, new { @class = "form-control input-control" })
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => Model.EmployeeEducations[i].SubjectName)
+                                </span>
+                            </td>
+                            <td class="p-1">
+                                @Html.TextBoxFor(m => Model.EmployeeEducations[i].CertifiedBy, new { @class = "form-control input-control" })
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => Model.EmployeeEducations[i].CertifiedBy)
+                                </span>
+                            </td>
+                            <td class="p-1">
+                                @Html.TextBoxFor(m => Model.EmployeeEducations[i].CompletedYear, new { @class = "form-control input-control" })
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => Model.EmployeeEducations[i].CompletedYear)
+                                </span>
+                            </td>
+                            <td class="p-1 d-none">
+                                @Html.DropDownListFor(m => Model.EmployeeEducations[i].GradigSystemKey, new SelectList(Model.EmployeeEducations[i].GradigSystem, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.GradingSystem, new { @class = "form-control border-radius input-control", @InputFor = "lblGrading" })
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => Model.EmployeeEducations[i].GradigSystemKey)
+                                </span>
+                            </td>
+                            <td class="p-1 text-center">
+                                @Html.TextBoxFor(m => Model.EmployeeEducations[i].Mark, new { @class = "form-control input-control", @InputFor = "lblMark" })
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => Model.EmployeeEducations[i].Mark)
+                                </span>
+
+                            </td>
+                            <td class="p-1">
+                                <div class="custom-file">
+                                    @Html.TextBoxFor(m => m.EmployeeEducations[i].AttanchedFile, new { type = "file", @class = "custom-file-input" })
+                                    <label class="custom-file-label" for="AttanchedFile">Choose file</label>
+                                </div>
+                                @if (Model.EmployeeEducations[i].AttanchedFileName != null)
+                                {
+                                    <a href=@Url.Action("DownloadFile", "EmployeeEducation", new { filename = Model.EmployeeEducations[i].AttanchedFileNamePath })>@EduSuiteUIResources.Download</a>                                   
+                                }
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => m.EmployeeEducations[i].AttanchedFile)
+                                </span>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th class="px-1" colspan="9">
+                            <span data-repeater-create class="btn btn-info btn-sm">
+                                <span class="fa fa-plus"></span>
+                            </span>
+                        </th>
+                    </tr>
+                </tfoot>
+            </table>
+
+
+
+        </div>
+        <div class="row mt-2">
+            <div class="col-10 form-col">
+                <div class="form-group">
+                    <input type="button" value="@EduSuiteUIResources.Save" id="btnSave" class="btn btn-sm btn-success mx-1" />
+                    <input type="button" value="@EduSuiteUIResources.Skip" id="btnSkip" onclick="   $('#tab-profile  li a.active').parent().nextAll('li:visible').first().find('a').trigger('click');" class="btnForm btnSubmit btn btn-sm btn-danger " />
+
+                    <a id="btnFinish" class="btn btn-sm btn-success mx-1" onclick="location.href='@Url.Action("EmployeeList", "Employee")'">@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Finish</a>
+
+                </div>
+                <div class="col-12 paddingNone">
+                    <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<script>
+    var jsonData=@(Html.Raw(Json.Encode(Model)));
+    $(document).ready(function () {
+        EmployeeEducation.GetEmployeeEducations(jsonData);
+        AppCommon.CustomRepeaterRemoteMethod()
+    });
+</script>
+
+
+
+
+

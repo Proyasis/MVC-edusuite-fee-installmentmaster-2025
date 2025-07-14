@@ -1,0 +1,260 @@
+{
+  "AvailableStudyMaterial": [
+    {
+      "key": "StudyMaterialKey",
+      "title": "Study Material",
+      "type": "dropdown",
+      "source": [],
+      "listname": "StudyMaterials",
+      "autocomplete": true,
+      "align": "left",
+      "required": true
+    },
+    {
+      "key": "ApplicationKey",
+      "title": "Student",
+      "type": "dropdown",
+      "source": [],
+      "listname": "Students",
+      "autocomplete": true,
+      "align": "left",
+      "required": true
+    }
+
+  ],
+  "AvailableCertificate": [
+    {
+      "key": "ApplicationKey",
+      "title": "Student",
+      "type": "dropdown",
+      "source": [],
+      "listname": "Students",
+      "autocomplete": true,
+      "align": "left",
+      "required": true
+    },
+    {
+      "key": "CertificateTypeKey",
+      "title": "Certificate Type",
+      "type": "dropdown",
+      "source": [],
+      "listname": "CertificateTypes",
+      "autocomplete": true,
+      "align": "left",
+      "required": true
+    }
+  ],
+  "ExamResult": [
+    {
+      "key": "SubjectKey",
+      "title": "Subject",
+      "type": "dropdown",
+      "source": [],
+      "listname": "Subjects",
+      "autocomplete": true,
+      "align": "left",
+      "required": true
+    },
+    {
+      "key": "ApplicationKey",
+      "title": "Student",
+      "type": "dropdown",
+      "source": [],
+      "listname": "Students",
+      "autocomplete": true,
+      "align": "left",
+      "required": true
+    },
+    {
+      "key": "ExamTermKey",
+      "title": "Exam Term",
+      "type": "dropdown",
+      "source": [],
+      "listname": "ExamTerms",
+      "align": "left",
+      "required": true
+    },
+    {
+      "key": "ExamDate",
+      "title": "Exam Date",
+      "type": "calendar",
+      "option": {
+        "autoclose": true,
+        "format": "dd/mm/yyyy"
+      }
+    },
+    {
+      "key": "ExamCenterKey",
+      "title": "Exam Center",
+      "type": "dropdown",
+      "source": [],
+      "listname": "ExamCenters",
+      "align": "left"
+    },
+    {
+      "key": "MinimumMark",
+      "title": "Minimum Mark",
+      "type": "number",
+      "editorRegx": "[^0-9 .]",
+      "max": 100
+    },
+    {
+      "key": "MaximumMark",
+      "title": "Maximum Mark",
+      "type": "number",
+      "editorRegx": "[^0-9 .]",
+      "max": 100
+
+    },
+    {
+      "key": "Mark",
+      "title": "Mark",
+      "type": "number",
+      "editorRegx": "[^0-9 .]",
+      "max": 100
+
+    },
+    {
+      "key": "ResultStatus",
+      "title": "Absent ?",
+      "type": "checkbox"
+
+    }
+  ],
+  "InternalExamResult": [
+    {
+      "key": "SubjectKey",
+      "title": "Subject",
+      "type": "dropdown",
+      "source": [],
+      "listname": "Subjects",
+      "autocomplete": true,
+      "align": "left",
+      "required": true
+    },
+    {
+      "key": "ApplicationKey",
+      "title": "Student",
+      "type": "dropdown",
+      "source": [],
+      "listname": "Students",
+      "autocomplete": true,
+      "align": "left",
+      "required": true
+    },
+    {
+      "key": "Mark",
+      "title": "Mark",
+      "type": "number",
+      "editorRegx": "[^0-9 .]",
+      "max": 100
+
+    },
+    {
+      "key": "ResultStatus",
+      "title": "Absent ?",
+      "type": "checkbox"
+
+    }
+  ],
+  "EnquiryLead": [
+    {
+      "key": "RowKey",
+      "title": "RowKey",
+      "type": "hidden",
+      "align": "left"
+
+    },
+    {
+      "key": "Name",
+      "title": "Name",
+      "type": "text",
+      "align": "left"
+
+    },
+    {
+      "key": "TelephoneCodeKey",
+      "title": "Code",
+      "type": "dropdown",
+      "source": [],
+      "listname": "TelephoneCodes",
+      "autocomplete": true,
+      "align": "left",
+      "required": true,
+      "width": 60
+    },
+    {
+      "key": "MobileNumber",
+      "title": "MobileNumber",
+      "type": "number",
+      "editorRegx": "[^0-9 .]",
+      "required": true
+
+    },
+    {
+      "key": "EmailAddress",
+      "title": "EmailAddress",
+      "type": "text"
+
+    },
+    {
+      "key": "EmployeeKey",
+      "title": "Employee",
+      "type": "dropdown",
+      "source": [],
+      "listname": "Employees",
+      "autocomplete": true,
+      "align": "left"
+    },
+    {
+      "key": "LeadDate",
+      "title": "Lead Date",
+      "type": "calendar",
+      "option": {
+        "autoclose": true,
+        "format": "dd/mm/yyyy"
+      }
+    },
+    {
+      "key": "LeadFrom",
+      "title": "LeadFrom",
+      "type": "dropdown",
+      "align": "left",
+      "listname": "NatureOfEnquiryList"
+
+    }
+  ],
+  "EmployeeAttendance": [
+    {
+      "key": "EmployeeKey",
+      "title": "Employee",
+      "type": "dropdown",
+      "source": [],
+      "listname": "Employees",
+      "autocomplete": true,
+      "align": "left",
+      "required": true
+    },
+    {
+      "key": "AttendanceDate",
+      "title": "Attendance Date",
+      "type": "calendar",
+      "option": {
+        "autoclose": true,
+        "format": "dd/mm/yyyy"
+      },
+      "required": true
+    },
+    {
+      "key": "AttendanceStatusKey",
+      "title": "AttendanceStatus",
+      "type": "dropdown",
+      "source": [],
+      "listname": "AttendanceStatus",
+      "autocomplete": true,
+      "align": "left",
+      "required": true
+    }
+
+  ]
+}

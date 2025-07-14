@@ -1,0 +1,125 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.RackViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+@using System.Web.Mvc
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/Scripts/Publisher")
+    @Scripts.Render("~/Content/JqueryRepeater")
+    @Scripts.Render("~/Scripts/Rack")
+}
+<input type="hidden" id="hdnGetRackList" value="@Url.Action("GetRack", "Rack")" />
+<input type="hidden" id="hdnDeleteRack" value="@Url.Action("DeleteRack", "Rack")" />
+<input type="hidden" id="hdnAddEditRack" value="@Url.Action("AddEditRack", "Rack")" />
+<input type="hidden" id="hdnRackList" value="@Url.Action("RackList", "Rack")" />
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-sm-6 col-12">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.Wardrobe</h3>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 text-right">
+
+            <a id="addEditRack" data-href="@Url.Action("AddEditRack", "Rack")" class="btn btn-success btn-sm "><i class="fa fa-plus-square-o"></i> <span>@EduSuiteUIResources.New @EduSuiteUIResources.BlankSpace @EduSuiteUIResources.Wardrobe</span></a>
+        </div>
+    </div>
+</header>
+<section class="section-content mx-sm-3 mx-0">
+    <div class="GridBody">
+
+        <div class="grid-nav-bar form-row justify-content-between">
+            @if (Model.Branches.Count == 1)
+            {
+                {
+                    Model.BranchKey = Model.BranchKey == 0 ? (short)Model.Branches.Select(x => x.RowKey).FirstOrDefault() : Model.BranchKey;
+                }
+                @Html.HiddenFor(m => m.BranchKey)
+            }
+            else
+            {
+                if (DbConstants.Role.AdminUserTypes.Contains(DbConstants.User.RoleKey))
+                {
+                    <div class="col-6 col-sm-3 col-lg-2 ">
+                        <fieldset class="form-group">
+                           
+                            @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Branch, new { @class = "form-control input-control", @InputFor = "lblBranch", @data_live_search = "true" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.BranchKey)
+                            </span>
+                        </fieldset>
+                    </div>
+
+                }
+                else
+                {
+                    <div class="col-6 col-sm-3 col-lg-2">
+                        <fieldset class="form-group">
+                          
+                            @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), new { @class = "form-control input-control", @InputFor = "lblBranch" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.BranchKey)
+                            </span>
+                        </fieldset>
+                    </div>
+                }
+
+            }
+            <div class="col-lg-3 col-6">
+                <input id="txtsearch" type="text" name="focus" class="form-control gridSearchTextBox" placeholder="@EduSuiteUIResources.Search@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Wardrobe" /> @* Change Search TextBox Placeholder*@
+                <span id="iconSpan" class="iconSpan"><i class="fa fa-times-circle" aria-hidden="true"></i></span>
+            </div>
+
+            <div class="col-6">
+                <a class="btn btn-info btn-sm float-right " onclick='window.location.reload()'>
+                    <i class="fa fa-refresh"></i>   @EduSuiteUIResources.Refresh
+                </a>
+            </div>
+
+        </div>
+
+        <div class="table-wrapper">
+
+            <div class="jqGrid_wrapper overflow-auto">
+                <table id="grid"></table>
+                <div id="pager"></div>
+            </div>
+        </div>
+
+
+    </div>
+</section>
+
+
+
+<script>
+    $(document).ready(function () {
+        $("#txtsearch").keydown(function () {
+            Rack.GetRack();
+        });
+        $("#txtsearch").keyup(function () {
+            Rack.GetRack();
+        });
+
+        $("#iconSpan").click(function () {
+            $('#txtsearch').val('');
+            Rack.GetRack();
+        });
+        $("#BranchKey").change(function () {
+            Rack.GetRack();
+        });
+        if(@Model.Branches.Count<=1)
+        {
+            Rack.GetRack();
+        }
+        Rack.GetRack();
+        AppCommon.EditGridPopup($("#addEditRack"), RackPopupLoad)
+    });
+</script>

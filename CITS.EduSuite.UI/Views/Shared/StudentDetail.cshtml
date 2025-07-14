@@ -1,0 +1,48 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.ApplicationPersonalViewModel
+
+
+@if (Model.ApplicantName != null)
+{
+    <div class="row">
+        <div class="col-12">
+            <div class="card w3-indigo mt-2 mt-lg-0 mt-sm-0 mt-md-0">
+                <div class="card-block">
+                    <div class="row">
+                        @Html.Hidden("CurrentBatchKey", Model.BatchKey)
+                        <div class="col-lg-2 col-md-4 text-center">
+                            @if (Model.StudentPhotoPath != null)
+                            {
+                                <img src="@Url.Content(Model.ApplicantPhoto)" class="img-thumbnail img-fluid rounded-circle" alt="User profile picture" style="height:100px" />
+                            }
+                            else
+                            {
+                                <img src="~/images/no-photo.png" alt="User profile picture" class="img-thumbnail img-fluid rounded-circle" style="height:100px" />
+
+                            }
+
+                        </div>
+                        <div class="col-lg-10 col-md-8">
+                            <h2 class="card-title w3-text-light-grey"><strong>@Model.ApplicantName</strong> ( @Model.AdmissionNo )</h2>
+                            <p class="card-text form-row">
+                                <span class="col"><strong>@EduSuiteUIResources.Mobile : </strong> @Model.MobileNumber</span>
+                                <span class="col"><strong>@EduSuiteUIResources.Course : </strong> @Model.CourseName </span>
+                            </p>
+                            <p class="card-text form-row">
+                                <span class="col"><strong>@EduSuiteUIResources.AffiliationsTieUps : </strong> @Model.UniversityName</span>
+                                <span class="col"><strong>@EduSuiteUIResources.CurrentYear : </strong> @Model.CurrentYearText </span>
+                            </p>
+                            @if (Model.ClassDetailsKey != 0)
+                            {
+                                <p class="card-text form-row">
+                                    <span class="col"><strong>@EduSuiteUIResources.ClassCode: </strong>@Model.ClassDetailsName </span>
+                                    <span class="col"><strong>@EduSuiteUIResources.RollNo: </strong>@Model.RollNoCode</span>
+                                </p>
+                            }
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

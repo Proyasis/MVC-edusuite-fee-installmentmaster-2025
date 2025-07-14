@@ -1,0 +1,111 @@
+﻿
+@model CITS.EduSuite.Business.Models.ViewModels.BankStatementMasterViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+@using System.Web.Mvc
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Content/DatePickerJS")
+
+    @Scripts.Render("~/Scripts/BankStatement")
+    @Scripts.Render("~/Scripts/PaymentWindow")
+    @*@Scripts.Render("~/Content/Mustache")*@
+    @Scripts.Render("~/Content/momentJS")
+
+}
+
+<input type="hidden" id="hdnGetBankStatementList" value="@Url.Action("GetBankStatement", "BankStatement")" />
+<input type="hidden" id="hdnDeleteBankStatement" value="@Url.Action("DeleteBankStatement", "BankStatement")" />
+<input type="hidden" id="hdnAddEditBankStatement" value="@Url.Action("AddEditBankStatement", "BankStatement")" />
+<input type="hidden" id="hdnAddEditMultipleBankStatement" value="@Url.Action("AddEditMultipleBankStatement", "BankStatement")" />
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-sm-6 col-12">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.BankStatement</h3>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 text-right">
+            <a id="addEditMultipleBankStatement" href="@Url.Action("AddEditMultipleBankStatement", "BankStatement")" class="btn btn-success btn-sm ">
+                <i class="fa fa-plus-square-o" aria-hidden="true"></i>  @EduSuiteUIResources.AddNew@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Multiple@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.BankStatement @*Change Add new button Here *@
+            </a>
+
+            <a id="addEditBankStatement" href="@Url.Action("AddEditBankStatement", "BankStatement")" class="btn btn-success btn-sm ">
+                <i class="fa fa-plus-square-o" aria-hidden="true"></i>  @EduSuiteUIResources.AddNew@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.BankStatement @*Change Add new button Here *@
+            </a>
+        </div>
+    </div>
+</header>
+<section class="section-content mx-sm-3 mx-0">
+    <div class="GridBody">
+
+        <div class="grid-nav-bar form-row justify-content-between">
+          
+
+            @if (Model.Branches.Count == 1)
+            {
+                {
+                    Model.BranchKey = (Model.BranchKey == 0 || Model.BranchKey == null) ? (short)Model.Branches.Select(x => x.RowKey).FirstOrDefault() : Model.BranchKey;
+                }
+                @Html.HiddenFor(m => m.BranchKey)
+            }
+            else
+            {
+                <div class="col-lg-2 col-sm-4 col-6">
+                    <fieldset class="form-group">
+                        @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.Branch, new { @class = "form-control input-control ", @data_live_search = "true" })
+                    </fieldset>
+                </div>
+            }
+
+            <div class="col-6">
+                <a class="btn btn-info btn-sm float-right" onclick='BankStatement.GetBankStatements();'>
+                    <i class="fa fa-refresh"></i>   Refresh
+                </a>
+            </div>
+
+        </div>
+
+        <div class="table-wrapper">
+
+            <div class="jqGrid_wrapper overflow-auto">
+                <table id="grid"></table>
+                <div id="pager"></div>
+            </div>
+        </div>
+
+
+
+    </div>
+</section>
+<style>
+    .select2-container .select2-selection--single {
+        height: 32px !important;
+        box-shadow: none !important;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        line-height: 29px;
+    }
+</style>
+
+<script>
+    $(document).ready(function () {
+        AppCommon.FormatSelect2();
+        BankStatement.GetBankStatements();
+        $("#ddlBranch").on("change", function () {
+            BankStatement.GetBankStatements();
+        });
+
+       
+    });
+</script>
+
+
+

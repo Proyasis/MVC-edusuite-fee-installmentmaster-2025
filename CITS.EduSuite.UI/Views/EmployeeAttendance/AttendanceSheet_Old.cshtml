@@ -1,0 +1,115 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.EmployeeAttendanceViewModel
+
+@using System.Web.Mvc
+
+
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Content/momentJS")
+    @Scripts.Render("~/Content/ExcelSheetJS")
+    @Scripts.Render("~/Scripts/EmployeeAttendance")
+    @Scripts.Render("~/Content/DatePickerJS")
+
+}
+
+<input type="hidden" id="hdnGetAttendanceSheet" value="@Url.Action("GetAttendanceSheet", "EmployeeAttendance")" />
+<input type="hidden" id="hdnAddEditEmployeesAttendance" value="@Url.Action("AddEditEmployeesAttendance", "EmployeeAttendance")" />
+<div class="col-sm-12 Page_Head_Master">
+    <div class="col-sm-6 Text_Left">
+        <label class="Page_Heading  ">@EduSuiteUIResources.AttendanceSheet</label>
+    </div>
+
+    <div class="col-sm-6 Text_Right">
+    </div>
+
+
+</div>
+<div class="GridBody">
+    @using (Html.BeginForm("AddEditEmployeesAttendance", "EmployeeAttendance", FormMethod.Post))
+    {
+        <div class="grid-nav-bar row">
+            <div class="col-sm-12">
+                <div class="row">
+                    <div class=" col-sm-2 pull-right">
+                        <a id="btnDownload" class="btn btn-danger btn-sm pull-right" onclick="EmployeeAttendance.DownloadAttendanceSheet()">
+                            <i class="fa fa-download" aria-hidden="true"></i>@EduSuiteUIResources.Download@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.ExcelSheet
+                        </a>
+
+                    </div>
+                    <div class="col-sm-2 pull-right">
+                        @Html.TextBox("ExcelFile", "", new { @type = "file", @class = "form-control pull-right" })
+
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-sm-2">
+
+                        @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Branch, new { @class = "input-control form-control form-control-sm form-control-sm" })
+
+                    </div>
+
+                    <div class="col-sm-2">
+                        @Html.TextBoxFor(m => m.AttendanceDate, "{0:MMM yyyy}", new { @class = "input-control form-control form-control-sm", @data_input_type = "month", @readonly = "readonly", @InputFor = "lblMonthKey" })
+                    </div>
+                    <div class="col-sm-2 pull-right">
+                        <input type="button" value="@EduSuiteUIResources.Process" id="btnProcess" class="btnForm btnSubmit btn btn-sm btn-default pull-right" />
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+        <br />
+
+        <div class="portlet-body" id="portletBody">
+            <div class='table-scrollable'>
+                <table id="gridSheet"></table>
+                <div id="pager"></div>
+            </div>
+        </div>
+    }
+
+
+
+</div>
+
+
+
+
+
+<script>
+    $(document).ready(function () {
+        var jsonData=@(Html.Raw(Json.Encode(Model)));
+
+        AppCommon.FormatMonthInput();
+        setAttendanceSheetParam(jsonData);
+        EmployeeAttendance.GetAttendanceSheet(jsonData);
+        $("#BranchKey").on("change", function () {
+            setAttendanceSheetParam(jsonData);
+            EmployeeAttendance.GetAttendanceSheet(jsonData,true);
+        });
+        $("input#AttendanceDate").on('changeDate', function(ev){
+
+            setAttendanceSheetParam(jsonData);
+            EmployeeAttendance.GetAttendanceSheet(jsonData,true);
+        });
+        $('#ExcelFile').change(function (e) {
+            EmployeeAttendance.HandleFile(e)
+        });
+        $("#btnProcess").on('click', function(ev){
+
+            EmployeeAttendance.MultipleProcessClickEvent(jsonData);
+        });
+
+        $(window).on("resize", function () {
+            var $grid = $("#grid"),
+            newWidth = $grid.closest(".ui-jqgrid").parent().width();
+            $grid.jqGrid("setGridWidth", newWidth, true);
+        });
+    });
+</script>
+
+

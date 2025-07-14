@@ -1,0 +1,26 @@
+﻿<div class="w-100 mt-30">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 mb-3">
+                <div class="heading_view">
+                    <h2>Classes</h2>
+                </div>
+            </div>
+            <div class="col-12 col-md-8 col-md-10 d-flex flex-wrap plr">
+                {{#Classes}}
+                <div class="col-6 col-md-4 col-lg-3  mb-3">
+                    <div class="class_box">
+                        <a href="#" data-val="{{RowKey}}" onclick="TeacherPortal.GetMenus('{{../BranchKey}}','{{RowKey}}','{{Text}}',{{Selected}})">
+                            <div class="icon_relative">
+                                <i class="fa  fa-folder-open" aria-hidden="true"></i>
+                                <span>{{Text}}</span>
+                            </div>
+
+                        </a>
+                    </div>
+                </div>
+                {{/Classes}}
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,110 @@
+﻿@model Proyasis.OnlineClass.Business.Models.ViewModels.TestPaperViewModel
+@using Proyasis.OnlineClass.Business.Models.ViewModels
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Content/JqueryRepeater")
+    @Scripts.Render("~/bundles/CitsValidation")
+    @Scripts.Render("~/Scripts/TestPaper")
+    @Scripts.Render("~/Scripts/ExamTest")
+}
+
+<input type="hidden" id="hdnTestPaperList" value="@Url.Action("TestPaperList", "TestPaper")" />
+<input type="hidden" id="hdnGetAnswerKeyById" value="@Url.Action("GetAnswerKeyById", "TestPaper")" />
+<input type="hidden" id="hdnExamQuestions" value=@Url.Content("~/Templates/ExamTemplate/ExamQuestions.html") />
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-12">
+            <div class="tbl">
+                <div class="tbl-row  px-1">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.Add@EduSuiteUIResources.Hyphen@EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.AnswerKey</h3>
+                        <ol class="breadcrumb breadcrumb-simple mb-2 float-sm-right">
+                            <li><a href="#" onclick="location.href='@Url.Action("TestPaperList", "TestPaper")' ">@EduSuiteUIResources.TestPaper</a></li>
+                            <li class="active">@EduSuiteUIResources.Add@EduSuiteUIResources.Hyphen@EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.AnswerKey</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+@using (Html.BeginForm("AddEditAnswerKey", "TestPaper", FormMethod.Post))
+{
+    @Html.HiddenFor(m => m.RowKey)
+    @Html.HiddenFor(m => m.ModuleKey)
+    <section class="tabs-section section-content  mx-sm-3 mx-0  position-relative">
+        <div data-hidden class="tabs-section-nav overflow-visible">
+            <ul  id="tab-questionmodule" class="nav" role="tablist">
+                @foreach (var item in Model.QuestionModules.Where(row => DbConstants.QuestionModule.AswerKeyModules.Contains((byte)row.RowKey)))
+                {
+                    <li class="nav-item">
+                        <a href="#@item.RowKey" aria-controls="discover" role="tab" class="nav-link" data-toggle="tab" data-val='@item.RowKey'>
+
+                            <span class="nav-link-in">
+                                <i class="fa"></i>
+                                @item.Text
+                            </span>
+                        </a>
+                    </li>
+                }
+
+
+            </ul>
+
+        </div>
+        <div id="dvTestContaner" class="form-row">
+            <div class="col-sm-12 col-12">
+                <div data-hidden id="dvExamPaper">
+                
+                         
+                        
+                    
+
+                </div>
+
+
+
+
+
+                <div style="display:none" id="dvQuestionNumber">
+
+                </div>
+
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <div class="form-group">
+                            <button type="button" id="btnSave" class="btn btn-sm btn-success mx-1 float-left"> @EduSuiteUIResources.Save</button>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <span class="ValidateDataMsg"> @Html.ValidationMessage("error_msg")  </span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+    </section>
+}
+<script>
+    $(document).ready(function () {
+        AppCommon.FormatInputCase();
+
+
+    });
+    $(window).on("load", function () {
+        $("#tab-questionmodule li a").eq(0).addClass("active")
+        TestPaper.AnswerKeyDetail();
+       
+        $('#tab-questionmodule li a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            TestPaper.AnswerKeyDetail();
+        });
+        $("#btnSave").on("click",function(){
+            $("#ModuleKey").val($("#tab-questionmodule li a.active").data("val"));
+            TestPaper.FormAnswerKeySubmit(this)
+        });
+
+
+    });
+</script>

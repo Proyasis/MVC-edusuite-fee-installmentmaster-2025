@@ -1,0 +1,95 @@
+﻿
+@using System.Web.Mvc
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Content/JqueryRepeater")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Scripts/Asset")
+}
+@{
+    ViewBag.Title = EduSuiteUIResources.Asset;
+}
+<input type="hidden" id="hdnGetAsset" value="@Url.Action("GetAsset", "Asset")" />
+<input type="hidden" id="hdnDeleteAsset" value="@Url.Action("DeleteAsset", "Asset")" />
+<input type="hidden" id="hdnAddEditAsset" value="@Url.Action("AddEditAsset", "Asset")" />
+<input type="hidden" id="hdnViewAsset" value="@Url.Action("ViewAsset", "Asset")" />
+
+
+<div class="col-sm-12 Page_Head_Master">
+    <div class="col-sm-6 Text_Left">
+        <label class="Page_Heading  ">@EduSuiteUIResources.Asset</label>
+    </div>
+
+    <div class="col-sm-6 Text_Right">
+        <a href="@Url.Action("AddEditAsset", "Asset")" class="btn btn-sm btnBack">
+            <i class="fa fa-plus" aria-hidden="true"></i> @EduSuiteUIResources.AddNew @EduSuiteUIResources.BlankSpace @EduSuiteUIResources.Asset
+        </a>
+    </div>
+</div>
+<div class="ledgerTable">
+    <form>
+        <div class="grid-nav-bar col-sm-12">
+            <div class="col-sm-2 form-col">
+                <div class="form-group">
+                    @Html.Label(EduSuiteUIResources.Asset, htmlAttributes: new { @class = "lblControlHead" })
+                    <input id="txtsearch" type="text" name="focus" class="form-control gridSearchTextBox" placeholder="@EduSuiteUIResources.Search @EduSuiteUIResources.Asset" /> @* Change Search TextBox Placeholder*@
+    </div>
+            </div>
+
+            <div class="col-sm-5 F_Right">
+                <div class="form-group btnSearch">
+                    <br />
+                    <a class="btn btn-info btn-sm F_Right btn_Refresh" onclick='window.location.reload()'>
+                        <i class="fa fa-refresh"></i>   Refresh
+                    </a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="GridBody">
+    <br />
+
+    <div class="portlet-body" id="portletBody">
+        <div class='table-scrollable'>
+            <table id="grid"></table>
+            <div id="pager"></div>
+        </div>
+    </div>
+
+
+
+</div>
+<div id='myModal' class='modal fade in'>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id='myModalContent'></div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $("#txtsearch").on("input", function () {
+            Asset.GetAsset();
+        });
+
+        $("#iconSpan").click(function () {
+            $('#txtsearch').val('');
+            Asset.GetAsset();
+        });
+        Asset.GetAsset();
+
+        $(window).on("resize", function () {
+            var $grid = $("#grid"),
+            newWidth = $grid.closest(".ui-jqgrid").parent().width();
+            $grid.jqGrid("setGridWidth", newWidth, true);
+        });
+
+        $()
+    });
+</script>
+
+
+

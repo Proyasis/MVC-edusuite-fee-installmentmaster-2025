@@ -1,0 +1,1020 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.TestPaperViewModel
+
+@using CITS.EduSuite.Business.Models.ViewModels
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Content/JqueryRepeater")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Content/MultiselectJs")
+    @Scripts.Render("~/bundles/CitsValidation")
+    @Scripts.Render("~/Scripts/TestPaper")
+    @*@Scripts.Render("~/Content/tinyMCEJS")*@
+
+    @Scripts.Render("~/Content/momentJS")
+}
+
+
+
+
+<script src="~/Scripts/tinymce/jquery.tinymce.js"></script>
+<script src="~/Scripts/tinymce/tinymce.min.js"></script>
+<script src="~/Scripts/mammoth.browser.min.js"></script>
+
+@*<script src="~/Scripts/pdf.min.js"></script>
+    <script src="~/Scripts/pdf.worker.min.js"></script>*@
+
+
+
+<input type="hidden" id="hdnQuestionTypePath" value=@Url.Content("~/Templates/ExamTemplate/QuestionType/") />
+<input type="hidden" id="hdnQuestionPath" value=@Url.Content("~/Templates/ExamTemplate/Question.html") />
+<input type="hidden" id="hdnQuestionOption" value=@Url.Content("~/Templates/ExamTemplate/QuestionOption.html") />
+<input type="hidden" id="hdnTinyMCEJS" value=@Url.Content("~/Scripts/tinymce/tiny_mce.js")>
+<input type="hidden" id="hdnTinyMCECSS" value=@Url.Content("~/Scripts/tinymce/css/content.css")>
+
+<input type="hidden" id="hdnQuestionPaperDetail" value="@Url.Action("QuestionPaperDetail", "TestPaper")" />
+<input type="hidden" id="hdnAddEditTestPaper" value="@Url.Action("AddEditTestPaper", "TestPaper", new { id = "" })" />
+<input type="hidden" id="hdnDeleteTestPaper" value="@Url.Action("DeleteTestPaper", "TestPaper")" />
+<input type="hidden" id="hdnDeleteTestSection" value="@Url.Action("DeleteTestSection", "TestPaper")" />
+<input type="hidden" id="hdnDeleteQuestionGroup" value="@Url.Action("DeleteQuestionGroup", "TestPaper")" />
+<input type="hidden" id="hdnDeleteQuestion" value="@Url.Action("DeleteQuestion", "TestPaper")" />
+<input type="hidden" id="hdnGetFileTypeById" value="@Url.Action("GetFileTypeById", "TestPaper")" />
+<input type="hidden" id="hdnDeleteQuestionOption" value="@Url.Action("DeleteQuestionOption", "TestPaper")" />
+<input type="hidden" id="hdnAddEditTestPaper" value="@Url.Action("AddEditTestPaper", "TestPaper")" />
+<input type="hidden" id="hdnGetFilters" value="@Url.Action("GetFilters", "TestPaper")" />
+<input type="hidden" id="hdnOtherExam" value="@DbConstants.ExamTypes.OtherExam" />
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-12">
+            <div class="tbl">
+                <div class="tbl-row  px-1">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.Add@EduSuiteUIResources.Hyphen@EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.TestPaper</h3>
+
+                        <ol class="breadcrumb breadcrumb-simple mb-2 float-sm-right">
+                            <li><a href="#" onclick="location.href='@Url.Action("TestPaperList", "TestPaper")' ">@EduSuiteUIResources.TestPaper</a></li>
+                            <li class="active">@EduSuiteUIResources.Add@EduSuiteUIResources.Hyphen@EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.TestPaper</li>
+                        </ol>
+
+                        @if (Model.RowKey != 0)
+                        {
+                            <a class="btnImportQuestions" href="@Url.Action("QuestionCrop", "TestPaper")/@Model.RowKey"> <i class="fa fa-upload"></i> Import Questions</a>
+                        }
+                        else
+                        {
+                            <a class="btnImportQuestions" href="@Url.Action("QuestionCrop", "TestPaper")"> <i class="fa fa-upload"></i> Import Questions</a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+@using (Html.BeginForm("AddEditTestPaper", "TestPaper", FormMethod.Post, new { id = "frmQuestionPaper" }))
+{
+    @Html.HiddenFor(m => m.RowKey)
+    @Html.HiddenFor(m => m.ModuleKey)
+    @Html.HiddenFor(m => m.TestModuleKey)
+    @Html.HiddenFor(m => m.TestSectionKey)
+    @Html.HiddenFor(m => m.TestSectionName)
+    @Html.HiddenFor(m => m.QuestionPaperFileName)
+    @Html.HiddenFor(m => m.TestInstructionFileName)
+    @Html.HiddenFor(m => m.LastQuestionNumber)
+    <section class="section-content mx-sm-3 mx-0">
+        <div class="form-master w3-white p-2 col-12 col-md-12 co-lg-6">
+
+            <div class="form-row  position-relative">
+
+            </div>
+
+
+            <div class="form-row">
+
+                @if (Model.ExamTypes.Count > 1)
+                {
+                    <div class="col-12 col-lg-2 col-md-3 col-sm-3">
+                        <fieldset class="form-group">
+                            @Html.Label(EduSuiteUIResources.ExamType, htmlAttributes: new { @class = "form-label" })
+                            <div class="required-icon"><div class="text">*</div></div>
+                            @Html.DropDownListFor(m => m.ExamTypeKey, new SelectList(Model.ExamTypes, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.ExamType, new { @class = "form-control input-control" })
+
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.ExamTypeKey)
+                            </span>
+                        </fieldset>
+                    </div>
+                }
+                else
+                {
+                    <div style="display:none" class="col-12 col-lg-2 col-md-3 col-sm-3">
+                        <fieldset class="form-group">
+                            @Html.Label(EduSuiteUIResources.ExamType, htmlAttributes: new { @class = "form-label" })
+                            <div class="required-icon"><div class="text">*</div></div>
+                            @Html.DropDownListFor(m => m.ExamTypeKey, new SelectList(Model.ExamTypes, "RowKey", "Text"), new { @class = "form-control input-control" })
+
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.ExamTypeKey)
+                            </span>
+                        </fieldset>
+                    </div>
+                }
+
+                <div class="col-12 col-lg-2 col-md-3 col-sm-3">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.TestPaper + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Name, htmlAttributes: new { @class = "form-label" })
+                        <div class="required-icon"><div class="text">*</div></div>
+                        @Html.TextBoxFor(m => m.TestPaperName, new { @class = "input-control form-control form-control-sm" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.TestPaperName)
+                        </span>
+                    </fieldset>
+                </div>
+
+                @if (Model.ExamTypeKey == DbConstants.ExamTypes.NormalExam)
+                {
+                    <div id="dbSubject" class="col-12 col-lg-2 col-md-3 col-sm-4">
+                        <fieldset class="form-group">
+                            @Html.Label(EduSuiteUIResources.Subject, htmlAttributes: new { @class = "form-label" })
+                            <div class="required-icon"><div class="text">*</div></div>
+                            @Html.ListBoxFor(m => m.SubjectKeys, new SelectList(Model.Subjects, "RowKey", "Text"), new { @class = "form-control input-control selectpicker", @multiple = "multiple", @data_live_search = "true", @data_title = EduSuiteUIResources.Subject })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.SubjectKeys)
+                            </span>
+                        </fieldset>
+                    </div>
+                }
+                else
+                {
+                    <div id="dbSubject" style="display:none" class="col-12 col-lg-2 col-md-3 col-sm-4">
+                        <fieldset class="form-group">
+                            @Html.Label(EduSuiteUIResources.Subject, htmlAttributes: new { @class = "form-label" })
+                            <div class="required-icon"><div class="text">*</div></div>
+                            @Html.ListBoxFor(m => m.SubjectKeys, new SelectList(Model.Subjects, "RowKey", "Text"), new { @class = "form-control input-control selectpicker", @multiple = "multiple", @data_live_search = "true", @data_title = EduSuiteUIResources.Subject })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.SubjectKeys)
+                            </span>
+                        </fieldset>
+                    </div>
+                }
+
+                <div class="col-12 col-lg-2 col-md-3 col-sm-4">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.AcademicTerm, htmlAttributes: new { @class = "form-label" })
+
+                        @Html.ListBoxFor(m => m.AcademicTermsKeys, new SelectList(Model.AcademicTerms, "RowKey", "Text"), new { @class = "form-control input-control selectpicker", @multiple = "multiple", @data_live_search = "true", @data_title = EduSuiteUIResources.AcademicTerm })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.AcademicTermsKeys)
+                        </span>
+                    </fieldset>
+                </div>
+
+                <div class="col-12 col-lg-2 col-md-3 col-sm-4">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.CourseType, htmlAttributes: new { @class = "form-label" })
+
+                        @Html.ListBoxFor(m => m.CourseTypeKeys, new SelectList(Model.CourseTypes, "RowKey", "Text"), new { @class = "form-control input-control selectpicker", @multiple = "multiple", @data_live_search = "true", @data_title = EduSuiteUIResources.CourseType })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.CourseTypeKeys)
+                        </span>
+                    </fieldset>
+                </div>
+
+                <div class="col-12 col-lg-2 col-md-3 col-sm-4">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.Course, htmlAttributes: new { @class = "form-label" })
+
+                        @Html.ListBoxFor(m => m.CourseKeys, new SelectList(Model.Courses, "RowKey", "Text"), new { @class = "form-control input-control selectpicker", @multiple = "multiple", @data_live_search = "true", @data_title = EduSuiteUIResources.Course })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.CourseKeys)
+                        </span>
+                    </fieldset>
+                </div>
+
+                <div class="col-12 col-lg-2 col-md-3 col-sm-4">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.AffiliationsTieUps, htmlAttributes: new { @class = "form-label" })
+
+                        @Html.ListBoxFor(m => m.UniversityMasterKeys, new SelectList(Model.UniversityMasters, "RowKey", "Text"), new { @class = "form-control input-control selectpicker", @multiple = "multiple", @data_live_search = "true", @data_title = EduSuiteUIResources.AffiliationsTieUps })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.UniversityMasterKeys)
+                        </span>
+                    </fieldset>
+                </div>
+
+                <div class="col-12 col-lg-2 col-md-3 col-sm-4">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.Medium, htmlAttributes: new { @class = "form-label" })
+
+                        @Html.ListBoxFor(m => m.MeadiumKeys, new SelectList(Model.Mediums, "RowKey", "Text"), new { @class = "form-control input-control selectpicker", @multiple = "multiple", @data_live_search = "true", @data_title = EduSuiteUIResources.Medium })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.MeadiumKeys)
+                        </span>
+                    </fieldset>
+                </div>
+
+                <div class="col-12 col-lg-2 col-md-3 col-sm-4">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.SecondLanguage, htmlAttributes: new { @class = "form-label" })
+
+                        @Html.ListBoxFor(m => m.SecondLanguageKeys, new SelectList(Model.SecondLanguages, "RowKey", "Text"), new { @class = "form-control input-control selectpicker", @multiple = "multiple", @data_live_search = "true", @data_title = EduSuiteUIResources.SecondLanguage })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.SecondLanguageKeys)
+                        </span>
+                    </fieldset>
+                </div>
+
+
+                <div class="col-12 col-lg-2 col-md-3 col-sm-4">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.Batch, htmlAttributes: new { @class = "form-label" })
+
+                        @Html.ListBoxFor(m => m.BatchKeys, new SelectList(Model.Batches, "RowKey", "Text"), new { @class = "form-control input-control selectpicker", @multiple = "multiple", @data_live_search = "true", @data_title = EduSuiteUIResources.Batch })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.BatchKeys)
+                        </span>
+                    </fieldset>
+                </div>
+
+                <div class="col-12 col-lg-2 col-md-3 col-sm-4">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.Mode, htmlAttributes: new { @class = "form-label" })
+
+                        @Html.ListBoxFor(m => m.ModeKeys, new SelectList(Model.Modes, "RowKey", "Text"), new { @class = "form-control input-control selectpicker", @multiple = "multiple", @data_live_search = "true", @data_title = EduSuiteUIResources.Mode })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.ModeKeys)
+                        </span>
+                    </fieldset>
+                </div>
+
+                <div class="col-12 col-lg-2 col-md-3 col-sm-4 d-none">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.AdmittedIn, htmlAttributes: new { @class = "form-label" })
+
+                        @Html.ListBoxFor(m => m.CourseYearsKeys, new SelectList(Model.CourseYears, "RowKey", "Text"), new { @class = "form-control input-control selectpicker", @multiple = "multiple", @data_live_search = "true", @data_title = EduSuiteUIResources.AdmittedIn })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.CourseYearsKeys)
+                        </span>
+                    </fieldset>
+                </div>
+
+                <div class="col-12 col-lg-2 col-md-3 col-sm-4">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.ClassMode, htmlAttributes: new { @class = "form-label" })
+
+                        @Html.ListBoxFor(m => m.ClassModeKeys, new SelectList(Model.ClassModes, "RowKey", "Text"), new { @class = "form-control input-control selectpicker", @multiple = "multiple", @data_live_search = "true", @data_title = EduSuiteUIResources.ClassMode })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.ClassModeKeys)
+                        </span>
+                    </fieldset>
+                </div>
+
+                <div class="col-12 col-lg-2 col-md-3 col-sm-4">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.ClassCode, htmlAttributes: new { @class = "form-label" })
+
+                        @Html.ListBoxFor(m => m.ClassCodeKeys, new SelectList(Model.ClassCodes, "RowKey", "Text"), new { @class = "form-control input-control selectpicker", @multiple = "multiple", @data_live_search = "true", @data_title = EduSuiteUIResources.ClassCode })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.ClassCodeKeys)
+                        </span>
+                    </fieldset>
+                </div>
+
+                <div class="col-12 col-lg-2 col-md-3 col-sm-4">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.Branch, htmlAttributes: new { @class = "form-label" })
+
+                        @Html.ListBoxFor(m => m.BranchKeys, new SelectList(Model.Branches, "RowKey", "Text"), new { @class = "form-control input-control selectpicker", @multiple = "multiple", @data_live_search = "true", @data_title = EduSuiteUIResources.Branches })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.BranchKeys)
+                        </span>
+                    </fieldset>
+                </div>
+
+                <div style="display:none" class="col-12 col-md-2 col-sm-2">
+                    <fieldset class="form-group">
+                        @Html.LabelFor(m => m.TestPaperName, htmlAttributes: new { @class = "form-label" })
+                        @Html.TextBoxFor(m => m.TestPaperName, new { @class = "input-control form-control form-control-sm" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.TestPaperName)
+                        </span>
+                    </fieldset>
+                </div>
+                <div class="col-12 col-lg-2 col-md-3 col-sm-4">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.ExamDate, htmlAttributes: new { @class = "form-label" })
+                        @Html.TextBoxFor(m => m.ExamDate, "{0:dd/MM/yyyy}", new { @class = "input-control form-control form-control-sm", @data_input_type = "date", @data_inputmask = "'alias': 'dd/mm/yyyy'", @placeholder = "dd/mm/yyyy" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.ExamDate)
+                        </span>
+                    </fieldset>
+                </div>
+
+                <div class="col-12 col-lg-2 col-md-3 col-sm-4">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.ExamTime, htmlAttributes: new { @class = "form-label" })
+
+                        @Html.TextBoxFor(m => m.ExamTime, new { @class = "form-control input-control", @data_input_type = "time", @data_inputmask = "'alias':'hh:mm t','hourFormat': '12','removeMaskOnSubmit':true", @InputFor = "lblCallDuration", @placeholder = "hh:mm:am/pm" })
+
+
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.ExamTime)
+                        </span>
+                    </fieldset>
+                </div>
+
+                <div class="col-12 col-lg-2 col-md-3 col-sm-3">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.ExamDuration, htmlAttributes: new { @class = "form-label" })
+                        <div class="required-icon"><div class="text">*</div></div>
+                        @Html.TextBoxFor(m => m.ExamDuration, new { @class = "input-control form-control form-control-sm", @data_input_type = "time", @data_inputmask = "'alias':'hh:mm','hourFormat': '24'", @placeholder = "hh:mm" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.ExamDuration)
+                        </span>
+                    </fieldset>
+                </div>
+
+
+                <div class="col-12 col-lg-2 col-md-3 col-sm-4">
+                    <fieldset class="form-group ">
+                        @Html.Label(EduSuiteUIResources.IsActive, new { @class = "form-label" })
+                        <div class="switch-check my-2">
+                            @Html.CheckBoxFor(m => m.IsActive, new { @class = "switch-input" })
+                            <div class="switch-label redgreen" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                            <div class="switch-handle"></div>
+                        </div>
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.IsActive)
+                        </span>
+
+                    </fieldset>
+                </div>
+            </div>
+
+
+
+
+
+            <div data-toggle="collapse" data-target="#ExamInstruction" class="col-sm-12 examInstructions collapsed"> <i class="fa fa-plus"></i> Add Exam Instructions </div>
+
+            <section class="collapse" id="ExamInstruction">
+                <div class="form-row">
+                    <div class="col-sm-12 col-12">
+                        @Html.TextAreaFor(m => m.TestInstruction, new { AutoCompleteType = "Disabled", @id = "testInstructionContent", @class = "tab-content min-content-height bg-white" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.TestInstruction)
+                        </span>
+                    </div>
+                </div>
+            </section>
+
+
+            @if (Model.QuestionModules.Count <= 1)
+            {
+
+                <div style="display:none" class="tabs-section-nav overflow-visible">
+                    <ul id="tab-questionmodule" class="nav" role="tablist">
+                        @foreach (var item in Model.QuestionModules)
+                        {
+                            <li class="nav-item">
+                                <a href="#@item.RowKey" aria-controls="discover" role="tab" class="nav-link" data-toggle="tab" data-val='@item.RowKey'>
+
+                                    <span class="nav-link-in">
+                                        <i class="fa"></i>
+                                        @item.Text
+                                    </span>
+                                </a>
+                            </li>
+                        }
+
+
+                    </ul>
+
+                </div>
+            }
+            else
+            {
+                <div class="tabs-section-nav overflow-visible">
+                    <ul id="tab-questionmodule" class="nav" role="tablist">
+                        @foreach (var item in Model.QuestionModules)
+                        {
+                            <li class="nav-item">
+                                <a href="#@item.RowKey" aria-controls="discover" role="tab" class="nav-link" data-toggle="tab" data-val='@item.RowKey'>
+
+                                    <span class="nav-link-in">
+                                        <i class="fa"></i>
+                                        @item.Text
+                                    </span>
+                                </a>
+                            </li>
+                        }
+
+
+                    </ul>
+
+                </div>
+            }
+
+
+
+
+
+            <div class="form-row  position-relative">
+                <div class="dropdown export-buttons">
+
+                    @if (Model.QuestionTypes.Count == 1)
+                    {
+                        <button style="display:none" type="button" class="btn btn-primary btn-sm " onclick="TestPaper.OptionClick('@Model.QuestionTypes[0].RowKey')">New Question</button>
+                    }
+                    else
+                    {
+                        <button style="display:none" id="btnNewQuestion" type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">New Question</button>
+
+                        <div style="display:none" id="listNewQuestionGroup" class="dropdown-menu">
+                            @foreach (var item in Model.QuestionTypes)
+                            {
+                                <a class="dropdown-item" onclick="TestPaper.OptionClick('@item.RowKey')">@item.Text</a>
+
+                            }
+
+                        </div>
+                    }
+
+
+
+                </div>
+
+
+            </div>
+            <div style="display:none" class="tabs-section-nav">
+
+                <ul id="tab-questionsection" class="nav" role="tablist">
+                    <li id="addTestSection" class="nav-item">
+                        <a href="#0" aria-controls="discover" role="tab" class="nav-link" data-toggle="tab" data-val='0'>
+
+                            <span class="nav-link-in">
+                                New Question
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="form-row mt-2">
+                <div style="display:none" class="col-12 col-md-3 col-sm-3">
+                    <fieldset class="form-group">
+                        <div class="custom-file">
+                            <input type="file" id="ChooseTemplate" class="custom-file-input" onchange="TestPaper.ChooseFileEvent(event)" accept=".pdf,.doc,.docx,.txt" />
+                            <label class="custom-file-label" for="ChooseTemplate">Choose Template</label>
+                        </div>
+
+                    </fieldset>
+                </div>
+
+                <div style="display:none" id="dvSupportedFilePath" class="col-12 col-md-3 col-sm-3">
+                    <fieldset class="form-group">
+                        <div class="custom-file">
+                            @Html.TextBoxFor(m => m.SupportedFilePath, new { type = "file", @class = "custom-file-input", @onchange = "TestPaper.ChooseSupportFileEvent(event)" })
+                            <label class="custom-file-label" for="SupportedFilePath">Choose Audio</label>
+                        </div>
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.SupportedFilePath)
+                        </span>
+                        @Html.HiddenFor(m => m.SupportedFileName)
+                    </fieldset>
+                </div>
+
+
+
+                <div class="col-12 col-md-3 col-sm-3">
+                    <fieldset class="form-group">
+                        <audio id="audSupportedFile" style="height: 35px;" data-hidden controls data-src="@(UrlConstants.TestSupportFileUrl + "/" + Model.RowKey + "/")">
+
+                            Your browser does not support the audio element.
+                        </audio>
+                    </fieldset>
+                </div>
+
+            </div>
+
+
+            <div id="dvLoading" class="form-row">
+                <div id="Repeater1" class="repeater">
+                    <div data-repeater-list>
+                        @for (int i = 0; i < Model.TestQuestions.Count(); i++)
+                        {
+
+                            <div id="ItemRepeater[@i]" class="QuestionMaster" style="margin-bottom: 17px;" data-repeater-item>
+
+                                <div class="col col-sm-12 float-left no-padding">
+                                    <div class="col-2 col-md-2 col-sm-2 float-left  no-padding">
+                                        <fieldset class="form-group">
+                                            @Html.Label(EduSuiteUIResources.MarkGroup, htmlAttributes: new { @class = "form-label" })
+                                            @Html.DropDownListFor(m => m.TestQuestions[i].MarkGroupKey, new SelectList(Model.MarkGroups, "RowKey", "MarkGroupName", Model.TestQuestions[i].MarkGroupKey), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.MarkGroup, new { @class = "form-control input-control", @style = "    position: relative; z - index: 999; ", @InputFor = "lblDesignation" })
+                                            <span class="form-control-error-text">
+                                                @Html.ValidationMessageFor(m => m.TestQuestions[i].MarkGroupKey)
+                                            </span>
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-2 col-md-2 col-sm-2 float-left ">
+                                        <fieldset class="form-group">
+                                            @Html.Label(EduSuiteUIResources.Mark, htmlAttributes: new { @class = "form-label" })
+                                            <div class="required-icon"><div class="text">*</div></div>
+                                            @Html.TextBoxFor(m => m.TestQuestions[i].Mark, new { @class = "input-control form-control form-control-sm", @style = "position:relative;z-index:2" })
+                                            <span class="form-control-error-text">
+                                                @Html.ValidationMessageFor(m => m.TestQuestions[i].Mark)
+                                            </span>
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-2 col-md-2 col-sm-2 float-left  ">
+                                        <fieldset class="form-group">
+                                            @Html.Label(EduSuiteUIResources.NegativeMark, htmlAttributes: new { @class = "form-label" })
+                                            @Html.TextBoxFor(m => m.TestQuestions[i].NegativeMark, new { @class = "input-control form-control form-control-sm", @style = "position:relative;z-index:2" })
+                                            <span class="form-control-error-text">
+                                                @Html.ValidationMessageFor(m => m.TestQuestions[i].NegativeMark)
+                                            </span>
+                                        </fieldset>
+                                    </div>
+
+                                    <div style="display:none" class="col-2 col-md-2 col-sm-2 float-left  ">
+                                        <fieldset class="form-group">
+                                            @Html.Label(EduSuiteUIResources.QuestionDuration, htmlAttributes: new { @class = "form-label" })
+                                            @Html.TextBoxFor(m => m.TestQuestions[i].QuestionDuration, new { @class = "input-control form-control form-control-sm", @style = "position:relative;z-index:2" })
+                                            <span class="form-control-error-text">
+                                                @Html.ValidationMessageFor(m => m.TestQuestions[i].QuestionDuration)
+                                            </span>
+                                        </fieldset>
+                                    </div>
+
+                                    <div class="col-6 col-md-3 col-sm-3 float-right">
+                                        @Html.Label(EduSuiteUIResources.MarkGroup, htmlAttributes: new { @class = "form-label", style = "visibility:hidden" })
+                                        <i data-repeater-delete="" class="btnSmall btndelete"> <i data-option-delete="" class="fa fa-trash"></i> Remove Question</i>
+
+                                    </div>
+                                </div>
+                                <span id="[@i].QuestionNumber" class="QuestionNumber">QUESTION @Model.TestQuestions[i].QuestionNumber</span>
+                                <div class="col-sm-12 no-padding">
+
+                                    <div class="col col-12 no-padding">
+
+                                        @Html.HiddenFor(m => m.TestQuestions[i].RowKey)
+                                        @Html.HiddenFor(m => m.TestQuestions[i].QuestionTypeKey)
+                                        @Html.HiddenFor(m => m.TestQuestions[i].TestSectionKey)
+                                        @Html.TextAreaFor(m => m.TestQuestions[i].QuestionPaper, new { @class = "tab-content min-content-height bg-white QuestionPaper", @style = "height:0;width:0" })
+
+                                        @*<textarea class="tab-content min-content-height bg-white" cols="20" data-val="true" data-val-required="QuestionPaper is Required" id="@Model.TestQuestions[i].QuestionPaper" name="@Model.TestQuestions[i].QuestionPaper" rows="2" style="height: 0px; width: 0px; display: none;" aria-hidden="true"></textarea>*@
+                                        <span class="form-control-error-text">
+                                            @Html.ValidationMessageFor(m => m.TestQuestions[i].QuestionPaper)
+                                        </span>
+                                    </div>
+
+                                </div>
+
+                                <div style="margin-top: 8px" class="col-sm-12  no-padding">
+                                    <div class="row">
+                                        <div class="col-6 col-lg-2 col-md-3 col-sm-6">
+                                            <b>Option Name</b>  <div class="required-icon"><div class="text">*</div></div>
+                                        </div>
+
+                                        <div class="col-6 col-lg-2 col-md-3 col-sm-6">
+                                            <b>Options</b>
+                                        </div>
+
+                                        <div class="col-6 col-lg-2 col-md-3 col-sm-6">
+                                            <b>Answer Key</b>
+                                        </div>
+
+                                    </div>
+
+
+                                    <div id="Repeater2_@i" class="repeater">
+                                        <div data-option-list>
+                                            @for (int m = 0; m < Model.TestQuestions[i].QuestionOptions.Count(); m++)
+                                            {
+
+                                                <div data-option-item>
+                                                    <div class="row">
+
+                                                        @Html.HiddenFor(n => Model.TestQuestions[i].QuestionOptions[m].RowKey)
+                                                        <div class="col-2 col-lg-2 col-md-3 col-sm-2">
+                                                            <fieldset class="form-group">
+                                                                @Html.TextBoxFor(n => Model.TestQuestions[i].QuestionOptions[m].OptionValue, new { @onchange = "TestPaper.CheckQuestionOptionValues(this)", @class = "input-control form-control form-control-sm" })
+                                                                <span class="form-control-error-text">
+                                                                    @Html.ValidationMessageFor(n => Model.TestQuestions[i].QuestionOptions[m].OptionValue)
+                                                                </span>
+                                                            </fieldset>
+                                                        </div>
+
+
+                                                        <div class="col-6 col-lg-2 col-md-3 col-sm-6">
+
+                                                            <fieldset class="form-group">
+                                                                @Html.TextBoxFor(n => Model.TestQuestions[i].QuestionOptions[m].OptionText, new { @class = "input-control form-control form-control-sm" })
+                                                                <span class="form-control-error-text">
+                                                                    @Html.ValidationMessageFor(n => Model.TestQuestions[i].QuestionOptions[m].OptionText)
+                                                                </span>
+                                                            </fieldset>
+                                                        </div>
+
+
+                                                        <div style="padding-left: 50px;" class="col-6 col-lg-2 col-md-3 col-sm-6">
+                                                            @*<input id="Model.TestQuestions[@i].QuestionOptions[@m].IsAnswerKey" name="Model.TestQuestions[@i].IsAnswerKey"  type="checkbox"  value="@Model.TestQuestions[i].QuestionOptions[m].IsAnswerKey" class="custom-control-input answerKey" spellcheck="false"/>*@
+
+                                                            @Html.CheckBoxFor(n => n.TestQuestions[i].QuestionOptions[m].IsAnswerKey, new { @class = "custom-control-input answerKey " })
+
+                                                            <label class="custom-control-label" for="Model.TestQuestions[@i].QuestionOptions[@m].IsAnswerKey"></label>
+                                                        </div>
+
+
+
+                                                        <div class="d-block">
+                                                            <i data-option-delete="" class="btnSmall btndelete"><i data-option-delete="" class="fa fa-trash"></i> Remove option </i>
+                                                            @*<i class="fa fa-pencil text-primary bg-white badge d-inline-block" onclick="TestPaper.OptionClick(@Model.TestQuestions[i].RowKey,this)"></i>*@
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+
+                                        <div class="col-sm-7  col-12">
+                                            <span data-option-create style="" class="btnSmall">
+                                                <span class="glyphicon glyphicon-plus"></span>  Add Option
+                                            </span>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+                    <div class="col-sm-12  col-12 float-left">
+                        <span style="  float: none;  width: 20%; margin: auto; background: #2055b7;  padding: 10px 3px; margin: auto;cursor:pointer" data-repeater-create class="btnSmall">
+                            <span class="glyphicon glyphicon-plus"></span> Add New Question
+                        </span>
+                    </div>
+
+                </div>
+
+
+
+
+            </div>
+            <div class="row mt-2">
+                <div class="col-12">
+                    <div class="form-group">
+                        <button type="button" id="btnSave" class="btn btn-sm btn-success mx-1"><i class="fa fa-save"></i> @EduSuiteUIResources.Save </button>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <span class="ValidateDataMsg"> @Html.ValidationMessage("error_msg")  </span>
+                </div>
+            </div>
+
+        </div>
+    </section>
+}
+
+
+<style>
+
+    .btnImportQuestions {
+        background: #3696da;
+        padding: 7px 7px;
+        border-radius: 3px;
+        font-size: 12px;
+        font-weight: bold;
+        color: #ffffff;
+        border: solid #59554e 1px;
+        margin-bottom: 0px;
+        float: right;
+        margin-right: 43px;
+    }
+
+    .btnSmall {
+        color: #ffffff;
+        font-size: 12px;
+        background: #088445;
+        padding: 3px 5px;
+        border-radius: 1px;
+        font-weight: bold;
+        cursor: pointer !important;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        display: block;
+        text-align: center;
+        text-decoration: none !important;
+        font-style: normal;
+        font-size: 11px;
+        min-width: 116px;
+        float: left;
+        position: relative;
+        z-index: 2;
+    }
+
+    .bootstrap-select.form-control {
+        position: relative;
+        /*z-index: 1;*/
+    }
+
+    .QuestionMaster {
+        float: left;
+        width: 100%;
+        padding: 18px 11px;
+        border: solid #e8e4dc 2px;
+    }
+
+    .QuestionMaster {
+        float: left;
+        width: 100%;
+        padding: 18px 11px;
+        border: solid #d2cdc4 1px;
+        background: #f9f9f9;
+    }
+
+    .btnSmall.btndelete {
+        background: #bb1c1c;
+        color: white;
+    }
+
+    span.QuestionNumber {
+        font-weight: bold;
+        padding: 8px 2px;
+        display: block;
+        color: #981b21;
+    }
+
+
+    .examInstructions {
+        background: #a71313;
+        text-align: center;
+        padding: 9px 1px;
+        margin-bottom: 11px;
+        border-radius: 1px;
+        border: solid #c3c1bd 0px;
+        width: 251px;
+        margin: auto;
+        margin-bottom: 13px;
+        color: white;
+        border-radius: 1px;
+        cursor: pointer;
+        text-transform: UPPERCASE;
+        font-size: 11px;
+        font-weight: 600;
+    }
+
+        .examInstructions.collapsed {
+            background: #4b69bf;
+        }
+</style>
+
+<script>
+    var jsonData=@(Html.Raw(Json.Encode(new TestQuestionViewModel())));
+    var jsonDetailData=@(Html.Raw(Json.Encode(new TestQuestionViewModel())));
+
+    var QuestionTypesData =@(Html.Raw(Json.Encode(Model.QuestionTypes)));
+     var TestPaperJson=@(Html.Raw(Json.Encode(Model)));
+
+     $(document).ready(function ()
+     {
+        AppCommon.FormatInputCase();
+        AppCommon.FormatDateInput();
+        AppCommon.FormatTimeInput();
+
+        TestPaper.GetQuestionPaper();
+        TestPaper.GetQuestionOption();
+        TestPaper.SetQuestionNumber();
+
+
+         $("#SubjectKeys,#AcademicTermsKeys,#CourseKeys,#UniversityMasterKeys,#MeadiumKeys,#SecondLanguageKeys,#BatchKeys,#ModeKeys,#ClassCodeKeys").on("change", function ()
+         {
+             TestPaper.GetDropDown(this);
+         });
+
+         $("#ExamTypeKey").on("change", function ()
+         {
+             TestPaper.GetDropDown(this);
+             if ($("#ExamTypeKey").val() == $("#hdnOtherExam").val()) {
+                 $("#dbSubject").hide();
+
+             }
+             else {
+                 $("#dbSubject").show();
+
+
+             }
+         });
+
+
+        if (TestPaperJson.RowKey > 0) {
+            $("#IsActive").prop("checked", TestPaperJson.IsActive);
+        }
+        else
+        {
+            $("#IsActive").prop("checked",true);
+        }
+        TestPaper.PreventMultiChecking();
+
+
+
+
+        var URIindex = 0;
+        var EndIndex = 0;
+        var ImageDataURI = JSON.parse(localStorage.getItem("ImageDataURI"));
+
+
+            tinymce.init({
+
+                // Location of TinyMCE script
+                //script_url: $("#hdnTinyMCEJS").val(),
+                selector: '.QuestionPaper',
+                theme: "silver",
+                height: "300",
+                width: "100%",
+                verify_html: false,
+                plugins: 'print preview paste importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern noneditable help charmap quickbars emoticons preventdelete',
+                imagetools_cors_hosts: ['picsum.photos'],
+                menubar: 'edit view insert format tools table help',
+                toolbar: 'undo redo |  bold italic underline strikethrough well| fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media template link anchor codesample | ltr rtl',
+                toolbar_sticky: false,
+
+
+                setup: function (ed)
+                {
+                    ed.on('init', function (args)
+                    {
+                        
+                        //alert("hello");
+
+                        if (TestPaperJson.QuestionCount != 0)
+                        {
+
+                            if (EndIndex>=TestPaperJson.LastQuestionIndex)
+                                {
+                                    var Image = ImageDataURI.DataURI[URIindex];
+                                    $(this).tinymce().execCommand('mceInsertContent', false, "<img width='314' src='" + Image + "'/>");
+                                    URIindex = URIindex + 1;
+                                }
+
+                            EndIndex = EndIndex+1
+
+                            }
+
+
+                        });
+                }
+
+            });
+
+
+
+
+
+
+
+        tinymce.init({
+            selector: '#testInstructionContent',
+            theme: "silver",
+            height: "430",
+            width: "100%",
+            verify_html: false,
+            plugins: 'print preview paste importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern noneditable help charmap quickbars  emoticons preventdelete',
+            imagetools_cors_hosts: ['picsum.photos'],
+            menubar: 'edit view insert format tools table help',
+            toolbar: 'undo redo | bold italic underline strikethrough well| fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media template link anchor codesample | ltr rtl',
+            toolbar_sticky: false,
+
+
+            setup: function (ed) {
+                ed.on('keyup', function (e) {
+                })
+                ed.on('dblclick', function (e) {
+                    var target = e.target;
+                    var key = $(target).data("key");
+                    if (!key) {
+                        target = $(target).closest("[data-key]")
+                    }
+                    if (target) {
+                        TestPaper.OptionalClick(target)
+                    }
+                })
+                ed.ui.registry.addButton('well', {
+                    tooltip: 'Wrap',
+                    icon: 'edit-block',
+                    onAction: function () {
+                        var text = ed.selection.getContent({
+                            'format': 'html'
+                        });
+                        if (text && text.length > 0) {
+                            ed.execCommand('mceInsertContent', false,
+                                '<div class="well">' + text + '</div>');
+                        }
+                    }
+                });
+            }
+        });
+
+
+        //$("#testPaperContent").formBuilder({});
+        //$("#testPaperContent").formRender({ formData: [{ type: "text", label: "", name: "qtn-1" }] });
+
+    });
+    $(window).on("load",function () {
+        $("#tab-questionmodule li a").eq(0).addClass("active")
+        //$("#tab-questionsection li a").eq(0).addClass("active")
+
+        TestPaper.LoadTemplates();
+
+        $("#lnkAddPaperContent").on("click", function () {
+            $('#testPaperContent').tinymce().execCommand('mceInsertContent', false, "<input id='[1].Questions' type='text' placeholder='1'/>");
+        });
+
+        //TestPaper.LoadTestInstructions();
+
+
+        //$("[id*=MarkGroupKey]").on("change", function ()
+        //{
+        //    
+        //    var Mark = $(this).closest("[data-repeater-item]").find("input[id*=Mark]");
+        //    var NegativeMark = $(this).closest("[data-repeater-item]").find("input[id*=NegativeMark]");
+        //    $(Mark).val($(this).val());
+        //    $(NegativeMark).val(MarkGroupsList[$(this).val()].NegativeMark);
+
+
+
+        //});
+
+        $(document).on('change', '[id*=MarkGroupKey]', function (e) {
+
+            var Mark = $(this).closest("[data-repeater-item]").find("input[id*=Mark]")[0];
+            var NegativeMark = $(this).closest("[data-repeater-item]").find("input[id*=NegativeMark]")[0];
+
+            if ($(this)[0].selectedIndex!="0")
+            {
+                var SelectedIndex = parseInt($(this)[0].selectedIndex)-1;
+                $(NegativeMark).val(TestPaperJson.MarkGroups[SelectedIndex].NegativeMark);
+                $(Mark).val(TestPaperJson.MarkGroups[SelectedIndex].Mark);
+           }
+            else
+            {
+                $(NegativeMark).val("");
+                $(Mark).val("");
+            }
+
+
+
+        });
+
+
+
+        $("#btnSave").on("click",function(){
+            tinymce.activeEditor.save();
+            $("#ModuleKey").val(1);
+            $("#TestSectionKey").val($("#tab-questionsection li a.active").data("val"));
+            $("#TestSectionName").val("Section"+($("#tab-questionsection li a.active").closest("li").index()+1))
+            TestPaper.FormSubmit(this)
+        })
+
+        $('#tab-questionsection li a[data-toggle="tab"]').on('shown.bs.tab', function (e)
+        {
+            if ($(this).hasClass("disabled"))
+            {
+                e.preventDefault();
+                return false;
+            }
+            TestPaper.ShowHideDeleteButton();
+            //TestPaper.QuestionPaperDetail();  commentshabeeb
+
+
+        });
+
+        $('#tab-questionmodule li a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            if ($(this).hasClass("disabled")) {
+                e.preventDefault();
+                return false;
+            }
+
+            TestPaper.GetFileTypeById();
+            TestPaper.ShowHideQuestionButton();
+            var obj = {};
+            obj.id = $("#RowKey").val();
+            obj.ModuleKey = $("#tab-questionmodule li a.active").data("val");
+            obj.SectionKey = null;
+            //TestPaper.QuestionPaperDetail(obj);
+
+        });
+        TestPaper.GetFileTypeById();
+        $("#testPaperContent").show(function(){
+            $(this).css("visibility","hidden")
+        });
+        //$('#listNewQuestionGroup a').on('click', function(event){
+
+        //    event.stopPropagation();
+        //});
+    });
+</script>
+
+
+

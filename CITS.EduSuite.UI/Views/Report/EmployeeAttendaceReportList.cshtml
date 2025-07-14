@@ -1,0 +1,132 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.ReportViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+@using System.Web.Mvc
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/EmployeeAttendanceReport")
+    @Scripts.Render("~/Content/DatePickerJS")
+
+    @Scripts.Render("~/Content/ExcelExportJS")
+    @Scripts.Render("~/Content/momentJS")
+}
+
+
+
+
+<input type="hidden" id="hdnGetEmployeeAttendanceReport" value="@Url.Action("GetEmployeeAttendanceReport", "Report")" />
+<input type="hidden" id="hdnEmployeeAttendancePath" value=@Url.Content("~/Templates/Report/EmployeeAttendance.html") />
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-12">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.EmployeeAttendance@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Summary</h3>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</header>
+<section class="section-content mx-sm-3 mx-0">
+
+    <div class="GridBody">
+        <div class="grid-nav-bar">
+            <form>
+                <div class="form-row">
+                    @Html.HiddenFor(m => m.RowKey)
+
+                    @if (Model.Branches.Count == 1)
+                    {
+                        {
+                            Model.BranchKey = (Model.BranchKey == null || Model.BranchKey == 0) ? (short)Model.Branches.Select(x => x.RowKey).FirstOrDefault() : Model.BranchKey;
+                        }
+                        @Html.HiddenFor(m => m.BranchKey)
+                    }
+                    else
+                    {
+
+                        <div class="col-6 col-sm-3 col-lg-2">
+                            <fieldset class="form-group">
+                                @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), new { @class = "form-control input-control", @InputFor = "lblBranch" })
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => m.BranchKey)
+                                </span>
+                            </fieldset>
+                        </div>
+
+                    }
+
+                    <div class="col-lg-2 col-sm-3 col-4">
+                        <fieldset class="form-group">
+                            @Html.TextBoxFor(m => m.DateAddedFrom, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_inputmask = "'alias': 'dd/mm/yyyy'", @data_input_type = "date" })
+                        </fieldset>
+                    </div>
+                    <div class="col-lg-2 col-sm-3 col-4">
+                        <fieldset class="form-group">
+                            @Html.TextBoxFor(m => m.DateAddedTo, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_inputmask = "'alias': 'dd/mm/yyyy'", @data_input_type = "date" })
+                        </fieldset>
+                    </div>
+
+                    <div class="col-lg-1 col-sm-4 col-6">
+                        <a class="btn btn-info btn-sm float-right " onclick='window.location.reload()'>
+                            <i class="fa fa-search"></i>   @EduSuiteUIResources.Refresh
+                        </a>
+                    </div>
+                    <div class="col-lg-1 col-sm-3 col-4">
+                        <div class="button-group float-right">
+                            <button id="btnExport" type="button" class="btn btn-success btn-sm"><i class="fa fa-file-excel-o fa-align-right" aria-hidden="true"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+            </form>           
+        </div>
+
+        <div class="table-wrapper">
+            <div id="dvAttendanceReport" class="jqGrid_wrapper">
+
+            </div>
+        </div>
+
+
+    </div>
+
+</section>
+
+<script type="text/javascript">
+     var jsonDataList=@(Html.Raw(Json.Encode(Model)));
+
+    $(document).ready(function () {
+
+        AppCommon.FormatDateInput();
+        AppCommon.FormatSelect2();
+        EmployeeAttendanceReport.GetAttendanceReport();
+        $('#BranchKey,#DateAddedFrom,#DateAddedTo').on("change", function () {
+            EmployeeAttendanceReport.GetAttendanceReport();
+        });
+        $('#btnSearch').on("click", function () {
+            EmployeeAttendanceReport.GetAttendanceReport();
+        });
+
+        var obj = { HtmlCntrl: $("#tblAttendance") };
+        $("#btnExport").on("click", function () {
+            obj.ContainerId = $('#dvAttendanceReport'),
+            setExportTitle(obj)
+            AppCommon.ExportTableToExcel(obj);
+        });
+        function setExportTitle(obj) {
+            obj.Title = "Employee Attendance Summary" + ($("#BranchKey").val() != "" ? ' - ' + $("#BranchKey").find("option:selected").text() : "");
+            obj.SubTitle = $("#DateAddedFrom").val() === $("#DateAddedTo").val() ? $("#DateAddedFrom").val() : $("#DateAddedFrom").val() + " - " + $("#DateAddedTo").val();
+            obj.Title = obj.Title +" "+ obj.SubTitle;
+        obj.FileName = (obj.Title + (obj.SubTitle ? ("_" + obj.SubTitle) : "")).replace(/-/g, '_');
+        }
+    });
+</script>
+
+
+

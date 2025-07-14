@@ -1,0 +1,188 @@
+﻿
+@model CITS.EduSuite.Business.Models.ViewModels.EmployeeExperienceViewModel
+@using System.Web.Mvc
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+
+    @Scripts.Render("~/Scripts/EmployeeExperience")
+}
+<input type="hidden" id="hdnGetEmployeeExperiencesList" value="@Url.Action("getemployeeexperiences", "EmployeeExperience" )" />
+<input type="hidden" id="hdnDeleteEmployeeExperience" value="@Url.Action("DeleteEmployeeExperience", "EmployeeExperience" )" />
+<input type="hidden" id="hdnAddEditEmployeeExperience" value="@Url.Action("AddEditEmployeeExperience", "EmployeeExperience" )" />
+@using (Html.BeginForm("AddEditEmployeeExperience", "EmployeeExperience", FormMethod.Post, htmlAttributes: new { @id = "frmEmployeeExperience" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.EmployeeKey)
+    @Html.ValidationSummary(true)
+
+    <div class="box-typical box-typical-padding">
+
+        <div class="repeater">
+            <div data-repeater-list id="dvExperiance">
+
+                @for (int i = 0; i < Model.EmployeeExperiences.Count(); i++)
+                {
+                    <div data-repeater-item class="mb-2">
+                        <div class="form-row">
+                            <div class="col-lg-2 col-md-3 col-4">
+                                <fieldset class="form-group">
+                                    @Html.Label(EduSuiteUIResources.CompanyName, htmlAttributes: new { @id = "lblCompanyName", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                                    @Html.TextBoxFor(m => m.EmployeeExperiences[i].CompanyName, new { @class = "form-control input-control", @InputFor = "lblCompanyName" })
+                                    <span class="form-control-error-text">
+                                        @Html.ValidationMessageFor(m => m.EmployeeExperiences[i].CompanyName)
+                                    </span>
+                                </fieldset>
+                                @Html.HiddenFor(m => m.EmployeeExperiences[i].RowKey)
+                            </div>
+
+                            <div class="col-lg-2 col-md-3 col-4">
+                                @Html.Label(EduSuiteUIResources.PhoneNumber, htmlAttributes: new { @id = "lblCompanyPhoneNumber", @class = "form-label" })
+                                @Html.TextBoxFor(m => m.EmployeeExperiences[i].CompanyPhoneNumber, new { @class = "form-control input-control", @InputFor = "lblCompanyPhoneNumber" })
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => m.EmployeeExperiences[i].CompanyPhoneNumber)
+                                </span>
+                            </div>
+
+                            <div class="col-lg-2 col-md-3 col-4">
+                                @Html.Label(EduSuiteUIResources.JobField, htmlAttributes: new { @id = "lblJobField", @class = "form-label" })
+                                @Html.TextBoxFor(m => m.EmployeeExperiences[i].JobField, new { @class = "form-control input-control", @InputFor = "lblJobField" })
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => m.EmployeeExperiences[i].JobField)
+                                </span>
+                            </div>
+                            <div class="col-lg-2 col-md-3 col-4">
+                                @Html.Label(EduSuiteUIResources.JobPostion, htmlAttributes: new { @id = "lblJobPostion", @class = "form-label" })
+                                @Html.TextBoxFor(m => m.EmployeeExperiences[i].JobPostion, new { @class = "form-control input-control", @InputFor = "lblJobPostion" })
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => m.EmployeeExperiences[i].JobPostion)
+                                </span>
+                            </div>
+
+                            <div class="col-lg-2 col-md-3 col-4">
+                                @Html.Label(EduSuiteUIResources.ExperienceStartDate, htmlAttributes: new { @id = "lblExperienceStartDate", @class = "form-label" })
+                                @Html.TextBoxFor(m => Model.EmployeeExperiences[i].ExperienceStartDate, new { @class = "form-control input-control", @data_input_type = "date", @data_inputmask = "'alias': 'dd/mm/yyyy'" })
+
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => m.EmployeeExperiences[i].ExperienceStartDate)
+                                </span>
+                            </div>
+
+                            <div class="col-lg-2 col-md-3 col-4">
+                                @Html.Label(EduSuiteUIResources.ExperianceEndDate, htmlAttributes: new { @id = "lblExperianceEndDate", @class = "form-label" })
+                                @Html.TextBoxFor(m => Model.EmployeeExperiences[i].ExperianceEndDate, new { @class = "form-control input-control", @data_input_type = "date", @data_inputmask = "'alias': 'dd/mm/yyyy'" })
+
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => m.EmployeeExperiences[i].ExperianceEndDate)
+                                </span>
+                            </div>
+                            <div class="col-lg-2 col-md-3 col-4">
+                                @Html.Label(EduSuiteUIResources.Attachment, htmlAttributes: new { @id = "lblAttanchedFile", @class = "form-label" })
+                                <div class="custom-file">
+                                    @Html.TextBoxFor(m => m.EmployeeExperiences[i].AttanchedFile, new { type = "file", @class = "custom-file-input" })
+                                    <label class="custom-file-label" for="AttanchedFile">Choose file</label>
+                                </div>
+
+                                @if (Model.EmployeeExperiences[i].AttanchedFileName != null)
+                                {
+                                    <a href=@Url.Action("DownloadFile", "EmployeeExperience", new { filename = Model.EmployeeExperiences[i].AttanchedFileNamePath })>@EduSuiteUIResources.Download</a>
+                                }
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => m.EmployeeExperiences[i].AttanchedFile)
+                                </span>
+                            </div>
+                            <div class="col-lg-2 col-md-3 col-4">
+                                @Html.Label(EduSuiteUIResources.Address, htmlAttributes: new { @id = "lblCompanyAddress", @class = "form-label" })
+                                @Html.TextAreaFor(m => m.EmployeeExperiences[i].CompanyAddress, new { @class = "form-control input-control", @InputFor = "lblCompanyAddress" })
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => m.EmployeeExperiences[i].CompanyAddress)
+                                </span>
+                            </div>
+                        </div>
+                        <fieldset class="mt-2">
+                            <legend>@EduSuiteUIResources.ContactPerson@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Details</legend>
+                            <div class="form-row">
+                                <div class="col-lg-2 col-md-3 col-4">
+                                    @Html.Label(EduSuiteUIResources.ContactPerson, htmlAttributes: new { @id = "lblContactPersonName", @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.EmployeeExperiences[i].ContactPersonName, new { @class = "form-control input-control", @InputFor = "lblContactPersonNamr" })
+                                    <span class="form-control-error-text">
+                                        @Html.ValidationMessageFor(m => m.EmployeeExperiences[i].ContactPersonName)
+                                    </span>
+                                </div>
+                                <div class="col-lg-2 col-md-3 col-4">
+                                    @Html.Label(EduSuiteUIResources.Designation, htmlAttributes: new { @id = "lblContactPersonDesignation", @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.EmployeeExperiences[i].ContactPersonDesignation, new { @class = "form-control input-control", @InputFor = "lblContactPersonDesignation" })
+                                    <span class="form-control-error-text">
+                                        @Html.ValidationMessageFor(m => m.EmployeeExperiences[i].ContactPersonDesignation)
+                                    </span>
+                                </div>
+                                <div class="col-lg-2 col-md-3 col-4">
+                                    @Html.Label(EduSuiteUIResources.PhoneNumber, htmlAttributes: new { @id = "lblContactPersonNumber", @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.EmployeeExperiences[i].ContactPersonNumber, new { @class = "form-control input-control", @InputFor = "lblContactPersonNumber" })
+                                    <span class="form-control-error-text">
+                                        @Html.ValidationMessageFor(m => m.EmployeeExperiences[i].ContactPersonNumber)
+                                    </span>
+                                </div>
+                                <div class="col-lg-2 col-md-3 col-4">
+                                    @Html.Label(EduSuiteUIResources.Remarks, htmlAttributes: new { @id = "lblRemarks", @class = "form-label" })
+                                    @Html.TextAreaFor(m => m.EmployeeExperiences[i].Remarks, new { @class = "form-control input-control", @InputFor = "lblRemarks" })
+                                    <span class="form-control-error-text">
+                                        @Html.ValidationMessageFor(m => m.EmployeeExperiences[i].Remarks)
+                                    </span>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <hr class="border-red" />
+                        <div class="form-row">
+                            <div class="col-12">
+                                <span data-repeater-delete="" class="btn btn-danger btn-sm float-right">
+                                    <span class="fa fa-remove"></span>
+
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+
+            <div class="form-row">
+                <div class="col-6 form-col">
+                    <div class="form-group">
+                        <input type="button" value="@EduSuiteUIResources.Save" id="btnSave" class="btn btn-sm btn-success mx-1" />
+                        <input type="button" value="@EduSuiteUIResources.Skip" id="btnSave" onclick=" $('#tab-profile  li a.active').parent().next('li').find('a').trigger('click');" class="btnForm btnSubmit btn btn-sm btn-danger " />
+                        <a id="btnFinish" class="btn btn-sm btn-success mx-1" onclick="location.href='@Url.Action("EmployeeList", "Employee")'">@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Finish</a>
+
+                    </div>
+                    <div class="col-12 paddingNone">
+                        <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+                    </div>
+                </div>
+                <div class="col-6 form-col float-right">
+
+                    <span data-repeater-create class="btn btn-info btn-sm  float-right btnadd">
+                        <span class="glyphicon glyphicon-plus"></span> @EduSuiteUIResources.Add
+                    </span>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+}
+
+<script>
+    var jsonData=@(Html.Raw(Json.Encode(Model)));
+    $(document).ready(function () {     
+        AppCommon.CustomRepeaterRemoteMethod()
+        AppCommon.FormatDateInput()
+        EmployeeExperiences.GetEmployeeExperiences(jsonData);
+       
+        $("#dvExperiance [data-repeater-item]").each(function (i) {
+            $("input[id*=ExperienceStartDate]", $(this)).datepicker('setStartDate', '');
+            $("input[id*=ExperienceStartDate]", $(this)).datepicker('setEndDate', new Date());
+            $("input[id*=ExperianceEndDate]", $(this)).datepicker('setStartDate', '');
+            $("input[id*=ExperianceEndDate]", $(this)).datepicker('setEndDate', new Date());
+        });
+    });
+</script>

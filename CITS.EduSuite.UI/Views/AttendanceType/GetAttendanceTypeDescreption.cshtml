@@ -1,0 +1,49 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.AttendanceTypeViewModel
+
+
+<div id="dynamicRepeater" class="repeater">
+    <table class="table table-responsive table-stripped">
+        <thead>
+            <tr>
+                <th class="w-25">
+
+                </th>
+                <th class="w-50">
+                    @Html.Label(EduSuiteUIResources.AttendanceTypeDescreption, htmlAttributes: new { @class = "form-label" }) <div class="required-icon"><div class="text">*</div></div>
+                </th>
+
+            </tr>
+
+        </thead>
+
+        <tbody data-repeater-list>
+            @for (int i = 0; i < Model.AttendanceTypeDescreptionList.Count(); i++)
+            {
+                <tr data-repeater-item>
+                    <td>
+                        @if (Model.AttendanceTypeDescreptionList[i].RowKey != null)
+                        {
+
+                            <span onclick="AttendanceType.DeleteAttendanceTypeDescreption(this,@Model.AttendanceTypeDescreptionList[i].RowKey,@Model.AttendanceTypeDescreptionList[i].AttendanceTypeKey)" class="btn btn-danger btn-sm">
+                                <span class="fa fa-remove"></span>
+                            </span>
+
+
+                        }
+                    </td>
+                    <td class="col-2 form-col">
+                        @Html.TextBoxFor(m => m.AttendanceTypeDescreptionList[i].AttendanceTypeDescription, new { @class = "form-control input-control" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.AttendanceTypeDescreptionList[i].AttendanceTypeDescription)
+                        </span>
+                        @Html.HiddenFor(m => m.AttendanceTypeDescreptionList[i].RowKey)
+                        @Html.HiddenFor(m => m.AttendanceTypeDescreptionList[i].AttendanceTypeKey)
+
+                    </td>
+
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,194 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.CourseSubjectMasterViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+
+
+<table id="dynamicRepeater" class="table table-responsive table-stripped">
+    <thead class="thead-light">
+        <tr>
+            <th>
+
+            </th>
+            <th>
+                <div class="required-icon"><div class="text">*</div></div>
+                @EduSuiteUIResources.Subject@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Code
+            </th>
+            <th>
+                <div class="required-icon"><div class="text">*</div></div>
+                @EduSuiteUIResources.Subject@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Name
+            </th>
+            <th>
+                <div class="required-icon"><div class="text">*</div></div>
+                @EduSuiteUIResources.Is@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Elective
+
+            </th>
+            <th>
+                @EduSuiteUIResources.HasStudyMaterials
+            </th>
+            <th>
+
+                @EduSuiteUIResources.IsActive
+            </th>
+            <th>
+
+
+            </th>
+
+        </tr>
+    </thead>
+    <tbody data-repeater-list id="dvCourseSubjectDetailsList">
+        @for (int i = 0; i < Model.CourseSubjectDetailViewModel.Count(); i++)
+        {
+            <tr data-repeater-item class="mb-2">
+                <td>
+
+                    <span data-repeater-delete="" class="btn btn-danger btn-sm">
+                        <span class="fa fa-remove"></span>
+                    </span>
+
+                </td>
+                <td class="px-1">
+                    <fieldset class="form-group">
+                        @Html.TextBoxFor(m => m.CourseSubjectDetailViewModel[i].SubjectCode, new { @class = "form-control input-control", @data_convert = "uppercase", @onchange = "CourseSubject.HasStudyMaterialEvent(this)", @data_unique = true })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.CourseSubjectDetailViewModel[i].SubjectCode)
+                        </span>
+                        @Html.HiddenFor(m => m.CourseSubjectDetailViewModel[i].RowKey)
+                        @Html.HiddenFor(m => m.CourseSubjectDetailViewModel[i].StudyMaterialCount)
+                        @Html.HiddenFor(m => m.CourseSubjectDetailViewModel[i].SubjectKey)
+
+
+                    </fieldset>
+                </td>
+
+                <td class="px-1 w-50">
+                    <fieldset class="form-group">
+                        @Html.TextBoxFor(m => m.CourseSubjectDetailViewModel[i].SubjectName, new { @class = "form-control input-control", @onchange = "CourseSubject.HasStudyMaterialEvent(this)", @data_unique = true })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.CourseSubjectDetailViewModel[i].SubjectName)
+                        </span>
+                    </fieldset>
+                </td>
+
+                <td class="px-1 ">
+
+                    <fieldset class=" form-group ">
+                        <div class=" switch-check my-2">
+                            @Html.CheckBoxFor(m => m.CourseSubjectDetailViewModel[i].IsElective, new { @class = "switch-input" })
+                            <div class="switch-label redgreen" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                            <div class="switch-handle"></div>
+                        </div>
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.CourseSubjectDetailViewModel[i].IsElective)
+                        </span>
+
+                    </fieldset>
+                </td>
+                <td class="text-center">
+                    <fieldset class=" form-group ">
+                        <div class=" switch-check my-2">
+                            @Html.CheckBoxFor(m => m.CourseSubjectDetailViewModel[i].HasStudyMaterial, new { @class = "switch-input", @onchange = "CourseSubject.HasStudyMaterialEvent(this)" })
+                            <div class="switch-label redgreen" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                            <div class="switch-handle"></div>
+                        </div>
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.CourseSubjectDetailViewModel[i].HasStudyMaterial)
+                        </span>
+
+                    </fieldset>
+                </td>
+                @*<td class="text-center">
+                        <fieldset class=" form-group ">
+                            @Html.TextBoxFor(m => m.CourseSubjectDetailViewModel[i].StudyMaterialCount, new { @class = "form-control input-control", @onClick = "this.setSelectionRange(0, this.value.length)" })
+
+
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.CourseSubjectDetailViewModel[i].StudyMaterialCount)
+                            </span>
+                        </fieldset>
+                    </td>*@
+
+                <td class="text-center">
+                    <fieldset class=" form-group ">
+                        <div class=" switch-check my-2">
+                            @Html.CheckBoxFor(m => m.CourseSubjectDetailViewModel[i].IsActive, new { @class = "switch-input" })
+                            <div class="switch-label redgreen" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                            <div class="switch-handle"></div>
+                        </div>
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.CourseSubjectDetailViewModel[i].IsActive)
+                        </span>
+
+                    </fieldset>
+                </td>
+                <td>
+                    <div id="dvStudyMaterials">
+                        @if (Model.CourseSubjectDetailViewModel[i].HasStudyMaterial)
+                        {
+                            @Html.Action("GetStudyMaterials", "CourseSubject", new { modelList = Model.CourseSubjectDetailViewModel[i].StudyMaterials, index = i })
+                        }
+                    </div>
+                </td>
+            </tr>
+        }
+
+    </tbody>
+    <tfoot>
+        <tr>
+            <td>
+                <span data-repeater-create class="btn btn-info btn-sm  btnadd pull-left btnadd">
+                    <span class="fa fa-plus-square-o"></span>
+                </span>
+            </td>
+        </tr>
+
+    </tfoot>
+
+
+</table>
+
+
+
+
+
+<script>
+    $(document).ready(function ()
+    {
+
+        CourseSubject.GetCourseSubjectDetail(jsonData);
+        AppCommon.CustomRepeaterRemoteMethod();
+        AppCommon.FormatInputCase();
+        $("#RowKey").val(@Model.RowKey)
+        //$("[data-input-type=time]").each(function ()
+        //{
+        //    
+        //    if ($(this).val() != "")
+        //    {
+        //        $(this).val(moment($(this).val(), ["HH:mm:ss"]).format("hh:mm A"));
+        //    }
+        //})
+
+        $("form").removeData("validator");
+        $("form").removeData("unobtrusiveValidation");
+        $.validator.unobtrusive.parse("form");
+
+        $("input[id*=StudyMaterialCount]", $("#dvCourseSubjectDetailsList")).on('input', function ()
+        {
+            var item = $(this).closest("[data-repeater-item]");
+
+            CourseSubject.StudyMaterials($("form"), $(item).index());
+
+
+
+        });
+        $("[id*=SubjectType]").each(function ()
+        {
+            $(this).next("label").attr("for", $(this).attr("id"))
+        })
+    });
+
+
+
+
+
+</script>

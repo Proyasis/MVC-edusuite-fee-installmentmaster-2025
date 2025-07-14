@@ -1,0 +1,237 @@
+﻿<div id="printTC">
+    <div id="studentTC" class="TC-container">
+        <div style="width:1000px; height:auto; text-align:center">
+            <div style="width:1000px; height:auto; padding:20px; text-align:center; border: 5px solid #787878">
+
+                <div style="height: 158px;    width: 100%;">
+                    <div style="float:left;width:12%;text-align: right;">
+
+                        <img src="../../UploadFiles/Company/Logo/SN_College_logo.jpg" style="height:132px" />
+                    </div>
+                    <div style="float:left;width:80%">
+                        <span style="font-size:30px; font-weight:bold;text-transform:uppercase">{{CompanyName}} </span>
+                        <br>
+                        <span style="font-size:18px">( {{CompanySubName}} )</span>
+                        <br /> <br />
+
+                        <span style="font-size:30px;border:solid 2px;padding:7px">Transfer & Conduct Certificate</span><br /><br />
+                    </div>
+                </div>
+                
+                <br />
+                <table class="TC_Table" style="width: 100%; border-spacing: 0px 10px;margin-top:40px;">
+
+                    <tbody>
+
+                        <tr style="line-height: 71px;">
+                            <td>TC.No</td>
+                            <td class="ndColumn"> : {{TCNo}}</td>
+                            <td style="display:inline-flex">
+
+                                <span style="width: 238px;display: inline-block;"> </span>
+
+                                <span class=" " style="width: 170px;text-align: center;"> Admission No</span>
+
+
+                                <span class="rdColumn " style="width: 190px;display: inline-block;"> {{AdmissionNo}}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>1.</td>
+                            <td class="ndColumn">Name of Pupil</td>
+
+                            <td class="full-colon-before width100">
+                                <span class="rdColumn width100"> {{StudentName}}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2.</td>
+                            <td class="ndColumn"> Date of birth </td>
+
+                            <td class="full-colon-before width100">
+                                <span class="rdColumn width100"> {{StudentDOB}} ( {{DOBWords}} )</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>3.</td>
+                            <td class="ndColumn">Nationality</td>
+                            <td class="full-colon-before width100">
+                                <span class="rdColumn width100"> {{CountryName}} </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>4.</td>
+                            <td class="ndColumn">Religion and Community</td>
+                            <td class="full-colon-before width100">
+                                <span class="rdColumn width100"> {{Religion}} - {{Caste}}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>5.</td>
+                            <td class="ndColumn">
+                                Whether the pupil belongs to scheduled caste or Scheduled Tribe or other backward Community,if So specify
+                            </td>
+
+                            <td class="full-colon-before width100">
+                                <span class="rdColumn width100"> {{CommunityType}}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>6.</td>
+                            <td class="ndColumn">Course to which the pupil was enrolled</td>
+
+                            <td class="full-colon-before width100">
+                                <span class="rdColumn width100"> {{CourseName}}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>7.</td>
+                            <td class="ndColumn">Date of Admission</td>
+
+                            <td class="full-colon-before width100">
+                                <span class="rdColumn width100"> {{StudentDateOfAdmission}}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>8.</td>
+                            <td class="ndColumn">Whether the pupil was in reciept of any fee Concession</td>
+                            <td class="full-colon-before width100">
+                                <span class="rdColumn width100">{{HasConcession}} </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>9.</td>
+                            <td class="ndColumn">Whether qualified for promotion to the next class</td>
+                            <td class="full-colon-before width100">
+                                <span class="rdColumn width100">{{Whetherqualifiedforpromotiontothenextclass}} </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>10.</td>
+                            <td class="ndColumn">Reason for leaving the Institution</td>
+
+                            <td class="full-colon-before width100">
+                                <span class="rdColumn width100"> {{ReasonName}}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>11.</td>
+                            <td class="ndColumn">Date of pupil's last attendance in the Institution</td>
+
+                            <td class="full-colon-before width100">
+                                <span class="rdColumn width100"> {{DateofpupilslastattendanceintheInstitution}}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>12.</td>
+                            <td class="ndColumn">Date of application for T.C</td>
+
+                            <td class="full-colon-before width100">
+                                <span class="rdColumn width100"> {{DateOfApplicationForTC}}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>13.</td>
+                            <td class="ndColumn">Date of Issue Of T.C </td>
+                            <td class="full-colon-before width100">
+                                <span class="rdColumn width100"> {{IssuedDate}}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>14.</td>
+                            <td class="ndColumn"> Character and Conduct during the period of study</td>
+                            <td class="full-colon-before width100">
+                                <span class="rdColumn width100"> {{CharacterandConductduringtheperiodofstudy}}</span>
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+
+                </table>
+
+                <!--<span style="font-size:18px ;width:100%;display:block;text-align:right;margin-bottom:20px"><b>PRINCIPAL</b></span>-->
+                <table class="TC_Table" style="width: 100%; border-spacing: 0px 10px;">
+
+                    <tbody>
+                        <tr>
+                            <td style="display:inline-flex">
+                                <span class=" " style="width: 110px;text-align: center;"> Place</span>
+                                <span class="rdColumn " style="width: 150px;display: inline-block;"> {{CityName}}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="display:inline-flex;width:850px">
+                                <span class=" " style="width: 110px;text-align: center;"> Date</span>
+                                <span class="rdColumn " style="width: 150px;display: inline-block;"> </span>
+                            </td>
+                            <td style="display:inline-flex;float:right">
+                                <!--<span class=" " style="width: 110px;text-align: center;"> Date</span>-->
+                                <span style="font-size: 18px; width: 110px; display: block; text-align: right"><b>PRINCIPAL</b></span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        font-family: system-ui;
+    }
+
+    .TC_Table {
+        width: 100%;
+        border-spacing: 0px 10px;
+    }
+
+        .TC_Table tr {
+            line-height: 34px;
+            font-size: 22px;
+        }
+
+        .TC_Table td {
+            vertical-align: top;
+            font-weight: 600;
+        }
+
+            .TC_Table td:nth-child(3) span {
+                text-indent: 5px;
+            }
+
+        .TC_Table .ndColumn {
+            width: 32%;
+        }
+
+        .TC_Table .rdColumn {
+            border-bottom: dashed 1px;
+        }
+
+    .full-colon-before {
+        display: inline-flex;
+    }
+
+        .full-colon-before:before {
+            content: ':';
+            margin: 0px 0px;
+        }
+
+    .TC_Table_tbl1 {
+        width: 100%;
+    }
+
+    .width100 {
+        width: 100%;
+    }
+
+    .width50 {
+        width: 50%;
+    }
+
+    .width10 {
+        width: 10%;
+    }
+</style>

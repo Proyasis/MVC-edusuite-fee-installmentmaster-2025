@@ -1,0 +1,167 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.SendBulkSMSViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+
+
+<div class="modal-header">
+    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+    <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.SendBulkSMS</h4>
+</div>
+
+
+@using (Html.BeginForm("SendBulkSMS", "BulkEmailSMS", new { id = "" }, FormMethod.Post, new { @id = "frmBulkSMS" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="modal-body">
+        <div class="form-master">
+            
+            <div class="form-row">
+                <div class="col-12 col-sm-4 col-lg-2">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.To + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.MobileNumber, htmlAttributes: new { @class = "form-label" })
+                        <div class="required-icon"><div class="text">*</div></div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="box-typical box-typical-padding">
+
+                <div class="repeater">
+                    <table class="table table-bordered">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>
+                                </th>
+                                <th>
+                                    @EduSuiteUIResources.MobileNumber
+                                </th>
+
+                            </tr>
+                        </thead>
+                        <tbody  data-repeater-list>
+                            @for (int i = 0; i < Model.BulkSMSList.Count(); i++)
+                            {
+                                <tr data-repeater-item>
+                                    <td class="p-1">
+
+                                        <span data-repeater-delete="" class="btn btn-danger btn-sm btnDeleteRow">
+                                            <span class=" fa fa-remove"></span>
+                                        </span>
+                                    </td>
+                                    <td class="p-1">
+                                        @Html.HiddenFor(m => m.BulkSMSList[i].RoleKey)
+                                        @Html.HiddenFor(m => m.BulkSMSList[i].RowKey)
+
+                                        @Html.TextBoxFor(m => m.BulkSMSList[i].MobileNumber, new { @class = "form-control input-control" })
+                                        <span class="form-control-error-text">
+                                            @Html.ValidationMessageFor(m => m.BulkSMSList[i].MobileNumber)
+                                        </span>
+                                    </td>
+
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th class="px-1" colspan="9">
+                                    <span data-repeater-create class="btn btn-info btn-sm">
+                                        <span class="fa fa-plus"></span>
+                                    </span>
+                                </th>
+                            </tr>
+                        </tfoot>
+                    </table>
+
+
+                </div>
+
+            </div>
+
+
+            <div class="form-row">
+                <div class="col-12 col-sm-4 col-lg-4">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.SMSContent, htmlAttributes: new { @class = "form-label" })
+                        <div class="required-icon"><div class="text">*</div></div>
+                        @Html.TextAreaFor(m => m.SMSContent, 6, 10, new { @class = "form-control input-control", @InputFor = "lblCallDuration" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.SMSContent)
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+    <div class="modal-footer justify-content-start">
+        <div class="form-group">
+            <input type="button" value="@EduSuiteUIResources.Save" id="btnSave" class="btn btn-sm btn-success mx-1" />
+            <button type="button" data-dismiss="modal" class="btn btn-sm btn-danger mx-1">@EduSuiteUIResources.Cancel</button>
+
+        </div>
+        <div class="form-row">
+            <div class="col-12">
+                <span class="ValidateDataMsg text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+            </div>
+        </div>
+    </div>
+}
+
+
+
+
+
+
+<script type="text/javascript">
+    var jsonData=@(Html.Raw(Json.Encode(Model)));
+
+
+    $(document).ready(function(){
+
+        BulkEmailSMS.GetSendSMS(jsonData);
+
+
+        $("#btnSave").click(function()
+        {
+            var form = $("#frmBulkSMS");
+            var validate = $(form).valid();
+            if(validate)
+            {
+                $(".modal-body").mLoading();
+
+            }
+        });
+
+    });
+
+
+
+
+</script>
+
+
+<script>
+
+    $(document).ready(function () {
+
+
+        $("#keywords a").on("dblclick", function () {
+            $('#EmailTemplate').tinymce().execCommand('mceInsertContent', false, "<label contenteditable='false'>" + $(this).data("val") + "</key>");
+        })
+
+
+
+    });
+
+</script>
+
+@*<style>
+        .defaultSkin table, .defaultSkin tbody, .defaultSkin a, .defaultSkin img, .defaultSkin tr, .defaultSkin div, .defaultSkin td, .defaultSkin iframe, .defaultSkin span, .defaultSkin *, .defaultSkin .mceText {
+
+        background: white !important;
+    }
+    </style>*@

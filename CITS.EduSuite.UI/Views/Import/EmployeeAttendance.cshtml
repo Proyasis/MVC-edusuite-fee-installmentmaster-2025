@@ -1,0 +1,135 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.EmployeeAttendanceViewModel
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Content/momentJS")
+    @Scripts.Render("~/Content/ExcelSheetJS")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Scripts/Import")
+
+}
+
+
+<input type="hidden" id="hdnFillEmployeeAttendanceDropdowns" value="@Url.Action("FillEmployeeAttendanceDropdowns", "Import")" />
+<input type="hidden" id="hdnImportJSONPath" value="@Url.Content("~/Templates/ImportTemplate/Import.json")" />
+<input type="hidden" id="hdnEmployeeAttendanceList" value="@Url.Action("EmployeeAttendanceList", "EmployeeAttendance")" />
+@using (Html.BeginForm("EmployeeAttendance", "Import", FormMethod.Post, new { @id = "frmBulkEmployeeAttendance" }))
+{
+
+    <header class="section-header">
+        <div class="row justify-content-between px-1">
+            <div class="col-12">
+                <div class="tbl">
+                    <div class="tbl-row  px-1">
+                        <div class="tbl-cell">
+                            <h3>@EduSuiteUIResources.Bulk@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.EmployeeAttendance</h3>
+                            <ol class="breadcrumb breadcrumb-simple mb-2 float-sm-right">
+                                <li><a href="#" onclick="location.href='@Url.Action("EmployeeAttendanceList", "EmployeeAttendance")' ">@EduSuiteUIResources.EmployeeAttendance</a></li>
+                                <li class="active">@EduSuiteUIResources.Bulk@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.EmployeeAttendance</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="section-content mx-sm-3 mx-0">
+        <div class="card">
+            <div class="card-header">
+                <div class="form-row">
+                    @if (Model.Branches.Count == 1)
+                    {
+                        {
+                            Model.BranchKey = (short)Model.Branches.Select(x => x.RowKey).FirstOrDefault();
+                        }
+                        @Html.HiddenFor(m => m.BranchKey)
+                    }
+                    else
+                    {
+                        <div class="col-lg-2 col-sm-3 col-4">
+                            <fieldset class="form-group">
+                                @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.Branch, new { @class = "form-control input-control" })
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => m.BranchKey)
+                                </span>
+                            </fieldset>
+                        </div>
+                    }
+
+                </div>
+            </div>
+            <div class="card-header dvExcelSheet" data-hidden>
+                <div class="form-row justify-content-between">
+                    <div class="col-lg-2 col-sm-4 col-6">
+                        <fieldset class="form-group">
+                            @Html.Label(EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.ExcelSheet, htmlAttributes: new { @id = "lblExcelFile", @class = "form-label" })
+                            <div class="custom-file">
+                                @Html.TextBox("ExcelFile", "", new { @type = "file", @class = "custom-file-input", @onchange = "Import.FileUploadChange(event)" })
+                                <label class="custom-file-label" for="ExcelFile">Choose file</label>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="col-lg-2 col-sm-4 col-6">
+                        <a class="btn btn-info btn-sm mt-4" onclick='location.reload()'>
+                            <i class="fa fa-refresh"></i>   Refresh
+                        </a>
+                    </div>
+
+                    <div class="col-lg-2 col-sm-4 col-6">
+                        <fieldset class="form-group">
+                            <label class="form-label"></label>
+                            <br />
+                            <a id="btnDownload" class="btn btn-primary btn-sm float-right" onclick="Import.DownloadExcel()">
+                                <i class="fa fa-download" aria-hidden="true"></i>@EduSuiteUIResources.Download@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.ExcelSheet
+                            </a>
+                        </fieldset>
+                    </div>
+
+                </div>
+            </div>
+            <div class="card-body p-0 dvExcelSheet" data-hidden>
+                <div id="Excel" class="jexcel-grid overflow-x-auto"></div>
+            </div>
+
+        </div>
+
+
+
+
+
+        <div class="row mt-2">
+            <div class="col-12">
+                <div class="form-group">
+                    <input type="button" value="@EduSuiteUIResources.Save" id="btnSave" class="btn btn-sm btn-success mx-1" onclick="Import.UpdateEmployeeAttendance()" />
+                </div>
+            </div>
+            <div class="col-12">
+                <span class="ValidateDataMsg"> @Html.ValidationMessage("error_msg")  </span>
+            </div>
+        </div>
+    </section>
+}
+
+<script>
+    $(document).ready(function () {
+
+
+
+        Import.GetTemplateData('EmployeeAttendance');
+        Import.FillExcelSheetDropdowns($("#hdnFillEmployeeAttendanceDropdowns").val(), modifyFilterValues, true)
+        $("#BranchKey").on("change", function () {
+            Import.FillExcelSheetDropdowns($("#hdnFillEmployeeAttendanceDropdowns").val(), modifyFilterValues)
+        });
+
+
+    });
+    function modifyFilterValues() {
+        var obj = this;
+        obj.IsValid = obj.BranchKey;
+        obj.PageIndex = $("#PageIndex").val();
+        obj.PageSize = $("#PageSize").val();
+    }
+
+
+</script>

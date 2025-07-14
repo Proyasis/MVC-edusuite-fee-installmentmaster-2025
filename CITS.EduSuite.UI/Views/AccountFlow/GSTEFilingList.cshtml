@@ -1,0 +1,322 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.AccountFlowViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Content/Select2JS")
+    @Scripts.Render("~/Scripts/AccountHead")
+    @Scripts.Render("~/Content/momentJS")
+    @Scripts.Render("~/bundles/handlebars")
+    @Scripts.Render("~/Scripts/Common")
+
+}
+
+@Html.AntiForgeryToken()
+@Html.HiddenFor(m => m.RowKey)
+@Html.ValidationSummary(true)
+<input type="hidden" id="hdnGetGSTEFiling" value="@Url.Action("GetGSTEFiling", "AccountFlow")" />
+<input type="hidden" id="hdnGetGSTPayable" value="@Url.Action("GetGSTPayable", "AccountFlow")" />
+<input type="hidden" id="hdnGSTEFilingPath" value=@Url.Content("~/UploadedFiles/OtherTemplate/GSTEFiling.html") />
+<input type="hidden" id="hdnGSTR1Path" value=@Url.Content("~/UploadedFiles/OtherTemplate/GSTR1.html") />
+
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-12">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.GSTEFiling</h3>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</header>
+<section class="section-content mx-sm-3 mx-0">
+    <div class="ledgerTable">
+        <form id="frmGSTFiling">
+            <div class="grid-nav-bar">
+                <div class="form-row">
+                    <div class="col-lg-2 col-sm-3 col-6">
+                        <div class="form-group">
+                            @Html.Label(EduSuiteUIResources.Month, htmlAttributes: new { @class = "form-label" })
+                            @Html.TextBoxFor(m => m.Date, "{0:MM/yyyy}", new { @class = "form-control", @data_inputmask = "'alias': 'date'", @data_input_type = "month", @readonly = true })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.Date)
+                            </span>
+
+                        </div>
+                    </div>
+
+
+
+                    @if (Model.Branches.Count == 1)
+                    {
+                        {
+                            Model.BranchKey = (Model.BranchKey ?? 0) == 0 ? (short)Model.Branches.Select(x => x.RowKey).FirstOrDefault() : Model.BranchKey;
+                        }
+                        @Html.HiddenFor(m => m.BranchKey)
+                    }
+                    else
+                    {
+                        if (DbConstants.Role.AdminUserTypes.Contains(DbConstants.User.RoleKey))
+                        {
+                            <div class="col-12 col-sm-3 col-lg-2">
+                                <fieldset class="form-group">
+                                    @Html.Label(EduSuiteUIResources.Branch, htmlAttributes: new { @class = "form-label" })
+                                    @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Branch, new { @class = "form-control input-control", @InputFor = "lblBranch", @data_live_search = "true" })
+                                    <span class="form-control-error-text">
+                                        @Html.ValidationMessageFor(m => m.BranchKey)
+                                    </span>
+                                </fieldset>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-12 col-sm-3 col-lg-2">
+                                <fieldset class="form-group">
+                                    @Html.Label(EduSuiteUIResources.Branch, htmlAttributes: new { @class = "form-label" })
+                                    @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Branch, new { @class = "form-control input-control", @InputFor = "lblBranch" })
+                                    <span class="form-control-error-text">
+                                        @Html.ValidationMessageFor(m => m.BranchKey)
+                                    </span>
+                                </fieldset>
+                            </div>
+                        }
+                    }
+
+
+
+
+                    <div class="col-2">
+                        <div class="form-group">
+                            <br />
+                            <input type="button" value="@EduSuiteUIResources.View" id="btnView" class="btn btn-sm btn-success mt-3 float-right " />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-12">
+                        <div class="button-group float-right">
+                            <button id="btnPrint" type="button" class="btn btn-primary btn-sm"><i class="fa fa-print btn-blue" aria-hidden="true"></i></button>
+                            <button id="btnExport" type="button" class="btn btn-success btn-sm"><i class="fa fa-file-excel-o fa-align-right" aria-hidden="true"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="form-row tabs-section mb-2 mt-2">
+            <div id="tab-componets" class="tabs-section-nav">
+                <ul id="tab-Tax" class="nav nav-tabs" role="tablist">
+                    <li class="nav-item"><a class="nav-link" data-toggle="tab" data-val="1" href="#" data-href="@Url.Content("~/UploadedFiles/OtherTemplate/GSTEFiling.html")" aria-expanded="true"><span class="nav-link-in">@EduSuiteUIResources.Output@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.GST</span></a></li>
+                    <li class="nav-item"><a class="nav-link" data-toggle="tab" data-val="2" href="#" data-href="@Url.Content("~/UploadedFiles/OtherTemplate/GSTEFiling.html")" aria-expanded="true"><span class="nav-link-in">@EduSuiteUIResources.Input@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.GST</span></a></li>
+                    <li class="nav-item"><a class="nav-link" data-toggle="tab" data-val="3" href="#" data-href="@Url.Content("~/UploadedFiles/OtherTemplate/GSTR1.html")" aria-expanded="true"><span class="nav-link-in">@EduSuiteUIResources.GSTR1</span></a></li>
+                    <li class="nav-item"><a class="nav-link" data-toggle="tab" data-val="4" href="#" data-href="@Url.Content("~/UploadedFiles/OtherTemplate/FloodCess.html")" aria-expanded="true"><span class="nav-link-in">@EduSuiteUIResources.KeralaFloodCess</span></a></li>
+                </ul>
+            </div>
+
+        </div>
+        <div class="table-wrapper">
+
+            <div id="GSTEFilingList" class="jqGrid_wrapper overflow-auto">
+
+            </div>
+            <div class="float-right">
+                <button id="btnExportSumary" type="button" class="btn btn-success btn-sm" title="Excel"><i class="fa fa-file-excel-o"></i></button>
+                <button id="btnPrintSumary" type="button" class="btn btn-primary btn-sm" title="Print"><i class="fa fa-print"></i></button>
+            </div>
+        </div>
+        <div id="GSTEFilingTotalList">
+        </div>
+    </div>
+
+</section>
+
+
+
+<style>
+    .MyTab.nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover {
+        background-color: #0dada5 !important;
+    }
+
+    .table-group-head {
+        background: #00afa7;
+        color: white;
+        text-align: center;
+        font-weight: 600;
+        font-size: 15px;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        $('input[data-input-type=month]').datepicker({
+            format: "mm/yyyy",
+            startView: "months",
+            minViewMode: "months",
+            autoclose: true,
+        })
+        AppCommon.FormatSelect2();
+        $("#tab-componets ul").find("[data-val='" + 1 + "']").closest('li').addClass('active')
+        $("#tab-Tax li:first-child a").addClass('active')
+        LoadReport(1)
+        GetGSTPayable();
+        $("#btnView").on("click", function () {
+            //var id = $("#tab-componets ul").find('.active').find('a').attr('data-val')
+            var id = $("#tab-Tax li a.active").data('val')
+            LoadReport(id);
+            GetGSTPayable();
+        });
+        $("#tab-componets ul li a").on("click", function () {
+            var id = $(this).attr('data-val')
+            LoadReport(id);
+        });
+        $("#BranchKey").on("change", function () {
+            //var id = $("#tab-componets ul").find('.active').find('a').attr('data-val')
+            var id = $("#tab-Tax li a.active").data('val')
+            LoadReport(id);
+        });
+        //Export To Excel
+        var obj = {};
+        $("#btnExport").on("click", function () {
+            //var id = $("#tab-componets ul").find('.active').find('a').attr('data-val')
+            var id = $("#tab-Tax li a.active").data('val')
+            var obj = {};
+            if (id == "3") {
+                obj.ContainerId = $('#gstrTable', $("#dvGstFilingList"))
+                obj.HtmlCntrl = $("#dvGstFilingList");
+                setExportTitle(obj)
+                AppCommon.ExportMultipleTablesToExcel(obj);
+            }
+            else {
+                obj.ContainerId = $('#ledgerTable', $("#dvGstFilingList"))
+                obj.HtmlCntrl = $("#dvGstFilingList");
+                setExportTitle(obj)
+                AppCommon.ExportTableToExcel(obj);
+            }
+        });
+        $("#btnPrint").on("click", function () {
+            obj.ContainerId = $('#ledgerTable', $("#dvGstFilingList"))
+            obj.HtmlCntrl = $("#dvGstFilingList");
+            setExportTitle(obj)
+            AppCommon.PrintHtml(obj);
+        });
+
+    });
+    function setExportTitle(obj) {
+        obj.Title = '@EduSuiteUIResources.GSTEFiling' + " - " + $("#tab-componets ul").find('.active').find('a').html() + ($("#BranchKey").find("option:selected").text() ? ' - ' + $("#BranchKey").find("option:selected").text() : "");
+        obj.SubTitle = $("#Date").val();
+        obj.FileName = (obj.Title + "_" + obj.SubTitle).replace(/-/g, '_')
+        obj.WorkSheets = $("#dvGstFilingList .tab-pane").toArray().map(function (item) {
+            return $(item).prop("id");
+        });
+    }
+
+    function LoadReport(id) {
+        
+        if (id == "3") {
+            $("#btnPrint").hide();
+        }
+        else {
+            $("#btnPrint").show();
+        }
+
+        var date = $("#Date").val()
+        var arr = date.split('/')
+        var month = arr[0]
+        var year = arr[1]
+        var obj = {};
+        obj.month = month
+        obj.year = year
+        obj.branchKey = $("#BranchKey").val()
+        obj.gstFlow = id
+        $(".RightContentMaster").mLoading()
+        $.ajax({
+            type: "Get",
+            url: $("#hdnGetGSTEFiling").val(),
+            datatype: "json",
+            data: obj,
+            success: function (result) {
+                var xmlDoc = $.parseXML(result);
+                result = AppCommon.Xml2Json(xmlDoc)
+                //if (result.GSTEFiling) {
+                //var GSTEFilingPath = $("#tab-componets ul").find('.active').find('a').data('href');
+                var GSTEFilingPath = $("#tab-Tax li a.active").data('href');
+
+                $.ajax({
+                    type: 'GET',
+                    crossDomain: true,
+                    url: GSTEFilingPath,
+                    success: function (response) {
+                        var template = Handlebars.compile(response);
+                        AppCommon.HandleBarHelpers();
+                        html = template(result.GSTEFiling);
+                        $("#GSTEFilingList").html(html)
+                        $(".RightContentMaster").mLoading("destroy");
+                    },
+                    error: function (xhr) {
+                        $(".RightContentMaster").mLoading("destroy");
+                    }
+                });
+                //} else {
+                //    $(".RightContentMaster").mLoading("destroy");
+                //}
+
+            },
+            error: function (xhr) {
+                $(".RightContentMaster").mLoading("destroy");
+            }
+        });
+
+
+
+    }
+
+    function GetGSTPayable() {
+        var date = $("#Date").val()
+        var arr = date.split('/')
+        var month = arr[0]
+        var year = arr[1]
+        var obj = {};
+        obj.month = month
+        obj.year = year
+        obj.branchKey = $("#BranchKey").val()
+        $.ajax({
+            type: "Get",
+            url: $("#hdnGetGSTPayable").val(),
+            datatype: "json",
+            data: obj,
+            success: function (result) {
+                $("#GSTEFilingTotalList").html(result)
+            },
+            error: function (xhr) {
+                $(".RightContentMaster").mLoading("destroy");
+            }
+        })
+
+
+    }
+
+
+    //Export To Excel
+    var objSummary = { HtmlCntrl: $("#GSTEFilingTotalList") };
+    $("#btnExportSumary").on("click", function () {
+        objSummary.ContainerId = $('#ledgerTable', $("#GSTEFilingTotalList"))
+        setExportSummaryTitle(objSummary)
+        AppCommon.ExportTableToExcel(objSummary);
+    });
+    $("#btnPrintSumary").on("click", function () {
+        objSummary.ContainerId = $('#ledgerTable', $("#GSTEFilingTotalList"))
+        setExportSummaryTitle(objSummary)
+        AppCommon.PrintHtml(objSummary);
+    });
+
+    function setExportSummaryTitle(obj) {
+        obj.Title = '@EduSuiteUIResources.GSTEFiling@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Details' + ($("#BranchKey").find("option:selected").text() ? ' - ' + $("#BranchKey").find("option:selected").text() : "");
+        obj.SubTitle = $("#Date").val();
+        obj.FileName = (obj.Title + "_" + obj.SubTitle).replace(/-/g, '_')
+    }
+</script>

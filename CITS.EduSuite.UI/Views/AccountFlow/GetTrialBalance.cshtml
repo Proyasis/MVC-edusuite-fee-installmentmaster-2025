@@ -1,0 +1,54 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.AccountFlowViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+
+<table id="ledgerTable" class="table table-bordered">
+
+    <thead class="ledgerSubHead">
+        <tr>
+            <th>
+                @EduSuiteUIResources.AccountHead
+            </th>
+            <th>
+                @EduSuiteUIResources.Debit
+            </th>
+            <th>
+                @EduSuiteUIResources.Credit
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+
+        @for (int i = 0; i < Model.DebitAccountFlow.Count; i++)
+        {
+            <tr>
+                <td>
+                    @Model.DebitAccountFlow[i].AccountHeadName
+                </td>
+                <td class="text-right link" onclick="AccountHead.LedgerDetailPopup(this)" data-code="@Model.DebitAccountFlow[i].AccountHeadKey" data-name="@Model.DebitAccountFlow[i].AccountHeadName" data-url="@Url.Action("BindLedgerById", "AccountFlow")">
+                    @Model.DebitAccountFlow[i].TotalCreditAmount
+
+                </td>
+                <td class="text-right link" onclick="AccountHead.LedgerDetailPopup(this)" data-code="@Model.DebitAccountFlow[i].AccountHeadKey" data-name="@Model.DebitAccountFlow[i].AccountHeadName" data-url="@Url.Action("BindLedgerById", "AccountFlow")">
+                    @Model.DebitAccountFlow[i].TotalDebitAmount
+                </td>
+            </tr>
+        }
+      
+    </tbody>
+    <tfoot>
+        <tr class="ledgerTotal">
+            <th>
+                @EduSuiteUIResources.Total
+            </th>
+            <th class="text-right">
+                @Model.DebitAccountFlow.Sum(p => p.TotalCreditAmount)
+            </th>
+            <th class="text-right">
+                @Model.DebitAccountFlow.Sum(p => p.TotalDebitAmount)
+            </th>
+        </tr>
+    </tfoot>
+</table>
+

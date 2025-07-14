@@ -1,0 +1,77 @@
+﻿
+
+<table class="table table-bordered">
+
+    <thead>
+        <tr>
+            <th>
+                SlNo
+            </th>
+            <th>
+                Receipt
+            </th>
+           
+            <th>
+                FeeType
+            </th>
+            <th>
+                Date
+            </th>
+            <th>
+                PaymentMode
+            </th>
+            <th>
+                Paid
+            </th>
+
+            <th>
+                Remarks
+            </th>
+            <th>
+                Print
+            </th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {{#PaymentDetails}}
+        <tr >
+            <td></td>
+         <td>
+             {{ReceiptNo}}
+         </td>
+            <td >
+                {{FeeTypeName}}
+            </td>
+          
+            <td >
+                {{dateformat FeeDate 'DD-MM-YYYY'}}
+            </td>
+            <td >
+                {{PaymentModeName}}
+            </td>
+            <td  >
+                {{G29 TotalAmount}}
+
+            </td>
+            <td >
+                {{FeeDescription}}
+
+            </td> 
+            <td>
+                <button type="button" class="btn btn-primary btn-sm mx-1" target="_blank" onclick="ApplicationFeePayment.FeeReceiptPopup('{{RowKey}}')"><i class="fa fa-print" aria-hidden="true"></i></button>
+
+            </td>
+        </tr>
+
+        {{/PaymentDetails}}
+
+    </tbody>
+    
+</table>
+
+<script>
+    $(document).ready(function () {
+
+    });
+</script>

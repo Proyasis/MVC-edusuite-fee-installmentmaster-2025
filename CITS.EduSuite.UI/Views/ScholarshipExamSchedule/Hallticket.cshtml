@@ -1,0 +1,54 @@
+﻿@Scripts.Render("~/bundles/jquery")
+<script src="~/CITSEduSuiteScripts/Common/AppCommon.js"></script>
+<script src="~/Scripts/handlebars.min.js"></script>
+<link href="~/Styles/pages/hallticket.css" rel="stylesheet" />
+<div></div>
+<script>
+
+    $.ajax({
+        url: '@Url.Action("GetHallticket", "ScholarshipExamSchedule")',
+        type: "GET",
+        dataType: "JSON",
+        data: { id: @ViewBag.RowKey },
+        success: function (result) {
+            var xmlDoc = $.parseXML(result);
+            result = AppCommon.Xml2Json(xmlDoc)
+            result = result.HallTicket;
+            $.ajax({
+                type: 'GET',
+                crossDomain: true,
+                url: '@Url.Content("~/Templates/Scholarship/ScholarshipHallTicket.html")',
+                success: function (response) {
+
+                    var template = Handlebars.compile(response);
+                    html = template(result);
+                    $("div").html(html)
+                    setTimeout(function(){window.print();},500)
+                    
+                    @*var styles = document.styleSheets;
+                    var res = $.map(styles, function (v, index) {
+                        return v.href;
+                    });
+                    var FileName="Hallticket";
+                    var req = new XMLHttpRequest();
+                    req.open("POST", '@Url.Action("DownloadHallticket", "ScholarshipExamSchedule")', true);
+                    var param = JSON.stringify({ Html: html, fileName: "Hallticket", cssList: res });
+                    req.setRequestHeader('Content-Type', 'application/json')
+                    req.responseType = "blob";
+                    req.onload = function (event) {
+                        var blob = req.response;
+                        var fileName = req.getResponseHeader("fileName") //if you have the fileName header available
+                        var link = document.createElement('a');
+                        link.href = window.URL.createObjectURL(blob);
+                        link.download = FileName + ".pdf";
+                        link.click();
+                    };
+
+                    req.send(param);*@
+
+                }
+            });
+
+        }
+    });
+</script>

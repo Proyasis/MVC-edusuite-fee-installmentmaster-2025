@@ -1,0 +1,77 @@
+﻿@using System.Web.Mvc
+@model CITS.EduSuite.Business.Models.ViewModels.EventDetailsViewModel
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Content/momentJS")
+    @Scripts.Render("~/Content/FullCalendarJS")
+    @Scripts.Render("~/Scripts/TeacherPortal")
+    @Scripts.Render("~/Content/MultiselectJs")
+
+}
+
+<input type="hidden" id="hdnGetEventDetails" value="@Url.Action("GetEventDetails", "TeacherPortal")" />
+<input type="hidden" id="hdnGetEventDetailsByDate" value="@Url.Action("GetEventDetailsByDate", "EventDetails")" />
+
+
+@Styles.Render("~/Content/FullCalendarCSS")
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-12">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.EventDetails</h3>
+                        <ol class="breadcrumb breadcrumb-simple mb-2 float-sm-right">
+                            <li><a href="#" onclick="location.href='@Url.Action("Index", "TeacherPortal")' ">@EduSuiteUIResources.TeacherPortal</a></li>
+                            <li class="active">@EduSuiteUIResources.Backto@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.TeacherPortal</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="section-content mx-sm-3 mx-0">
+    <div class="GridBody">
+
+        <div class="grid-nav-bar">
+            <div class=" form-row ">
+
+
+                <div class="col-lg-2 col-sm-4 col-6">
+                    <div class="form-group">
+                        @Html.TextBoxFor(m => m.EventMonth, "{0:MMM yyyy}", new { @class = "input-control form-control form-control-sm", @data_input_type = "month", @readonly = "readonly", @InputFor = "lblMonthKey" })
+                    </div>
+                </div>
+
+            </div>
+
+
+
+        </div>
+        <div class="table-wrapper">
+
+            <div class="jqGrid_wrapper overflow-auto">
+                <div id="calender"></div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<script>
+    $(document).ready(function () {
+        AppCommon.FormatMonthInput();
+        TeacherPortal.GetEventDetails();
+     
+        $("input#EventMonth").on('changeDate', function (ev) {
+            TeacherPortal.GetEventDetails();
+
+        });
+
+    })
+</script>

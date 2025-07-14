@@ -1,0 +1,185 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.ApplicationPersonalViewModel
+
+@using CITS.EduSuite.Business.Models.ViewModels
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/CitsValidation")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Content/Select2JS")
+    @Scripts.Render("~/Content/JqueryRepeater")
+    @Scripts.Render("~/Scripts/Application")
+    @Scripts.Render("~/Scripts/ApplicationPersonal")
+    @Scripts.Render("~/Scripts/ApplicationEducationalDetails")
+    @Scripts.Render("~/Scripts/ApplicationDocument")
+    @Scripts.Render("~/Scripts/ApplicationFeePayment")
+    @Scripts.Render("~/Scripts/ApplicationFeeInstallment")
+    @Scripts.Render("~/Scripts/ApplicationElectivePaper")
+    @Scripts.Render("~/Scripts/ApplicationFamilyDetails")
+    @Scripts.Render("~/Scripts/PhotoUpload")
+    @Scripts.Render("~/Content/JCropJS")
+    @Scripts.Render("~/Scripts/UniversityCourse")
+
+}
+<input type="hidden" id="hdnAddEditApplication" value="@Url.Action("AddEditApplication", "Application", new {id="" })" />
+<input type="hidden" id="hdnConfirmEmailAddress" value="@Url.Action("ConfirmEmailAddress", "ApplicationContact")" />
+<input type="hidden" id="hdnConfirmMobileNumber" value="@Url.Action("ConfirmMobileNumber", "ApplicationContact")" />
+<input type="hidden" id="hdnGetInterestedEnquiry" value="@Url.Action("GetInterestedEnquiry", "Application")" />
+<input type="hidden" id="hdnFetchApplicationFromEnquiry" value="@Url.Action("FetchApplicationFromEnquiry", "ApplicationPersonal")" />
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-12">
+            <div class="tbl">
+                <div class="tbl-row  px-1">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.Add@EduSuiteUIResources.Hyphen@EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Application</h3>
+                        <ol class="breadcrumb breadcrumb-simple mb-2 float-sm-right">
+                            <li><a href="#" onclick="location.href='@Url.Action("ApplicationList","Application")' ">@EduSuiteUIResources.Application</a></li>
+                            <li class="active">@EduSuiteUIResources.Add@EduSuiteUIResources.Hyphen@EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Application</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="tabs-section section-content p-0 mx-sm-3 mx-0">
+    <div class="tabs-section-nav">
+        <ul id="tab-application" class="nav" role="tablist">
+            <li class="nav-item">
+                <a href="#personal" aria-controls="discover" role="tab" class="nav-link active" data-toggle="tab" data-href="@Url.Action("AddEditApplicationPersonal", "ApplicationPersonal", new { id = Model.RowKey,ApplicationWebFormKey=Model.ApplicationWebFormKey })">
+                    <span class="nav-link-in">
+                        <i class="font-icon font-icon-user"></i>
+                        @EduSuiteUIResources.Personal
+                    </span>
+
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#EducationDetails" aria-controls="strategy" role="tab" class="nav-link" data-toggle="tab" data-href="@Url.Action("AddEditApplicationEducationalDetails", "ApplicationEducationalDetails", new { id = Model.RowKey })">
+                    <span class="nav-link-in">
+                        <i class="font-icon font-icon-pdf-fill"></i>
+                        @EduSuiteUIResources.EducationDetails
+                    </span>
+                </a>
+            </li>
+            @if (ApplicationSettingModel.FamilyDetailsEnabled)
+            {
+                <li class="nav-item">
+                    <a href="#FamilyDetails" aria-controls="strategy" role="tab" class="nav-link" data-toggle="tab" data-href="@Url.Action("AddEditApplicationFamilyDetails", "ApplicationFamilyDetails", new { id = Model.RowKey })">
+                        <span class="nav-link-in">
+                            <i class="font-icon font-icon-users-group"></i>
+                            @EduSuiteUIResources.FamilyDetails
+                        </span>
+                    </a>
+                </li>
+            }
+            <li class="nav-item" style="display:none">
+                <a href="#FeeInstallment" aria-controls="discover" role="tab" class="nav-link" data-toggle="tab" data-href="@Url.Action("AddEditApplicationFeeInstallment", "ApplicationFeeInstallment", new { id = Model.RowKey })">
+                    <span class="nav-link-in">
+                        <i class=" fa fa-money"></i>
+                        @EduSuiteUIResources.FeeInstallment
+                    </span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="#FeePayment" aria-controls="optimization" role="tab" class="nav-link" data-toggle="tab" data-href="@Url.Action("ApplicationFeePayment", "ApplicationFeePayment", new { id = Model.RowKey })">
+                    <span class="nav-link-in">
+                        <i class="fa fa-credit-card" aria-hidden="true"></i>
+                        @EduSuiteUIResources.Payment
+                    </span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#Documents" aria-controls="optimization" role="tab" class="nav-link" data-toggle="tab" data-href="@Url.Action("AddEditApplicationDocument", "ApplicationDocument", new { id = Model.RowKey })">
+                    <span class="nav-link-in">
+                        <i class="fa fa-file-archive-o" aria-hidden="true"></i>
+                        @EduSuiteUIResources.Documents
+                    </span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#ElectiveBook" aria-controls="content" role="tab" class="nav-link" data-toggle="tab" data-href="@Url.Action("AddEditApplicationElectivePaper", "ApplicationElectivePaper", new { id = Model.RowKey })">
+                    <span class="nav-link-in">
+                        <i class="fa fa-book" aria-hidden="true"></i>
+                        @EduSuiteUIResources.Elective @EduSuiteUIResources.BlankSpace @EduSuiteUIResources.Book
+                    </span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#photoupload" aria-controls="content" role="tab" class="nav-link" data-toggle="tab" data-href="@Url.Action("ApplicationPhoto", "Application", new { id = Model.RowKey })">
+                    <span class="nav-link-in">
+                        <i class="fa fa-image" aria-hidden="true"></i>
+                        @EduSuiteUIResources.Photo
+                    </span>
+                </a>
+            </li>
+
+
+        </ul>
+
+
+
+    </div>
+    <div id="tabContent" class="tab-content min-content-height bottomLine">
+
+    </div>
+</section>
+
+<script>
+    $(document).ready(function () {
+
+        if(@Model.RowKey==0)
+        {
+            $("#tab-application li:not(:first-child)").hide();
+        }
+        $("#tabContent").mLoading();
+        DisableTabs();
+        $("#tabContent").load('@Url.Action("AddEditApplicationPersonal", "ApplicationPersonal", new { id = @Model.RowKey, ApplicationWebFormKey = @Model.ApplicationWebFormKey })', function (result) {
+            EnableTabs();
+            ContentLoad();
+            // Application.AfterFormSubmit();
+            
+            if(@Model.RowKey==0 && @Model.ApplicationWebFormKey==0)
+            {
+                var InterstedCount='@ViewBag.InterestedEnquiryCount';
+                if(InterstedCount!='0')
+                    $.customPopupform.CustomPopup({modalsize:'modal-lg mw-100 w-75'},'@Url.Action("IntersetedEnquiryList", "Application")');
+            }
+        });
+
+        $('#tab-application li a[data-toggle="tab"]').on("click", function (e) {
+            if ($(this).parent().hasClass("disabled")) {
+                e.preventDefault();
+                return false;
+            }
+        }).on('shown.bs.tab', function (e) {
+            DisableTabs();
+            $(e.target).closest("ul").find("li").each(function () { $(this).removeClass('visited') });
+            $(e.target).closest("li").prevAll('li').each(function () { $(this).addClass('visited') });
+            var target = $(e.target).attr("data-href")
+            $("#tabContent").mLoading();
+            $("#tabContent").load(target, function (result) {
+                EnableTabs();
+                ContentLoad();
+                // Application.AfterFormSubmit();
+
+            });
+        });
+
+
+        function EnableTabs() {
+            $("#tab-application li").each(function () {
+                $(this).removeClass("disabled");
+            });
+        }
+        function DisableTabs() {
+            $("#tab-application li").each(function () {
+                $(this).addClass("disabled");
+            });
+        }
+    });
+</script>

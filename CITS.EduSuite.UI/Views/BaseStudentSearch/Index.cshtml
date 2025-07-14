@@ -1,0 +1,167 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.BaseSearchStudentsViewModel
+
+@using System.Web.Mvc
+@using CITS.EduSuite.Business.Models.ViewModels
+
+
+<input type="hidden" id="hdnGetCourseTypeByAcademicTerm" value="@Url.Action("GetCourseTypeByAcademicTerm", "BaseStudentSearch")" />
+<input type="hidden" id="hdnGetCourseByCourseType" value="@Url.Action("GetCourseByCourseType", "BaseStudentSearch")" />
+<input type="hidden" id="hdnGetUniversityByCourse" value="@Url.Action("GetUniversityByCourse", "BaseStudentSearch")" />
+<input type="hidden" id="hdnGetYearsByAcademicTermKey" value="@Url.Action("GetYearsByAcademicTermKey", "BaseStudentSearch")" />
+
+@Html.HiddenFor(m => m.page)
+@Html.HiddenFor(m => m.rows)
+@Html.HiddenFor(m => m.sidx)
+@Html.HiddenFor(m => m.sord)
+@Html.HiddenFor(m => m.TotalRecords)
+
+
+<div class="col-lg-2 col-sm-3 col-4">
+    <fieldset class="form-group">
+        @Html.ListBoxFor(m => m.BranchKeys, new SelectList(Model.Branches, "RowKey", "Text"), new { @class = "form-control input-control selectpicker", @multiple = "multiple", @data_live_search = "true", @data_title = EduSuiteUIResources.Branch })
+    </fieldset>
+</div>
+@if ((bool)ViewBag.ShowAcademicTerm)
+{
+    <div class="col-lg-2 col-sm-3 col-4">
+        <fieldset class="form-group">
+            @Html.DropDownListFor(m => m.AcademicTermKey, new SelectList(Model.AcademicTerms, "RowKey", "Text"), EduSuiteUIResources.AcademicTerm, new { @class = "form-control input-control " })
+        </fieldset>
+    </div>
+
+}
+else
+{
+    {
+        Model.AcademicTermKey = (byte)Model.AcademicTerms.Select(row => row.RowKey).FirstOrDefault();
+
+    }
+    @Html.HiddenFor(m => m.AcademicTermKey)
+}
+
+<div class="col-lg-2 col-sm-3 col-4">
+    <fieldset class="form-group">
+        @Html.ListBoxFor(m => m.CourseTypeKeys, new SelectList(Model.CourseTypes, "RowKey", "Text"), new { @class = "form-control input-control selectpicker", @multiple = "multiple", @data_live_search = "true", @data_title = EduSuiteUIResources.CourseType })
+    </fieldset>
+</div>
+
+<div class="col-lg-2 col-sm-3 col-4">
+    <fieldset class="form-group">
+        @*@Html.DropDownListFor(m => m.CourseKey, new SelectList(Model.Course, "RowKey", "Text"), EduSuiteUIResources.Course, new { @class = "form-control input-control " })*@
+        @Html.ListBoxFor(m => Model.CourseKeys, new SelectList(Model.Courses, "RowKey", "Text"), new { @class = "form-control border-radius input-control selectpicker", @multiple = "multiple", @data_live_search = "true", @data_title = EduSuiteUIResources.Course })
+    </fieldset>
+</div>
+@if ((bool)ViewBag.ShowUniversity)
+{
+    <div class="col-lg-2 col-sm-3 col-4">
+        <fieldset class="form-group">
+            @Html.ListBoxFor(m => m.UniversityMasterKeys, new SelectList(Model.UniversityMasters, "RowKey", "Text"), new { @class = "form-control input-control selectpicker", @multiple = "multiple", @data_live_search = "true", @data_title = EduSuiteUIResources.University })
+        </fieldset>
+    </div>
+}
+
+<div class="col-lg-2 col-sm-3 col-4">
+    <fieldset class="form-group">
+        @Html.ListBoxFor(m => m.CourseYearsKeys, new SelectList(Model.CourseYears, "RowKey", "Text"), new { @class = "form-control input-control selectpicker", @multiple = "multiple", @data_live_search = "true", @data_title = EduSuiteUIResources.Year })
+    </fieldset>
+</div>
+<div class="col-lg-2 col-sm-3 col-4">
+    <fieldset class="form-group">
+        @Html.ListBoxFor(m => m.BatchKeys, new SelectList(Model.Batches, "RowKey", "Text"), new { @class = "form-control input-control  selectpicker", @multiple = "multiple", @data_live_search = "true", @data_title = EduSuiteUIResources.Batch })
+    </fieldset>
+</div>
+
+
+<div class="col-lg-2 col-sm-3 col-4 divStudentStatus">
+    <fieldset class="form-group">
+        @Html.ListBoxFor(m => m.StudentStatusKeys, new SelectList(Model.StudentStatuses, "RowKey", "Text"), new { @class = "form-control input-control selectpicker", @multiple = "multiple", @data_live_search = "true", @data_title = EduSuiteUIResources.StudentStatus })
+    </fieldset>
+</div>
+
+@if (ApplicationSettingModel.MediumEnabled)
+{
+    <div class="col-lg-2 col-sm-3 col-4 d-none">
+        <fieldset class="form-group">
+            @Html.ListBoxFor(m => m.MeadiumKeys, new SelectList(Model.Mediums, "RowKey", "Text"), new { @class = "form-control input-control selectpicker", @multiple = "multiple", @data_live_search = "true", @data_title = EduSuiteUIResources.Medium })
+        </fieldset>
+    </div>
+}
+else
+{
+    @Html.HiddenFor(m => m.MeadiumKeys)
+}
+@if (ApplicationSettingModel.ClassRequired)
+{
+    @Html.Hidden("ClassRequiredKey", 1)
+    <div class="col-lg-2 col-sm-3 col-4">
+        <fieldset class="form-group">
+            @Html.ListBoxFor(m => m.ClassKeys, new SelectList(Model.Classes, "RowKey", "Text"), new { @class = "form-control input-control selectpicker", @multiple = "multiple", @data_live_search = "true", @data_title = EduSuiteUIResources.ClassCode })
+        </fieldset>
+    </div>
+}
+else
+{
+    if (ApplicationSettingModel.ClassEnabled)
+    {
+        <div class="col-lg-2 col-sm-3 col-4">
+            <fieldset class="form-group">
+                @Html.DropDownList("ClassRequiredKey", new List<SelectListItem> { new SelectListItem { Text = EduSuiteUIResources.Yes, Value = "1" }, new SelectListItem { Text = EduSuiteUIResources.No, Value = "0" }, }, EduSuiteUIResources.ClassRequired, new { @class = "form-control input-control " })
+            </fieldset>
+        </div>
+        <div class="col-lg-2 col-sm-3 col-4">
+            <fieldset class="form-group">
+                @Html.ListBoxFor(m => m.ClassKeys, new SelectList(Model.Classes, "RowKey", "Text"), new { @class = "form-control input-control selectpicker", @multiple = "multiple", @data_live_search = "true", @data_title = EduSuiteUIResources.ClassCode })
+            </fieldset>
+        </div>
+    }
+    else
+    {
+        @Html.HiddenFor(m => m.ClassKeys)
+        @Html.Hidden("ClassRequiredKey", 0)
+    }
+
+}
+@if (ApplicationSettingModel.ModeEnabled)
+{
+    <div class="col-lg-2 col-sm-3 col-4 divMode">
+        <fieldset class="form-group">
+            @Html.ListBoxFor(m => m.ModeKeys, new SelectList(Model.Modes, "RowKey", "Text"), new { @class = "form-control input-control selectpicker", @multiple = "multiple", @data_live_search = "true", @data_title = EduSuiteUIResources.Mode })
+        </fieldset>
+    </div>
+}
+else
+{
+
+}
+
+<div class="col-lg-2 col-sm-3 col-4 divSearchText">
+    <fieldset class="form-group">
+        @Html.TextBoxFor(m => m.SearchAnyText, new { @class = "form-control input-control", @placeholder = "" + EduSuiteUIResources.Name + EduSuiteUIResources.Coma + EduSuiteUIResources.AdmissionNo + EduSuiteUIResources.Coma + EduSuiteUIResources.Mobile + "" })
+    </fieldset>
+</div>
+
+
+
+<script>
+    $(document).ready(function () {
+        if (!JSON.parse(('@ViewBag.ShowAcademicTerm').toLowerCase())) {
+            BaseStudentsSearch.GetCourseTypeByAcademicTerm($("#CourseTypeKeys"));
+            BaseStudentsSearch.GetYearsByAcademicTerm($("#CourseYearsKeys"));
+            BaseStudentsSearch.GetCourseByCourseType($("#CourseKeys"));
+        }
+        $("#AcademicTermKey").on("change", function () {
+
+            BaseStudentsSearch.GetCourseTypeByAcademicTerm($("#CourseTypeKeys"));
+            BaseStudentsSearch.GetYearsByAcademicTerm($("#CourseYearsKeys"));
+            BaseStudentsSearch.GetCourseByCourseType($("#CourseKeys"));
+        });
+
+        $("#CourseTypeKeys").on("change", function () {
+            BaseStudentsSearch.GetCourseByCourseType($("#CourseKeys"));
+        });
+
+        $("#CourseKeys").on("change", function () {
+            BaseStudentsSearch.GetUniversityByCourse($("#UniversityMasterKeys"));
+        });
+    });
+</script>

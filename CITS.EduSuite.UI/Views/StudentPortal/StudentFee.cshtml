@@ -1,0 +1,184 @@
+﻿@using CITS.EduSuite.Business.Models.ViewModels
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/CitsValidation")
+    @Scripts.Render("~/Content/momentJS")
+    @Scripts.Render("~/Scripts/StudentPortal")
+    @Scripts.Render("~/Scripts/ApplicationFeePayment")
+    @Scripts.Render("~/Content/BootstrapTableJS")
+    @Scripts.Render("~/Content/momentJS")
+}
+
+
+<input type="hidden" id="hdnBindTotalFeeDetails" value="@Url.Action("BindTotalFeeDetails", "StudentPortal")" />
+<input type="hidden" id="hdnStudentTotalFeePath" value=@Url.Content("~/Templates/Student/StudentFeeDetails.html") />
+
+
+<input type="hidden" id="hdnBindInstallmentFeeDetails" value="@Url.Action("BindInstallmentFeeDetails", "StudentPortal")" />
+<input type="hidden" id="hdnStudentInstallmentFeePath" value=@Url.Content("~/Templates/Student/StudentInstallmentFeeDetails.html") />
+
+<input type="hidden" id="hdnBindFeePaymentDetails" value="@Url.Action("BindFeePaymentDetails", "StudentPortal")" />
+<input type="hidden" id="hdnStudentFeePaymentPath" value=@Url.Content("~/Templates/Student/StudentFeePaymentDetails.html") />
+
+<header class="section-header d-none">
+    <div class="row justify-content-between px-1">
+        <div class="col-sm-6 col-12">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.Students<span id="spnClassName"></span></h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</header>
+@Html.Hidden("ApplicationKey", DbConstants.User.ApplicationKey)
+@*@Html.Hidden("ClassDetailsKey", DbConstants.User.ClassDetailsKey)*@
+<section class="section-content mx-sm-3 mx-0">
+    <div class="form-master">
+        <div class="Student-portal form-row d-none">
+            <div class="col-lg-3">
+                <div class="dashboard-summery-one" style="background:linear-gradient(40deg,#ff6ec4,#7873f5) !important; box-shadow: 0 12px 15px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19) !important;">
+                    <div class="row ">
+                        <div class="col-6">
+                            <div class="item-icon bg-light-magenta">
+                                <i class="fa fa-money" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="item-content">
+                                <div class="item-title">Due Fee</div>
+                                <div class="item-number"><span class="counter" data-num="12">7600</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="dashboard-summery-one" style="background:linear-gradient(40deg,#ffd86f,#fc6262) !important; box-shadow: 0 12px 15px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19) !important;">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="item-icon bg-light-magenta">
+                                <i class="fa fa-calendar" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="item-content">
+                                <div class="item-title">Due Installment</div>
+                                <div class="item-number"><span class="counter" data-num="12">3</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="dashboard-summery-one" style="background:linear-gradient(40deg,#2096ff,#05ffa3) !important; box-shadow: 0 12px 15px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19) !important;">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="item-icon bg-light-blue">
+                                <i class="flaticon-calendar text-blue"></i>
+
+                                <i class="fa fa-calendar" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="item-content">
+                                <div class="item-title">Events</div>
+                                <div class="item-number"><span class="counter" data-num="06">06</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="dashboard-summery-one" style="background:linear-gradient(to top,#5ee7df 0,#b490ca 100%); box-shadow: 0 12px 15px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19) !important;">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="item-icon bg-light-yellow">
+                                <i class="fa fa-percent" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="item-content">
+                                <div class="item-title">Attendance</div>
+                                <div class="item-number"><span class="counter" id="spnAttendancePercentage"></span><span>%</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="Student-portal form-row">
+            <div class="col-12 col-xl-6 col-8-xxxl">
+                <div class="col-12 col-xl-12 col-12-xxxl mb-4">
+                    <div class="card dashboard-card-two ">
+                        <div class="card-body">
+                            <div class="heading-layout1">
+                                <div class="item-title">
+                                    <h3>Fee Details</h3>
+                                </div>
+
+                            </div>
+                            <div id="divTotalFeeDetails">
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div id="divMainInstallment" class="col-12 col-xl-12 col-12-xxxl">
+                    <div class="card dashboard-card-two ">
+                        <div class="card-body">
+                            <div class="heading-layout1">
+                                <div class="item-title">
+                                    <h3>Installment Details</h3>
+                                </div>
+
+                            </div>
+                            <div id="divInstallmentDetails">
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-12 col-xl-6 col-8-xxxl">
+                <div class="card dashboard-card-two ">
+                    <div class="card-body">
+                        <div class="heading-layout1">
+                            <div class="item-title">
+                                <h3>Fee Reciepts</h3>
+                            </div>
+
+                        </div>
+                        <div id="divPaymentDetails">
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+<script>
+    if (!$('body').hasClass('sidebar-hidden')) {
+        $('body').addClass('sidebar-hidden');
+    } else {
+        $('body').removeClass('sidebar-hidden');
+    }
+    $(document).ready(function () {
+
+        StudentPortal.GetTotalFeeDetails();
+        StudentPortal.GetInstallmentFeeDetails();
+        StudentPortal.GetFeePaymentDetails();
+
+
+    });
+</script>

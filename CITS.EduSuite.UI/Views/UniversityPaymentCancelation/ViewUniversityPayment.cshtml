@@ -1,0 +1,144 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.ReportViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+@using CITS.EduSuite.UI
+@using System.Web.Mvc
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/CitsValidation")
+    @Scripts.Render("~/Scripts/UniversityPaymentCancelation")
+    @Scripts.Render("~/Content/DatePickerJS")
+
+    @Scripts.Render("~/Content/ExcelExportJS")
+    @Scripts.Render("~/Content/momentJS")
+    @Scripts.Render("~/Scripts/BaseStudentsSearch")
+}
+
+
+
+
+<input type="hidden" id="hdnBindUniversityPaymentList" value="@Url.Action("BindUniversityPaymentList", "UniversityPaymentCancelation")" />
+<input type="hidden" id="hdnAddEditUniversityPaymentCancelation" value="@Url.Action("AddEditUniversityPaymentCancelation", "UniversityPaymentCancelation")" />
+<input type="hidden" id="hdnDeleteUniversityPaymentCancelation" value="@Url.Action("DeleteUniversityPaymentCancelation", "UniversityPaymentCancelation")" />
+<input type="hidden" id="hdnUniversityPaymentCancelationList" value="@Url.Action("UniversityPaymentCancelationList", "UniversityPaymentCancelation")" />
+
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-12">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.UniversityPaymentCancelation</h3>
+                        <ol class="breadcrumb breadcrumb-simple mb-2 float-sm-right">
+                            <li><a href="#" onclick="location.href='@Url.Action("UniversityPaymentCancelationList", "UniversityPaymentCancelation")' ">@EduSuiteUIResources.UniversityPaymentCancelation</a></li>
+                            <li class="active">@EduSuiteUIResources.Add@EduSuiteUIResources.Hyphen@EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.UniversityPaymentCancelation</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<section class="section-content mx-sm-3 mx-0">
+
+    <div class="GridBody">
+        <div class="grid-nav-bar">
+            <form>
+                <div class="form-row">
+                    @Html.HiddenFor(m => m.RowKey)
+                    @Html.Action("Index", "BaseStudentSearch")
+
+                    <div class="col-lg-2 col-sm-3 col-4">
+                        <fieldset class="form-group">
+                            @Html.ListBoxFor(m => m.FeeTypeKeys, new SelectList(Model.FeeTypes, "RowKey", "Text"), new { @class = "form-control input-control selectpicker", @multiple = "multiple", @data_live_search = "true", @data_title = EduSuiteUIResources.FeeType })
+                        </fieldset>
+                    </div>
+                    <div class="col-lg-2 col-sm-3 col-4 d-none">
+                        <fieldset class="form-group">
+                            @Html.ListBoxFor(m => m.PaymentModeKeys, new SelectList(Model.PaymentModes, "RowKey", "Text"), new { @class = "form-control input-control selectpicker", @multiple = "multiple", @data_live_search = "true", @data_title = EduSuiteUIResources.PaymentMode })
+                        </fieldset>
+                    </div>
+                    <div class="col-lg-2 col-sm-2 col-3">
+                        <fieldset class="form-group">
+                            @Html.TextBoxFor(m => m.DateAddedFrom, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_input_type = "date", @InputFor = "lblEnquiryDateOfAdmission", @data_inputmask = "'alias': 'dd/mm/yyyy'", @placeholder = "" + @EduSuiteUIResources.FromDate + "" })
+                        </fieldset>
+                    </div>
+                    <div class="col-lg-2 col-sm-2 col-3 ">
+                        <fieldset class="form-group">
+                            @Html.TextBoxFor(m => m.DateAddedTo, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_input_type = "date", @InputFor = "lblEnquiryDateOfAdmission", @data_inputmask = "'alias': 'dd/mm/yyyy'", @placeholder = "" + @EduSuiteUIResources.ToDate + "" })
+                        </fieldset>
+                    </div>
+                    <div class="col-lg-2 col-sm-3 col-4">
+                        <fieldset class="form-group">
+                            <button type="button" id="btnSearch" class="btnForm btnSubmit btn btn-sm btn-success">@EduSuiteUIResources.Search</button>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-12">
+                        <div class="button-group float-right">
+                            <button id="btnPrint" type="button" class="btn btn-primary btn-sm"><i class="fa fa-print btn-blue" aria-hidden="true"></i></button>
+                            <button id="btnExport" type="button" class="btn btn-success btn-sm"><i class="fa fa-file-excel-o fa-align-right" aria-hidden="true"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+
+        <div class="table-wrapper">
+
+            <div id="DivDayToDayUniversityFees" class="jqGrid_wrapper overflow-auto">
+
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        var today = moment();
+        today = today.format('DD/MM/YYYY')
+        $("#DateAddedFrom").val(today);
+        $("#DateAddedTo").val(today);
+
+        AppCommon.FormatDateInput();
+        AppCommon.FormatSelect2();
+
+        UniversityPaymentCancelation.GetUniversityFees();
+
+        $('#btnSearch').on("click", function () {
+            UniversityPaymentCancelation.GetUniversityFees();
+        });
+
+        $('#SearchAnyText').on("input", function () {
+            UniversityPaymentCancelation.GetUniversityFees();
+        });
+
+        //Export To Excel and Print
+        var obj = { HtmlCntrl: $("#DivDayToDayFees") };
+        $("#btnExport").on("click", function () {
+            obj.ContainerId = $('#GridBody'),
+            setExportTitle(obj)
+            AppCommon.ExportTableToExcel(obj);
+        });
+        $("#btnPrint").on("click", function () {
+            obj.ContainerId = $('#GridBody'),
+            setExportTitle(obj)
+            AppCommon.PrintHtml(obj);
+        });
+
+
+    });
+
+    function setExportTitle(obj) {
+        obj.Title = '@EduSuiteUIResources.Payment @EduSuiteUIResources.BlankSpace @EduSuiteUIResources.Details' + ($("#BranchKey").find("option:selected").text() ? ' - ' + $("#BranchKey").find("option:selected").text() : "");
+        obj.SubTitle = $("#FromDate").val() === $("#ToDate").val() ? $("#FromDate").val() : $("#FromDate").val() + " - " + $("#ToDate").val();
+        obj.FileName = (obj.Title + "_" + obj.SubTitle).replace(/-/g, '_')
+    }
+</script>

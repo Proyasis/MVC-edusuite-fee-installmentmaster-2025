@@ -1,0 +1,261 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.ScholarshipViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+@using System.Web.Mvc
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Scripts/Scholarship")
+    @Scripts.Render("~/bundles/CitsValidation")
+    @Scripts.Render("~/Content/Select2JS")
+}
+
+<input type="hidden" id="hdnGetScholarship" value="@Url.Action("GetScholarship", "Scholarship")" />
+<input type="hidden" id="hdnDeleteScholarship" value="@Url.Action("DeleteScholarship", "Scholarship")" />
+<input type="hidden" id="hdnAddEditScholarship" value="@Url.Action("AddEditScholarship", "Scholarship")" />
+<input type="hidden" id="hdnGetSerchBranchByDistrict" value="@Url.Action("GetSerchBranchByDistrict", "Scholarship")" />
+<input type="hidden" id="hdnMoveToEnquiry" value="@Url.Action("MoveToEnquiry", "Scholarship")" />
+
+
+
+
+
+
+@*<div class="col-12 Page_Head_Master">
+        <div class="col-6 Text_Left">
+            <label class="Page_Heading  ">@EduSuiteUIResources.Scholarship</label>
+        </div>
+
+        <div class="col-6 Text_Right">
+            <a href="@Url.Action("AddEditScholarship", "Scholarship")" class="btn btn-sm btnBack">
+                <i class="fa fa-plus" aria-hidden="true"></i>   @EduSuiteUIResources.AddNewScholarship
+            </a>
+        </div>
+    </div>*@
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-sm-6 col-12">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.Scholarship</h3>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*<div class="col-sm-6 col-12 text-right">
+                <a href="@Url.Action("AddEditScholarship", "Scholarship")" class="btn btn-success btn-sm"><i class="fa fa-plus-square-o"></i> <span>@EduSuiteUIResources.New@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Scholarship</span></a>
+            </div>*@
+        <div class="col-6 text-right">
+            <a class="btn btn-info btn-sm " id="lnkMovetoEnquiry">
+                <i class="fa fa-plus"></i>@EduSuiteUIResources.MoveTo @EduSuiteUIResources.BlankSpace   @EduSuiteUIResources.Enquiry
+            </a>
+            <a id="addEditScholarship" data-href="@Url.Action("AddEditScholarship", "Scholarship")" class="btn btn-success btn-sm d-none"><i class="fa fa-plus-square-o"></i> <span>@EduSuiteUIResources.New @EduSuiteUIResources.BlankSpace @EduSuiteUIResources.Scholarship</span></a>
+        </div>
+    </div>
+</header>
+
+<section class="section-content mx-sm-3 mx-0">
+    <div class="GridBody">
+
+        <div class="grid-nav-bar">
+            <form>
+                <div class=" form-row justify-content-between">
+
+                    <div class="col-lg-2 col-sm-4 col-6">
+                        <fieldset class="form-group">
+                            @Html.TextBoxFor(m => m.SearchName, new { @class = "form-control input-control", @placeholder = EduSuiteUIResources.Name })
+                            @*@Html.TextBoxFor(m => m.SearchName, new
+                                {
+                                    @class = "form-control input-control",
+                                    @placeholder = EduSuiteUIResources.Name,
+                                    @onkeyup = "Enquiry.GetEnquiryByText(this)",
+                                    @onclick = "Enquiry.GetEnquiryByText(this)",
+                                    @autocomplete = "off"
+                                })*@
+                        </fieldset>
+                    </div>
+                    <div class="col-lg-2 col-sm-4 col-6">
+                        <fieldset class="form-group">
+                            @Html.TextBoxFor(m => m.SearchPhone, new { @class = "form-control input-control", @placeholder = EduSuiteUIResources.Phone })
+                        </fieldset>
+                    </div>
+                    <div class="col-lg-2 col-sm-4 col-6">
+                        <fieldset class="form-group">
+                            @Html.TextBoxFor(m => m.SearchFromDate, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_input_type = "date", @data_inputmask = "'alias': 'dd/mm/yyyy'", @placeholder = EduSuiteUIResources.CreatedDateFrom })
+                        </fieldset>
+                    </div>
+                    <div class="col-lg-2 col-sm-4 col-6">
+                        <fieldset class="form-group">
+                            @Html.TextBoxFor(m => m.SearchToDate, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_input_type = "date", @data_inputmask = "'alias': 'dd/mm/yyyy'", @placeholder = EduSuiteUIResources.CreatedDateTo })
+                        </fieldset>
+                    </div>
+                   @if (DbConstants.Role.AdminUserTypes.Contains(DbConstants.User.RoleKey))
+                    {
+                        <div class="col-lg-2 col-sm-4 col-6">
+                            <fieldset class="form-group">
+                                @Html.DropDownListFor(m => m.SearchDistrictKey, new SelectList(Model.Districts, "RowKey", "Text"), EduSuiteUIResources.BlankSpace + EduSuiteUIResources.District, new { @class = "form-control input-control selectpicker", @data_live_search = "true" })
+                            </fieldset>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-lg-2 col-sm-4 col-6">
+                            <fieldset class="form-group">
+                                @Html.DropDownListFor(m => m.SearchDistrictKey, new SelectList(Model.Districts, "RowKey", "Text"), new { @class = "form-control input-control selectpicker", @data_live_search = "true" })
+                            </fieldset>
+                        </div>
+                    }
+                   @if (DbConstants.Role.AdminUserTypes.Contains(DbConstants.User.RoleKey))
+                    {
+                        <div class="col-lg-2 col-sm-4 col-6">
+                            <fieldset class="form-group">
+                                @Html.DropDownListFor(m => m.SearchBranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.center, new { @class = "form-control input-control selectpicker", @data_live_search = "true" })
+                            </fieldset>
+                        </div>
+
+
+                    }
+                    else
+                    {
+                        <div class="col-lg-2 col-sm-4 col-6">
+                            <fieldset class="form-group">
+                                @Html.DropDownListFor(m => m.SearchBranchKey, new SelectList(Model.Branches, "RowKey", "Text"), new { @class = "form-control input-control selectpicker", @data_live_search = "true" })
+                            </fieldset>
+                        </div>
+                    }
+
+
+
+
+                    <div class="col-lg-2 col-sm-4 col-6">
+                        <fieldset class="form-group">
+                            @Html.DropDownListFor(m => m.SearchScholarshipTypeKey, new SelectList(Model.ScholarshipTypes, "RowKey", "Text"), EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Scholarship + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Type, new { @class = "form-control input-control" })
+                        </fieldset>
+                    </div>
+
+
+                    @*<div class="col-sm-6 col-12">
+                            <a class="btn btn-info btn-sm float-right " onclick='Scholarship.GetScholarship()'>
+                                <i class="fa fa-refresh"></i>   @EduSuiteUIResources.Refresh
+                            </a>
+                        </div>*@
+                </div>
+            </form>
+        </div>
+        <div class="table-wrapper">
+
+            <div class="jqGrid_wrapper overflow-auto">
+                <table id="grid"></table>
+                <div id="pager"></div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+<script>
+    var jsonData=@(Html.Raw(Json.Encode(Model)));
+    $(document).ready(function () {
+        AppCommon.FormatDateInput();
+
+
+        $("#SearchName,#SearchPhone").on("input", function () {
+            Scholarship.GetScholarship();
+        });
+
+        $("#iconSpan").click(function () {
+            $('#txtsearch').val('');
+            Scholarship.GetScholarship();
+        });
+        $("#SearchFromDate,#SearchToDate").on("changeDate", function () {
+            Scholarship.GetScholarship();
+        });
+
+        $("#SearchBranchKey,#SearchScholarshipTypeKey,#SearchName,#SearchPhone,#SearchFromDate,#SearchToDate").on("change", function () {
+            Scholarship.GetScholarship();
+        })
+        Scholarship.GetScholarship();
+
+        $("#SearchDistrictKey").on("change",function(){
+            var obj = {};
+            obj.id = $(this).val() != "" ? $(this).val() : 0;
+            $("#SearchBranchKey").val("");
+            AppCommon.BindDropDownbyId(obj, $("#hdnGetSerchBranchByDistrict").val(), $("#SearchBranchKey"),  Resources.center, "Branches");
+            Scholarship.GetScholarship();
+        });
+
+        AppCommon.EditGridPopup($("#addEditScholarship"), ScholarshipPopupLoad)
+
+       
+
+
+        $("#lnkMovetoEnquiry").on("click",function(){
+
+            
+            var myGrid = $('#grid');
+            var ids = $("#grid").jqGrid('getDataIDs');
+            var selRowIds = myGrid.jqGrid("getGridParam", "selarrrow"), n, rowData;
+            var cbs = $("tr.jqgrow > td > input.cbox:disabled", "selarrrow"), n, rowData;
+            //var cbs = $("tr.jqgrow > td > input.cbox:disabled", grid[0]);
+
+            var TotalRecords = myGrid.getGridParam("reccount")
+
+            if (TotalRecords > 0)
+            {
+                var URL = $("#hdnMoveToEnquiry").val();
+                if (selRowIds && selRowIds.length > 0)
+                {
+                    URL = URL + "?keys=" + selRowIds;
+                    var model=selRowIds;
+                    var result = EduSuite.Confirm2({
+                        title: Resources.Confirmation,
+                        content:" Are you sure you want to Move this "+ selRowIds.length+" Scholarship details to Enquiry?",
+                        actionUrl: $("#hdnMoveToEnquiry").val(),
+                        parameters: model,
+                        dataRefresh: function () { $("#grid").jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid'); }
+                    });
+
+
+                    //$.customPopupform.CustomPopup({
+                    //    modalsize: "modal-lg",
+                    //    load: function ()
+                    //    {
+
+                    //    },
+                    //    rebind: function (result)
+                    //    {
+                    //        Application.GetApplication();
+                    //    }
+                    //}, URL);
+                }
+                else
+                {
+                    //URL = URL + "?keys=" + ids;
+                    //$.customPopupform.CustomPopup({
+                    //    modalsize: "modal-lg",
+                    //    load: function ()
+                    //    {
+
+                    //    },
+                    //    rebind: function (result)
+                    //    {
+                    //        Application.GetApplication();
+                    //    }
+                    //}, URL);
+
+                    //alert("Please Select Atleast one")
+                    EduSuite.AlertMessage({ title: Resources.Warning, content:"Please Select Atleast one", type: 'orange' })
+                }
+
+            }
+        })
+
+    });
+
+
+
+</script>

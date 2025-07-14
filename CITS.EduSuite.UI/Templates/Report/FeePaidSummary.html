@@ -1,0 +1,68 @@
+﻿<table id="tblAttendance" class="table table-stripped table-bordered table-attendance">
+    <thead class="thead-dark">
+        <tr>
+            <th>Students</th>
+            <th>Admission No</th>
+            <th>Mobile No </th>
+            <th>Course</th>
+            <th>Batch </th>
+            <th>Status </th>
+            <th>Total Paid</th>
+            <!--{{#FeeDateHead}}
+            <th class="Feepaiddates" >
+                {{MonthName}}
+
+                {{DayNumber}}
+
+                - {{DayName}}
+            </th>
+            {{/FeeDateHead}}-->
+        </tr>
+    </thead>
+    <tbody data-repeater-list>
+        {{#Students}}
+
+        <tr data-repeater-item>
+
+            <td class="p-0 text-center">
+                <h5 class="m-1 w3-text-deep-purple">
+                    <strong>{{StudentName}}</strong>
+                </h5>
+            </td>
+            <td class="p-0 text-center">
+                {{AdmissionNo}}
+            </td>
+            <td class="p-0 text-center">
+                {{StudentMobile}}
+            </td>
+            <td class="p-0 text-center">
+                {{Course}}- {{Affiliations}} -{{CurrentYearText}}
+            </td>
+            <td class="p-0 text-center">
+                {{Batch}}
+            </td>
+            <td class="p-0 text-center">
+                {{StudentStatus}}
+            </td>
+            <td class="p-0 text-center">
+                <strong> {{TotalPaidFee}}</strong>
+
+</td>
+            <!--{{#FeeDetails}}
+
+            <td class="p-0 Feepaiddates" >
+                <div class="btn-group btn-group-toggle " data-toggle="buttons">
+
+                    <label class="btn btn-attendance" style="background-color:{{FeeColor}}">
+                        {{FeeAmount}}
+                    </label>
+
+
+                </div>
+            </td>
+            {{/FeeDetails}}-->
+
+        </tr>
+        {{/Students}}
+    </tbody>
+</table>

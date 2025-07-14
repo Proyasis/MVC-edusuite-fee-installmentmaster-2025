@@ -1,0 +1,40 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.EmployeePersonalViewModel
+
+
+@if (Model.FirstName != null)
+{
+    <div class="row">
+        <div class="col-12">
+            <div class="card w3-teal">
+                <div class="card-block">
+                    <div class="row">
+                       
+                        <div class="col-lg-2 col-md-4 text-center">
+                            @if (Model.EmployeePhotoPath != null)
+                            {
+                                <img src="@Url.Content(Model.EmployeePhoto)" class="img-thumbnail img-fluid rounded-circle" alt="User profile picture" style="height:100px" />
+                            }
+                            else
+                            {
+                                <img src="~/images/no-photo.png" alt="User profile picture" class="img-thumbnail img-fluid rounded-circle" style="height:100px" />
+
+                            }
+
+                        </div>
+                        <div class="col-lg-10 col-md-8">
+                            <h2 class="card-title w3-text-light-grey"><strong>@Model.FirstName</strong></h2>
+                            <p class="card-text form-row">
+                                <span class="col"><strong>@EduSuiteUIResources.Mobile : </strong> @Model.MobileNumber</span>
+                                <span class="col"><strong>@EduSuiteUIResources.Designation : </strong> @Model.DesignationName </span>
+                            </p>
+                            <p class="card-text form-row">
+                                <span class="col"><strong>@EduSuiteUIResources.Code: </strong>@Model.EmployeeCode </span>
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

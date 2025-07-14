@@ -1,0 +1,25 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.CourseSubjectDetailViewModel
+
+
+<a onclick="CourseSubject.StudyMaterialCustomPopup(@Json.Encode(Model),this,'@ViewBag.Index');" href="#" data-index="@ViewBag.Index" style="display:none">
+
+    @for (int i = 0; i < Model.StudyMaterials.Count(); i++)
+    {
+        @Html.HiddenFor(m => m.StudyMaterials[i].RowKey)
+        @Html.HiddenFor(m => m.StudyMaterials[i].SubjectKey)
+        @Html.HiddenFor(m => m.StudyMaterials[i].StudyMaterialCode)
+        @Html.HiddenFor(m => m.StudyMaterials[i].StudyMaterialName)
+        <label class="label label-primary mb-1">@Model.StudyMaterials[i].StudyMaterialName</label>
+    }
+
+</a>
+<script>
+
+    $("input", $("[data-index=@ViewBag.Index]")).each(function ()
+    {
+        var name = $(this).attr("name")
+        name = "CourseSubjectDetailViewModel[" +@ViewBag.Index +"]." + name;
+        $(this).attr("name", name)
+        $(this).attr("id", name)
+    })
+</script>

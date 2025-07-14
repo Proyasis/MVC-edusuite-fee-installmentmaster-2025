@@ -1,0 +1,122 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.EmployeeSalaryMasterViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+@using System.Web.Mvc
+
+
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Content/momentJS")
+    @Scripts.Render("~/Scripts/EmployeeSalary")
+    @Scripts.Render("~/Scripts/PaymentWindow")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Content/momentJS")
+    @Scripts.Render("~/Content/Mustache")
+}
+
+<input type="hidden" id="hdnGetQuickEmployeesSalary" value="@Url.Action("GetQuickEmployeesSalary", "EmployeeSalary")" />
+<input type="hidden" id="hdnAddEditEmployeeAttendance" value="@Url.Action("AddEditEmployeesSalary", "EmployeeSalary")" />
+<input type="hidden" id="hdnAddEditEmployeeSalaryPayment" value="@Url.Action("AddEditEmployeeSalaryPayment", "EmployeeSalary", new {id="" })" />
+<input type="hidden" id="hdnSalaryPaySlip" value=@Url.Action("SalaryPaySlip", "EmployeeSalary") />
+<input type="hidden" id="hdnGeneratePdfPayslip" value=@Url.Action("GeneratePdfPayslip", "EmployeeSalary") />
+<input type="hidden" id="hdnDownloadPdfPayslip" value=@Url.Action("DownloadPdfPayslip", "EmployeeSalary") />
+<input type="hidden" id="hdnUploadPdfPayslip" value=@Url.Action("UploadPdfPayslip", "EmployeeSalary") />
+
+<div class="col-sm-12 Page_Head_Master">
+    <div class="col-sm-6 Text_Left">
+        <label class="Page_Heading  ">@EduSuiteUIResources.Salary</label>
+    </div>
+
+    <div class="col-sm-6 Text_Right">
+    </div>
+
+
+</div>
+
+<div class="GridBody">
+    @using (Html.BeginForm("AddEditEmployeesSalary", "EmployeeSalary", FormMethod.Post))
+    {
+        <div class="grid-nav-bar col-sm-12">
+            <div class="col-sm-3">
+
+                @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Branch, new { @class = "input-control form-control form-control-sm form-control-sm", @data_val = "false" })
+
+            </div>
+            <div class="col-sm-2">
+                @Html.TextBoxFor(m => m.SalaryMonth, "{0:MMM yyyy}", new { @class = "input-control form-control form-control-sm", @data_input_type = "month", @readonly = "readonly", @InputFor = "lblSalaryYear" })
+                @Html.HiddenFor(m => m.SalaryMonth, "{0:MMM yyyy}")
+
+                 <span class="form-control-error-text">
+                    @Html.ValidationMessageFor(m => m.SalaryMonth)
+                </span>
+            </div>
+            <div class="col-sm-4 pull-right">
+                <input type="button" value="@EduSuiteUIResources.Process" id="btnProcess" class="btnForm btnSubmit btn btn-sm btn-default " data-inputtype="submit" />
+
+                <input type="button" value="@EduSuiteUIResources.PaySlip" id="btnPayslip" class="btnForm btn btn-sm btn-info " />
+
+            </div>
+
+        </div>
+
+        <br />
+        <br />
+        <div class="col-sm-12 paddingNone">
+            <span class="ValidateDataMsg"> @Html.ValidationMessage("error_msg")  </span>
+        </div>
+        <div class="portlet-body" id="portletBody">
+            <div class='table-scrollable'>
+                <table id="gridQuick"></table>
+                <div id="pagerQuick"></div>
+            </div>
+        </div>
+
+    }
+
+</div>
+
+
+
+
+
+<script>
+    $(document).ready(function () {
+        var jsonData=@(Html.Raw(Json.Encode(Model)));
+        AppCommon.FormatMonthInput();
+        setQuickSalaryParam(jsonData);
+        EmployeeSalary.GetQuickEmployeesSalary(jsonData);
+        $("#BranchKey").on("change", function () {
+            setQuickSalaryParam(jsonData);
+            EmployeeSalary.GetQuickEmployeesSalary(jsonData,true);
+
+        });
+        $("#BranchKey").on("change", function () {
+            setQuickSalaryParam(jsonData);
+            EmployeeSalary.GetQuickEmployeesSalary(jsonData,true);
+
+        });
+        $("input#SalaryMonth").on('changeDate', function(ev){
+
+            setQuickSalaryParam(jsonData);
+            EmployeeSalary.GetQuickEmployeesSalary(jsonData,true);
+        });
+        $("input#btnProcess").on('click', function(){
+            var Json= $.extend(true, [],jsonData);
+            EmployeeSalary.MultipleProcessClickEvent(Json);
+        });
+        $("input#btnPayslip").on('click', function(){
+            EmployeeSalary.MultiplePayslipClickEvent();
+        });
+
+        //AppCommon.DigitalClock();
+        $(window).on("resize", function () {
+            var $grid = $("#grid"),
+            newWidth = $grid.closest(".ui-jqgrid").parent().width();
+            $grid.jqGrid("setGridWidth", newWidth, true);
+        });
+    });
+
+</script>
+
+

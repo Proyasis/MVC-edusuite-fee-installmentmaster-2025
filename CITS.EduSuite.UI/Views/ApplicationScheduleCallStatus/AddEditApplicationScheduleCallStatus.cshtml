@@ -1,0 +1,104 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.ApplicationScheduleCallStatusViewModel
+
+
+
+<div class="modal-header">
+    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+    <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.Add @EduSuiteUIResources.Sla @EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.ApplicationScheduleCallStatus</h4>
+</div>
+@using (Html.BeginForm("AddEditApplicationScheduleCallStatus", "ApplicationScheduleCallStatus", FormMethod.Post, new { @id = "frmApplicationScheduleCallStatus" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.RowKey)
+    @Html.ValidationSummary(true)
+
+    <div class="modal-body">
+        <div class="form-master">
+            <div class="form-row">
+                <div class="paddingNone">
+                    <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="col-lg-">
+                    <div class="form-group ">
+                        @Html.Label(EduSuiteUIResources.CallStatus + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Name, htmlAttributes: new { @id = "lblApplicationScheduleCallStatusName", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                        @Html.TextBoxFor(m => m.ApplicationCallStatusName, new { @class = "form-control input-control", @InputFor = "lblApplicationScheduleCallStatusName", @data_convert = "uppercase" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.ApplicationCallStatusName)
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 d-none">
+                    <div class="form-group ">
+                        @Html.Label(EduSuiteUIResources.View + EduSuiteUIResources.In, htmlAttributes: new { @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                        @Html.ListBoxFor(m => m.ShowInMenuKeys, new SelectList(Model.MenuList, "RowKey", "Text"), new { @class = "form-control border-radius input-control multiselect", multiple = "multiple" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.ShowInMenuKeys)
+                            @Html.HiddenFor(m => m.ShowInMenuKeysList)
+
+                        </span>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group ">
+                        @Html.Label(EduSuiteUIResources.IsDurationMandatory, htmlAttributes: new { @id = "lblIsDuration", @class = "form-label" })
+                       
+                        <div class="switch-check">
+                            @Html.CheckBoxFor(m => m.IsDuration, new { @class = "switch-input" })
+                            <div class="switch-label yesno" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                            <div class="switch-handle"></div>
+                        </div>
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.IsDuration)
+                        </span>
+
+                    </div>
+
+                </div>                
+                <div class="col-lg-4">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.IsActive, new { @class = "form-label" })
+                        <div class="switch-check my-2">
+                            @Html.CheckBoxFor(m => m.IsActive, new { @class = "switch-input" })
+                            <div class="switch-label redgreen" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                            <div class="switch-handle"></div>
+                        </div>
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.IsActive)
+                        </span>
+                    </fieldset>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer justify-content-start">
+        <div class="form-group">
+            <input type="submit" value="@EduSuiteUIResources.Submit" id="btnSave" class="btn btn-sm btn-success mx-1" />
+            <button type="button" data-dismiss="modal" class="btn btn-sm btn-danger mx-1">@EduSuiteUIResources.Cancel</button>
+
+        </div>
+    </div>
+}
+<script>
+        $(document).ready(function ()
+        {
+            AppCommon.FormatMultiSelect();
+            AppCommon.FormatInputCase()
+
+            $("#btnSave").click(function ()
+            {
+                var item = "0";
+                $('#ShowInMenuKeys > option:selected').each(function () {
+                    item = item + "," + $(this).val();
+                });
+
+                $("#ShowInMenuKeysList").val(item.replace("0,", ""));
+            });
+
+        });
+</script>

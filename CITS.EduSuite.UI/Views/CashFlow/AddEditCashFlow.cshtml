@@ -1,0 +1,809 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.CashFlowViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+@*@{
+        ViewBag.Title = EduSuiteUIResources.Add + EduSuiteUIResources.Sla + EduSuiteUIResources.Edit + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.DailyTransaction;
+    }*@
+
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Scripts/CashFlow")
+    @Scripts.Render("~/Content/Select2JS")
+    @Scripts.Render("~/Scripts/PrintInvoice")
+    @Scripts.Render("~/Content/MultiselectJs")
+    @Scripts.Render("~/bundles/CitsValidation")
+    @Scripts.Render("~/Content/TimePickerJS")
+    @Scripts.Render("~/Content/JqueryRepeater")
+    @Scripts.Render("~/Scripts/Common")
+    @Scripts.Render("~/Content/momentJS")
+}
+
+<div class="modal-header">
+    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+    <h4 class="modal-title" id="myModalLabel">@ViewBag.title </h4>
+</div>
+@using (Html.BeginForm("AddEditCashFlow", "CashFlow", FormMethod.Post, new { @id = "frmCashFlow" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.CashFlowKey)
+    @Html.HiddenFor(m => m.CashFlowTypeKey)
+    @Html.HiddenFor(m => m.AccountGroupKey)
+    @Html.HiddenFor(m => m.IsOrderPayment)
+    @Html.HiddenFor(m => m.TransactionTypeKey)
+    @Html.ValidationSummary(true)
+
+    <input type="hidden" id="hdnGetPartyByPartyType" value="@Url.Action("GetPartyByPartyType", "CashFlow")" />
+    <input type="hidden" id="hdnGetAccountBalanceByAccount" value="@Url.Action("GetAccountBalanceByAccount", "CashFlow")" />
+    <input type="hidden" id="hdnGetPendingAccountById" value="@Url.Action("GetPendingAccountById", "CashFlow")" />
+    <input type="hidden" id="hdnFillAccountHeadType" value="@Url.Action("FillAccountHeadType", "CashFlow")" />
+    <input type="hidden" id="hdnFillAccountHead" value="@Url.Action("FillAccountHead", "CashFlow")" />
+    <input type="hidden" id="hdnFillPartyAccountHead" value="@Url.Action("FillPartyAccountHead", "CashFlow")" />
+    <input type="hidden" id="hdnAddEditAccountHead" value="@Url.Action("AddEditAccountHead", "AccountHead")" />
+    <input type="hidden" id="hdnGetBalance" value="@Url.Action("GetBalance", "CashFlow")" />
+    <input type="hidden" id="hdnFillBankAccount" value="@Url.Action("FillBankAccount", "CashFlow")" />
+
+    <div class="modal-body">
+        <div class="form-master">
+            <div class="form-row">
+                <div class="paddingNone">
+                    <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+                </div>
+            </div>
+            <div class="dvpmode">
+                <div class="form-row">
+                    <div class="col-12 col-sm-4 col-lg-4">
+                        <div class="form-group">
+                            @Html.Label(EduSuiteUIResources.Date, htmlAttributes: new { @id = "lblDate", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+
+                            @Html.TextBoxFor(m => m.CashFlowDate, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_inputmask = "'alias': 'date'", @data_input_type = "date" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.CashFlowDate)
+                            </span>
+                        </div>
+                    </div>
+                    @if (Model.Branches.Count == 1)
+                    {
+                        {
+                            Model.BranchKey = Model.BranchKey == 0 ? (short)Model.Branches.Select(x => x.RowKey).FirstOrDefault() : Model.BranchKey;
+                        }
+                        @Html.HiddenFor(m => m.BranchKey)
+                    }
+                    else
+                    {
+                        <div class="col-12 col-sm-4 col-lg-4">
+                            <fieldset class="form-group">
+                                @Html.Label(EduSuiteUIResources.Branch, htmlAttributes: new { @id = "lblBranch", @class = "form-label" })
+                                <div class="required-icon"><div class="text">*</div></div>
+                                @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Branch, new { @class = "form-control input-control", @InputFor = "lblBranch", @data_live_search = "true" })
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => m.BranchKey)
+                                </span>
+                            </fieldset>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="dvpmode">
+                <div class="form-row" id="dvPaymentMode">
+                    <div class="col-12 col-sm-6 col-lg-6">
+                        <fieldset class="form-group">
+                            @Html.Label(EduSuiteUIResources.PaymentMode, htmlAttributes: new { @id = "lblBranch", @class = "form-label" })
+                            <div id="PaymentModeRadios" class="btn-group btn-group-toggle " data-toggle="buttons">
+                                @foreach (var PaymentMode in Model.PaymentModes)
+                                {
+                                    if (PaymentMode.RowKey == Model.PaymentModeKey)
+                                    {
+                                        <label class="btn btn-outline-primary active">
+                                            @Html.RadioButtonFor(m => m.PaymentModeKey, PaymentMode.RowKey, new { @id = "rbPaymentMode" })@PaymentMode.Text
+                                        </label>
+                                    }
+                                    else
+                                    {
+                                        <label class="btn btn-outline-primary">
+                                            @Html.RadioButtonFor(m => m.PaymentModeKey, PaymentMode.RowKey, new { @id = "rbPaymentMode" })@PaymentMode.Text
+                                        </label>
+                                    }
+                                }
+                            </div>
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.PaymentModeKey)
+                            </span>
+
+                        </fieldset>
+                    </div>
+                </div>
+
+                <div id="dvPaymentModes" class="form-row ">
+                    <div class="col-lg-4 col-12" id="dvPaymentModeSub">
+                        <fieldset class="form-group">
+                            @Html.Label(EduSuiteUIResources.BankTransaction, htmlAttributes: new { @id = "lblCardNumber", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                            @Html.DropDownListFor(m => m.PaymentModeSubKey, new SelectList(Model.PaymentModeSub, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.BankTransaction, new { @class = "dropdownStyle form-control" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.PaymentModeSubKey)
+                            </span>
+                        </fieldset>
+                    </div>
+                    <div class="divBankAccount col-lg-4 col-12 p-0">
+                        <fieldset class="form-group">
+
+                            @Html.Label(EduSuiteUIResources.BankAccount, htmlAttributes: new { @id = "lblBankAccount", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+
+                            @Html.DropDownListFor(m => m.BankAccountKey, new SelectList(Model.BankAccounts, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.BankAccount, new { @class = "dropdownStyle form-control", @InputFor = "lblBankAccount" })
+
+                            @Html.HiddenFor(m => m.AccountHeadBalance)
+                            @Html.HiddenFor(m => m.BankAccountBalance)
+                            @Html.HiddenFor(m => m.ShowAdminBankBalance)
+                            @if (DbConstants.User.UserKey == DbConstants.AdminKey && Model.ShowAdminBankBalance == true)
+                            {
+                                <span id="AmtBalance">@Html.DisplayFor(m => m.BankAccountBalance)</span>
+                            }
+                            else
+                            {
+                                <span id="AmtBalance"></span>
+                            }
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.BankAccountKey)
+                            </span>
+                        </fieldset>
+                    </div>
+                    <div class="divCardDetails col-lg-4 col-12">
+
+                        <fieldset class="form-group">
+                            @Html.Label(EduSuiteUIResources.CardNumber, htmlAttributes: new { @id = "lblCardNumber", @class = "form-label" })
+                            @Html.TextBoxFor(m => m.CardNumber, new { @class = "form-control border-radius", @InputFor = "lblCardNumber" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.CardNumber)
+                            </span>
+                        </fieldset>
+
+                    </div>
+                    <div class="divReferenceNo col-lg-4 col-12">
+
+                        <fieldset class="form-group">
+                            @Html.Label(EduSuiteUIResources.ReferenceNo, htmlAttributes: new { @id = "lblCardNumber", @class = "form-label" })
+                            @Html.TextBoxFor(m => m.ReferenceNumber, new { @class = "form-control border-radius", @InputFor = "lblCardNumber" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.ReferenceNumber)
+                            </span>
+                        </fieldset>
+
+                    </div>
+                    <div class="col-lg-4 col-12 divChequeDetails">
+                        <fieldset class="form-group">
+                            @Html.Label(EduSuiteUIResources.ChequeOrDDNumber, htmlAttributes: new { @id = "lblChequeOrDDNumber", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                            @Html.TextBoxFor(m => m.ChequeOrDDNumber, new { @class = "form-control border-radius", @InputFor = "lblChequeOrDDNumber" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.ChequeOrDDNumber)
+                            </span>
+                        </fieldset>
+                    </div>
+                    <div class="col-lg-4 col-12 divChequeDetails">
+                        <fieldset class="form-group ">
+                            @Html.Label(EduSuiteUIResources.ChequeOrDDDate, htmlAttributes: new { @id = "lblChequeOrDDDate", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                            @Html.TextBoxFor(m => m.ChequeOrDDDate, "{0:dd/MM/yyyy}", new { @class = "form-control border-radius datetimepicker", @data_input_type = "date", @data_inputmask = "'alias': 'dd/mm/yyyy'", @InputFor = "lblChequeOrDDDate" })
+
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.ChequeOrDDDate)
+                            </span>
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dvpmode">
+
+                <div id="CashFlowMaster" class="form-row">
+
+                    @*<div class="col-12 col-sm-4 col-lg-4">
+                            @Html.Label(EduSuiteUIResources.IsContra, htmlAttributes: new { @class = "form-label" })
+                            <div class="switch-check">
+                                @Html.CheckBoxFor(m => m.IsContra, new { @class = "switch-input" })
+                                <div class="switch-label" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                                <div class="switch-handle"></div>
+                            </div>
+                        </div>*@
+
+                    @*<div class="col-12 col-sm-4 col-lg-4">
+                            <div class="form-group">
+                                @Html.Label(EduSuiteUIResources.CashFlowType, htmlAttributes: new { @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                                @Html.DropDownListFor(m => m.CashFlowTypeKey, new SelectList(Model.CashFlowTypes, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.CashFlowType, new { @class = "form-control input-control", @id = "AccountMethord" })
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => m.CashFlowTypeKey)
+                                </span>
+                            </div>
+                        </div>*@
+
+
+
+                    @*<div class="col-12 col-sm-4 col-lg-4">
+                            <div class="form-group">
+                                @Html.Label(EduSuiteUIResources.Group, htmlAttributes: new { @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                                @Html.DropDownListFor(m => m.AccountGroupKey, new SelectList(Model.AccountGroups, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Group, new { @class = "form-control input-control" })
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => m.AccountGroupKey)
+                                </span>
+                            </div>
+                        </div>*@
+                    <div class="col-12 col-sm-4 col-lg-4">
+                        @Html.Label(EduSuiteUIResources.AccountHead, htmlAttributes: new { @id = "lblBranch", @class = "form-label" })
+                        <a id="addEditAccountHead" data-modal="" data-href="@Url.Action("AddEditAccountHead", "AccountHead")" class="btn-sm btnBack required-icon" style="top: -3px;">
+                            <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                        </a>
+                        <div class="form-group">
+                            @Html.DropDownListFor(m => m.AccountHeadKey, new SelectList(Model.AccountHeads, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.AccountHead, new { @class = "form-control input-control", @data_live_search = "true" })
+                        </div>
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.AccountHeadKey)
+                        </span>
+
+                    </div>
+                    <div class="col-12 col-sm-4 col-lg-4">
+                        <div class="form-group">
+                            @Html.Label(EduSuiteUIResources.Amount, htmlAttributes: new { @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                            @Html.TextBoxFor(m => m.Amount, "{0:G29}", new { @class = "form-control input-control" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.Amount)
+                            </span>
+                            @Html.Hidden("OldAmount", Model.Amount)
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="paddingNone">
+                        <span class="ValidateDataMsg"> @Html.ValidationMessage("paymenterror_msg")  </span>
+                    </div>
+                </div>
+
+                <fieldset id="PendingAccount">
+                    @if (0 < Model.PendingAccount.Count())
+                    {
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-sm-1 form-col">
+                                    @Html.Label(EduSuiteUIResources.Order, htmlAttributes: new { @id = "lblOrderNumber", @class = "form-label" })
+                                </div>
+                                @if (Model.CashFlowTypeKey == DbConstants.CashFlowType.In)
+                                {
+                                    <div class="col-sm-2 form-col">
+                                        @Html.Label(EduSuiteUIResources.Order + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Date, htmlAttributes: new { @id = "lblOrderNumber", @class = "form-label" })
+                                    </div>
+                                }
+                                @if (Model.CashFlowTypeKey == DbConstants.CashFlowType.Out)
+                                {
+                                    <div class="col-sm-2 form-col">
+                                        @Html.Label(EduSuiteUIResources.Bill + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Date, htmlAttributes: new { @class = "form-label" })
+                                    </div>
+                                }
+
+                                <div class="col-sm-2 form-col">
+                                    @Html.Label(EduSuiteUIResources.Bill + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.TotalAmount, htmlAttributes: new { @class = "form-label" })
+                                </div>
+                                <div class="col-sm-2 form-col">
+                                    @Html.Label(EduSuiteUIResources.Paid + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Amount, htmlAttributes: new { @class = "form-label" })
+                                </div>
+                                <div class="col-sm-2 form-col">
+                                    @Html.Label(EduSuiteUIResources.Bill + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Balance, htmlAttributes: new { @class = "form-label" })
+                                </div>
+
+                                <div class="col-sm-2 form-col">
+                                    @Html.Label(EduSuiteUIResources.BalanceAmount, htmlAttributes: new { @class = "form-label" })
+                                </div>
+                                @if (0 == Model.CashFlowKey)
+                                {
+                                    <div class="col-sm-1 form-col">
+                                        @Html.Label(EduSuiteUIResources.Adjust, htmlAttributes: new { @class = "form-label" })
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+                    @for (int i = 0; i < Model.PendingAccount.Count(); i++)
+                    {
+                        <div pendingaccountrepeater class="row">
+                            <div class="col-sm-1 form-col">
+                                <div class="form-group">
+                                    @Html.TextBoxFor(m => Model.PendingAccount[i].ReferenceNumber, new { @class = "form-control input-control", @readonly = "readonly" })
+                                    <span class="form-control-error-text">
+                                        @Html.ValidationMessageFor(m => Model.PendingAccount[i].ReferenceNumber)
+                                    </span>
+                                    @Html.HiddenFor(m => Model.PendingAccount[i].PendingAccountKey)
+                                    @Html.HiddenFor(m => Model.PendingAccount[i].TransactionTypeKey)
+                                </div>
+                            </div>
+                            <div class="col-sm-2 form-col">
+                                <div class="form-group">
+                                    @Html.TextBoxFor(m => Model.PendingAccount[i].OrderDate, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @readonly = "readonly" })
+                                    <span class="form-control-error-text">
+                                        @Html.ValidationMessageFor(m => Model.PendingAccount[i].OrderDate)
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-sm-2 form-col">
+                                <div class="form-group">
+                                    @Html.TextBoxFor(m => Model.PendingAccount[i].AmountTotal, "{0:G29}", new { @class = "form-control input-control", @readonly = "readonly" })
+                                    <span class="form-control-error-text">
+                                        @Html.ValidationMessageFor(m => Model.PendingAccount[i].AmountTotal)
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-sm-2 form-col">
+                                <div class="form-group">
+                                    @Html.TextBox("TotalAmountPaid", Model.PendingAccount[i].TotalAmountPaid, "{0:G29}", new { @class = "form-control input-control", @readonly = "readonly" })
+
+                                </div>
+                            </div>
+                            <div class="col-sm-2 form-col">
+                                <div class="form-group">
+                                    @Html.TextBoxFor(m => Model.PendingAccount[i].BillBalanceAmount, "{0:G29}", new { @class = "form-control input-control", @readonly = "readonly" })
+                                    <span class="form-control-error-text">
+                                        @Html.ValidationMessageFor(m => Model.PendingAccount[i].BillBalanceAmount)
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-sm-2 form-col">
+                                <div class="form-group">
+                                    @Html.TextBoxFor(m => Model.PendingAccount[i].AmountBalace, "{0:G29}", new { @class = "form-control input-control", @readonly = "readonly" })
+                                    <span class="form-control-error-text">
+                                        @Html.ValidationMessageFor(m => Model.PendingAccount[i].AmountBalace)
+                                    </span>
+                                    @Html.HiddenFor(m => Model.PendingAccount[i].AmountPaid)
+                                    @Html.HiddenFor(m => Model.PendingAccount[i].PaidUpdate)
+                                </div>
+                            </div>
+                            @if (0 == Model.CashFlowKey)
+                            {
+                                <div class="col-sm-1 form-col">
+                                    <input type="checkbox" class="chkClearAccount chk form-control" />
+                                </div>
+                            }
+                        </div>
+                    }
+                    @if (0 < Model.PendingAccount.Count())
+                    {
+                        <div class="row">
+                            <div class="col-sm-2 form-col">
+                                <div class="form-group">
+                                    @Html.Label(EduSuiteUIResources.Total, htmlAttributes: new { @class = "form-label" })
+                                </div>
+                            </div>
+                            <div class="col-sm-1 form-col">
+                            </div>
+                            <div class="col-sm-2 form-col">
+                                <div class="form-group">
+                                    @Html.TextBox("GrandTotal", "", new { @class = "form-control input-control", @readonly = "readonly" })
+                                </div>
+                            </div>
+                            <div class="col-sm-2 form-col">
+                                <div class="form-group">
+                                    @Html.TextBox("GrandTotalAmountPaid", "", new { @class = "form-control input-control", @readonly = "readonly" })
+                                </div>
+                            </div>
+                            <div class="col-sm-2 form-col">
+                                <div class="form-group">
+                                    @Html.TextBox("TotalBillBalance", "", new { @class = "form-control input-control", @readonly = "readonly" })
+                                </div>
+                            </div>
+                            <div class="col-sm-2 form-col">
+                                <div class="form-group">
+                                    @Html.TextBoxFor(m => m.TotalBalance, new { @class = "form-control input-control", @readonly = "readonly" })
+                                </div>
+                            </div>
+                        </div>
+
+                    }
+
+                    @if (0 == Model.CashFlowKey)
+                    {
+                        if (0 < Model.PendingAccount.Count())
+                        {
+                            <div class="row">
+                                <div class="col-sm-8 form-col">
+                                    @Html.Label(EduSuiteUIResources.RemainAmount + EduSuiteUIResources.BlankSpace + ":", htmlAttributes: new { @id = "lblRemainAmount", @class = "form-label" })
+                                    <label id="lblRemainBalance" class="form-label"></label>
+                                </div>
+                                <div class="col-sm-4 form-col">
+                                    @Html.Label(EduSuiteUIResources.BalanceAmountToBePay + EduSuiteUIResources.BlankSpace + ":", htmlAttributes: new { @id = "lblPaidAmount", @class = "form-label" })
+                                    @*<label id="lblTotalAmountToBePaid" class="form-label"></label>*@
+                                    @Html.TextBoxFor(m => m.TotalAmountToBePaid, new { @class = "form-control input-control", @readonly = "readonly" })
+                                </div>
+                            </div>
+                        }
+                    }
+                </fieldset>
+
+            </div>
+            <div class="dvpmode" style="border-bottom:0px">
+
+                <div class="row bottomLine">
+                    <div class="col-sm-4 form-col">
+                        <div class="form-group">
+                            @Html.Label(EduSuiteUIResources.Remarks, htmlAttributes: new { @id = "lblRemarks", @class = "form-label" })
+                            @Html.TextBoxFor(m => m.Remarks, new { @class = "form-control border-radius", @InputFor = "lblRemarks" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.Remarks)
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 form-col">
+                        <div class="form-group">
+                            @Html.Label(EduSuiteUIResources.PaidBy, htmlAttributes: new { @id = "lblPaidBy", @class = "form-label" })
+                            @Html.TextBoxFor(m => m.PaidBy, new { @class = "form-control border-radius", @InputFor = "lblPaidBy" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.PaidBy)
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 form-col">
+                        <div class="form-group">
+                            @Html.Label(EduSuiteUIResources.AuthorizedBy, htmlAttributes: new { @id = "lblAuthorizedBy", @class = "form-label" })
+                            @Html.TextBoxFor(m => m.AuthorizedBy, new { @class = "form-control border-radius", @InputFor = "lblAuthorizedBy" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.AuthorizedBy)
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 form-col">
+                        <div class="form-group">
+                            @Html.Label(EduSuiteUIResources.ReceivedBy, htmlAttributes: new { @id = "lblReceivedBy", @class = "form-label" })
+                            @Html.TextBoxFor(m => m.ReceivedBy, new { @class = "form-control border-radius", @InputFor = "lblReceivedBy" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.ReceivedBy)
+                            </span>
+
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4 form-col">
+                        <div class="form-group">
+                            @Html.Label(EduSuiteUIResources.OnBehalfOf, htmlAttributes: new { @id = "lblOnBehalfOf", @class = "form-label" })
+                            @Html.TextBoxFor(m => m.OnBehalfOf, new { @class = "form-control border-radius", @InputFor = "lblOnBehalfOf" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.OnBehalfOf)
+                            </span>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div class="row">
+                    <div class="col-12 form-col">
+                        <div class="form-group">
+                            @Html.Label(EduSuiteUIResources.Purpose, htmlAttributes: new { @id = "lblPurpose", @class = "form-label" })
+                            @Html.TextAreaFor(m => m.Purpose, new { @class = "form-control border-radius", @InputFor = "lblPurpose" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.Purpose)
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <input type="submit" value="@EduSuiteUIResources.Save" id="btnSave" class="btn btn-sm btn-success mx-1" />
+                <button type="button" data-dismiss="modal" class="btn btn-sm btn-danger mx-1">@EduSuiteUIResources.Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .datepicker {
+            z-index: 9999 !important;
+        }
+
+        .btn-danger.active {
+            background-color: #649fdc;
+        }
+
+        .select2 {
+            min-width: 135px !important;
+        }
+
+        .select2 {
+            width: 100% !important;
+        }
+
+        .dvpmode {
+            border: solid #0d0d0e3d;
+            padding: 0.5rem;
+            margin-bottom: 9px;
+            border-width: 1px;
+            border-left: 0px;
+            border-right: 0px;
+            border-top: 0px;
+        }
+    </style>
+    <script>
+        var jsonData=@(Html.Raw(Json.Encode(Model)));
+        $(document).ready(function () {
+            AppCommon.FormatInputCase();
+            AppCommon.FormatDateInput();
+            $('#CashFlowDate').datepicker('setStartDate', '');
+            $('#CashFlowDate').datepicker('setEndDate', new Date());
+
+            if($("#CashFlowKey").val()!=0)
+            {
+                $("[pendingAccountRepeater]").each(function () {
+                    var billBalanceAmount=parseFloat($(this).find("[id*=BillBalanceAmount]").val());
+                    var Amount=parseFloat($(this).find("[id*=PaidUpdate]").val());
+                    var balanceAmount=billBalanceAmount-Amount;
+                    $(this).find("[id*=AmountBalace]").val(balanceAmount);
+                });
+            }
+
+            if($("#IsOrderPayment").val()==true)
+            {
+                $("#AccountMaster").hide();
+                $("#addEditAccountHead").hide();
+            }
+            else
+            {
+                $("#AccountMaster").show();
+                $("#addEditAccountHead").show();
+            }
+
+            CashFlow.OnLoad();
+           
+            CashFlow.CheckPaymentMode($("[id*=rbPaymentMode]:checked").val(),jsonData);
+            var paymentMode=@Model.PaymentModeKey;
+            var BankAccountKey = $("#BankAccountKey", $("#frmCashFlow")).val();
+            var RowKey = $("#CashFlowKey").val();
+
+            var CashFlowTypeKey = $("#CashFlowTypeKey", $("#frmCashFlow")).val();
+             CashFlowTypeKey = parseInt(CashFlowTypeKey) ? parseInt(CashFlowTypeKey) : 0;
+
+            CashFlow.GetBalance(paymentMode, RowKey, BankAccountKey, $("#BranchKey", $("#frmCashFlow")).val(), CashFlowTypeKey)
+            CashFlow.BindGrandTotal();
+
+            $("[id*=rbPaymentMode]").on("change",function (e) {
+                if(!$(this).is(":checked"))
+                {
+                    $(this).prop("checked",true);
+
+                }
+                var paymentMode = $(this).val();
+                var BankAccountKey = $("#BankAccountKey", $("#frmCashFlow")).val();
+                var RowKey = $("#CashFlowKey").val();
+
+                var CashFlowTypeKey = $("#CashFlowTypeKey", $("#frmCashFlow")).val();
+                CashFlowTypeKey = parseInt(CashFlowTypeKey) ? parseInt(CashFlowTypeKey) : 0;
+
+                CashFlow.GetBalance(paymentMode, RowKey, BankAccountKey, $("#BranchKey", $("#frmCashFlow")).val(), CashFlowTypeKey)
+
+
+            RowKey = parseInt(RowKey) ? parseInt(RowKey) : 0;
+             if (RowKey == 0)
+             {
+                 $("#PaymentModeSubKey,#ChequeOrDDNumber,#ChequeOrDDDate,#BankAccountKey,#CardNumber").each(function () {
+                     $(this).val("")
+                 });
+
+                 $("#PaymentModeSubKey,#BankAccountKey").val("").selectpicker("refresh");
+
+              }
+
+
+                $("#CashFlowBankBalance").html("");
+                $("#AmtBalance").html("");
+
+                CashFlow.CheckPaymentMode($(this).val(),jsonData);
+                
+            })
+
+            $("[id*=PaymentModeSubKey]", $("#dvPaymentModeSub")).change(function () {
+                CashFlow.CheckPaymentModeSub($(this).val());
+            })
+
+            var amount=$("#Amount").val();
+            if (amount== NaN || amount == 0) {
+                $("[pendingAccountRepeater]").each(function () {
+                    var disableChk = $(".chkClearAccount", $($(this)))
+                    if (disableChk[0].checked) {
+                        disableChk[0].checked=false;
+                    }
+                    disableChk.attr('disabled', 'disabled');
+                });
+            }
+
+            $("#CashFlowTypeKey").on ("change",function(){
+                var paymentMode = $("[id*=rbPaymentMode]:checked").val();
+                var BankAccountKey = $("#BankAccountKey", $("#frmCashFlow")).val();
+                var RowKey = $("#CashFlowKey").val();
+
+                var CashFlowTypeKey = $("#CashFlowTypeKey", $("#frmCashFlow")).val()
+                CashFlowTypeKey = parseInt(CashFlowTypeKey) ? parseInt(CashFlowTypeKey) : 0;
+
+                CashFlow.GetBalance(paymentMode, RowKey, BankAccountKey, $("#BranchKey", $("#frmCashFlow")).val(), CashFlowTypeKey)
+                checkbalance();
+            });
+
+            $("#IsOrderPayment").on("change",function(){
+                if($(this).val()==true)
+                {
+                    $("#AccountMaster").hide();
+                    $("#addEditAccountHead").hide();
+                }
+                else
+                {
+                    $("#AccountMaster").show();
+                    $("#addEditAccountHead").show();
+                    $("#AccountHeadKey", $("#frmCashFlow")).empty();
+                    $("#AccountHeadKey", $("#frmCashFlow")).append($("<option></option>").val("").html(Resources.Select + Resources.BlankSpace + Resources.AccountHead));
+                    $("#PendingAccount").remove();
+                    $("#AccountGroupKey").val("");
+                }
+            });
+
+            $("#AccountHeadKey", $("#frmCashFlow")).on("change", function () {
+                if($("#IsOrderPayment").val()==true)
+                {
+                    $(this).attr("data-href", $("#hdnGetPendingAccountById").val());
+                    CashFlow.EditPopupRebind($(this),jsonData)
+                    CashFlow.BindTotlalAmountToBePaid();
+                    $("#AccountMaster").hide();
+                    $("#IsOrderPayment").attr("checked",true);
+                }
+                else{
+                    $("#PendingAccount").remove();
+                }
+                CashFlow.SetPurpose();
+               // CashFlow.ContraChange()
+            });
+            CashFlow.BindTotlalAmountToBePaid();
+
+            
+
+            $("#AccountHeadTypeKey,#AccountGroupKey").on("change",function(){
+                $("#addEditAccountHead").attr("data-href",$("#hdnAddEditAccountHead").val()+"?group="+$("#AccountGroupKey").val()+"&type="+$("#AccountHeadTypeKey").val())
+            });
+
+
+            $("#CashFlowTypeKey,#BranchKey,#IsOrderPayment").on("change",function(){
+                CashFlow.BindParty();
+            });
+
+            $("#CashFlowTypeKey").on("change",function(){
+                $("#PendingAccount").remove();
+            })
+
+            $("#CashFlowDate").on("changeDate", function () {
+                if ($("#AccountHeadKey", $("#frmCashFlow")).val()!=NaN&&$("#IsOrderPayment").val()==true)
+                {
+                    $(this).attr("data-href", $("#hdnGetPendingAccountById").val());
+                    CashFlow.EditPopupRebind($(this),jsonData)
+                    CashFlow.BindTotlalAmountToBePaid();
+                }
+            });
+            $("#BankAccountKey").on("change", function () {
+                var paymentMode = $("[id*=rbPaymentMode]:checked").val();
+                var RowKey = $("#CashFlowKey").val();
+                var BankAccountKey = $(this).val();
+
+                var CashFlowTypeKey = $("#CashFlowTypeKey", $("#frmCashFlow")).val()
+                CashFlowTypeKey = parseInt(CashFlowTypeKey) ? parseInt(CashFlowTypeKey) : 0;
+
+                CashFlow.GetBalance(paymentMode, RowKey, BankAccountKey, $("#BranchKey", $("#frmCashFlow")).val());
+                checkbalance();
+               
+            });
+
+           
+
+            $.ajaxSetup({ cache: false });
+            $("#addEditAccountHead").popupform({
+                formAction: "@Url.Action("AddEditAccountHead", "AccountHead")",
+                load: function () {
+                    AppCommon.FormatInputCase();
+                    AccountHeadPopupLoad();
+                },
+                rebind: function () {
+                    //id=$("#AccountHeadTypeKey").val()
+                    CashFlow.GetAccountHeadById();
+                }
+            });
+            $("#Amount").on("blur", function () {
+
+                var amount=$("#Amount").val()
+                var $amountControl=$("#Amount")
+                amount=amount != "" ? parseFloat(amount) : 0;
+                var amountToBePaid=$("#TotalAmountToBePaid").html()
+                amountToBePaid=amountToBePaid != "" ? parseFloat(amountToBePaid) : 0;
+                CashFlow.BindBalanceAmount();
+
+                checkbalance();
+
+            });
+
+            $(".chkClearAccount").on("click",function(){
+                CashFlow.BindBalanceAmount();
+            });
+
+            $("[id*=BranchKey]").on("change",function(){
+
+                var obj = {};
+                obj.key = $(this).val();
+                obj.headKey = $("#AccountHeadKey", $("#frmCashFlow")).val();
+                var paymentMode = $("[id*=rbPaymentMode]:checked").val();
+                var RowKey = $("#CashFlowKey").val();
+                var BankAccountKey = $("#BankAccountKey", $("#frmCashFlow")).val();
+
+                var CashFlowTypeKey = $("#CashFlowTypeKey", $("#frmCashFlow")).val()
+                CashFlowTypeKey = parseInt(CashFlowTypeKey) ? parseInt(CashFlowTypeKey) : 0;
+
+                AppCommon.BindDropDownbyId(obj, $("#hdnFillBankAccount").val(), $("#BankAccountKey", $("#frmCashFlow")),Resources.BankAccount)
+                CashFlow.GetBalance(paymentMode, RowKey, BankAccountKey, $("#BranchKey", $("#frmCashFlow")).val())
+
+            });
+            if($("#CashFlowKey").val()==0)
+            {
+                var obj = {};
+                obj.key = $("#BranchKey", $("#frmCashFlow")).val();
+                obj.headKey = $("#AccountHeadKey", $("#frmCashFlow")).val();
+                AppCommon.BindDropDownbyId(obj, $("#hdnFillBankAccount").val(), $("#BankAccountKey", $("#frmCashFlow")),Resources.BankAccount)
+            }
+        });
+
+        function checkbalance() {
+
+            var paymentModeKey = $("[id*=rbPaymentMode]:checked").val()
+
+            if (Resources.PaymentModeCheque != paymentModeKey) {
+
+
+                var amount = $("#Amount").val();
+                amount = amount != "" ? parseFloat(amount) : 0;
+                var paidAmount = parseFloat(amount)
+                var AccountHeadBalance = parseFloat($("#AccountHeadBalance").val())
+
+                var RowKey = $("#CashFlowKey").val();
+                RowKey = parseInt(RowKey) ? parseInt(RowKey) : 0;
+
+                var oldAmount = $("#OldAmount").val();
+                oldAmount = parseFloat(oldAmount) ? parseFloat(oldAmount) : 0
+
+                var CashFlowTypeKey = $("#CashFlowTypeKey", $("#frmCashFlow")).val();
+                CashFlowTypeKey = parseInt(CashFlowTypeKey) ? parseInt(CashFlowTypeKey) : 0;
+                var Message = "";
+                if (RowKey == 0 && CashFlowTypeKey == '@DbConstants.CashFlowType.In') {
+                    AccountHeadBalance = 0;
+                }
+                if (CashFlowTypeKey == '@DbConstants.CashFlowType.In') {
+                    AccountHeadBalance = AccountHeadBalance + amount;
+                    Message = "its cant editted Due to InSufficent Balance in Our account Please Check"
+                } else {
+                    Message = "Due to InSufficent Balance in Our account Please Check";
+                    AccountHeadBalance = AccountHeadBalance - amount;
+                }
+                if (AccountHeadBalance < 0) {
+                    $("#Amount").val(oldAmount ? oldAmount : "")
+                    $.alert({
+                        type: 'yellow',
+                        title: Resources.Warning,
+                        content: Message,
+                        icon: 'fa fa-check-circle-o-',
+                        buttons: {
+                            Ok: {
+                                text: Resources.Ok,
+                                btnClass: 'btn-success',
+                                action: function () {
+                                    // window.location.href = $("#hdnEmployeeList").val();
+                                }
+                            }
+                        }
+                    })
+
+                }
+            }
+        }
+    </script>
+
+}
+

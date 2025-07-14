@@ -1,0 +1,179 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.AttendanceTypeMasterViewModel
+<div class="modal-header">
+    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+    <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.Add @EduSuiteUIResources.Sla @EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace @EduSuiteUIResources.AttendanceType</h4>
+</div>
+
+
+<input type="hidden" id="hdnDeleteAttendanceTypeDetails" value="@Url.Action("DeleteAttendanceTypeDetails", "AttendanceTypeMaster")" />
+<input type="hidden" id="hdnAttendaceTypeList" value="@Url.Action("AttendanceTypeList", "AttendanceTypeMaster") " />
+
+
+@using (Html.BeginForm("AddEditAttendanceTypeMaster", "AttendanceTypeMaster", FormMethod.Post, new { @id = "frmAttendanceTypeMaster" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(m => m.RowKey)
+
+
+
+    <div class="modal-body bottomLine">
+        <div class="form-master">
+            <div class="form-row">
+                <div class="col-lg-4">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.FromDate, htmlAttributes: new { @id = "lblFeeDate", @class = "form-label" })
+                        @Html.TextBoxFor(m => m.FromDate, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_input_type = "date", @InputFor = "lblFeeDate", @data_inputmask = "'alias': 'dd/mm/yyyy'" })
+                    </fieldset>
+                    <span class="form-control-error-text">
+                        @Html.ValidationMessageFor(m => m.FromDate)
+                    </span>
+                </div>
+                <div class="col-lg-4">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.ToDate, htmlAttributes: new { @id = "lblFeeDate", @class = "form-label" })
+                        @Html.TextBoxFor(m => m.ToDate, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_input_type = "date", @InputFor = "lblFeeDate", @data_inputmask = "'alias': 'dd/mm/yyyy'" })
+                    </fieldset>
+                    <span class="form-control-error-text">
+                        @Html.ValidationMessageFor(m => m.ToDate)
+                    </span>
+                </div>
+                <div class="col-lg-4">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.ClassCode, htmlAttributes: new { @class = "form-label" })
+                        @Html.ListBoxFor(m => m.ClassKeys, new SelectList(Model.ÇlassDetails, "RowKey", "Text", Model.ClassKeys), new { @class = "form-control border-radius input-control selectpicker", @multiple = "multiple", @data_live_search = "true", @data_title = EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.ClassCode })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.ClassKeys)
+                        </span>
+                    </fieldset>
+                </div>
+            </div>
+            <div id="dynamicRepeater" class="repeater">
+                <table class="table table-responsive table-stripped">
+                    <thead class="form-group">
+                        <tr>
+                            <th></th>
+                            <th>
+                                @Html.Label(EduSuiteUIResources.AttendanceType, htmlAttributes: new { @class = "form-label" })
+                            </th>
+                            <th>
+                                @Html.Label(EduSuiteUIResources.StartTime, htmlAttributes: new { @class = "form-label" })
+                            </th>
+                            <th>
+                                @Html.Label(EduSuiteUIResources.EndTime, htmlAttributes: new { @class = "form-label" })
+                            </th>
+                            <th class="d-none">
+                                @Html.Label(EduSuiteUIResources.GraceTime, htmlAttributes: new { @class = "form-label" })
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody data-repeater-list>
+                        @for (int i = 0; i < Model.AttendanceTypeDetailsModel.Count(); i++)
+                        {
+                            <tr data-repeater-item>
+                                <td class="px-1">
+                                    <fieldset class="form-group">
+                                        @*<label class="form-label" style="visibility:hidden">NothingToDisplay</label>*@
+                                        <span data-repeater-delete="" class="btn btn-danger btn-sm">
+                                            <span class="fa fa-remove "></span>
+                                        </span>
+                                    </fieldset>
+                                </td>
+                                <td class="px-1">
+                                    <fieldset class="form-group ">
+                                        @Html.DropDownListFor(m => m.AttendanceTypeDetailsModel[i].AttendanceTypeKey, new SelectList(Model.AttendanceTypes, "RowKey", "Text", Model.AttendanceTypeDetailsModel[i].AttendanceTypeKey), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.AttendanceType, new { @class = "form-control border-radius input-control autoselect-select" })
+                                        <span class="form-control-error-text">
+                                            @Html.ValidationMessageFor(m => m.AttendanceTypeDetailsModel[i].AttendanceTypeKey)
+
+                                        </span>
+                                        @Html.HiddenFor(m => m.AttendanceTypeDetailsModel[i].RowKey)
+                                        @Html.HiddenFor(m => m.AttendanceTypeDetailsModel[i].AttendanceTypeMasterKey)
+                                    </fieldset>
+
+
+                                </td>
+                                <td class="p-1">
+                                    <fieldset class="form-group">
+                                        @Html.TextBoxFor(m => m.AttendanceTypeDetailsModel[i].StartTime, new { @class = "form-control input-control", @data_input_type = "time", @data_inputmask = "'alias':'hh:mm t','hourFormat': '12'", @InputFor = "lblCallDuration" })
+                                        <span class="form-control-error-text">
+                                            @Html.ValidationMessageFor(m => m.AttendanceTypeDetailsModel[i].StartTime)
+                                        </span>
+                                    </fieldset>
+                                </td>
+                                <td class="p-1">
+                                    <fieldset class="form-group">
+                                        @Html.TextBoxFor(m => m.AttendanceTypeDetailsModel[i].EndTime, new { @class = "form-control input-control", @data_input_type = "time", @data_inputmask = "'alias':'hh:mm t','hourFormat': '12'", @InputFor = "lblCallDuration" })
+                                        <span class="form-control-error-text">
+                                            @Html.ValidationMessageFor(m => m.AttendanceTypeDetailsModel[i].EndTime)
+                                        </span>
+                                    </fieldset>
+                                </td>
+                                <td class="p-1 d-none">
+                                    <fieldset class="form-group">
+                                        @Html.TextBoxFor(m => m.AttendanceTypeDetailsModel[i].GraceTime, new { @class = "form-control input-control", @onClick = "this.setSelectionRange(0, this.value.length)" })
+                                        <span class="form-control-error-text">
+                                            @Html.ValidationMessageFor(m => m.AttendanceTypeDetailsModel[i].GraceTime)
+                                        </span>
+                                    </fieldset>
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th class="px-1" colspan="4">
+                                <span data-repeater-create class="btn btn-info btn-sm">
+                                    <span class="fa fa-plus"></span>
+                                </span>
+                            </th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+            <div class="form-row">
+                <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer bg-white">
+        <div class="form-row">
+            <div class="col-12">
+                <div class="form-group">
+                    <input type="button" value="@EduSuiteUIResources.Save" id="btnSave" class="btn btn-sm btn-success" onclick="AttendanceTypeMaster.FormSubmit()" />
+                    <button type="button" data-dismiss="modal" class="btn btn-sm btn-danger mx-1">@EduSuiteUIResources.Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<script>
+    var jsonData=@(Html.Raw(Json.Encode(Model)));
+
+    $(document).ready(function () {
+        $("[data-input-type=time]").each(function ()
+        {
+            if ($(this).val() != "")
+            {
+                $(this).val(moment($(this).val(), ["HH:mm:ss"]).format("hh:mm A"));
+            }
+        })
+
+        AppCommon.FormatInputCase()
+        AppCommon.FormatDateInput();
+        AppCommon.FormatTimeInput();
+        AppCommon.CustomRepeaterRemoteMethod();
+        AttendanceTypeMaster.GetAttendanceTypeDetails(jsonData);
+        $("[id*=ClassKeys]").each(function () {
+            $(this).selectpicker();
+        })
+
+    });
+
+
+</script>
+
+
+

@@ -1,0 +1,3450 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AdmissionFeeAmountExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only numbers for Amount</value>
+    <comment>Save Application</comment>
+  </data>
+  <data name="AdmissionFeeAmountRequired" xml:space="preserve">
+    <value>Please Enter Amount</value>
+    <comment>Save Application</comment>
+  </data>
+  <data name="AmountExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only integer or decimal number with 2 decimals for Amount</value>
+    <comment>Save Employee Salary</comment>
+  </data>
+  <data name="ApplicantAddressLengthErrorMessage" xml:space="preserve">
+    <value>Perment Address cannot be longer than 200 characters.</value>
+    <comment>Save Application</comment>
+  </data>
+  <data name="ApplicantGuardianNameLengthErrorMessage" xml:space="preserve">
+    <value>Applicant Guardian Name cannot be longer than 80 characters.</value>
+    <comment>Save Application</comment>
+  </data>
+  <data name="ApplicantGuardianNameRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for Applicant Guardian Name</value>
+    <comment>Save Application</comment>
+  </data>
+  <data name="ApplicantMotherNameLengthErrorMessage" xml:space="preserve">
+    <value>Applicant Mother Name cannot be longer than 80 characters.</value>
+    <comment>Save Application</comment>
+  </data>
+  <data name="ApplicantMotherNameRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for Applicant Mother Name</value>
+    <comment>Save Application</comment>
+  </data>
+  <data name="ApplicantNameLengthErrorMessage" xml:space="preserve">
+    <value>Applicant Name cannot be longer than 80 characters.</value>
+    <comment>Save Application</comment>
+  </data>
+  <data name="ApplicantNameRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for Applicant Name</value>
+    <comment>Save Application</comment>
+  </data>
+  <data name="ApplicantNameRequired" xml:space="preserve">
+    <value>Please Enter Applicant Name</value>
+    <comment>Save Application</comment>
+  </data>
+  <data name="ApplicationPhoneRequired" xml:space="preserve">
+    <value>Please Enter Mobile Number</value>
+    <comment>Save Application</comment>
+  </data>
+  <data name="AttendanceTypeDescreptionRequired" xml:space="preserve">
+    <value>Please Select Attendance Type Descreption</value>
+    <comment>Save Attendance</comment>
+  </data>
+  <data name="AttendanceTypeRequired" xml:space="preserve">
+    <value>Please Select Attendance Type</value>
+    <comment>Save Attendance</comment>
+  </data>
+  <data name="AttendanceYearRequired" xml:space="preserve">
+    <value>Please Select Year</value>
+    <comment>Save Attendance</comment>
+  </data>
+  <data name="BatchRequired" xml:space="preserve">
+    <value>Please Select Batch</value>
+    <comment>Save Attendance</comment>
+  </data>
+  <data name="BookCodeExistsErrorMessage" xml:space="preserve">
+    <value>Book Code  already exists</value>
+    <comment>Save Book</comment>
+  </data>
+  <data name="BookCodeExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for BookCode</value>
+    <comment>Save Book</comment>
+  </data>
+  <data name="BookCodeLengthErrorMessage" xml:space="preserve">
+    <value>Book Code cannot be longer than 4 characters.</value>
+    <comment>Save Book</comment>
+  </data>
+  <data name="BookCodeRequired" xml:space="preserve">
+    <value>Please Enter Book Code</value>
+    <comment>Save Book</comment>
+  </data>
+  <data name="BookNameExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for Book Name</value>
+    <comment>Save Book</comment>
+  </data>
+  <data name="BookNameLengthErrorMessage" xml:space="preserve">
+    <value>Book Name cannot be longer than 100 characters.</value>
+    <comment>Save Book</comment>
+  </data>
+  <data name="BookNameRequired" xml:space="preserve">
+    <value>Please Enter Book Name</value>
+    <comment>Save Book</comment>
+  </data>
+  <data name="BookTypeRequired" xml:space="preserve">
+    <value>Please Select BookType</value>
+    <comment>Save Book</comment>
+  </data>
+  <data name="BookYearRequired" xml:space="preserve">
+    <value>Please Select BookYear</value>
+    <comment>Save Book</comment>
+  </data>
+  <data name="BranchAddressExpressionErrormessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for Branch Address</value>
+    <comment>Save Branch</comment>
+  </data>
+  <data name="BranchAddressLengthErrorMessage" xml:space="preserve">
+    <value>Branch Address cannot be longer than 500 characters.</value>
+    <comment>Save Branch</comment>
+  </data>
+  <data name="BranchAddressRequired" xml:space="preserve">
+    <value>Please Enter Branch Address</value>
+    <comment>Save Branch</comment>
+  </data>
+  <data name="BranchCodeExistsErrorMessage" xml:space="preserve">
+    <value>Branch Code  already exists</value>
+  </data>
+  <data name="BranchCodeExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for Branch Code</value>
+    <comment>Save Branch</comment>
+  </data>
+  <data name="BranchCodeLengthErrorMessage" xml:space="preserve">
+    <value>Branch Code cannot be longer than 4 characters.</value>
+    <comment>Save Branch</comment>
+  </data>
+  <data name="BranchCodeRequired" xml:space="preserve">
+    <value>Please Enter Branch Code</value>
+    <comment>Save Branch</comment>
+  </data>
+  <data name="BranchCredEmailExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for Branch CredEmail ID</value>
+    <comment>Save Branch</comment>
+  </data>
+  <data name="BranchCredEmailLengthErrorMessage" xml:space="preserve">
+    <value>Branch CredEmail ID cannot be longer than 80 characters.</value>
+    <comment>Save Branch</comment>
+  </data>
+  <data name="BranchCredPasswordExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for Branch CredPassword</value>
+    <comment>Save Branch</comment>
+  </data>
+  <data name="BranchCredPasswordLengthErrorMessage" xml:space="preserve">
+    <value>Branch CredPassword Must have between 8 and 10</value>
+    <comment>Save Branch</comment>
+  </data>
+  <data name="BranchEmailExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for Branch Email ID</value>
+    <comment>Save Branch</comment>
+  </data>
+  <data name="BranchEmailLengthErrorMessage" xml:space="preserve">
+    <value>Branch Email ID cannot be longer than 80 characters.</value>
+    <comment>Save Branch</comment>
+  </data>
+  <data name="BranchEmailRequired" xml:space="preserve">
+    <value>Please Enter Branch Email ID</value>
+    <comment>Save Branch</comment>
+  </data>
+  <data name="BranchLocationExistsErrorMessage" xml:space="preserve">
+    <value>Branch Location is already exists</value>
+  </data>
+  <data name="BranchLocationExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for Location Name</value>
+    <comment>Save Branch</comment>
+  </data>
+  <data name="BranchLocationLengthErrorMessage" xml:space="preserve">
+    <value>Location Name cannot be longer than 80 characters.</value>
+    <comment>Save Branch</comment>
+  </data>
+  <data name="BranchLocationRequired" xml:space="preserve">
+    <value>Please Enter Location Name</value>
+    <comment>Save Branch</comment>
+  </data>
+  <data name="BranchMobileExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only numbers and symbols(-()&amp;/) for Branch Mobile No</value>
+    <comment>Save Branch</comment>
+  </data>
+  <data name="BranchMobileLengthErrorMessage" xml:space="preserve">
+    <value>Branch Mobile No Must have between 10 and 15</value>
+    <comment>Save Branch</comment>
+  </data>
+  <data name="BranchMobileRequired" xml:space="preserve">
+    <value>Please Enter Branch Mobile No</value>
+    <comment>Save Branch</comment>
+  </data>
+  <data name="BranchNameExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for Branch Name</value>
+    <comment>Save Branch</comment>
+  </data>
+  <data name="BranchNameLengthErrorMessage" xml:space="preserve">
+    <value>Branch Name cannot be longer than 50 characters.</value>
+    <comment>Save Branch</comment>
+  </data>
+  <data name="BranchNameRequired" xml:space="preserve">
+    <value>Please Enter Branch Name</value>
+    <comment>Save Branch</comment>
+  </data>
+  <data name="BranchPhoneExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only numbers and symbols(-()&amp;/) for Branch Phone No</value>
+    <comment>Save Branch</comment>
+  </data>
+  <data name="BranchPhoneLengthErrorMessage" xml:space="preserve">
+    <value>Branch Phone No Must have between 10 and 15</value>
+    <comment>Save Branch</comment>
+  </data>
+  <data name="BranchPhoneRequired" xml:space="preserve">
+    <value>Please Enter Branch Phone No</value>
+    <comment>Save Branch</comment>
+  </data>
+  <data name="BranchRequired" xml:space="preserve">
+    <value>Please Select Branch</value>
+    <comment>Save Attendance</comment>
+  </data>
+  <data name="CallDurationRequired" xml:space="preserve">
+    <value>Call Duration is Required</value>
+  </data>
+  <data name="CallTypeRequired" xml:space="preserve">
+    <value>Call Type is Required</value>
+    <comment>EnquiryLead</comment>
+  </data>
+  <data name="CardNumberLengthErrorMessage" xml:space="preserve">
+    <value>Card Number cannot be longer than 30 charecters.</value>
+    <comment>SaveCashFlow</comment>
+  </data>
+  <data name="CardNumberRequired" xml:space="preserve">
+    <value>Card Number is Required</value>
+  </data>
+  <data name="CheckApplicationPhoneExists" xml:space="preserve">
+    <value>This Mobile Number already exists</value>
+    <comment>Application</comment>
+  </data>
+  <data name="CheckEnquiryEmailExists" xml:space="preserve">
+    <value>This Email already exists</value>
+  </data>
+  <data name="CheckPasswordExistsErrorMessage" xml:space="preserve">
+    <value>Its not your Old Password</value>
+  </data>
+  <data name="ChequeOrDDNumberLengthErrorMessage" xml:space="preserve">
+    <value>Cheque or DD Number cannot be longer than 25 charecters.</value>
+    <comment>SaveCashFlow</comment>
+  </data>
+  <data name="ChequeOrDDNumberRequired" xml:space="preserve">
+    <value>Cheque Or DD Number is Required</value>
+  </data>
+  <data name="ConcellingTimeRequired" xml:space="preserve">
+    <value>ConcellingTime is Required</value>
+  </data>
+  <data name="ConfirmPassword_Required" xml:space="preserve">
+    <value>Confirm Password is required</value>
+  </data>
+  <data name="ConsessionFeeAmountExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only numbers for Consession Amount</value>
+    <comment>Save Application</comment>
+  </data>
+  <data name="ConsessionFeeAmountRequired" xml:space="preserve">
+    <value>Please Enter Consession Amount</value>
+    <comment>Save Application</comment>
+  </data>
+  <data name="CourseCodeExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for Course Code</value>
+    <comment>Save Course</comment>
+  </data>
+  <data name="CourseCodeLengthErrorMessage" xml:space="preserve">
+    <value>Course Code cannot be longer than 4 characters.</value>
+    <comment>Save Course</comment>
+  </data>
+  <data name="CourseCodeRequired" xml:space="preserve">
+    <value>Please Enter Course Code</value>
+    <comment>Save Course</comment>
+  </data>
+  <data name="CourseDurationRequired" xml:space="preserve">
+    <value>Please Enter Course Duration</value>
+    <comment>Save Course</comment>
+  </data>
+  <data name="CourseKeyRequired" xml:space="preserve">
+    <value>Please Select Course</value>
+    <comment>Save Book</comment>
+  </data>
+  <data name="CourseNameExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for Course Name</value>
+    <comment>Save Course</comment>
+  </data>
+  <data name="CourseNameLengthErrorMessage" xml:space="preserve">
+    <value>Course Name cannot be longer than 50 characters.</value>
+    <comment>Save Course</comment>
+  </data>
+  <data name="CourseNameRequired" xml:space="preserve">
+    <value>Please Enter Course Name</value>
+    <comment>Save Course</comment>
+  </data>
+  <data name="CourseTypeNameExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for Course Type Name</value>
+    <comment>Save CourseType</comment>
+  </data>
+  <data name="CourseTypeNameLengthErrorMessage" xml:space="preserve">
+    <value>Course Type Name cannot be longer than 50 characters.</value>
+    <comment>Save CourseType</comment>
+  </data>
+  <data name="CourseTypeNameRequired" xml:space="preserve">
+    <value>Please Enter Course Type Name</value>
+    <comment>Save CourseType</comment>
+  </data>
+  <data name="CourseTypeRequired" xml:space="preserve">
+    <value>Please Select Course Type</value>
+    <comment>Save Course</comment>
+  </data>
+  <data name="CourseType_Required" xml:space="preserve">
+    <value>Please Select Course Type</value>
+  </data>
+  <data name="CourseYearRequired" xml:space="preserve">
+    <value>Please Enter Course Year</value>
+    <comment>Save Course</comment>
+  </data>
+  <data name="Course_Required" xml:space="preserve">
+    <value>Please Select Course</value>
+  </data>
+  <data name="DateOfBirthRequired" xml:space="preserve">
+    <value>Date Of Birth Required</value>
+    <comment>SaveEmployee</comment>
+  </data>
+  <data name="DepartmentRequired" xml:space="preserve">
+    <value>Please Select  Department </value>
+    <comment>SaveEmployee</comment>
+  </data>
+  <data name="DistrictNameLengthErrorMessage" xml:space="preserve">
+    <value>District Name cannot be longer than 100 characters.</value>
+    <comment>District</comment>
+  </data>
+  <data name="DivisionRequired" xml:space="preserve">
+    <value>Please Select Division</value>
+    <comment>Save Attendance</comment>
+  </data>
+  <data name="DueDurationExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only numbers for DueDuration</value>
+    <comment>Save Fee Insatllment</comment>
+  </data>
+  <data name="DueDurationRequired" xml:space="preserve">
+    <value>Please Enter Due Duration</value>
+    <comment>Save Fee Insatllment</comment>
+  </data>
+  <data name="DueFineAmountExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only numbers for Due Fine Amount</value>
+    <comment>Save Fee Insatllment</comment>
+  </data>
+  <data name="EmailAddressExists" xml:space="preserve">
+    <value>This Email Address already  exists .</value>
+    <comment>Save Application</comment>
+  </data>
+  <data name="EmailAddressExpressionErrorMessage" xml:space="preserve">
+    <value>Enter  valid Email Address</value>
+    <comment>Save Application</comment>
+  </data>
+  <data name="EmailAddressLengthErrorMessage" xml:space="preserve">
+    <value>Email Address cannot be longer than100 characters.</value>
+    <comment>Save Application</comment>
+  </data>
+  <data name="EmailAddressRequired" xml:space="preserve">
+    <value>Email Address is Required</value>
+    <comment>Save Application</comment>
+  </data>
+  <data name="EnquiryAddressLengthErrorMessage" xml:space="preserve">
+    <value>Address  cannot be longer than 150 characters.</value>
+  </data>
+  <data name="EnquiryLeadCallStatusRequired" xml:space="preserve">
+    <value>Call Status is Required</value>
+    <comment>EnquiryLead</comment>
+  </data>
+  <data name="EnquiryLeadFeedbackRequired" xml:space="preserve">
+    <value>Enter Feedback</value>
+    <comment>Save Enquiry Lead Feedback</comment>
+  </data>
+  <data name="EnquiryLeadRemarksLengthErrorMessage" xml:space="preserve">
+    <value>Remarks cannot be longer than 500 characters.</value>
+    <comment>EnquiryLead</comment>
+  </data>
+  <data name="EnquiryLeadStatusRequired" xml:space="preserve">
+    <value>Select Lead  Status</value>
+    <comment>Save Enquiry Lead</comment>
+  </data>
+  <data name="EnquiryNameLengthErrorMessage" xml:space="preserve">
+    <value>Enquiry Name cannot be longer than 100 characters.</value>
+  </data>
+  <data name="EnquiryNameRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for Enquiry Name</value>
+  </data>
+  <data name="EnquiryNameRequired" xml:space="preserve">
+    <value>Name is Required</value>
+  </data>
+  <data name="EnquiryPhoneRequired" xml:space="preserve">
+    <value>Phone Number is Required</value>
+  </data>
+  <data name="EnquiryRemarksLengthErrorMessage" xml:space="preserve">
+    <value>Remarks cannot be longer than 500 characters.</value>
+  </data>
+  <data name="EnquiryStatusRequired" xml:space="preserve">
+    <value>Select Enquiry Status</value>
+    <comment>Save Enquiry</comment>
+  </data>
+  <data name="FeeAmountRequired" xml:space="preserve">
+    <value>Fee Amount is Required</value>
+  </data>
+  <data name="FeeDateRequired" xml:space="preserve">
+    <value>Fee Date is Required</value>
+  </data>
+  <data name="FeedbackRequired" xml:space="preserve">
+    <value>Feedback is Required</value>
+  </data>
+  <data name="FeePaymentDayRequired" xml:space="preserve">
+    <value>Please Select Fee Payment Day</value>
+    <comment>Save Fee Insatllment</comment>
+  </data>
+  <data name="FeeRemarksLengthErrorMessage" xml:space="preserve">
+    <value>Remarks cannot be longer than 200 characters.</value>
+  </data>
+  <data name="FeeTypeNameExistsErrorMessage" xml:space="preserve">
+    <value>FeeType is already exists</value>
+    <comment>Save FeeType</comment>
+  </data>
+  <data name="FeeTypeNameExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for FeeType Name</value>
+    <comment>Save FeeType</comment>
+  </data>
+  <data name="FeeTypeNameLengthErrorMessage" xml:space="preserve">
+    <value>FeeType Name cannot be longer than 50 characters.</value>
+    <comment>Save FeeType</comment>
+  </data>
+  <data name="FeeTypeNameRequired" xml:space="preserve">
+    <value>Please Enter FeeType Name</value>
+    <comment>Save FeeType</comment>
+  </data>
+  <data name="FeeTypeRequired" xml:space="preserve">
+    <value>Fee Type is Required</value>
+  </data>
+  <data name="FeeYearRequired" xml:space="preserve">
+    <value>Please Select Year</value>
+    <comment>Save Application Payment</comment>
+  </data>
+  <data name="GenderRequired" xml:space="preserve">
+    <value>Please Select Gender</value>
+    <comment>SaveEmployee</comment>
+  </data>
+  <data name="InitialPaymentLessThanErrorMessage" xml:space="preserve">
+    <value>Total Fee must be equal to Balance Payment</value>
+    <comment>Save Fee Insatllment</comment>
+  </data>
+  <data name="InstallmentAmountExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only numbers for Installment Amount</value>
+    <comment>Save Fee Insatllment</comment>
+  </data>
+  <data name="InstallmentAmountRequired" xml:space="preserve">
+    <value>Please Enter Installment Amount</value>
+    <comment>Save Fee Insatllment</comment>
+  </data>
+  <data name="InstallmentMonthRequired" xml:space="preserve">
+    <value>Please Select installment month</value>
+    <comment>Save Fee Insatllment</comment>
+  </data>
+  <data name="LandPhoneExpressionErrorMessage" xml:space="preserve">
+    <value>Land Phone number should be a 15 digit number.</value>
+  </data>
+  <data name="LeadDateRequired" xml:space="preserve">
+    <value>Lead Date is Required</value>
+    <comment>EnquiryLead</comment>
+  </data>
+  <data name="LeadFeedbackLengthErrorMessage" xml:space="preserve">
+    <value>Feedback cannot be longer than 200 characters.</value>
+    <comment>EnquiryLead</comment>
+  </data>
+  <data name="LeadNameLengthErrorMessage" xml:space="preserve">
+    <value>Name cannot be longer than 100 characters.</value>
+    <comment>EnquiryLead</comment>
+  </data>
+  <data name="LeadNameRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for Name</value>
+    <comment>EnquiryLead</comment>
+  </data>
+  <data name="LeadNameRequired" xml:space="preserve">
+    <value>Name is Required</value>
+  </data>
+  <data name="LocationNameLengthErrorMessage" xml:space="preserve">
+    <value>Location Name cannot be longer than 100 characters.</value>
+  </data>
+  <data name="MobileNumberExpressionErrorMessage" xml:space="preserve">
+    <value>Mobile Number should be digit number</value>
+  </data>
+  <data name="ModeRequired" xml:space="preserve">
+    <value>Please Select Mode</value>
+    <comment>Save Application</comment>
+  </data>
+  <data name="NatureOfEnquiryRequired" xml:space="preserve">
+    <value>Nature Of Enquiry is Required</value>
+  </data>
+  <data name="NewPassword_Required" xml:space="preserve">
+    <value>New Password is required</value>
+  </data>
+  <data name="NextCallScheduleRequired" xml:space="preserve">
+    <value>Next Call Schedule is Required</value>
+  </data>
+  <data name="OldPassword_Required" xml:space="preserve">
+    <value>Old Password is required</value>
+  </data>
+  <data name="PasswordCompareMessage" xml:space="preserve">
+    <value>Password doesn't match.</value>
+  </data>
+  <data name="Password_Length" xml:space="preserve">
+    <value>Password cannot be longer than 200 characters.</value>
+  </data>
+  <data name="Password_Length1" xml:space="preserve">
+    <value>Password cannot be longer than 200 characters.</value>
+  </data>
+  <data name="Password_Length2" xml:space="preserve">
+    <value>Password cannot be longer than 200 characters.</value>
+  </data>
+  <data name="Password_Required" xml:space="preserve">
+    <value>Password is required</value>
+  </data>
+  <data name="PaymentModeKeyRequired" xml:space="preserve">
+    <value>Please Select Payment Mode</value>
+    <comment>SaveCashFlow</comment>
+  </data>
+  <data name="PaymentModeRequired" xml:space="preserve">
+    <value>Payment Mode is Required</value>
+    <comment>Save Employee Salary</comment>
+  </data>
+  <data name="PhoneNumberExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only numbers for Phone Number</value>
+    <comment>Save Application</comment>
+  </data>
+  <data name="PhoneNumberLengthErrorMessage" xml:space="preserve">
+    <value>Phone Number cannot be longer than 10 characters.</value>
+    <comment>Save Application</comment>
+  </data>
+  <data name="PhoneNumber_Required" xml:space="preserve">
+    <value>Phone Number is Required</value>
+    <comment>Save Application</comment>
+  </data>
+  <data name="QualificationCourseRequired" xml:space="preserve">
+    <value>Please Enter Course</value>
+    <comment>Save Educational Qualification</comment>
+  </data>
+  <data name="QualificationLengthErrorMessage" xml:space="preserve">
+    <value>Qualification cannot be longer than 100 characters.</value>
+    <comment>EnquiryLead</comment>
+  </data>
+  <data name="QualificationUniversityRequired" xml:space="preserve">
+    <value>Please Enter Board</value>
+    <comment>Save Educational Qualification</comment>
+  </data>
+  <data name="AcademicTermRequired" xml:space="preserve">
+    <value>Acadamic Term  is Required</value>
+  </data>
+  <data name="StaffRequired" xml:space="preserve">
+    <value>Please Select Staff</value>
+  </data>
+  <data name="StudentDocumentNameRequired" xml:space="preserve">
+    <value>Please Enter Document Name</value>
+    <comment>Save Application Documents</comment>
+  </data>
+  <data name="SuperFineAmountExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only numbers for Super Fine Amount</value>
+    <comment>Save Fee Insatllment</comment>
+  </data>
+  <data name="SyllabusRequired" xml:space="preserve">
+    <value>Please Select Syllabus</value>
+    <comment>Save Book</comment>
+  </data>
+  <data name="UniversityKeyRequired" xml:space="preserve">
+    <value>Please Select University</value>
+    <comment>Save Book</comment>
+  </data>
+  <data name="UniversityMasterCodeExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for University Master Code</value>
+    <comment>Save University Master</comment>
+  </data>
+  <data name="UniversityMasterCodeLengthErrorMessage" xml:space="preserve">
+    <value>University Master Code cannot be longer than 10 characters.</value>
+    <comment>Save University Master</comment>
+  </data>
+  <data name="UniversityMasterCodeRequired" xml:space="preserve">
+    <value>Please Enter University Master Code</value>
+    <comment>Save University Master</comment>
+  </data>
+  <data name="UniversityMasterNameExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for University Master Name</value>
+    <comment>Save University Master</comment>
+  </data>
+  <data name="UniversityMasterNameLengthErrorMessage" xml:space="preserve">
+    <value>University Master Name cannot be longer than 80 characters.</value>
+    <comment>Save University Master</comment>
+  </data>
+  <data name="UniversityMasterNameRequired" xml:space="preserve">
+    <value>Please Enter University Master Name</value>
+    <comment>Save University Master</comment>
+  </data>
+  <data name="University_Required" xml:space="preserve">
+    <value>Please Select University</value>
+  </data>
+  <data name="Username_Length" xml:space="preserve">
+    <value>Username cannot be longer than 255 characters.</value>
+  </data>
+  <data name="Username_Required" xml:space="preserve">
+    <value>Username is required</value>
+  </data>
+  <data name="BankAccountRequired" xml:space="preserve">
+    <value>Bank Account is Required</value>
+  </data>
+  <data name="BankChargeRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter valid integer or decimal number with 2 decimal places.</value>
+    <comment>Save Bank Transaction</comment>
+  </data>
+  <data name="BankRequired" xml:space="preserve">
+    <value>Please Select Bank</value>
+    <comment>SaveEmployeeAccount</comment>
+  </data>
+  <data name="ChequeOrDDDateRequired" xml:space="preserve">
+    <value>Cheque Or DD Date Required</value>
+  </data>
+  <data name="CourseCodeExistsErrorMessage" xml:space="preserve">
+    <value>Course Code already exists</value>
+  </data>
+  <data name="CourseDurationExpressionErrorMessage" xml:space="preserve">
+    <value>Course Duration must be 1 to 60</value>
+    <comment>Save Course</comment>
+  </data>
+  <data name="CourseNameExistsErrorMessage" xml:space="preserve">
+    <value>Course Name already exists</value>
+  </data>
+  <data name="CourseYearExpressionErrorMessage" xml:space="preserve">
+    <value>Course Year must be a Number</value>
+    <comment>Save Course</comment>
+  </data>
+  <data name="UniversityMasterCodeExistsErrorMessage" xml:space="preserve">
+    <value>University Master Code already exists</value>
+  </data>
+  <data name="UniversityMasterNameExistsErrorMessage" xml:space="preserve">
+    <value>University Master Name already exists</value>
+  </data>
+  <data name="SelectUpdateDate" xml:space="preserve">
+    <value>Select Date</value>
+  </data>
+  <data name="StudentEnrollmentNumberRequired" xml:space="preserve">
+    <value>Enter Enrollment Number</value>
+  </data>
+  <data name="AccountGroupRequired" xml:space="preserve">
+    <value>Please Select Account Group</value>
+    <comment>Save AccountHead</comment>
+  </data>
+  <data name="AccountHeadNameExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for Account Head Name</value>
+    <comment>Save AccountHead</comment>
+  </data>
+  <data name="AccountHeadNameLengthErrorMessage" xml:space="preserve">
+    <value>Account Head Name cannot be longer than 50 characters.</value>
+    <comment>Save AccountHead</comment>
+  </data>
+  <data name="AccountHeadNameRequired" xml:space="preserve">
+    <value>Please Enter Account Head Name</value>
+    <comment>Save AccountHead</comment>
+  </data>
+  <data name="AccountHeadRequired" xml:space="preserve">
+    <value>Please Select Account Head</value>
+  </data>
+  <data name="AccountHeadTypeRequired" xml:space="preserve">
+    <value>Please Select Account Head Type</value>
+    <comment>Save AccountHead</comment>
+  </data>
+  <data name="AccountLedgerRequired" xml:space="preserve">
+    <value>Please select Account Ledger</value>
+  </data>
+  <data name="AccountNumberExists" xml:space="preserve">
+    <value>This Account Number already  exists .</value>
+  </data>
+  <data name="AccountNumberLengthErrorMessage" xml:space="preserve">
+    <value>Account Number cannot be longer than 20 characters.</value>
+    <comment>SaveEmployeeAccount</comment>
+  </data>
+  <data name="AccountNumberLengthRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only  numbers  for Account Number</value>
+    <comment>SaveEmployeeAccount</comment>
+  </data>
+  <data name="AccountNumberRequired" xml:space="preserve">
+    <value>Account Number Required</value>
+    <comment>SaveEmployeeAccount</comment>
+  </data>
+  <data name="AccountTypeRequired" xml:space="preserve">
+    <value>Please Select Account Type</value>
+    <comment>SaveEmployeeAccount</comment>
+  </data>
+  <data name="AdditionalComponentAmountRequired" xml:space="preserve">
+    <value>Additional Component Amount is Required</value>
+    <comment>Save Employee Salary</comment>
+  </data>
+  <data name="AdditionalComponentTypeRequired" xml:space="preserve">
+    <value>Additional Component Type is Required</value>
+    <comment>Save Employee Salary</comment>
+  </data>
+  <data name="AddressLengthErrorMessage" xml:space="preserve">
+    <value>Address cannot be longer than 200 characters.</value>
+    <comment>Save Agent</comment>
+  </data>
+  <data name="AddressLine1ExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for Address Line 1</value>
+    <comment>Save Employee Contact</comment>
+  </data>
+  <data name="AddressLine1LengthErrorMessage" xml:space="preserve">
+    <value>Address Line 1 cannot be longer than 100 characters.</value>
+    <comment>Save Employee Contact</comment>
+  </data>
+  <data name="AddressLine1Required" xml:space="preserve">
+    <value>Address Line 1 is reuquired</value>
+    <comment>Save Employee Contact</comment>
+  </data>
+  <data name="AddressLine2ExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for Address Line 2</value>
+    <comment>Save Employee Contact</comment>
+  </data>
+  <data name="AddressLine2LengthErrorMessage" xml:space="preserve">
+    <value>Address Line 2 cannot be longer than 100 characters.</value>
+    <comment>Save Employee Contact</comment>
+  </data>
+  <data name="AddressLine3ExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for Address Line 3</value>
+    <comment>Save Employee Contact</comment>
+  </data>
+  <data name="AddressLine3LengthErrorMessage" xml:space="preserve">
+    <value>Address Line 3 cannot be longer than 100 characters.</value>
+    <comment>Save Employee Contact</comment>
+  </data>
+  <data name="AddressRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(-()&amp;/) for Address</value>
+    <comment>Save Agent</comment>
+  </data>
+  <data name="AddressRequired" xml:space="preserve">
+    <value>Please Enter Address</value>
+    <comment>Agent</comment>
+  </data>
+  <data name="AddressTypeRequired" xml:space="preserve">
+    <value>Please select Address Type</value>
+  </data>
+  <data name="AdharNumberExists" xml:space="preserve">
+    <value>This Adhar Number already  exists .</value>
+  </data>
+  <data name="AdharNumberRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter valid Adhar Number</value>
+    <comment>Save Employee Account</comment>
+  </data>
+  <data name="AdharNumberRequired" xml:space="preserve">
+    <value>AdharNumber is Required</value>
+  </data>
+  <data name="AgeLimitFromLengthErrorMessage" xml:space="preserve">
+    <value>Age Limit From cannot be longer than 3 characters.</value>
+    <comment>Save University Program</comment>
+  </data>
+  <data name="AgeLimitFromRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only numbers  for Age Limit From</value>
+    <comment>Save University Program</comment>
+  </data>
+  <data name="AgeLimitToGreaterThanErrorMessage" xml:space="preserve">
+    <value>Please Enter Valid AgeLimit </value>
+    <comment>Save University Program</comment>
+  </data>
+  <data name="AgeLimitToLengthErrorMessage" xml:space="preserve">
+    <value>Age Limit To cannot be longer than 3 characters.</value>
+    <comment>Save University Program</comment>
+  </data>
+  <data name="AgeLimitToRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only numbers  for Age Limit To</value>
+    <comment>Save University Program</comment>
+  </data>
+  <data name="AgeLimitToRequired" xml:space="preserve">
+    <value>Age LimitTo is Required</value>
+  </data>
+  <data name="AgentCodeLengthErrorMessage" xml:space="preserve">
+    <value>Agent Code cannot be longer than 10 characters.</value>
+    <comment>Save Agent</comment>
+  </data>
+  <data name="AgentCodeRequired" xml:space="preserve">
+    <value>Please Enter Agent Code</value>
+    <comment>Agent</comment>
+  </data>
+  <data name="AgentNameLengthErrorMessage" xml:space="preserve">
+    <value>Agent Name cannot be longer than 100 characters.</value>
+    <comment>Save Agent</comment>
+  </data>
+  <data name="AgentNameRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(-()&amp;/) for Agent Name</value>
+    <comment>Save Agent</comment>
+  </data>
+  <data name="AgentNameRequired" xml:space="preserve">
+    <value>Agent Name Required</value>
+    <comment>Save Agent</comment>
+  </data>
+  <data name="AmountRequired" xml:space="preserve">
+    <value>Amount is Required</value>
+  </data>
+  <data name="ApplicantAgeRangeErrorMessage" xml:space="preserve">
+    <value>Age must be  between 0 and 100</value>
+    <comment>Application</comment>
+  </data>
+  <data name="ApplicationDocumentTypeExists" xml:space="preserve">
+    <value>Document Type exists for this Application</value>
+  </data>
+  <data name="AttendanceConfigTypeRequired" xml:space="preserve">
+    <value>Attendance Config Type is Required</value>
+  </data>
+  <data name="AttendanceStatusRequired" xml:space="preserve">
+    <value>Attendance Status is Required</value>
+    <comment>Employee Attendance</comment>
+  </data>
+  <data name="AuthorizedByLengthErrorMessage" xml:space="preserve">
+    <value>Authorized by cannot be longer than 200 charecters.</value>
+    <comment>SaveCashFlow</comment>
+  </data>
+  <data name="BankTransactionAmountRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter valid integer or decimal number with 2 decimal places.</value>
+    <comment>Save Bank Transaction</comment>
+  </data>
+  <data name="BankTransactionAmountRequired" xml:space="preserve">
+    <value>Bank Transaction Amount is Required</value>
+    <comment>Save Bank Transaction</comment>
+  </data>
+  <data name="BankTransactionDateRequired" xml:space="preserve">
+    <value>Bank Transaction Date is Required</value>
+  </data>
+  <data name="BankTransactionRemarksLengthErrorMessage" xml:space="preserve">
+    <value>Remarks cannot be longer than 1000 charecters.</value>
+    <comment>Save Bank Transaction</comment>
+  </data>
+  <data name="BasicSalaryExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only integer or decimal number with 2 decimals for Basic Salary</value>
+    <comment>Save Employee</comment>
+  </data>
+  <data name="BasicSalaryRequired" xml:space="preserve">
+    <value>Basic Salary is required</value>
+    <comment>Save Employee</comment>
+  </data>
+  <data name="BatchCodeLengthErrorMessage" xml:space="preserve">
+    <value>Batch Code cannot be longer than 4 characters.</value>
+    <comment>Save Batch</comment>
+  </data>
+  <data name="BatchCodeRequired" xml:space="preserve">
+    <value>Batch Code Required</value>
+    <comment>Save Batch</comment>
+  </data>
+  <data name="BatchNameLengthErrorMessage" xml:space="preserve">
+    <value>Batch Name cannot be longer than 100 characters.</value>
+    <comment>Save Batch</comment>
+  </data>
+  <data name="BatchNameRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(-()&amp;/) for Batch Name</value>
+    <comment>Save Batch</comment>
+  </data>
+  <data name="BatchNameRequired" xml:space="preserve">
+    <value>Batch Name Required</value>
+    <comment>Save Batch</comment>
+  </data>
+  <data name="BiomatricIDLengthErrorMessage" xml:space="preserve">
+    <value>Biomatric ID cannot be longer than 50 characters.</value>
+    <comment>SaveEmployee</comment>
+  </data>
+  <data name="BranchCodeRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for Branch Code</value>
+    <comment>Branch</comment>
+  </data>
+  <data name="BranchCode_Required" xml:space="preserve">
+    <value>BranchCode_Required</value>
+    <comment>Branch</comment>
+  </data>
+  <data name="BranchDepartmentExists" xml:space="preserve">
+    <value>Department  exists for this Branch</value>
+  </data>
+  <data name="BranchLocationRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(-()&amp;/) for Branch Location</value>
+    <comment>SaveEmployeeAccount</comment>
+  </data>
+  <data name="BranchNameLocalLengthErrorMessage" xml:space="preserve">
+    <value>Branch Name  Local cannot be longer than 100 characters.</value>
+    <comment>Branch</comment>
+  </data>
+  <data name="BranchNameLocalRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for Branch Name  Local</value>
+    <comment>Branch</comment>
+  </data>
+  <data name="BranchNameRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for Branch Name</value>
+    <comment>Branch</comment>
+  </data>
+  <data name="BranchName_Required" xml:space="preserve">
+    <value>Branch Name  Required</value>
+    <comment>Branch</comment>
+  </data>
+  <data name="Branch_Required" xml:space="preserve">
+    <value>Please Select Branch</value>
+  </data>
+  <data name="CapitalCityNameLengthErrorMessage" xml:space="preserve">
+    <value>Capital City Name cannot be longer than 100 characters.</value>
+    <comment>Save Country </comment>
+  </data>
+  <data name="CapitalCityNameRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(-()&amp;/) for Capital City Name</value>
+    <comment>Save Country </comment>
+  </data>
+  <data name="CashFlowAmountRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter valid integer or decimal number with 2 decimal places.</value>
+    <comment>SaveCashFlow</comment>
+  </data>
+  <data name="CashFlowAmountRequired" xml:space="preserve">
+    <value>Enter Amount</value>
+    <comment>SaveCashFlow</comment>
+  </data>
+  <data name="CashFlowBankNameLengthErrorMessage" xml:space="preserve">
+    <value>Bank Name cannot be longer than 100 charecters.</value>
+    <comment>SaveCashFlow</comment>
+  </data>
+  <data name="CashFlowBankNameRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets and numbers for Bank Name</value>
+    <comment>SaveCashFlow</comment>
+  </data>
+  <data name="CashFlowDateRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter valid date.</value>
+    <comment>SaveCashFlow</comment>
+  </data>
+  <data name="CashFlowDateRequired" xml:space="preserve">
+    <value>CashFlow Date is Required</value>
+    <comment>SaveCashFlow</comment>
+  </data>
+  <data name="CashFlowRemarksLengthErrorMessage" xml:space="preserve">
+    <value>Remarks cannot be longer than 1000 charecters.</value>
+    <comment>SaveCashFlow</comment>
+  </data>
+  <data name="CashFlowTypeKeyRequired" xml:space="preserve">
+    <value>Please Select CashFlow Type</value>
+    <comment>SaveCashFlow</comment>
+  </data>
+  <data name="CashFlowTypeRequired" xml:space="preserve">
+    <value>CashFlowType is Required</value>
+    <comment>Save FeeType </comment>
+  </data>
+  <data name="CashFlowVoucherNumberLengthErrorMessage" xml:space="preserve">
+    <value>Voucher Number cannot be longer than 20 charecters.</value>
+    <comment>SaveCashFlow</comment>
+  </data>
+  <data name="CertifiedByLengthErrorMessage" xml:space="preserve">
+    <value>Certified By cannot be longer than100 characters.</value>
+  </data>
+  <data name="CertifiedByRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for Certified By</value>
+  </data>
+  <data name="CheckAgentCodeExists" xml:space="preserve">
+    <value>This Agent Code already exists</value>
+  </data>
+  <data name="CheckApplicationEmailExists" xml:space="preserve">
+    <value>This Email Address already exists</value>
+    <comment>Application</comment>
+  </data>
+  <data name="CheckBatchCodeExists" xml:space="preserve">
+    <value>This Batch Code already exists</value>
+  </data>
+  <data name="CheckBatchNameExists" xml:space="preserve">
+    <value>This Batch Name already exists</value>
+  </data>
+  <data name="CheckEmailExists" xml:space="preserve">
+    <value>This Email Address already exists</value>
+  </data>
+  <data name="CheckEnquiryPhoneExists" xml:space="preserve">
+    <value>This Phone Number already exists</value>
+  </data>
+  <data name="CheckInTakeNameExists" xml:space="preserve">
+    <value>This InTake already exists</value>
+  </data>
+  <data name="CheckLeadEmailExists" xml:space="preserve">
+    <value>This Email already exists</value>
+  </data>
+  <data name="CheckLeadPhoneExists" xml:space="preserve">
+    <value>This Phone Number already exists</value>
+  </data>
+  <data name="CheckMobileExists" xml:space="preserve">
+    <value>This Moblie Number already exists</value>
+  </data>
+  <data name="CheckNatureOfEnquiryNameExists" xml:space="preserve">
+    <value>This Nature Of Enquiry already exists</value>
+  </data>
+  <data name="CheckUserNameExists" xml:space="preserve">
+    <value>This User Name already exists</value>
+  </data>
+  <data name="CityNameExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for City Name</value>
+    <comment>Save Employee Contact</comment>
+  </data>
+  <data name="CityNameLengthErrorMessage" xml:space="preserve">
+    <value>City Name cannot be longer than 100 characters.</value>
+    <comment>Save Employee Contact</comment>
+  </data>
+  <data name="CityNameRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for City Name</value>
+    <comment>Branch</comment>
+  </data>
+  <data name="CompanyAddressExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for Company Address</value>
+    <comment>Save Employee Experience</comment>
+  </data>
+  <data name="CompanyAddressLengthErrorMessage" xml:space="preserve">
+    <value>Company Address cannot be longer than 200 characters.</value>
+    <comment>Save Employee Experience</comment>
+  </data>
+  <data name="CompanyNameExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for Company Name</value>
+    <comment>Save Employee Experience</comment>
+  </data>
+  <data name="CompanyNameLengthErrorMessage" xml:space="preserve">
+    <value>Company Name cannot be longer than 100 characters.</value>
+    <comment>Save Employee Experience</comment>
+  </data>
+  <data name="CompanyNameRequired" xml:space="preserve">
+    <value>Company Name is Required</value>
+    <comment>Save Employee Experience</comment>
+  </data>
+  <data name="ComponentTitleLengthErrorMessage" xml:space="preserve">
+    <value>Component Title cannot be longer than 100 characters.</value>
+    <comment>Save  Salary Component</comment>
+  </data>
+  <data name="ComponentTitleRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for Component Title</value>
+    <comment>Save  Salary Component</comment>
+  </data>
+  <data name="ComponentTitleRequired" xml:space="preserve">
+    <value>Component Title is Required</value>
+    <comment>Save Salary Component</comment>
+  </data>
+  <data name="ConfirmPasswordErrorMessage" xml:space="preserve">
+    <value>Password does not match.</value>
+  </data>
+  <data name="ContactPersonDesignationExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for Designation</value>
+    <comment>Save Employee Experience</comment>
+  </data>
+  <data name="ContactPersonDesignationLengthErrorMessage" xml:space="preserve">
+    <value>Designation cannot be longer than 100 characters.</value>
+    <comment>Save Employee Experience</comment>
+  </data>
+  <data name="ContactPersonNameExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for Contact Person Name</value>
+    <comment>Save Employee Experience</comment>
+  </data>
+  <data name="ContactPersonNameLengthErrorMessage" xml:space="preserve">
+    <value>Contact Person Name cannot be longer than 100 characters.</value>
+    <comment>Save Employee Experience</comment>
+  </data>
+  <data name="ContactPersonNumberLengthErrorMessage" xml:space="preserve">
+    <value>Contact Person Number  cannot be longer than 20 characters.</value>
+    <comment>SaveEmployee</comment>
+  </data>
+  <data name="ContactPersonNumberRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only numbers and symbols(-()&amp;/+) for Contact Person Number</value>
+    <comment>SaveEmployee</comment>
+  </data>
+  <data name="ContactPersonRelationshipLengthErrorMessage" xml:space="preserve">
+    <value>Contact Person Relationship  cannot be longer than 100 characters.</value>
+    <comment>SaveEmployee</comment>
+  </data>
+  <data name="ContactPersonRelationshipRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabet  for Contact Person Relationship</value>
+    <comment>SaveEmployee</comment>
+  </data>
+  <data name="CounsellingEmployeeRequired" xml:space="preserve">
+    <value>Counselling Employee is Required</value>
+  </data>
+  <data name="CountryAccessRequired" xml:space="preserve">
+    <value>Atleast one Country is Required</value>
+  </data>
+  <data name="CountryNameLengthErrorMessage" xml:space="preserve">
+    <value>Country Name cannot be longer than 100 characters.</value>
+    <comment>Save Country </comment>
+  </data>
+  <data name="CountryNameLocalErrorMessage" xml:space="preserve">
+    <value>Country Name Local cannot be longer than 100 characters.</value>
+    <comment>Save Country </comment>
+  </data>
+  <data name="CountryNameLocalRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(-()&amp;/) for Country Name Local</value>
+    <comment>Save Country </comment>
+  </data>
+  <data name="CountryNameRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(-()&amp;/) forCountry Name</value>
+    <comment>Save Country </comment>
+  </data>
+  <data name="CountryNameRequired" xml:space="preserve">
+    <value>Country Name Required</value>
+    <comment>Save Country </comment>
+  </data>
+  <data name="CountryRequired" xml:space="preserve">
+    <value>Please select Country</value>
+    <comment>Save Employee Contact</comment>
+  </data>
+  <data name="CountryShortNameLengthErrorMessage" xml:space="preserve">
+    <value>Country Short Name cannot be longer than 100 characters.</value>
+    <comment>Save Country </comment>
+  </data>
+  <data name="CountryShortNameRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(-()&amp;/) for CountryShortName</value>
+    <comment>Save Country </comment>
+  </data>
+  <data name="CurrencyRequired" xml:space="preserve">
+    <value>Currency is Required</value>
+  </data>
+  <data name="DateOfApplicationCompareErrorMessage" xml:space="preserve">
+    <value>Date of Application must be less than Today</value>
+  </data>
+  <data name="DateOfBirthCompareErrorMessage" xml:space="preserve">
+    <value>Date of birth must be less than Today</value>
+  </data>
+  <data name="DepartmentCodeLengthErrorMessage" xml:space="preserve">
+    <value>Department Code cannot be longer than 4 characters.</value>
+    <comment>Department</comment>
+  </data>
+  <data name="DepartmentCodeRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for Department Code</value>
+    <comment>Department</comment>
+  </data>
+  <data name="DepartmentNameLengthErrorMessage" xml:space="preserve">
+    <value>Department Name cannot be longer than 100 characters.</value>
+    <comment>Department</comment>
+  </data>
+  <data name="DepartmentNameLocalLengthErrorMessage" xml:space="preserve">
+    <value>Department Name Local cannot be longer than 100 characters.</value>
+    <comment>Department</comment>
+  </data>
+  <data name="DepartmentNameLocalRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for Department Name Local</value>
+    <comment>Department</comment>
+  </data>
+  <data name="DepartmentNameRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for Department Name</value>
+    <comment>Department</comment>
+  </data>
+  <data name="DepartmentNameRequired" xml:space="preserve">
+    <value>Department Name Required</value>
+    <comment>Department</comment>
+  </data>
+  <data name="Department_Required" xml:space="preserve">
+    <value>Please Select Department</value>
+  </data>
+  <data name="DesignationNameLengthErrorMessage" xml:space="preserve">
+    <value>Designation Name cannot be longer than 100 characters.</value>
+  </data>
+  <data name="DesignationNameRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for Designation Name</value>
+  </data>
+  <data name="DesignationNameRequired" xml:space="preserve">
+    <value>Designation Name is Required</value>
+  </data>
+  <data name="DesignationRequired" xml:space="preserve">
+    <value>Please Select  Designation</value>
+    <comment>SaveEmployee</comment>
+  </data>
+  <data name="DisplayOrderRequired" xml:space="preserve">
+    <value>Display Order Required</value>
+    <comment>Save Country </comment>
+  </data>
+  <data name="DistrictnameLocalLengthErrorMessage" xml:space="preserve">
+    <value>District Name Local cannot be longer than 100 characters.</value>
+    <comment>District</comment>
+  </data>
+  <data name="DistrictnameLocalRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for District Name Local</value>
+    <comment>District</comment>
+  </data>
+  <data name="DistrictNameRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for District Name</value>
+    <comment>District</comment>
+  </data>
+  <data name="DistrictNameRequired" xml:space="preserve">
+    <value>District Name Required</value>
+    <comment>District</comment>
+  </data>
+  <data name="DistrictRequired" xml:space="preserve">
+    <value>Please select District</value>
+    <comment>Save Employee Contact</comment>
+  </data>
+  <data name="DocumentIssueDateRequired" xml:space="preserve">
+    <value>Issue Date Is Required</value>
+  </data>
+  <data name="DocumentReceivedDateRequired" xml:space="preserve">
+    <value>Document Received Date is Required</value>
+  </data>
+  <data name="DocumentTypeRequired" xml:space="preserve">
+    <value>Document Type is Required</value>
+  </data>
+  <data name="DurationMonthRequired" xml:space="preserve">
+    <value>Duration Month is Required</value>
+  </data>
+  <data name="DurationRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Duration cannot be longer than 3 characters.</value>
+  </data>
+  <data name="DurationRequired" xml:space="preserve">
+    <value>Duration is Required</value>
+  </data>
+  <data name="DurationYearRequired" xml:space="preserve">
+    <value>Duration Year is Required</value>
+  </data>
+  <data name="EducationTypeRequired" xml:space="preserve">
+    <value>Please select Education Type</value>
+  </data>
+  <data name="EligibilityNameLengthErrorMessage" xml:space="preserve">
+    <value>Eligibility Name cannot be longer than 100 characters.</value>
+    <comment>Save Eligibility </comment>
+  </data>
+  <data name="EligibilityNameRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for Eligibility Name</value>
+    <comment>Save Eligibility </comment>
+  </data>
+  <data name="EligibilityNameRequired" xml:space="preserve">
+    <value>Eligibility Name is Required</value>
+    <comment>Save Eligibility </comment>
+  </data>
+  <data name="EmergencyContactPersonLengthErrorMessage" xml:space="preserve">
+    <value>Emergency Contact Person Name  cannot be longer than 100 characters.</value>
+    <comment>SaveEmployee</comment>
+  </data>
+  <data name="EmergencyContactPersonRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabet  for Emergency Contact Person Name</value>
+    <comment>SaveEmployee</comment>
+  </data>
+  <data name="EmployeeAdditionalComponentExists" xml:space="preserve">
+    <value>Additional Component Type  exists for this Employee</value>
+  </data>
+  <data name="EmployeeAttendanceDate_Required" xml:space="preserve">
+    <value>Please enter Attendance Date</value>
+  </data>
+  <data name="EmployeeAttendanceInTime_Required" xml:space="preserve">
+    <value>Please enter In time</value>
+  </data>
+  <data name="EmployeeAttendanceOutTime_Required" xml:space="preserve">
+    <value>Please enter out time</value>
+  </data>
+  <data name="EmployeeAttendanceRemarksLengthErrorMessage" xml:space="preserve">
+    <value>Remarks cannot be longer than 200 characters.</value>
+  </data>
+  <data name="EmployeeCategoryRequired" xml:space="preserve">
+    <value>Please Select  Employee Category </value>
+    <comment>SaveEmployee</comment>
+  </data>
+  <data name="EmployeeCodeExists" xml:space="preserve">
+    <value>This Employee Code already  exists .</value>
+  </data>
+  <data name="EmployeeCodeLengthErrorMessage" xml:space="preserve">
+    <value>Employee Code cannot be longer than 20 characters.</value>
+    <comment>SaveEmployee</comment>
+  </data>
+  <data name="EmployeeCodeRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(-()&amp;/) for Employee Code </value>
+    <comment>SaveEmployee</comment>
+  </data>
+  <data name="EmployeeCode_Required" xml:space="preserve">
+    <value>EmployeeCode is Required</value>
+    <comment>SaveEmployee</comment>
+  </data>
+  <data name="EmployeeContactExists" xml:space="preserve">
+    <value>Address Type Exists for this Employee</value>
+  </data>
+  <data name="EmployeeEducationExists" xml:space="preserve">
+    <value>Education Type  exists for this Employee</value>
+  </data>
+  <data name="EmployeeExperienceRemarksLengthErrorMessage" xml:space="preserve">
+    <value>Remarks cannot be longer than 200 characters.</value>
+    <comment>Save Employee Experience</comment>
+  </data>
+  <data name="EmployeeFirstNameLengthErrorMessage" xml:space="preserve">
+    <value>First Name cannot be longer than 100 characters.</value>
+    <comment>SaveEmployee</comment>
+  </data>
+  <data name="EmployeeFirstNameRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabet  for First Name</value>
+    <comment>SaveEmployee</comment>
+  </data>
+  <data name="EmployeeFirstName_Required" xml:space="preserve">
+    <value>First Name Required</value>
+    <comment>SaveEmployee</comment>
+  </data>
+  <data name="EmployeeIdentityExists" xml:space="preserve">
+    <value>Identity Type exists for this Employee</value>
+    <comment>Identity Typeexists error message</comment>
+  </data>
+  <data name="EmployeeLanguageRequired" xml:space="preserve">
+    <value>Please Select  Language</value>
+    <comment>SaveEmployeeLanguageSkills</comment>
+  </data>
+  <data name="EmployeeLanguageSkillExists" xml:space="preserve">
+    <value>Language Skill exists for this Employee</value>
+  </data>
+  <data name="EmployeeLanguageSkillLevelRequired" xml:space="preserve">
+    <value>Please Select  SkillLevel</value>
+    <comment>SaveEmployeeLanguageSkills</comment>
+  </data>
+  <data name="EmployeeLastNameLengthErrorMessage" xml:space="preserve">
+    <value>Last Name cannot be longer than 100 characters.</value>
+    <comment>SaveEmployee</comment>
+  </data>
+  <data name="EmployeeLastNameRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabet  for Last Name</value>
+    <comment>SaveEmployee</comment>
+  </data>
+  <data name="EmployeeLastName_Required" xml:space="preserve">
+    <value>Last Name Required</value>
+    <comment>SaveEmployee</comment>
+  </data>
+  <data name="EmployeeMiddleNameLengthErrorMessage" xml:space="preserve">
+    <value>Last Name cannot be longer than 100 characters.</value>
+    <comment>SaveEmployee</comment>
+  </data>
+  <data name="EmployeeMiddleNameRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabet  for Last Name</value>
+    <comment>SaveEmployee</comment>
+  </data>
+  <data name="EmployeeNameRequired" xml:space="preserve">
+    <value>Please Select Employee Name</value>
+    <comment>SaveEmployeeAccount</comment>
+  </data>
+  <data name="EmployeeRequired" xml:space="preserve">
+    <value>Please Select Employee</value>
+  </data>
+  <data name="EmployeeShareAmountRequired" xml:space="preserve">
+    <value>Employee Share Amount is Required</value>
+    <comment>Save Employee Salary</comment>
+  </data>
+  <data name="EmployeeShare_Required" xml:space="preserve">
+    <value>Employee Share is Required</value>
+  </data>
+  <data name="EmployeeStatusRequired" xml:space="preserve">
+    <value>Please Select  Employee Status</value>
+    <comment>SaveEmployee</comment>
+  </data>
+  <data name="EmployeeTaskDateCompareMessage" xml:space="preserve">
+    <value>End Date must be less than or equal to start date</value>
+  </data>
+  <data name="EmployerShareAmountRequired" xml:space="preserve">
+    <value>Employer Share Amount is Required</value>
+    <comment>Save Employee Salary</comment>
+  </data>
+  <data name="EmployerShare_Required" xml:space="preserve">
+    <value>Employer Share is Required</value>
+  </data>
+  <data name="EndingSalaryExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only integer or decimal number with 2 decimals for Ending Salary</value>
+    <comment>Save Employee Experience</comment>
+  </data>
+  <data name="EnquiryCallStatusNameLengthErrorMessage" xml:space="preserve">
+    <value>EnquiryCallStatu sName cannot be longer than 100 characters.</value>
+    <comment>Save EnquiryCallStatus</comment>
+  </data>
+  <data name="EnquiryCallStatusNameRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) forEnquiryCallStatus Name</value>
+    <comment>Save EnquiryCallStatus</comment>
+  </data>
+  <data name="EnquiryCallStatusNameRequired" xml:space="preserve">
+    <value>EnquiryCallStatus Name is Required</value>
+    <comment>Save EnquiryCallStatus</comment>
+  </data>
+  <data name="EnquiryDurationRequired" xml:space="preserve">
+    <value>Enquiry Duration is Required</value>
+  </data>
+  <data name="EnquiryPhoneExpressionErrorMessage" xml:space="preserve">
+    <value>Phone number should be a 10 digit number</value>
+  </data>
+  <data name="ExpectedJoinDateRequired" xml:space="preserve">
+    <value>Expected Join Date is Required</value>
+  </data>
+  <data name="ExperianceEndDateCompareErrorMessage" xml:space="preserve">
+    <value>End Date must be greater than Start Date</value>
+  </data>
+  <data name="ExperianceEndDateRequired" xml:space="preserve">
+    <value>Experience End Date is Required</value>
+    <comment>Save Employee Experience</comment>
+  </data>
+  <data name="ExperienceStartDateRequired" xml:space="preserve">
+    <value>Experience Start Date is Required</value>
+    <comment>Save Employee Experience</comment>
+  </data>
+  <data name="FaxNumberLengthErrorMessage" xml:space="preserve">
+    <value>Fax Number cannot be longer than 100 characters.</value>
+    <comment>Branch</comment>
+  </data>
+  <data name="FaxNumberRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for Fax Number</value>
+    <comment>Branch</comment>
+  </data>
+  <data name="FeeAmountRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only numbers  for Fee Amount</value>
+    <comment>Save University Program</comment>
+  </data>
+  <data name="FeeAmountRupeeRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only numbers  for Fee Amount Rupee</value>
+    <comment>Save University Program</comment>
+  </data>
+  <data name="FeeAmountRupeeRequired" xml:space="preserve">
+    <value>Fee Amount Rupee is Required</value>
+  </data>
+  <data name="FeeTypeExists" xml:space="preserve">
+    <value>This Fee Type Already exists in this receipt</value>
+  </data>
+  <data name="FeeTypeNameRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for FeeType Name</value>
+    <comment>Save FeeType </comment>
+  </data>
+  <data name="GradeRequired" xml:space="preserve">
+    <value>Please Select Grade</value>
+    <comment>Save Employee Personal</comment>
+  </data>
+  <data name="HigherEmployeeRequired" xml:space="preserve">
+    <value>Higher Employee is Required</value>
+  </data>
+  <data name="HolidayFromDateRequired" xml:space="preserve">
+    <value>Holiday From Date Required</value>
+  </data>
+  <data name="HolidayTitleLengthErrorMessage" xml:space="preserve">
+    <value>Holiday Title cannot be longer than 100 characters.</value>
+  </data>
+  <data name="HolidayTitleRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only numbers and symbols(-()&amp;/) for Holiday</value>
+  </data>
+  <data name="HolidayTitleRequired" xml:space="preserve">
+    <value>Holiday Title is Required</value>
+  </data>
+  <data name="HolidayToDateRequired" xml:space="preserve">
+    <value>Holiday To Date is Required</value>
+  </data>
+  <data name="IdentityExpiryDateCompareErrorMessage" xml:space="preserve">
+    <value>Expiry Date must be greater than Issued Date</value>
+  </data>
+  <data name="IdentityExpiryDateRequired" xml:space="preserve">
+    <value>Identity Expiry Date is required</value>
+    <comment>Save Employee Identity</comment>
+  </data>
+  <data name="IdentityIssuedDateRequired" xml:space="preserve">
+    <value>Identity Issued Date is required</value>
+    <comment>Save Employee Identity</comment>
+  </data>
+  <data name="IdentityTypeRequired" xml:space="preserve">
+    <value>Please select Identity Type</value>
+    <comment>Save Employee Identity</comment>
+  </data>
+  <data name="IdentyUniqueIDExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for Identy Unique ID</value>
+    <comment>Save Employee Identity</comment>
+  </data>
+  <data name="IdentyUniqueIDLengthErrorMessage" xml:space="preserve">
+    <value>Identy Unique ID cannot be longer than 50 characters.</value>
+    <comment>Save Employee Identity</comment>
+  </data>
+  <data name="IdentyUniqueIDRequired" xml:space="preserve">
+    <value>Identy Unique ID is Required</value>
+    <comment>Save Employee Identity</comment>
+  </data>
+  <data name="IFSCCodeLengthErrorMessage" xml:space="preserve">
+    <value>IFSC Code cannot be longer than 11 characters.</value>
+    <comment>SaveEmployeeAccount</comment>
+  </data>
+  <data name="IFSCCodeLengthRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers  for IFSC Code</value>
+    <comment>SaveEmployeeAccount</comment>
+  </data>
+  <data name="IFSCCodeRequired" xml:space="preserve">
+    <value>IFSC Code Required</value>
+    <comment>SaveEmployeeAccount</comment>
+  </data>
+  <data name="InTakeNameLengthErrorMessage" xml:space="preserve">
+    <value>InTake Name cannot be longer than 50 characters.</value>
+    <comment>Save InTake</comment>
+  </data>
+  <data name="InTakeNameRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(-()&amp;/) for InTake Name</value>
+    <comment>Save InTake</comment>
+  </data>
+  <data name="InTakeNameRequired" xml:space="preserve">
+    <value>InTake Name Required</value>
+    <comment>Save InTake</comment>
+  </data>
+  <data name="InTakeRequired" xml:space="preserve">
+    <value>In Take is Required</value>
+    <comment>Application</comment>
+  </data>
+  <data name="InTakesRequired" xml:space="preserve">
+    <value>InTakes is Required</value>
+    <comment>Save University Program</comment>
+  </data>
+  <data name="InTimeRequired" xml:space="preserve">
+    <value>In Time Required</value>
+    <comment>Save Attendance Settings</comment>
+  </data>
+  <data name="IsActiveRequired" xml:space="preserve">
+    <value>Please Select Is Active</value>
+    <comment>SaveCountry</comment>
+  </data>
+  <data name="JobFieldExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for Job Field</value>
+    <comment>Save Employee Experience</comment>
+  </data>
+  <data name="JobFieldLengthErrorMessage" xml:space="preserve">
+    <value>Job Field cannot be longer than 100 characters.</value>
+    <comment>Save Employee Experience</comment>
+  </data>
+  <data name="JobPostionExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for Job Postion</value>
+    <comment>Save Employee Experience</comment>
+  </data>
+  <data name="JobPostionLengthErrorMessage" xml:space="preserve">
+    <value>Job Postion cannot be longer than 100 characters.</value>
+    <comment>Save Employee Experience</comment>
+  </data>
+  <data name="JoiningDateCompareErrorMessage" xml:space="preserve">
+    <value>Joining Date must be less than Today</value>
+  </data>
+  <data name="JoiningDateRequired" xml:space="preserve">
+    <value>Joining Date Required</value>
+    <comment>SaveEmployee</comment>
+  </data>
+  <data name="LandPhoneNumberLengthErrorMessage" xml:space="preserve">
+    <value>Land Phone Number cannot be longer than 11 characters.</value>
+  </data>
+  <data name="LanguageNameRequired" xml:space="preserve">
+    <value>Please Select Language Name</value>
+    <comment>Save Country</comment>
+  </data>
+  <data name="LeadDateCompareErrorMessage" xml:space="preserve">
+    <value>Lead Date must be greater than or equal to Today</value>
+  </data>
+  <data name="LeadPhoneRequired" xml:space="preserve">
+    <value>Phone No is Required</value>
+    <comment>EnquiryLead</comment>
+  </data>
+  <data name="LeaveDateRequired" xml:space="preserve">
+    <value>Leave Date Required</value>
+    <comment>SaveLeaveApplication</comment>
+  </data>
+  <data name="LeaveDurationTypeRequired" xml:space="preserve">
+    <value>Leave Duration Type Requierd</value>
+    <comment>SaveLeaveApplication</comment>
+  </data>
+  <data name="LeaveReasonLengthErrorMessage" xml:space="preserve">
+    <value>Leave Reason cannot be longer than 200 charecters.</value>
+    <comment>SaveLeaveApplication</comment>
+  </data>
+  <data name="LeaveReasonRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(-()&amp;/) for LeaveReason</value>
+    <comment>SaveLeaveApplication</comment>
+  </data>
+  <data name="LeaveStatusRequired" xml:space="preserve">
+    <value>Leave Status Required</value>
+    <comment>SaveLeaveApplication</comment>
+  </data>
+  <data name="LeaveToCompareErrorMessage" xml:space="preserve">
+    <value>Leave To must be greater than Leave From</value>
+  </data>
+  <data name="LeaveTypeRequired" xml:space="preserve">
+    <value> Leave Type Required</value>
+    <comment>SaveLeaveApplication</comment>
+  </data>
+  <data name="LoanAmountExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only integer or decimal number with 2 decimals for Amount</value>
+  </data>
+  <data name="LoanAmount_Required" xml:space="preserve">
+    <value>Please Enter Amount</value>
+  </data>
+  <data name="LoanDate_Required" xml:space="preserve">
+    <value>Please Enter Loan Date</value>
+  </data>
+  <data name="LoanInPaySlip_Required" xml:space="preserve">
+    <value>Please Select Slip</value>
+  </data>
+  <data name="MailToUserRequired" xml:space="preserve">
+    <value>Please select atleas one User.</value>
+  </data>
+  <data name="MarkLengthErrorMessage" xml:space="preserve">
+    <value>Mark cannot be longer than 255 characters.</value>
+  </data>
+  <data name="MessageRequired" xml:space="preserve">
+    <value>Please Enter  Message</value>
+  </data>
+  <data name="MessageSubjectRequired" xml:space="preserve">
+    <value>Plese Enter Subject</value>
+  </data>
+  <data name="MICRCodeLengthErrorMessage" xml:space="preserve">
+    <value>MICR Code cannot be longer than 9 digits.</value>
+    <comment>SaveEmployeeAccount</comment>
+  </data>
+  <data name="MICRCodeRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only  numbers  for MICR Code</value>
+    <comment>SaveEmployeeAccount</comment>
+  </data>
+  <data name="MobileNumberExists" xml:space="preserve">
+    <value>This Mobile Number already  exists .</value>
+  </data>
+  <data name="MobileNumberLengthErrorMessage" xml:space="preserve">
+    <value>Mobile Number cannot be longer than 15 characters and less than 10 characters</value>
+    <comment>Save Employee Contact</comment>
+  </data>
+  <data name="MobileNumberRequired" xml:space="preserve">
+    <value>Mobile Number is reuquired</value>
+    <comment>Save Employee Contact</comment>
+  </data>
+  <data name="MonthlyRepaymentAmountExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only integer or decimal number with 2 decimals for  Monthly Repayment Amount</value>
+  </data>
+  <data name="MonthlyRepaymentAmount_Required" xml:space="preserve">
+    <value>Monthly Repayment Amount is Required</value>
+  </data>
+  <data name="NameInAccountLengthErrorMessage" xml:space="preserve">
+    <value>Name In Account cannot be longer than 100 characters.</value>
+    <comment>SaveEmployeeAccount</comment>
+  </data>
+  <data name="NameInAccountRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(-()&amp;/) for Name In Account</value>
+    <comment>SaveEmployeeAccount</comment>
+  </data>
+  <data name="NationalityNameLengthErrorMessage" xml:space="preserve">
+    <value>Nationality Name cannot be longer than 100 characters.</value>
+    <comment>Save Country </comment>
+  </data>
+  <data name="NationalityNameRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(-()&amp;/) for Nationality Name</value>
+    <comment>Save Country </comment>
+  </data>
+  <data name="NationalityNameRequired" xml:space="preserve">
+    <value>Nationality Name Required</value>
+    <comment>Save Country </comment>
+  </data>
+  <data name="NatureOfEnquiryNameLengthErrorMessage" xml:space="preserve">
+    <value>Nature Of Enquiry Name cannot be longer than 50 characters.</value>
+    <comment>Save NatureOfEnquiry</comment>
+  </data>
+  <data name="NatureOfEnquiryNameRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(-()&amp;/) for Nature Of Enquiry Name</value>
+    <comment>Save NatureOfEnquiry</comment>
+  </data>
+  <data name="NatureOfEnquiryNameRequired" xml:space="preserve">
+    <value>Nature Of Enquiry Name Required</value>
+    <comment>Save NatureOfEnquiry</comment>
+  </data>
+  <data name="OnBehalfOfLengthErrorMessage" xml:space="preserve">
+    <value>On behalf of cannot be longer than 200 charecters.</value>
+    <comment>SaveCashFlow</comment>
+  </data>
+  <data name="OpeningBalanceRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter valid integer or decimal number with 2 decimal places.</value>
+    <comment>Save Agent</comment>
+  </data>
+  <data name="OtherFeeTypeNameLengthErrorMessage" xml:space="preserve">
+    <value>OtherFeeType Name cannot be longer than 100 characters.</value>
+    <comment>Save OtherFeeType</comment>
+  </data>
+  <data name="OtherFeeTypeNameRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for OtherFeeType Name</value>
+    <comment>Save OtherFeeType</comment>
+  </data>
+  <data name="OtherFeeTypeNameRequired" xml:space="preserve">
+    <value>OtherFeeType Name is Required</value>
+    <comment>Save OtherFeeType</comment>
+  </data>
+  <data name="OtherFeeTypeRequired" xml:space="preserve">
+    <value>Other Fee Type is Required</value>
+  </data>
+  <data name="OutTimeCompareErrorMessage" xml:space="preserve">
+    <value>Out Time must be greater than In Time</value>
+  </data>
+  <data name="OutTimeRequired" xml:space="preserve">
+    <value>Out Time Required</value>
+    <comment>Save Attendance Settings</comment>
+  </data>
+  <data name="PaidAmountRequired" xml:space="preserve">
+    <value>Paid Amount Required</value>
+  </data>
+  <data name="PaidByLengthErrorMessage" xml:space="preserve">
+    <value>Paid by cannot be longer than 200 charecters.</value>
+    <comment>SaveCashFlow</comment>
+  </data>
+  <data name="PartyKeyRequired" xml:space="preserve">
+    <value>Please Select Party</value>
+    <comment>SaveCashFlow</comment>
+  </data>
+  <data name="PartyTypeKeyRequired" xml:space="preserve">
+    <value>Please Select Party Type</value>
+    <comment>SaveCashFlow</comment>
+  </data>
+  <data name="PasswordHintLengthErrorMessage" xml:space="preserve">
+    <value>Password Hint cannot be longer than 100 characters.</value>
+  </data>
+  <data name="PaymentDateRequired" xml:space="preserve">
+    <value>Payment Date is Required</value>
+    <comment>Save Salary Payment</comment>
+  </data>
+  <data name="PleaseEnterValidTime" xml:space="preserve">
+    <value>Please enter valid time</value>
+  </data>
+  <data name="PostalCodeExpressionErrorMessage" xml:space="preserve">
+    <value>Postal Code is a 6 Digit Number</value>
+    <comment>Save Employee Contact</comment>
+  </data>
+  <data name="PostalCodeLengthErrorMessage" xml:space="preserve">
+    <value>Postal Code cannot be longer than 6 characters.</value>
+    <comment>Save Employee Contact</comment>
+  </data>
+  <data name="PriorityRequired" xml:space="preserve">
+    <value>Please Select Priority</value>
+    <comment>Save EmployeeTask</comment>
+  </data>
+  <data name="ProgramCodeExistsErrorMessage" xml:space="preserve">
+    <value>Program Code  already exists</value>
+    <comment>Save Program</comment>
+  </data>
+  <data name="ProgramCodeLengthErrorMessage" xml:space="preserve">
+    <value>Program Code cannot be longer than 4 characters.</value>
+    <comment>Save Program </comment>
+  </data>
+  <data name="ProgramCodeRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for Program Code</value>
+    <comment>Save Program </comment>
+  </data>
+  <data name="ProgramCodeRequired" xml:space="preserve">
+    <value>Program Code is Required</value>
+    <comment>Save Program</comment>
+  </data>
+  <data name="ProgramNameLengthErrorMessage" xml:space="preserve">
+    <value>Program Name cannot be longer than 100 characters.</value>
+    <comment>Save Program </comment>
+  </data>
+  <data name="ProgramNameRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for Program Name</value>
+    <comment>Save Program </comment>
+  </data>
+  <data name="ProgramRequired" xml:space="preserve">
+    <value>Program is Required</value>
+  </data>
+  <data name="ProgramTypeNameLengthErrorMessage" xml:space="preserve">
+    <value>ProgramType Name cannot be longer than 50 characters.</value>
+    <comment>Save Program Type</comment>
+  </data>
+  <data name="ProgramTypeNameRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for ProgramType name</value>
+    <comment>Save Program Type</comment>
+  </data>
+  <data name="ProgramTypeNameRequired" xml:space="preserve">
+    <value>ProgramName Required</value>
+    <comment>Save Program Type</comment>
+  </data>
+  <data name="ProgramTypeRequired" xml:space="preserve">
+    <value>Program Type is Required</value>
+  </data>
+  <data name="ProvidentFundType_Required" xml:space="preserve">
+    <value>Provident Fund Type is Required</value>
+  </data>
+  <data name="ProvinceNameLengthErrorMessage" xml:space="preserve">
+    <value>Province Name cannot be longer than 100 characters.</value>
+    <comment>Save Province</comment>
+  </data>
+  <data name="ProvincenameLocalLengthErrorMessage" xml:space="preserve">
+    <value>Province Name Local cannot be longer than 100 characters.</value>
+    <comment>Save Province</comment>
+  </data>
+  <data name="ProvincenameLocalRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(-()&amp;/) fo Province Name Local</value>
+    <comment>Save Province</comment>
+  </data>
+  <data name="ProvincenameLocalRequired" xml:space="preserve">
+    <value>Please Enter Province Name Local</value>
+    <comment>Save Province</comment>
+  </data>
+  <data name="ProvinceNameRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(-()&amp;/) fo Province Name</value>
+    <comment>Save Province</comment>
+  </data>
+  <data name="ProvinceNameRequired" xml:space="preserve">
+    <value>Please Enter Province Name</value>
+    <comment>Save Province</comment>
+  </data>
+  <data name="ProvinceRequired" xml:space="preserve">
+    <value>Please select Province</value>
+    <comment>Save Employee Contact</comment>
+  </data>
+  <data name="PurposeLengthErrorMessage" xml:space="preserve">
+    <value>Purpose cannot be longer than 200 charecters.</value>
+    <comment>SaveCashFlow</comment>
+  </data>
+  <data name="ReceivedByLengthErrorMessage" xml:space="preserve">
+    <value>Received by cannot be longer than 200 charecters.</value>
+    <comment>SaveCashFlow</comment>
+  </data>
+  <data name="ReligionNameLengthErrorMessage" xml:space="preserve">
+    <value>Religion  Name  cannot be longer than 100 characters.</value>
+    <comment>Save Religion</comment>
+  </data>
+  <data name="ReligionNameLocalLengthErrorMessage" xml:space="preserve">
+    <value>Religion Name  Local cannot be longer than 100 characters.</value>
+    <comment>Save Religion</comment>
+  </data>
+  <data name="ReligionNameLocalRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for Religion Name  Local</value>
+    <comment>Save Religion</comment>
+  </data>
+  <data name="ReligionNameRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for Religion Name  </value>
+    <comment>Save Religion</comment>
+  </data>
+  <data name="ReligionNameRequired" xml:space="preserve">
+    <value>Religion Name  Required</value>
+    <comment>Save Religion</comment>
+  </data>
+  <data name="RemarksLengthErrorMessage" xml:space="preserve">
+    <value>Remarks cannot be longer than 100 characters.</value>
+  </data>
+  <data name="RepaymentStartDateCompareErrorMessage" xml:space="preserve">
+    <value>Repayment Start Date must be greater than or equal to Loan Date</value>
+  </data>
+  <data name="RoleNameLengthErrorMessage" xml:space="preserve">
+    <value>Role Name cannot be longer than 100 characters.</value>
+    <comment>SaveRole</comment>
+  </data>
+  <data name="RoleNameLocalLengthErrorMessage" xml:space="preserve">
+    <value>Role Name Local cannot be longer than 100 characters.</value>
+    <comment>SaveRole</comment>
+  </data>
+  <data name="RoleNameLocalRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(-()&amp;/) for Role Name Local</value>
+    <comment>SaveRole</comment>
+  </data>
+  <data name="RoleNameLocalRequired" xml:space="preserve">
+    <value>Role Name Local Required</value>
+    <comment>SaveRole</comment>
+  </data>
+  <data name="RoleNameRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(-()&amp;/) for Role Name</value>
+    <comment>SaveRole</comment>
+  </data>
+  <data name="RoleNameRequired" xml:space="preserve">
+    <value>Role Name Required</value>
+    <comment>SaveRole</comment>
+  </data>
+  <data name="RoleRequired" xml:space="preserve">
+    <value>Please select Role</value>
+  </data>
+  <data name="SalaryAmountUnitExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only integer or decimal number with 2 decimals for Amount Unit</value>
+  </data>
+  <data name="SalaryAmountUnit_Required" xml:space="preserve">
+    <value>Please Enter Amount Unit</value>
+  </data>
+  <data name="SalaryComponentDateRequired" xml:space="preserve">
+    <value>Component Date is Required</value>
+    <comment>Save  Salary Component</comment>
+  </data>
+  <data name="SalaryComponentRemarksLengthErrorMessage" xml:space="preserve">
+    <value>Remarks cannot be longer than 100 characters.</value>
+    <comment>Save  Salary Component</comment>
+  </data>
+  <data name="SalaryComponentTypeRequired" xml:space="preserve">
+    <value>Salary Component Type is Required</value>
+    <comment>Save  Salary Component</comment>
+  </data>
+  <data name="SalaryMonthRequired" xml:space="preserve">
+    <value>Salary Month is Required</value>
+    <comment>Save Employee Salary</comment>
+  </data>
+  <data name="SalaryPayHead_Required" xml:space="preserve">
+    <value>Please Select PayHead</value>
+  </data>
+  <data name="SalaryPaymentDateRequired" xml:space="preserve">
+    <value>Salary Payment Date is Required</value>
+    <comment>Save Employee Salary</comment>
+  </data>
+  <data name="SalaryPaymentRemarksLengthErrorMessage" xml:space="preserve">
+    <value>Remarks cannot be longer than 1000 charecters.</value>
+    <comment>SaveSalaryPayment</comment>
+  </data>
+  <data name="SalaryUnityType_Required" xml:space="preserve">
+    <value>Please Select Unity Type</value>
+  </data>
+  <data name="SalaryYearRequired" xml:space="preserve">
+    <value>Salary Year is Required</value>
+    <comment>Save Employee Salary</comment>
+  </data>
+  <data name="Salutation_Required" xml:space="preserve">
+    <value>Please Select Salutation </value>
+    <comment>SaveEmployee</comment>
+  </data>
+  <data name="StartDateRequired" xml:space="preserve">
+    <value>Start Date is Required</value>
+    <comment>Save EmployeeTask</comment>
+  </data>
+  <data name="StartingSalaryExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only integer or decimal number with 2 decimals for Starting Salary</value>
+    <comment>Save Employee Experience</comment>
+  </data>
+  <data name="SubjectNameLengthErrorMessage" xml:space="preserve">
+    <value>Subject Name cannot be longer than 200 characters.</value>
+  </data>
+  <data name="SubjectNameRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for Subject name</value>
+  </data>
+  <data name="SubjectNameRequired" xml:space="preserve">
+    <value>Please Enter Subject Name</value>
+  </data>
+  <data name="TaskStatusRequired" xml:space="preserve">
+    <value>Please Select Task Status</value>
+    <comment>Save EmployeeTask</comment>
+  </data>
+  <data name="TaskTitleLengthErrorMessage" xml:space="preserve">
+    <value>Task Title cannot be longer than 100 characters.</value>
+    <comment>SaveEmployeeTask</comment>
+  </data>
+  <data name="TaskTitleRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(-()&amp;/) for  Task Title</value>
+    <comment>SaveEmployeeTask</comment>
+  </data>
+  <data name="TaskTitleRequired" xml:space="preserve">
+    <value>Task Title is Required</value>
+    <comment>Save EmployeeTask</comment>
+  </data>
+  <data name="TelephoneCodeLengthErrorMessage" xml:space="preserve">
+    <value>Telephone Code cannot be longer than 10 characters.</value>
+    <comment>Save Country </comment>
+  </data>
+  <data name="TelephoneCodeRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only numbers and symbols(-()&amp;/) for Telephone Code</value>
+    <comment>Save Country </comment>
+  </data>
+  <data name="TotalAmountRequired" xml:space="preserve">
+    <value>Total Amount is Required</value>
+    <comment>Application</comment>
+  </data>
+  <data name="TotalAmountRupeeRequired" xml:space="preserve">
+    <value>Please Add Course Fee In University Course Fee</value>
+    <comment>Application</comment>
+  </data>
+  <data name="TotalWorkingHoursLengthErrorMessage" xml:space="preserve">
+    <value>Total Working Hours cannot be longer than 24 characters.</value>
+  </data>
+  <data name="TotalWorkingHoursRangeErrorMessage" xml:space="preserve">
+    <value>Total Working Hours must be between 1 and 24</value>
+  </data>
+  <data name="TotalWorkingHoursRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only numbers for Total Working Hours</value>
+  </data>
+  <data name="TotalWorkingHoursRequired" xml:space="preserve">
+    <value>Total Working Hours is Required</value>
+  </data>
+  <data name="TransactionDueDateCompareErrorMessage" xml:space="preserve">
+    <value>Due Date must be greater than Transaction Date</value>
+  </data>
+  <data name="UniversityMasterCodeRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for University Code</value>
+    <comment>Save University</comment>
+  </data>
+  <data name="UniversityMasterNameRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for University Name</value>
+    <comment>Save University</comment>
+  </data>
+  <data name="UniversityRequired" xml:space="preserve">
+    <value>University is Required</value>
+  </data>
+  <data name="InitialPaymentAmountRequired" xml:space="preserve">
+    <value>Please Enter Iniatial Payment</value>
+  </data>
+  <data name="PromotedDivisionRequired" xml:space="preserve">
+    <value>Please Select Division</value>
+  </data>
+  <data name="CertificateTypeRequired" xml:space="preserve">
+    <value>Please Select Certificate Type</value>
+  </data>
+  <data name="CertificateTypeExists" xml:space="preserve">
+    <value>This Certificate Type Already exists in this Field</value>
+  </data>
+  <data name="FeeYearExists" xml:space="preserve">
+    <value>This Fee Year Already exists in this receipt</value>
+  </data>
+  <data name="ExamDateRequired" xml:space="preserve">
+    <value>Please Enter Date</value>
+  </data>
+  <data name="MaximumMarkLessThanErrorMessage" xml:space="preserve">
+    <value>Maximum Mark cannot be Less than Minimum Mark</value>
+    <comment>Save Internal Exam</comment>
+  </data>
+  <data name="MaximumMarkRequired" xml:space="preserve">
+    <value>Please Enter Maximum Mark</value>
+  </data>
+  <data name="MinimumMarkGreaterThanErrorMessage" xml:space="preserve">
+    <value>Minimum Mark cannot be Greater than Maximum Mark</value>
+    <comment>Save Internal Exam</comment>
+  </data>
+  <data name="MinimumMarkRequired" xml:space="preserve">
+    <value>Please Enter Minimum Mark</value>
+  </data>
+  <data name="ExamStartTimeLessThanErrorMessage" xml:space="preserve">
+    <value>End Time cannot be Less than Start Time</value>
+    <comment>Save Internal Exam</comment>
+  </data>
+  <data name="ExamCentreRequired" xml:space="preserve">
+    <value>Please Select Exam Centre</value>
+  </data>
+  <data name="ExamTermRequired" xml:space="preserve">
+    <value>Please Select Exam Term</value>
+  </data>
+  <data name="ScheduleDateRequired" xml:space="preserve">
+    <value>Please Schedule Date</value>
+  </data>
+  <data name="SelectBatch" xml:space="preserve">
+    <value>Select Batch</value>
+  </data>
+  <data name="SelectCourse" xml:space="preserve">
+    <value>Select Course</value>
+  </data>
+  <data name="SelectCourseType" xml:space="preserve">
+    <value>Select CourseType</value>
+  </data>
+  <data name="SelectSubject" xml:space="preserve">
+    <value>Select Subject</value>
+  </data>
+  <data name="SelectSyllabus" xml:space="preserve">
+    <value>Select Syllabus</value>
+  </data>
+  <data name="SelectUniversity" xml:space="preserve">
+    <value>Select University</value>
+  </data>
+  <data name="SelectYear" xml:space="preserve">
+    <value>Select Year</value>
+  </data>
+  <data name="AppUserNameExistsErrorMessage" xml:space="preserve">
+    <value>User Name already exists</value>
+  </data>
+  <data name="AppUserNameExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(-()&amp;/) without space for User Name</value>
+    <comment>Save App User</comment>
+  </data>
+  <data name="AppUserNameLengthErrorMessage" xml:space="preserve">
+    <value>User Name cannot be longer than 50 characters.</value>
+    <comment>Save App User</comment>
+  </data>
+  <data name="AppUserNameRequired" xml:space="preserve">
+    <value>User Name is Required</value>
+    <comment>Save App User</comment>
+  </data>
+  <data name="AppUserPasswordRequired" xml:space="preserve">
+    <value>Password is Required</value>
+    <comment>Save App User</comment>
+  </data>
+  <data name="AuthorAddressExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for Author Address</value>
+    <comment>Save Author</comment>
+  </data>
+  <data name="AuthorAddressLengthErrorMessage" xml:space="preserve">
+    <value>Author Address cannot be longer than 250 characters.</value>
+    <comment>Save Author</comment>
+  </data>
+  <data name="AuthorNameExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(-()&amp;/) for Author Name</value>
+    <comment>Save Author</comment>
+  </data>
+  <data name="AuthorNameLengthErrorMessage" xml:space="preserve">
+    <value>Author Name cannot be longer than 200 characters.</value>
+    <comment>Save Author</comment>
+  </data>
+  <data name="AuthorNameRequired" xml:space="preserve">
+    <value>Author Name is Required</value>
+    <comment>Save Author</comment>
+  </data>
+  <data name="AuthorNickNameExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(-()&amp;/) for Author Nick Name</value>
+    <comment>Save Author</comment>
+  </data>
+  <data name="AuthorNickNameLengthErrorMessage" xml:space="preserve">
+    <value>Author Nick Name cannot be longer than 200 characters.</value>
+    <comment>Save Author</comment>
+  </data>
+  <data name="AuthorPhoneExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only numbers for Contact Author Phone</value>
+    <comment>Save Author</comment>
+  </data>
+  <data name="AuthorPhoneLengthErrorMessage" xml:space="preserve">
+    <value>Author Phone cannot be longer than 20 characters.</value>
+    <comment>Save Author</comment>
+  </data>
+  <data name="AuthorRequired" xml:space="preserve">
+    <value>Please select Author</value>
+    <comment>Save Book</comment>
+  </data>
+  <data name="BloodGroupExpressionErrorMessage" xml:space="preserve">
+    <value>Enter  valid Blood Group</value>
+    <comment>Save App User</comment>
+  </data>
+  <data name="BookBarCodeLengthErrorMessage" xml:space="preserve">
+    <value>Barcode Local cannot be longer than 100 characters.</value>
+    <comment>Save Book Copy</comment>
+  </data>
+  <data name="BookCategoryNameLengthErrorMessage" xml:space="preserve">
+    <value>Book Category Name cannot be longer than 100</value>
+    <comment>SaveBookCategory</comment>
+  </data>
+  <data name="BookCategoryNameLocalLengthErrorMessage" xml:space="preserve">
+    <value>Book Category Name Local cannot be longer than 100</value>
+    <comment>SaveBookCategory</comment>
+  </data>
+  <data name="BookCategoryNameLocalRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(-()&amp;/) for Book Category Name Local</value>
+    <comment>SaveBookCategory</comment>
+  </data>
+  <data name="BookCategoryNameLocalRequired" xml:space="preserve">
+    <value>Book Category Name Local is Required</value>
+    <comment>SaveBookCategory</comment>
+  </data>
+  <data name="BookCategoryNameRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(-()&amp;/) for Book Category  Name</value>
+    <comment>SaveBookCategory</comment>
+  </data>
+  <data name="BookCategoryNameRequired" xml:space="preserve">
+    <value>Book Category Name is Required</value>
+    <comment>SaveBookCategory</comment>
+  </data>
+  <data name="BookCategoryRequired" xml:space="preserve">
+    <value>Please select Book Category</value>
+    <comment>Save Book</comment>
+  </data>
+  <data name="BookCopyRequired" xml:space="preserve">
+    <value>Book Copy Required</value>
+    <comment>Save Book Issue</comment>
+  </data>
+  <data name="BookEditionLengthErrorMessage" xml:space="preserve">
+    <value>Book Edition cannot be longer than 50 characters.</value>
+    <comment>Save Book Copy</comment>
+  </data>
+  <data name="BookEditionRequired" xml:space="preserve">
+    <value>Book Edition Required</value>
+    <comment>Save Book Copy</comment>
+  </data>
+  <data name="BookIssueTypeNameExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers for Book Issue Type Name</value>
+    <comment>Save Book Issue Type</comment>
+  </data>
+  <data name="BookIssueTypeNameLengthErrorMessage" xml:space="preserve">
+    <value>Book Issue Type Name cannot be longer than 100 characters.</value>
+    <comment>Save Book Issue Type</comment>
+  </data>
+  <data name="BookIssueTypeNameLocalExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers for Book Issue Type Name Local</value>
+    <comment>Save Book Issue Type</comment>
+  </data>
+  <data name="BookIssueTypeNameLocalLengthErrorMessage" xml:space="preserve">
+    <value>Book Issue Type Name Local cannot be longer than 100 characters.</value>
+    <comment>Save Book Issue Type</comment>
+  </data>
+  <data name="BookIssueTypeNameLocalRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(-()&amp;/) for Book Issue Type Name Local</value>
+    <comment>SavePublisher</comment>
+  </data>
+  <data name="BookIssueTypeNameLocalRequired" xml:space="preserve">
+    <value>Book IssueType Name Local is Required</value>
+    <comment>Save Book Issue Type</comment>
+  </data>
+  <data name="BookIssueTypeNameRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(-()&amp;/) for Book Issue Type Name</value>
+    <comment>SavePublisher</comment>
+  </data>
+  <data name="BookIssueTypeNameRequired" xml:space="preserve">
+    <value>Book Issue Type Name is Required</value>
+    <comment>Save Book Issue Type</comment>
+  </data>
+  <data name="BookIssueTypeRequired" xml:space="preserve">
+    <value>Please select Book Issue Type</value>
+    <comment>Save Book</comment>
+  </data>
+  <data name="BookNameRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(-()&amp;/) for BookName</value>
+    <comment>SaveBook</comment>
+  </data>
+  <data name="BookPriceExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only integer or decimal number with 2 decimals for Book Price</value>
+    <comment>Save Book Copy</comment>
+  </data>
+  <data name="BookPriceRequired" xml:space="preserve">
+    <value>Book Price is Required</value>
+    <comment>Save Book Copy</comment>
+  </data>
+  <data name="BookPrintYearExpressionErrorMessage" xml:space="preserve">
+    <value>Print Year must be a 4 digit number.</value>
+    <comment>Save Book Copy</comment>
+  </data>
+  <data name="BookRequired" xml:space="preserve">
+    <value>Please select Book</value>
+    <comment>Save Book Copy</comment>
+  </data>
+  <data name="BookStatusNameLengthErrorMessage" xml:space="preserve">
+    <value>Book Status Name  cannot be longer than 100 characters</value>
+    <comment>SaveBookStatus</comment>
+  </data>
+  <data name="BookStatusNameLocalLengthErrorMessage" xml:space="preserve">
+    <value>Book Status Name Local Name  cannot be longer than 100 characters</value>
+    <comment>SaveBookStatus</comment>
+  </data>
+  <data name="BookStatusNameLocalRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(-()&amp;/) for Book Status Name Local</value>
+    <comment>SaveBookStatus</comment>
+  </data>
+  <data name="BookStatusNameLocalRequired" xml:space="preserve">
+    <value>Book Status Name Local is Required</value>
+    <comment>SaveBookStatus</comment>
+  </data>
+  <data name="BookStatusNameRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(-()&amp;/) for Book Status Name</value>
+    <comment>SaveBookStatus</comment>
+  </data>
+  <data name="BookStatusNameRequired" xml:space="preserve">
+    <value>Book Status Name is  Required</value>
+    <comment>SaveBookStatus</comment>
+  </data>
+  <data name="BookStatusRequired" xml:space="preserve">
+    <value>Book Status Required</value>
+    <comment>Save Book Issue</comment>
+  </data>
+  <data name="BorrowerTypeKeyRequired" xml:space="preserve">
+    <value>Borrower Type Required</value>
+    <comment>Save Member Registration</comment>
+  </data>
+  <data name="BorrowerTypeNameExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers  for Borrower Type Name</value>
+    <comment>Save Borrower Type</comment>
+  </data>
+  <data name="BorrowerTypeNameLengthErrorMessage" xml:space="preserve">
+    <value>Borrower Type Name cannot be longer than 100 characters.</value>
+    <comment>Save Borrower Type</comment>
+  </data>
+  <data name="BorrowerTypeNameLocalExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers  for Borrower Type Name Local</value>
+    <comment>Save Borrower Type</comment>
+  </data>
+  <data name="BorrowerTypeNameLocalLengthErrorMessage" xml:space="preserve">
+    <value>Borrower Type Name Local cannot be longer than 100 characters.</value>
+    <comment>Save Borrower Type</comment>
+  </data>
+  <data name="BorrowerTypeNameLocalRequired" xml:space="preserve">
+    <value>Borrower Type Name Local is Required</value>
+    <comment>Save Borrower Type</comment>
+  </data>
+  <data name="BorrowerTypeNameRequired" xml:space="preserve">
+    <value>Borrower Type Name is Required</value>
+    <comment>Save Borrower Type</comment>
+  </data>
+  <data name="CardIdExistsErrorMessage" xml:space="preserve">
+    <value>This Card Id not exists</value>
+  </data>
+  <data name="CardIdLengthErrorMessage" xml:space="preserve">
+    <value>Card Id cannot be longer than 20</value>
+    <comment>Save Book Issue</comment>
+  </data>
+  <data name="CardIdRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(-()*&amp;/) for Card Id</value>
+    <comment>Save Book Issue</comment>
+  </data>
+  <data name="CardIdRequired" xml:space="preserve">
+    <value>Card Id Required</value>
+    <comment>Save Book Issue</comment>
+  </data>
+  <data name="CashFlowAuthorizedByLengthErrorMessage" xml:space="preserve">
+    <value>Authorized by cannot be longer than 200 charecters.</value>
+    <comment>SaveCashFlow</comment>
+  </data>
+  <data name="CashFlowCardNumberLengthErrorMessage" xml:space="preserve">
+    <value>Card Number cannot be longer than 30 charecters.</value>
+    <comment>SaveCashFlow</comment>
+  </data>
+  <data name="CashFlowChequeOrDDNumberLengthErrorMessage" xml:space="preserve">
+    <value>Cheque or DD Number cannot be longer than 25 charecters.</value>
+    <comment>SaveCashFlow</comment>
+  </data>
+  <data name="CashFlowOnBehalfOfLengthErrorMessage" xml:space="preserve">
+    <value>On behalf of cannot be longer than 200 charecters.</value>
+    <comment>SaveCashFlow</comment>
+  </data>
+  <data name="CashFlowPaidByLengthErrorMessage" xml:space="preserve">
+    <value>Paid by cannot be longer than 200 charecters.</value>
+    <comment>SaveCashFlow</comment>
+  </data>
+  <data name="CashFlowPartyKeyRequired" xml:space="preserve">
+    <value>Please Select Party</value>
+    <comment>SaveCashFlow</comment>
+  </data>
+  <data name="CashFlowPartyTypeKeyRequired" xml:space="preserve">
+    <value>Please Select Party Type</value>
+    <comment>SaveCashFlow</comment>
+  </data>
+  <data name="CashFlowPaymentModeKeyRequired" xml:space="preserve">
+    <value>Please Select Payment Mode</value>
+    <comment>SaveCashFlow</comment>
+  </data>
+  <data name="CashFlowPurposeLengthErrorMessage" xml:space="preserve">
+    <value>Purpose cannot be longer than 200 charecters.</value>
+    <comment>SaveCashFlow</comment>
+  </data>
+  <data name="CashFlowReceivedByLengthErrorMessage" xml:space="preserve">
+    <value>Received by cannot be longer than 200 charecters.</value>
+    <comment>SaveCashFlow</comment>
+  </data>
+  <data name="CashFlowTypeNameLengthErrorMessage" xml:space="preserve">
+    <value>Cash FlowType Name  cannot be longer than 20 characters</value>
+    <comment>SaveCashFlowType</comment>
+  </data>
+  <data name="CashFlowTypeNameLocalLengthErrorMessage" xml:space="preserve">
+    <value>Cash Flow Type  Name  Local  cannot be longer than 20 characters</value>
+    <comment>SaveCashFlowType</comment>
+  </data>
+  <data name="CashFlowTypeNameLocalRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(-*()&amp;/) for Cash Flow Type Name Local</value>
+    <comment>SaveCashFlowType</comment>
+  </data>
+  <data name="CashFlowTypeNameLocalRequired" xml:space="preserve">
+    <value>Cash FlowType Name Local is Required</value>
+    <comment>SaveCashFlowType</comment>
+  </data>
+  <data name="CashFlowTypeNameRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(-*()&amp;/) for Cash Flow Type Name</value>
+    <comment>SaveCashFlowType</comment>
+  </data>
+  <data name="CashFlowTypeNameRequired" xml:space="preserve">
+    <value>Cash FlowType Name is Required</value>
+    <comment>SaveCashFlowType</comment>
+  </data>
+  <data name="CityNameRequired" xml:space="preserve">
+    <value>City Name Required</value>
+    <comment>Save Member Registration</comment>
+  </data>
+  <data name="DefaultPhotoUrl" xml:space="preserve">
+    <value>images/blank-profile-picture-973460_1280.png</value>
+    <comment>Member Default Photo</comment>
+  </data>
+  <data name="ErrorGreaterThanReturnDate" xml:space="preserve">
+    <value>Return Date must be greater than Due Date</value>
+    <comment>Save Book Return</comment>
+  </data>
+  <data name="FineAmountExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only integer or decimal number with 2 decimals for Fine Amount</value>
+    <comment>Save Book Copy</comment>
+  </data>
+  <data name="FineAmountRequired" xml:space="preserve">
+    <value>Fine Amount is Required</value>
+    <comment>Save Book Copy</comment>
+  </data>
+  <data name="FirstNameExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(-()&amp;/) for First Name</value>
+    <comment>Save App User</comment>
+  </data>
+  <data name="FirstNameLengthErrorMessage" xml:space="preserve">
+    <value>First Name cannot be longer than 50 characters.</value>
+    <comment>Save App User</comment>
+  </data>
+  <data name="FirstNameRequired" xml:space="preserve">
+    <value>First Name is Required</value>
+    <comment>Save App User</comment>
+  </data>
+  <data name="IdentificationNumberExistsErrorMessage" xml:space="preserve">
+    <value>Identification already exists</value>
+  </data>
+  <data name="IdentificationNumberLengthErrorMessage" xml:space="preserve">
+    <value>IdentificationNumber cannot be longer than 20</value>
+    <comment>Save Member Registration</comment>
+  </data>
+  <data name="IdentificationNumberRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(-()*&amp;/) for Identification Number</value>
+    <comment>Save Member Registration</comment>
+  </data>
+  <data name="IdentificationNumberRequired" xml:space="preserve">
+    <value>Identification Number Required</value>
+    <comment>Save Member Registration</comment>
+  </data>
+  <data name="IdentificationTypeKeyRequired" xml:space="preserve">
+    <value>Identification Type Required</value>
+    <comment>Save Member Registration</comment>
+  </data>
+  <data name="ISBNExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(-()&amp;/) for  ISBN.</value>
+    <comment>Save Book Copy</comment>
+  </data>
+  <data name="ISBNLengthErrorMessage" xml:space="preserve">
+    <value>ISBN cannot be longer than 100 characters.</value>
+    <comment>Save Book Copy</comment>
+  </data>
+  <data name="IssueDateRequired" xml:space="preserve">
+    <value>Issue Date Required</value>
+    <comment>Save Book Issue</comment>
+  </data>
+  <data name="LanguageNameLengthErrorMessage" xml:space="preserve">
+    <value>Language Name  cannot be longer than 50 characters</value>
+    <comment>Save Language</comment>
+  </data>
+  <data name="LanguageRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(-()&amp;/) for Language Name </value>
+    <comment>Save Language</comment>
+  </data>
+  <data name="LanguageRequired" xml:space="preserve">
+    <value>Please select Language</value>
+    <comment>Save Book</comment>
+  </data>
+  <data name="LanguageShortNameLengthErrorMessage" xml:space="preserve">
+    <value>Language Name Local Name  cannot be longer than 5 characters</value>
+    <comment>Save Language</comment>
+  </data>
+  <data name="LastNameExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(-()&amp;/) for Last Name</value>
+    <comment>Save App User</comment>
+  </data>
+  <data name="LastNameLengthErrorMessage" xml:space="preserve">
+    <value>Last Name cannot be longer than 50 characters.</value>
+    <comment>Save App User</comment>
+  </data>
+  <data name="LastNameRequired" xml:space="preserve">
+    <value>Last Name is Required</value>
+    <comment>Save App User</comment>
+  </data>
+  <data name="LateFeePerDayExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only integer or decimal number with 2 decimals for Late Fee Per Day</value>
+    <comment>Save Member Type</comment>
+  </data>
+  <data name="LateFeePerDayRequired" xml:space="preserve">
+    <value>Late Fee Per Day is Required</value>
+    <comment>Save Member Type</comment>
+  </data>
+  <data name="MemberDOBRequired" xml:space="preserve">
+    <value>Member DOBRequired</value>
+    <comment>Save Member Registration</comment>
+  </data>
+  <data name="MemberEmailExistsErrorMessage" xml:space="preserve">
+    <value>Email Address already exists</value>
+  </data>
+  <data name="MemberFirstNameLengthErrorMessage" xml:space="preserve">
+    <value>Member First Name cannot be longer than 50</value>
+    <comment>Save Member Registration</comment>
+  </data>
+  <data name="MemberFirstNameRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(-()*&amp;/) for Member First Name</value>
+    <comment>Save Member Registration</comment>
+  </data>
+  <data name="MemberFirstNameRequired" xml:space="preserve">
+    <value>Member First Name Required</value>
+    <comment>Save Member Registration</comment>
+  </data>
+  <data name="MemberLastNameLengthErrorMessage" xml:space="preserve">
+    <value>Member Last Name cannot be longer than 50</value>
+    <comment>Save Member Registration</comment>
+  </data>
+  <data name="MemberLastNameRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(-()*&amp;/) for Member Last Name</value>
+    <comment>Save Member Registration</comment>
+  </data>
+  <data name="MemberLastNameRequired" xml:space="preserve">
+    <value>Member Last Name Required</value>
+    <comment>Save Member Registration</comment>
+  </data>
+  <data name="MemberPhoneNoExistsErrorMessage" xml:space="preserve">
+    <value>Phone Number already exists</value>
+  </data>
+  <data name="MemberShipFeeExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only integer or decimal number with 2 decimals for Member Ship Fee</value>
+    <comment>Save Member Type</comment>
+  </data>
+  <data name="MemberShipFeeRequired" xml:space="preserve">
+    <value>Member Ship Fee Required is Required</value>
+    <comment>Save Member Type</comment>
+  </data>
+  <data name="MemberTypeKeyRequired" xml:space="preserve">
+    <value>Member Type Required</value>
+    <comment>Save Member Registration</comment>
+  </data>
+  <data name="MemberTypeNameExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers  for Member Type Name</value>
+    <comment>Save Member Type</comment>
+  </data>
+  <data name="MemberTypeNameLengthErrorMessage" xml:space="preserve">
+    <value>Member Type Name cannot be longer than 100 characters.</value>
+    <comment>Save Member Type</comment>
+  </data>
+  <data name="MemberTypeNameLocalExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and  for Member Type Name Local</value>
+    <comment>Save Member Type</comment>
+  </data>
+  <data name="MemberTypeNameLocalLengthErrorMessage" xml:space="preserve">
+    <value>Member Type Name Local cannot be longer than 100 characters.</value>
+    <comment>Save Member Type</comment>
+  </data>
+  <data name="MemberTypeNameLocalRequired" xml:space="preserve">
+    <value>Member Type Name Local is Required</value>
+    <comment>Save Member Type</comment>
+  </data>
+  <data name="MemberTypeNameRequired" xml:space="preserve">
+    <value>Member Type Name is Required</value>
+    <comment>Save Member Type</comment>
+  </data>
+  <data name="MiddleNameExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(-()&amp;/) for Middle Name</value>
+    <comment>Save App User</comment>
+  </data>
+  <data name="MiddleNameLengthErrorMessage" xml:space="preserve">
+    <value>Middle Name cannot be longer than 50 characters.</value>
+    <comment>Save App User</comment>
+  </data>
+  <data name="NoOfBookIssueAtATimeExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only numbers  for Book Issue At A Time</value>
+    <comment>Save Borrower Type</comment>
+  </data>
+  <data name="NoOfBookIssueAtATimeRangeErrorMessage" xml:space="preserve">
+    <value>No Of Book Issue At A Time must be between 1 and 255</value>
+    <comment>Save Borrower Type</comment>
+  </data>
+  <data name="NoOfBookIssueAtATimeRequired" xml:space="preserve">
+    <value>No Of Book Issue At A Time is Required</value>
+    <comment>Save Borrower Type</comment>
+  </data>
+  <data name="NoOfPagesExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only numbers for No Of Pages</value>
+    <comment>Save Book Copy</comment>
+  </data>
+  <data name="NoOfPagesRangeErrorMessage" xml:space="preserve">
+    <value>No Of Pages must be between 1 and 32,767</value>
+    <comment>Save Book Copy</comment>
+  </data>
+  <data name="NumberOfBooksAllowedExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only numbers  for Number Of Books Allowed</value>
+    <comment>Save Member Type</comment>
+  </data>
+  <data name="NumberOfBooksAllowedRangeErrorMessage" xml:space="preserve">
+    <value>Number Of Books Allowed must be between 1 and 255</value>
+    <comment>Save Member Type</comment>
+  </data>
+  <data name="NumberOfBooksAllowedRequired" xml:space="preserve">
+    <value>Number Of Books Allowed is Required</value>
+    <comment>Save Member Type</comment>
+  </data>
+  <data name="NumberofBooksDayRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Today Allowed Book must have greater than Zero</value>
+  </data>
+  <data name="PasswordExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(-()&amp;/) forPassword</value>
+    <comment>Save App User</comment>
+  </data>
+  <data name="PasswordRangeErrorMessage" xml:space="preserve">
+    <value>Password must be between 8 and 300</value>
+    <comment>Save App User</comment>
+  </data>
+  <data name="Password_Length3" xml:space="preserve">
+    <value>Password cannot be longer than 200 characters.</value>
+  </data>
+  <data name="Phone1Required" xml:space="preserve">
+    <value>Phone1 is Required</value>
+    <comment>Save App User</comment>
+  </data>
+  <data name="PhoneExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only numbers for Phone Number</value>
+    <comment>Save App User</comment>
+  </data>
+  <data name="PhoneLengthErrorMessage" xml:space="preserve">
+    <value>Phone Number cannot be longer than 10 characters.</value>
+    <comment>Save App User</comment>
+  </data>
+  <data name="PhoneNoLengthErrorMessage" xml:space="preserve">
+    <value>Phone Number cannot be longer than 10</value>
+    <comment>Save Member Registration</comment>
+  </data>
+  <data name="PhoneNoRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only numbers for Phone Number</value>
+    <comment>Save Member Registration</comment>
+  </data>
+  <data name="PhoneNoRequired" xml:space="preserve">
+    <value>Phone Number Required</value>
+    <comment>Save Member Registration</comment>
+  </data>
+  <data name="PublisherAddressLengthErrorMessage" xml:space="preserve">
+    <value>Publisher Address cannot be longer than 20</value>
+    <comment>SavePublisher</comment>
+  </data>
+  <data name="PublisherAddressRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(-()&amp;/) for Publisher Address</value>
+  </data>
+  <data name="PublisherNameLengthErrorMessage" xml:space="preserve">
+    <value>Publisher Name cannot be longer than 200</value>
+    <comment>SavePublisher</comment>
+  </data>
+  <data name="PublisherNameRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(-()&amp;/) for Publisher Name</value>
+    <comment>SavePublisher</comment>
+  </data>
+  <data name="PublisherNameRequierd" xml:space="preserve">
+    <value>Publisher Name is Requierd</value>
+    <comment>SavePublisher</comment>
+  </data>
+  <data name="PublisherPhoneLengthErrorMessage" xml:space="preserve">
+    <value>Publisher Phone cannot be longer than 20</value>
+    <comment>SavePublisher</comment>
+  </data>
+  <data name="PublisherPhoneRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(-()&amp;/) for Publisher Name</value>
+  </data>
+  <data name="PublisherRequired" xml:space="preserve">
+    <value>Please select Publisher</value>
+    <comment>Save Book</comment>
+  </data>
+  <data name="RackNameLengthErrorMessage" xml:space="preserve">
+    <value>Rack Name cannot be longer than 100</value>
+    <comment>SaveRack</comment>
+  </data>
+  <data name="RackNameLocalLengthErrorMessage" xml:space="preserve">
+    <value>Rack Name  Local cannot be longer than 100</value>
+    <comment>SaveRack</comment>
+  </data>
+  <data name="RackNameLocalRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(-()&amp;/) for Rack Name Local</value>
+    <comment>SaveRack</comment>
+  </data>
+  <data name="RackNameLocalRequired" xml:space="preserve">
+    <value>Rack Name Local Required</value>
+    <comment>SaveRack</comment>
+  </data>
+  <data name="RackNameRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(-()&amp;/) for Rack Name</value>
+    <comment>SaveRack</comment>
+  </data>
+  <data name="RackNameRequired" xml:space="preserve">
+    <value>Rack Name Required</value>
+    <comment>SaveRack</comment>
+  </data>
+  <data name="RackRemarksLengthErrorMessage" xml:space="preserve">
+    <value>Rack Remarks  cannot be longer than 100 characters.</value>
+    <comment>SaveRack</comment>
+  </data>
+  <data name="RackRequired" xml:space="preserve">
+    <value>Please select Rack</value>
+    <comment>Save Book Copy</comment>
+  </data>
+  <data name="RegistrationDateRequired" xml:space="preserve">
+    <value>Registration Date Required</value>
+    <comment>Save Member Registration</comment>
+  </data>
+  <data name="RegistrationFeeExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only integer or decimal number with 2 decimals for Registration Fee</value>
+    <comment>Save Member Type</comment>
+  </data>
+  <data name="RegistrationFeeRequired" xml:space="preserve">
+    <value>Registration Fee is Required</value>
+    <comment>Save Member Type</comment>
+  </data>
+  <data name="RemarkLengthErrorMessage" xml:space="preserve">
+    <value>Remark cannot be longer than 200</value>
+    <comment>Save Book Issue</comment>
+  </data>
+  <data name="RemarkRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(-()*&amp;/) for Remark</value>
+    <comment>Save Book Issue</comment>
+  </data>
+  <data name="ReturnPeriodExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only integer or decimal number with 2 decimals for Return Period</value>
+    <comment>Save Member Type</comment>
+  </data>
+  <data name="ReturnPeriodRequired" xml:space="preserve">
+    <value>Return Period is Required</value>
+    <comment>Save Member Type</comment>
+  </data>
+  <data name="StatusRequired" xml:space="preserve">
+    <value>Please select Status</value>
+    <comment>Save Author</comment>
+  </data>
+  <data name="StreetNameLengthErrorMessage" xml:space="preserve">
+    <value>Street Name cannot be longer than 50</value>
+    <comment>Save Member Registration</comment>
+  </data>
+  <data name="StreetNameRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(-()*&amp;/) for Street Name</value>
+    <comment>Save Member Registration</comment>
+  </data>
+  <data name="StreetNameRequired" xml:space="preserve">
+    <value>Street Name Required</value>
+    <comment>Save Member Registration</comment>
+  </data>
+  <data name="SurNameExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(-()&amp;/) for Sur Name</value>
+    <comment>Save App User</comment>
+  </data>
+  <data name="SurNameLengthErrorMessage" xml:space="preserve">
+    <value>Sur Names cannot be longer than 50 characters.</value>
+    <comment>Save App User</comment>
+  </data>
+  <data name="TransactionTypeNameLengthErrorMessage" xml:space="preserve">
+    <value>Transaction Type Name  cannot be longer than 50</value>
+    <comment>Save Transaction Type</comment>
+  </data>
+  <data name="TransactionTypeNameLocalLengthErrorMessage" xml:space="preserve">
+    <value>Transaction Type Name Local cannot be longer than 50</value>
+    <comment>Save Transaction Type</comment>
+  </data>
+  <data name="TransactionTypeNameLocalRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(-()*&amp;/) for Transaction Type Name Local</value>
+    <comment>Save Transaction Type</comment>
+  </data>
+  <data name="TransactionTypeNameLocalRequired" xml:space="preserve">
+    <value>Transaction Type Name Local Required</value>
+    <comment>Save Transaction Type</comment>
+  </data>
+  <data name="TransactionTypeNameRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(-()*&amp;/) for Transaction Type Name</value>
+    <comment>Save Transaction Type</comment>
+  </data>
+  <data name="TransactionTypeNameRequired" xml:space="preserve">
+    <value>Transaction Type Name Required</value>
+    <comment>Save Transaction Type</comment>
+  </data>
+  <data name="ZipCodeLengthErrorMessage" xml:space="preserve">
+    <value>Zip Code cannot be longer than 50</value>
+    <comment>Save Member Registration</comment>
+  </data>
+  <data name="ZipCodeRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(-()*&amp;/) for ZipCode</value>
+    <comment>Save Member Registration</comment>
+  </data>
+  <data name="ZipCodeRequired" xml:space="preserve">
+    <value>Zip Code Required</value>
+    <comment>Save Member Registration</comment>
+  </data>
+  <data name="DesignationNameLocalLengthErrorMessage" xml:space="preserve">
+    <value>Designation Name Local cannot be longer than 100 characters.</value>
+  </data>
+  <data name="DesignationNameLocalRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for Designation Name Local</value>
+  </data>
+  <data name="DesignationNameLocalRequired" xml:space="preserve">
+    <value>Designation Name Local is Required</value>
+  </data>
+  <data name="ApplicationKeyRequired" xml:space="preserve">
+    <value>Application Required</value>
+    <comment>Save Member Plan Details</comment>
+  </data>
+  <data name="BuildingDetailsNameExpressionErrorMessage" xml:space="preserve">
+    <value>Room Name cannot be longer than 100 characters.</value>
+    <comment>Save Building</comment>
+  </data>
+  <data name="BuildingDetailsNameLengthErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(-()&amp;/) for Room Name</value>
+    <comment>Save Building</comment>
+  </data>
+  <data name="BuildingDetailsNameRequired" xml:space="preserve">
+    <value>Please Enter Room Name</value>
+    <comment>Save Building</comment>
+  </data>
+  <data name="BuildingNameExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(-()&amp;/) for Building Name</value>
+    <comment>Save Building</comment>
+  </data>
+  <data name="BuildingNameLengthErrorMessage" xml:space="preserve">
+    <value>Building Name cannot be longer than 100 characters.</value>
+    <comment>Save Building</comment>
+  </data>
+  <data name="BuildingNameRequired" xml:space="preserve">
+    <value>Please Enter Building Name</value>
+    <comment>Save Building</comment>
+  </data>
+  <data name="RoomCountExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only numbers  for Room Count</value>
+    <comment>Save Building</comment>
+  </data>
+  <data name="RoomCountLengthErrorMessage" xml:space="preserve">
+    <value>Room Count cannot be longer than 3 characters.</value>
+    <comment>Save Building</comment>
+  </data>
+  <data name="RoomCountRequired" xml:space="preserve">
+    <value>Please Enter Room Count</value>
+    <comment>Save Building</comment>
+  </data>
+  <data name="ClassCodeRequired" xml:space="preserve">
+    <value>Class Code is required</value>
+  </data>
+  <data name="ClassCodeExists" xml:space="preserve">
+    <value>This Class Code Already exists </value>
+  </data>
+  <data name="DivisionExists" xml:space="preserve">
+    <value>This Division Already exists in this Field</value>
+  </data>
+  <data name="RoomNoExists" xml:space="preserve">
+    <value>This Room No is Already exists </value>
+  </data>
+  <data name="ClassDetailsRequired" xml:space="preserve">
+    <value>Please Select Class</value>
+  </data>
+  <data name="ClassDetailsKeyExists" xml:space="preserve">
+    <value>This Class is already  exists .</value>
+  </data>
+  <data name="BatchCodeExists" xml:space="preserve">
+    <value>This Batch Code already Existed</value>
+  </data>
+  <data name="AttendanceTypeCountExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only numbers  for AttendanceType Count</value>
+    <comment>Attendance Type</comment>
+  </data>
+  <data name="AttendanceTypeCountRequired" xml:space="preserve">
+    <value>Please Enter AttendanceType Count</value>
+    <comment>Attendance Type</comment>
+  </data>
+  <data name="AttendanceTypeDescreptionNameRequired" xml:space="preserve">
+    <value>Please Enter AttendanceType Descreption</value>
+    <comment>Attendance Type</comment>
+  </data>
+  <data name="AttendanceTypeNameRequired" xml:space="preserve">
+    <value>Please Enter AttendanceType Name</value>
+    <comment>Attendance Type</comment>
+  </data>
+  <data name="InternalExamTermNameRequired" xml:space="preserve">
+    <value>Please Enter Internal ExamTerm</value>
+    <comment>InternalExam Term</comment>
+  </data>
+  <data name="ClassModeNameExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for Class Mode</value>
+    <comment>Save Employee Contact</comment>
+  </data>
+  <data name="ClassModeNameLengthErrorMessage" xml:space="preserve">
+    <value>Class Mode Name cannot be longer than 80 characters.</value>
+    <comment>Save Application</comment>
+  </data>
+  <data name="ClassModeNameRequired" xml:space="preserve">
+    <value>Please Enter Class Mode Name</value>
+    <comment>Save Application</comment>
+  </data>
+  <data name="DivisionNameExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for Division</value>
+    <comment>Save Division</comment>
+  </data>
+  <data name="DivisionNameLengthErrorMessage" xml:space="preserve">
+    <value>Division Name cannot be longer than 80 characters.</value>
+    <comment>Save Division </comment>
+  </data>
+  <data name="DivisionNameRequired" xml:space="preserve">
+    <value>Please Enter Division Name</value>
+    <comment>Save Division</comment>
+  </data>
+  <data name="MediumNameExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for Medium</value>
+    <comment>Save Employee Contact</comment>
+  </data>
+  <data name="MediumNameLengthErrorMessage" xml:space="preserve">
+    <value>Medium Name cannot be longer than 80 characters.</value>
+    <comment>Save Application</comment>
+  </data>
+  <data name="MediumNameRequired" xml:space="preserve">
+    <value>Please Enter Medium Name</value>
+    <comment>Save Application</comment>
+  </data>
+  <data name="SecondLanguageNameExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for Second Language</value>
+    <comment>Save Employee Contact</comment>
+  </data>
+  <data name="SecondLanguageNameLengthErrorMessage" xml:space="preserve">
+    <value>Second Language Name cannot be longer than 80 characters.</value>
+    <comment>Save Application</comment>
+  </data>
+  <data name="SecondLanguageNameRequired" xml:space="preserve">
+    <value>Please Enter Second Language Name</value>
+    <comment>Save Application</comment>
+  </data>
+  <data name="StudentStatusNameExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for Student Status</value>
+    <comment>Save Employee Contact</comment>
+  </data>
+  <data name="StudentStatusNameLengthErrorMessage" xml:space="preserve">
+    <value>Student Status Name cannot be longer than 80 characters.</value>
+    <comment>Save Application</comment>
+  </data>
+  <data name="StudentStatusNameRequired" xml:space="preserve">
+    <value>Please Enter Student Status Name</value>
+    <comment>Save Application</comment>
+  </data>
+  <data name="NameRequired" xml:space="preserve">
+    <value>Please Enter Name</value>
+  </data>
+  <data name="GSTMasterRequired" xml:space="preserve">
+    <value>Please Select HSN Code</value>
+  </data>
+  <data name="FeeTypeModeRequired" xml:space="preserve">
+    <value>Fee Type Mode is Required</value>
+  </data>
+  <data name="UniversityAmountPerExpressionErrorMessage" xml:space="preserve">
+    <value>Percentage must between 1 and 100</value>
+  </data>
+  <data name="UniversityAmountPerRequired" xml:space="preserve">
+    <value>Please Enter University Amount Percentage</value>
+  </data>
+  <data name="FromDateRequired" xml:space="preserve">
+    <value>From Date is Required</value>
+  </data>
+  <data name="GreaterThanFromDateErrorMessage" xml:space="preserve">
+    <value>To Date Must Be Greater Than From Date</value>
+  </data>
+  <data name="BaseWorkingDaysRequired" xml:space="preserve">
+    <value>Working Days is Required</value>
+  </data>
+  <data name="Decimal3RegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter valid integer within 3 digit or decimal number with 2 decimal places.</value>
+  </data>
+  <data name="NoOfDaysWorkedRequired" xml:space="preserve">
+    <value>No of Days Worked is Required</value>
+  </data>
+  <data name="Decimal10RegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter valid integer within 10 digit or decimal number with 2 decimal places.</value>
+  </data>
+  <data name="Decimal2RegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter valid integer within 2 digit or decimal number with 2 decimal places.</value>
+  </data>
+  <data name="Decimal4RegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter valid integer within 4 digit or decimal number with 2 decimal places.</value>
+  </data>
+  <data name="Decimal6RegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter valid integer within 6 digit or decimal number with 3 decimal places.</value>
+  </data>
+  <data name="Decimal8RegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter valid integer within 8 digit or decimal number with 2 decimal places.</value>
+  </data>
+  <data name="DecimalRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter valid integer or decimal number with 2 decimal places.</value>
+  </data>
+  <data name="GreaterThanZero" xml:space="preserve">
+    <value>Must have greater than Zero</value>
+  </data>
+  <data name="ReferenceNumberLengthErrorMessage" xml:space="preserve">
+    <value>Reference Number cannot be longer than 50 charecters.</value>
+    <comment>SaveCashFlow</comment>
+  </data>
+  <data name="RackCodeExists" xml:space="preserve">
+    <value>Rack Code already exists</value>
+  </data>
+  <data name="RackCodeLengthErrorMessage" xml:space="preserve">
+    <value>Rack Code cannot be longer than 4</value>
+    <comment>SaveRack</comment>
+  </data>
+  <data name="RackCodeRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers  for Rack Code</value>
+    <comment>SaveRack</comment>
+  </data>
+  <data name="RackCodeRequired" xml:space="preserve">
+    <value>Please Enter Rack Code</value>
+    <comment>SaveRack</comment>
+  </data>
+  <data name="SubRackCodeExists" xml:space="preserve">
+    <value>Sub Rack Code already exists</value>
+  </data>
+  <data name="SubRackCodeLengthErrorMessage" xml:space="preserve">
+    <value>Sub Rack Code cannot be longer than 4</value>
+    <comment>SaveRack</comment>
+  </data>
+  <data name="SubRackCodeRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers  for Sub Rack Code</value>
+    <comment>SaveRack</comment>
+  </data>
+  <data name="SubRackCodeRequired" xml:space="preserve">
+    <value>Please Enter Sub Rack Code</value>
+    <comment>SaveRack</comment>
+  </data>
+  <data name="SubRackNameLengthErrorMessage" xml:space="preserve">
+    <value>Sub Rack Name cannot be longer than 50</value>
+    <comment>SaveRack</comment>
+  </data>
+  <data name="SubRackNameRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(-()*&amp;/) for Sub Rack Name</value>
+    <comment>SaveRack</comment>
+  </data>
+  <data name="SubRackNameRequired" xml:space="preserve">
+    <value>Please Enter Sub Rack Name</value>
+    <comment>SaveRack</comment>
+  </data>
+  <data name="SubRackRequired" xml:space="preserve">
+    <value>Please Select Rack</value>
+  </data>
+  <data name="Inactive" xml:space="preserve">
+    <value>Inactive</value>
+  </data>
+  <data name="Active" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="StateRequired" xml:space="preserve">
+    <value>Please Select State</value>
+    <comment>Save Party</comment>
+  </data>
+  <data name="BillDateRequired" xml:space="preserve">
+    <value>Please Enter Bill Date</value>
+  </data>
+  <data name="BillNumberExistsErrorMessage" xml:space="preserve">
+    <value>Bill Number Already Exists</value>
+    <comment>Purchase</comment>
+  </data>
+  <data name="BillNumberLengthErrorMessage" xml:space="preserve">
+    <value>Bill Number cannot be longer than 50 characters.</value>
+  </data>
+  <data name="BillNumberRequired" xml:space="preserve">
+    <value>Please Enter Bill No</value>
+  </data>
+  <data name="HSNCodeExists" xml:space="preserve">
+    <value>This HSN Code already exists</value>
+  </data>
+  <data name="HSNCodeNumberRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only numbers </value>
+    <comment>Save Material</comment>
+  </data>
+  <data name="HSNCodeRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only lphabets,numbers and symbols(-()&amp;/) within 8 digit for HSN code</value>
+    <comment>SaveMaterialDetails</comment>
+  </data>
+  <data name="HSNCodeRequired" xml:space="preserve">
+    <value>HSN Code is Required</value>
+  </data>
+  <data name="InstallmentFlowRequired" xml:space="preserve">
+    <value>Please Select Installment Flow</value>
+  </data>
+  <data name="InstallmentPeriodRequired" xml:space="preserve">
+    <value>Installment Period is Required</value>
+  </data>
+  <data name="InstallmentTypeRequired" xml:space="preserve">
+    <value>Please Select Installment Type</value>
+    <comment>Save FutureTransaction</comment>
+  </data>
+  <data name="IntegerRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Please Enter valid integer .</value>
+  </data>
+  <data name="LengthErrorMessage20" xml:space="preserve">
+    <value>Cannot be longer than 20 characters.</value>
+  </data>
+  <data name="LengthErrorMessage50" xml:space="preserve">
+    <value>Cannot be longer than 50 characters.</value>
+  </data>
+  <data name="LengthRequired" xml:space="preserve">
+    <value>Please Enter Length</value>
+  </data>
+  <data name="LesThanClearanceDateErrorMessage" xml:space="preserve">
+    <value>Clearance Date Must Be Greater Than Cheque Or DDDate</value>
+  </data>
+  <data name="LifePeriodRequired" xml:space="preserve">
+    <value>Please Enter Life Period</value>
+    <comment>Save AccountHead</comment>
+  </data>
+  <data name="TaxPercentageRequired" xml:space="preserve">
+    <value>Please Enter tax percentage</value>
+    <comment>material type</comment>
+  </data>
+  <data name="TinNumberExpressionErrorMessage" xml:space="preserve">
+    <value>Invalid GSTIN Number</value>
+    <comment>Save Party</comment>
+  </data>
+  <data name="TinNumberRequired" xml:space="preserve">
+    <value>Please Enter GSTIN Number</value>
+    <comment>Save Party</comment>
+  </data>
+  <data name="NoOfInstallmentRequired" xml:space="preserve">
+    <value>No Of Installment is Required</value>
+  </data>
+  <data name="ClearanceDateRequired" xml:space="preserve">
+    <value>Clearance Date is Required</value>
+    <comment>SaveChequeClearance</comment>
+  </data>
+  <data name="ApplicationKeyExisted" xml:space="preserve">
+    <value>Student Name already exists</value>
+    <comment>Save Member Plan Details</comment>
+  </data>
+  <data name="SelectFeeType" xml:space="preserve">
+    <value>Please Select FeeType</value>
+  </data>
+  <data name="StudyMaterialNameExistsErrorMessage" xml:space="preserve">
+    <value>Study Material Name already exists</value>
+    <comment>Save Subject</comment>
+  </data>
+  <data name="StudyMaterialCodeExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for Study Material Code</value>
+    <comment>Save Subject</comment>
+  </data>
+  <data name="StudyMaterialCodeLengthErrorMessage" xml:space="preserve">
+    <value>Study Material Code cannot be longer than 6 characters.</value>
+    <comment>Save Subject</comment>
+  </data>
+  <data name="StudyMaterialCodeRequired" xml:space="preserve">
+    <value>Please Enter Study Material Code</value>
+    <comment>Save Subject</comment>
+  </data>
+  <data name="StudyMaterialNameLengthErrorMessage" xml:space="preserve">
+    <value>Study Material Name cannot be longer than 200 characters.</value>
+    <comment>Save Subject</comment>
+  </data>
+  <data name="StudyMaterialNameRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for Study Material Name</value>
+    <comment>Save Subject</comment>
+  </data>
+  <data name="StudyMaterialNameRequired" xml:space="preserve">
+    <value>Please Enter  Study Material Name</value>
+    <comment>Save Subject</comment>
+  </data>
+  <data name="SubjectCodeExistsErrorMessage" xml:space="preserve">
+    <value>Subject Code  already exists</value>
+    <comment>Save Subject</comment>
+  </data>
+  <data name="SubjectCodeExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for Subject Code</value>
+    <comment>Save Subject</comment>
+  </data>
+  <data name="SubjectCodeLengthErrorMessage" xml:space="preserve">
+    <value>Subject Code cannot be longer than 6 characters.</value>
+    <comment>Save Subject</comment>
+  </data>
+  <data name="SubjectCodeRequired" xml:space="preserve">
+    <value>Please Enter Subject Code</value>
+    <comment>Save Subject</comment>
+  </data>
+  <data name="SubjectNameExistsErrorMessage" xml:space="preserve">
+    <value>Subject Name  already exists</value>
+    <comment>Save Subject</comment>
+  </data>
+  <data name="StudyMaterialCodeExistsErrorMessage" xml:space="preserve">
+    <value>Study Material Code already exists</value>
+    <comment>Save Subject</comment>
+  </data>
+  <data name="ModuleNameExistsErrorMessage" xml:space="preserve">
+    <value>Module Name already exists</value>
+    <comment>Save Subject</comment>
+  </data>
+  <data name="ModuleNameLengthErrorMessage" xml:space="preserve">
+    <value>Module Name cannot be longer than 200 characters.</value>
+    <comment>Save Subject</comment>
+  </data>
+  <data name="ModuleNameRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for Module Name</value>
+    <comment>Save Subject</comment>
+  </data>
+  <data name="ModuleNameRequired" xml:space="preserve">
+    <value>Please Enter  Module Name</value>
+    <comment>Save Subject</comment>
+  </data>
+  <data name="TopicNameExistsErrorMessage" xml:space="preserve">
+    <value>Topic Name already exists</value>
+    <comment>Save Subject</comment>
+  </data>
+  <data name="TopicNameLengthErrorMessage" xml:space="preserve">
+    <value>Topic Name cannot be longer than 200 characters.</value>
+    <comment>Save Subject</comment>
+  </data>
+  <data name="TopicNameRegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for Topic Name</value>
+    <comment>Save Subject</comment>
+  </data>
+  <data name="TopicNameRequired" xml:space="preserve">
+    <value>Please Enter  Topic Name</value>
+    <comment>Save Subject</comment>
+  </data>
+  <data name="ScholarshipTypeKeyRequired" xml:space="preserve">
+    <value>Please Select ScholarshipType</value>
+  </data>
+  <data name="CenterRequired" xml:space="preserve">
+    <value>Please Select Center</value>
+  </data>
+  <data name="MarkRequired" xml:space="preserve">
+    <value>Please Enter Mark</value>
+  </data>
+  <data name="ClassModeRequired" xml:space="preserve">
+    <value>Class Mode is Required</value>
+  </data>
+  <data name="ModuleTopicRequired" xml:space="preserve">
+    <value>Please Select Module Topic</value>
+    <comment>Save Subject</comment>
+  </data>
+  <data name="SubjectModuleRequired" xml:space="preserve">
+    <value>Please Select Suject Module</value>
+    <comment>Save Subject</comment>
+  </data>
+  <data name="SubjectRequired" xml:space="preserve">
+    <value>Please Select Subject</value>
+    <comment>Save Subject</comment>
+  </data>
+  <data name="AccountHeadSelectExists" xml:space="preserve">
+    <value>AccountHeadSelectExists</value>
+  </data>
+  <data name="JournalDateRequired" xml:space="preserve">
+    <value>Please Select Journal Date</value>
+  </data>
+  <data name="LengthErrorMessage200" xml:space="preserve">
+    <value>Cannot be longer than 200 characters.</value>
+  </data>
+  <data name="OpeningDateRequired" xml:space="preserve">
+    <value>Please Add Date</value>
+  </data>
+  <data name="ExamCentreCodeExistsErrorMessage" xml:space="preserve">
+    <value>Exam Centre Code already exists</value>
+  </data>
+  <data name="ExamCentreCodeExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for Exam Centre Code</value>
+  </data>
+  <data name="ExamCentreCodeLengthErrorMessage" xml:space="preserve">
+    <value>Branch Code cannot be longer than 4 characters.</value>
+  </data>
+  <data name="ExamCentreCodeRequired" xml:space="preserve">
+    <value>Exam Centre Code Required</value>
+  </data>
+  <data name="ExamCentreNameExistsErrorMessage" xml:space="preserve">
+    <value>Exam Centre Name already exists</value>
+  </data>
+  <data name="ExamCentreNameExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for Exam Centre Name</value>
+  </data>
+  <data name="ExamCentreNameLengthErrorMessage" xml:space="preserve">
+    <value>Exam Centre Name cannot be longer than 50 characters.</value>
+  </data>
+  <data name="ExamCentreNameRequired" xml:space="preserve">
+    <value>Exam Centre Name Required</value>
+  </data>
+  <data name="ExamTermNameExistsErrorMessage" xml:space="preserve">
+    <value>Exam Term Name already exists</value>
+  </data>
+  <data name="ExamTermNameExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for Exam Term Name</value>
+  </data>
+  <data name="ExamTermNameLengthErrorMessage" xml:space="preserve">
+    <value>Exam Centre Name cannot be longer than 50 characters.</value>
+  </data>
+  <data name="ExamTermNameRequired" xml:space="preserve">
+    <value>Exam Term Name Required</value>
+  </data>
+  <data name="CertificateTypeNameExistsErrorMessage" xml:space="preserve">
+    <value>Certificate Type  Name already exists</value>
+  </data>
+  <data name="CertificateTypeNameExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for Certificate Type  Name</value>
+  </data>
+  <data name="CertificateTypeNameLengthErrorMessage" xml:space="preserve">
+    <value>Certificate Type  Name cannot be longer than 50 characters.</value>
+  </data>
+  <data name="CertificateTypeNameRequired" xml:space="preserve">
+    <value>Certificate Type  Name Required</value>
+  </data>
+  <data name="DepartmentCodeExistsErrorMessage" xml:space="preserve">
+    <value>Department Code already exists</value>
+  </data>
+  <data name="DepartmentNameExistsErrorMessage" xml:space="preserve">
+    <value>Department Name already exists</value>
+  </data>
+  <data name="NatureOfEnquiryNameExistsErrorMessage" xml:space="preserve">
+    <value>Nature Of Enquiry Name already exists</value>
+  </data>
+  <data name="NatureOfEnquiryNameExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(,-()&amp;/) for Nature Of Enquiry</value>
+  </data>
+  <data name="ReligionNameExistsErrorMessage" xml:space="preserve">
+    <value>Religion Name already exists</value>
+  </data>
+  <data name="ExamStatusRequired" xml:space="preserve">
+    <value>Please Select Exam Status</value>
+  </data>
+  <data name="WorkDurationExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only numbers for Duration</value>
+    <comment>Save Work Schedule</comment>
+  </data>
+  <data name="WorkScheduleDateRequired" xml:space="preserve">
+    <value>Please Enter Date</value>
+  </data>
+  <data name="WorkProgressStatusExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only numbers in Progress Status</value>
+    <comment>Save Work Schedule</comment>
+  </data>
+  <data name="WorkProgressStatusRequired" xml:space="preserve">
+    <value>Please Enter Progress Status</value>
+  </data>
+  <data name="EnterOTP" xml:space="preserve">
+    <value>Enter One Time Password(OTP)</value>
+  </data>
+  <data name="EnterRecoverInformation" xml:space="preserve">
+    <value>Please enter recover information</value>
+  </data>
+  <data name="RecoverLengthErrorMessage" xml:space="preserve">
+    <value>Recover length cannot longer than 255 charactors</value>
+  </data>
+  <data name="SMSContentRequired" xml:space="preserve">
+    <value>Please enter SMS content</value>
+  </data>
+  <data name="EmailBodyRequired" xml:space="preserve">
+    <value>Please enter email body content</value>
+  </data>
+  <data name="EmailSubjectRequired" xml:space="preserve">
+    <value>Please enter Email Subject</value>
+  </data>
+  <data name="SMSMobileNumberLengthErrorMessage" xml:space="preserve">
+    <value>Mobile Number cannot be longer than 12 characters.</value>
+    <comment>Save Bulk Email &amp; SMS</comment>
+  </data>
+  <data name="CompareMessage" xml:space="preserve">
+    <value>{} doesn't match.</value>
+    <comment>Common Compare Error Message</comment>
+  </data>
+  <data name="ExistsErrorMessage" xml:space="preserve">
+    <value>{0} is already Existed</value>
+    <comment>Common Existed Error Message</comment>
+  </data>
+  <data name="LengthErrorMessage" xml:space="preserve">
+    <value>{0} cannot be longer than {1} characters.</value>
+    <comment>Common Length Error Message</comment>
+  </data>
+  <data name="RegularExpressionDigitErrorMessage" xml:space="preserve">
+    <value>Enter only numbers  for {0}</value>
+    <comment>Common Regular Expression Error Message For Digit</comment>
+  </data>
+  <data name="RegularExpressionErrorMessage" xml:space="preserve">
+    <value>Enter only alphabets,numbers and symbols(-()*&amp;/)  for {0}</value>
+    <comment>Common Regular Expression Error Message</comment>
+  </data>
+  <data name="RequiredErrorMessage" xml:space="preserve">
+    <value>{0} is Required</value>
+    <comment>Common Required Error Message</comment>
+  </data>
+  <data name="ValidExpressionErrorMessage" xml:space="preserve">
+    <value>Enter a valid {0}</value>
+    <comment>Common Valid Format Error Message</comment>
+  </data>
+  <data name="StudyMaterials" xml:space="preserve">
+    <value>Study Materials</value>
+  </data>
+  <data name="PleaseEnterValidDayCount" xml:space="preserve">
+    <value>Please Enter Valid Day Count</value>
+  </data>
+  <data name="MonthlySalaryCompareErrorMessage" xml:space="preserve">
+    <value>Monthly Salary should be equal to Total Included Amount</value>
+  </data>
+  <data name="RegistrationCatagory" xml:space="preserve">
+    <value>Registration Catagory</value>
+  </data>
+  <data name="StringLengthDynamicErrorMessage" xml:space="preserve">
+    <value>{0} cannot be longer than {1} characters and less than {2} characters</value>
+  </data>
+  <data name="RegularExpressionMarkMessage" xml:space="preserve">
+    <value>{0} must be  between 0 and 100</value>
+  </data>
+  <data name="FeeRefundLessThanErrorMessage" xml:space="preserve">
+    <value>Total Deduct Amount must be equal to Paid Amount</value>
+    <comment>Save Fee Refund</comment>
+  </data>
+</root>

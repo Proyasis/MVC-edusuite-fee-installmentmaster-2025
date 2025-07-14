@@ -1,0 +1,271 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.UniversityCourseViewModel
+
+
+
+<input type="hidden" id="hdnDeleteClassDetails" value="@Url.Action("DeleteClassDetails", "UniversityCourse")" />
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/Scripts/UniversityCourse")
+    @Scripts.Render("~/Content/JqueryRepeater")
+    @Scripts.Render("~/Scripts/Common")
+}
+
+<input type="hidden" id="hdnUniversityCourseList" value="@Url.Action("UniversityCourseList", "UniversityCourse")" />
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-12">
+            <div class="tbl">
+                <div class="tbl-row  px-1">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.Add @EduSuiteUIResources.Sla @EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace @EduSuiteUIResources.ClassCode</h3>
+                        <ol class="breadcrumb breadcrumb-simple mb-2 float-sm-right">
+                            <li><a href="#" onclick="location.href='@Url.Action("UniversityCourseList", "UniversityCourse")' ">@EduSuiteUIResources.AffiliationsTieUps@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Course</a></li>
+                            <li class="active">@EduSuiteUIResources.Add @EduSuiteUIResources.Sla @EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace @EduSuiteUIResources.Division</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="section-content mx-sm-3 mx-0">
+    @*@using (Html.BeginForm("AddEditClassDetails", "UniversityCourse", FormMethod.Post, new AjaxOptions { UpdateTargetId = "Rules", OnBegin = "onBegin", OnComplete = "onComplete" }))*@
+    @using (Html.BeginForm("AddEditClassDetails", "UniversityCourse", FormMethod.Post, new { @id = "frmClassDetails" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.RowKey)
+        @Html.ValidationSummary(true)
+
+
+        <div class="form-master">
+
+            <div class="form-row">
+                <div class="card-body p-0  mb-2">
+                    <table class="table table-responsive table-sm">
+                        <thead class="w3-indigo">
+                            <tr>
+                                <th class=" text-white align-middle text-center">
+                                    @Html.Label(EduSuiteUIResources.Course, htmlAttributes: new { @class = "form-label" })
+                                </th>
+                                <th class=" text-white align-middle text-center">
+                                    @Html.Label(EduSuiteUIResources.AffiliationsTieUps, htmlAttributes: new { @class = "form-label" })
+                                </th>
+                                <th class=" text-white align-middle text-center">
+                                    @Html.Label(EduSuiteUIResources.AcademicTerm, htmlAttributes: new { @class = "form-label" })
+                                </th>
+                                <th class=" text-white align-middle text-center">
+                                    @Html.Label(EduSuiteUIResources.Duration, htmlAttributes: new { @class = "form-label" })
+                                </th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="text-primary align-middle text-center font-weight-bold border-right border-primary">
+                                    @Model.CourseName
+                                </td>
+                                <td class="align-middle text-center font-weight-bold border-right border-primary">
+                                    @Model.UniversityName
+                                </td>
+                                <td class="text-danger align-middle text-center font-weight-bold border-right border-primary">
+                                    @Model.AcademicTermName
+                                </td>
+                                <td class="w3-text-cyan w3-white align-middle text-center font-weight-bold ">
+                                    @Model.Duration
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div id="tab-classyear" class="form-row tabs-section mb-2">
+                <div class="tabs-section-nav">
+                    <ul class="nav ScheduleTab1" role="tablist">
+                        @for (int i = 0; i < Model.YearList.Count; i++)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" href="#@Model.YearList[i].RowKey" data-val="@Model.YearList[i].RowKey" role="tab" data-toggle="tab">
+                                    <span class="nav-link-in">
+                                        @Model.YearList[i].Text
+                                    </span>
+                                </a>
+                            </li>
+                            @Html.HiddenFor(m => m.StudentYear)
+                        }
+
+                    </ul>
+                </div>
+            </div>
+            <div id="dynamicRepeater" class="repeater">
+                <table class=" table table-responsive">
+                    <thead>
+                        <tr>
+                            <th class="w-25">
+                                @Html.Label(EduSuiteUIResources.Division, htmlAttributes: new { @class = "form-label" })
+                            </th>
+
+                            <th>
+                                @Html.Label(EduSuiteUIResources.ClassCode, htmlAttributes: new { @class = "form-label" })
+                            </th>
+                            <th class="d-none">
+                                @Html.Label(EduSuiteUIResources.Building + EduSuiteUIResources.Sla + EduSuiteUIResources.RoomNo, htmlAttributes: new { @class = "form-label" })
+                            </th>
+                            <th>
+                                @Html.Label(EduSuiteUIResources.StartTime, htmlAttributes: new { @class = "form-label" })
+                            </th>
+                            <th>
+                                @Html.Label(EduSuiteUIResources.EndTime, htmlAttributes: new { @class = "form-label" })
+                            </th>
+                            <th>
+                                @Html.Label(EduSuiteUIResources.HalfDayLateByMins, htmlAttributes: new { @class = "form-label" })
+                            </th>
+                            <th>
+                                @Html.Label(EduSuiteUIResources.IsActive, htmlAttributes: new { @class = "form-label" })
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody data-repeater-list id="DivInternalExamResult">
+                        @for (int i = 0; i < Model.ClassDetailsModel.Count(); i++)
+                        {
+                            <tr data-repeater-item>
+                                <td>
+                                    <fieldset class="form-group">
+                                        @Html.DropDownListFor(m => m.ClassDetailsModel[i].DivisionKey, new SelectList(Model.DivisionList, "RowKey", "Text", Model.ClassDetailsModel[i].DivisionKey), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Division, new { @class = "form-control input-control autoselect-select selectpicker" })
+                                        <span class="form-control-error-text">
+                                            @Html.ValidationMessageFor(m => m.ClassDetailsModel[i].DivisionKey)
+                                        </span>
+                                        @Html.HiddenFor(m => m.ClassDetailsModel[i].RowKey, new { @class = "rowKeyClass" })
+                                        @Html.HiddenFor(m => m.ClassDetailsModel[i].StudentYear)
+                                        @Html.HiddenFor(m => m.ClassDetailsModel[i].ClassDetialsKey)
+
+                                    </fieldset>
+                                </td>
+                                <td>
+                                    <fieldset class="form-group">
+                                        @Html.TextBoxFor(m => m.ClassDetailsModel[i].ClassCode, new { @class = "form-control input-control selectpicker", @data_unique = true, @placeholder = EduSuiteUIResources.ClassCode, @data_convert = "uppercase" })
+                                        <span class="form-control-error-text">    @Html.ValidationMessageFor(m => m.ClassDetailsModel[i].ClassCode)</span>
+                                    </fieldset>
+                                </td>
+
+                                <td class="d-none">
+                                    <fieldset class="form-group">
+                                        @Html.DropDownListFor(m => m.ClassDetailsModel[i].BuildingDetailsKey, new SelectList(Model.BuildingDetailsList, "RowKey", "Text", Model.ClassDetailsModel[i].BuildingDetailsKey), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Building, new { @class = "form-control input-control autoselect-select selectpicker" })
+                                        <span class="form-control-error-text">
+                                            @Html.ValidationMessageFor(m => m.ClassDetailsModel[i].BuildingDetailsKey)
+                                        </span>
+                                    </fieldset>
+                                </td>
+                                <td>
+                                    <fieldset class="form-group">
+                                        @Html.TextBoxFor(m => m.ClassDetailsModel[i].StartTime, new { @class = "form-control input-control", @data_input_type = "time", @data_inputmask = "'alias':'hh:mm t','hourFormat': '12'", @InputFor = "lblCallDuration" })
+                                        <span class="form-control-error-text">
+                                            @Html.ValidationMessageFor(m => m.ClassDetailsModel[i].StartTime)
+                                        </span>
+                                    </fieldset>
+                                </td>
+                                <td>
+                                    <fieldset class="form-group">
+                                        @Html.TextBoxFor(m => m.ClassDetailsModel[i].EndTime, new { @class = "form-control input-control", @data_input_type = "time", @data_inputmask = "'alias':'hh:mm t','hourFormat': '12'", @InputFor = "lblCallDuration" })
+                                        <span class="form-control-error-text">
+                                            @Html.ValidationMessageFor(m => m.ClassDetailsModel[i].EndTime)
+                                        </span>
+                                    </fieldset>
+                                </td>
+                                <td>
+                                    <fieldset class="form-group">
+                                        @Html.TextBoxFor(m => m.ClassDetailsModel[i].LateMinutes, new { @class = "form-control input-control" })
+                                        <span class="form-control-error-text">
+                                            @Html.ValidationMessageFor(m => m.ClassDetailsModel[i].EndTime)
+                                        </span>
+                                    </fieldset>
+                                </td>
+                                <td>
+                                    <fieldset class="form-group">
+                                        <div class="switch-check switch">
+                                            @Html.CheckBoxFor(m => m.ClassDetailsModel[i].IsActive, new { @class = "switch-input" })
+                                            <div class="switch-label redgreen" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                                            <div class="switch-handle"></div>
+                                        </div>
+                                    </fieldset>
+                                </td>
+                                <td>
+                                    <span data-repeater-delete="" class="btn btn-danger btn-sm  float-right">
+                                        <span class="fa fa-remove "></span>
+                                    </span>
+
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="5">
+                                <span data-repeater-create class="btn btn-info btn-sm float-right">
+                                    <span class="fa fa-plus-square-o"></span>
+                                </span>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+                <div class="form-row">
+                    <div class="col-10">
+                        <fieldset class="form-group">
+                            <input type="button" value="@EduSuiteUIResources.Save" id="btnSave" class="btn btn-sm btn-success " onclick="UniversityCourse.FormSubmitClassDetails()" />
+                            <input type="button" value="@EduSuiteUIResources.Cancel" onclick="location.href='@Url.Action("UniversityCourseList", "UniversityCourse")' " class="btn btn-sm btn-danger mx-1" />
+
+                        </fieldset>
+                        <div class="col-12">
+                            <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    }
+</section>
+<script>
+    var jsonData=@(Html.Raw(Json.Encode(Model)));
+
+
+    $(document).ready(function () {
+        AppCommon.FormatInputCase();
+        UniversityCourse.GetClassDetails(jsonData);
+        AppCommon.CustomRepeaterRemoteMethod();
+
+        var FeeYear = '@Model.StudentYear.ToString()'
+        if (FeeYear != '') {
+            $("#tab-classyear li a[data-val=" + FeeYear + "]").addClass('active');
+        }
+        else {
+
+            $("#tab-classyear li:first-child a").addClass('active');
+        }
+
+        $('#tab-classyear a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            var obj = {};
+            obj.StudentYear =$("#tab-classyear li a.active").data('val');
+            obj.RowKey = $("#RowKey").val();
+            location.href = '@Url.Action("AddEditClassDetails", "UniversityCourse")?RowKey=' + obj.RowKey + '&StudentYear='+obj.StudentYear;           
+        });
+
+        $("[data-input-type=time]").each(function () {
+
+            if ($(this).val() != "") {
+                $(this).val(moment($(this).val(), ["HH:mm:ss"]).format("hh:mm A").toLowerCase());
+            }
+        })
+
+        AppCommon.FormatDateInput();
+        AppCommon.FormatInputCase();
+        AppCommon.FormatTimeInput();
+
+    });
+
+</script>
+
+
+

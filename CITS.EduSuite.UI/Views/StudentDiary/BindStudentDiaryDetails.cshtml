@@ -1,0 +1,82 @@
+﻿@model List<CITS.EduSuite.Business.Models.ViewModels.StudentDiaryViewModel>
+@using CITS.EduSuite.Business.Models.ViewModels
+@using CITS.EduSuite.UI
+
+
+<input type="hidden" id="hdnAddEditStudentDiary" value="@Url.Action("AddEditStudentDiary", "StudentDiary", new { id = "" })" />
+<input type="hidden" id="hdnDeleteStudentDiary" value="@Url.Action("DeleteStudentDiary", "StudentDiary", new { id = "" })" />
+<input type="hidden" id="hdnStudentDiaryList" value="@Url.Action("StudentDiaryList", "StudentDiary", new { id = "" })" />
+
+
+
+
+
+<section class="card">
+    <header class="card-header w3-indigo">
+        @EduSuiteUIResources.StudentDiary @EduSuiteUIResources.BlankSpace @EduSuiteUIResources.Details
+    </header>
+    <div class="card-body p-2 overflow-auto">
+        <table class="table table-bordered table-sm" id="divInstallmentFeeDetails">
+
+            <thead>
+                <tr>
+                    <th>
+                        @Html.Label(EduSuiteUIResources.Date, htmlAttributes: new { @class = "form-label" })
+                    </th>
+                    <th>
+                        @Html.Label(EduSuiteUIResources.Subject, htmlAttributes: new { @class = "form-label" })
+                    </th>
+
+                    <th>
+                        @Html.Label(EduSuiteUIResources.Remarks, htmlAttributes: new { @class = "form-label" })
+                    </th>
+                    <th>
+                        @Html.Label(EduSuiteUIResources.Action, htmlAttributes: new { @class = "form-label" })
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.Count; i++)
+                {
+
+                    <tr data-repeater-item>
+                        <td>
+
+                            @String.Format("{0:dd/MM/yyyy}", Model[i].StudentDiaryDate)
+                            @Html.HiddenFor(m => m[i].RowKey)
+                            @Html.HiddenFor(m => m[i].ApplicationsKey)
+
+
+
+                        </td>
+
+                        <td>
+                            @Model[i].Subject
+                        </td>
+
+                        <td>
+                            @Model[i].Remarks
+
+                        </td>
+                        <td>
+                            <div class="btn-group">
+
+                                <button type="button" class="btn btn-primary btn-sm mx-1 btnfeeEdit" onclick="javascript:StudentDiary.AddEditStudentDiary('@Model[i].RowKey');"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+                                <button type="button" class="btn btn-danger btn-sm mx-1" onclick="javascript:StudentDiary.DeleteStudentDiary('@Model[i].RowKey','@Model[i].ApplicationsKey');return false;">  <i class="fa fa-trash pointer" aria-hidden="true"></i>  </button>
+
+
+                            </div>
+                        </td>
+
+                    </tr>
+
+
+                }
+            </tbody>
+
+
+        </table>
+    </div>
+</section>
+

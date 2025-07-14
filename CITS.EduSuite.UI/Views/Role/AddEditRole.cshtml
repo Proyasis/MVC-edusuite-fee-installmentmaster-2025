@@ -1,0 +1,94 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.RolesViewModel
+
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/Scripts/Roles")
+}
+
+
+<div class="form-row">
+    <div class="col-12 Page_Head_Master">
+        <div class="col-6 Text_Left">
+            <label class="Page_Heading  ">@EduSuiteUIResources.Add @EduSuiteUIResources.Sla @EduSuiteUIResources.Edit @EduSuiteUIResources.Role</label>
+        </div>
+
+        <div class="col-6 Page_Url Text_Right">
+            <a onclick="location.href='@Url.Action("RoleList", "Role")' " class="btn btn-sm btnBack">
+                <i class="fa fa-arrow-left" aria-hidden="true"></i>  @EduSuiteUIResources.Backto @EduSuiteUIResources.Role
+            </a>
+        </div>
+    </div>
+
+</div>
+
+<div class="form-master border_fieldset  pos-relative">
+    <div class="form-row">
+        <div class="">
+            <div class="col-12 mandatoryHead ">
+                <span>@EduSuiteUIResources.FieldsMarkedAs<span class="mandatoryStar"> * </span>@EduSuiteUIResources.AreMandatory</span>
+
+            </div>
+        </div>
+    </div>
+
+    @using (Html.BeginForm("AddEditRole", "Role", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.RowKey)
+        @Html.ValidationSummary(true)
+
+
+        <div class="col-12 paddingNone">
+
+            <div class="col-2 form-col">
+                <div class="form-group">
+                    @Html.Label(EduSuiteUIResources.Role + @EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Name, htmlAttributes: new { @id = "lblRoleName", @class = "form-label" })
+                    <div class="required-icon"><div class="text">*</div></div>
+                    @Html.TextBoxFor(m => m.RoleName, new { @class = "form-control input-control", @InputFor = "lblRoleName" })
+                    <span class="form-control-error-text">
+                        @Html.ValidationMessageFor(m => m.RoleName)
+                    </span>
+                </div>
+            </div>
+
+            <div class="col-2 form-col">
+                <div class="form-group">
+                    @Html.Label(EduSuiteUIResources.Role + @EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Name + @EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Local, htmlAttributes: new { @id = "lblRoleNameLocal", @class = "form-label" })
+                    <div class="required-icon"><div class="text">*</div></div>
+                    @Html.TextBoxFor(m => m.RoleNameLocal, new { @class = "form-control input-control", @InputFor = "lblRoleNameLocal" })
+                    <span class="form-control-error-text">
+                        @Html.ValidationMessageFor(m => m.RoleNameLocal)
+                    </span>
+                </div>
+            </div>
+
+            <div class="col-2 form-col">
+                <div class="form-group">
+                    @Html.Label(EduSuiteUIResources.Status, new { @id = "lblStatus", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                    @Html.DropDownListFor(m => m.StatusKey, new SelectList(Model.Statuses, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Status, new { @class = "form-control border-radius input-control", @InputFor = "lblStatus" })
+                    <span class="form-control-error-text">
+                        @Html.ValidationMessageFor(m => m.StatusKey)
+                    </span>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="form-group">
+                    <input type="submit" value="@EduSuiteUIResources.Save" id="btnSave" class="btn btn-sm btn-success mx-1" />
+                    <input type="button" value="@EduSuiteUIResources.Cancel" onclick="location.href='@Url.Action("RoleList", "Role")' " class="btnForm btnCancel btn btn-sm btn-default " />
+                </div>
+                <div class="col-12 paddingNone">
+                    <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+                </div>
+            </div>
+
+        </div>
+
+
+    }
+</div>
+
+
+

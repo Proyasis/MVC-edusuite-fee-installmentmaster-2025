@@ -1,0 +1,205 @@
+﻿
+@using System.Web.Mvc
+@model CITS.EduSuite.Business.Models.ViewModels.ApplicationScheduleViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/CitsValidation")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Content/momentJS")
+    @Scripts.Render("~/Scripts/ApplicationSchedule")
+
+}
+<script src="~/CITSEduSuiteScripts/selection.js"></script>
+<input type="hidden" id="hdnApplicationScheduleDetails" value="@Url.Action("ApplicationScheduleDetails","ApplicationSchedule")" />
+<input type="hidden" id="hdnApplicationScheduleCounts" value="@Url.Action("ApplicationScheduleCounts","ApplicationSchedule")" />
+<input type="hidden" id="hdnAddEditApplicationSchedule" value="@Url.Action("AddEditApplicationSchedule","ApplicationSchedule")" />
+<input type="hidden" id="hdnDeleteApplicationschedule" value="@Url.Action("DeleteApplicationschedule","ApplicationSchedule")" />
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-sm-6 col-12">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.ApplicationSchedule</h3>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-3 text-right">
+            <a onclick="ApplicationSchedule.EditApplicationSchedulePopup(true,null)" class="btn btn-success btn-sm "><i class="fa fa-plus-square-o"></i> <span>@EduSuiteUIResources.Schedule</span></a>
+        </div>
+    </div>
+</header>
+<section class="section-content mx-sm-3 mx-0">
+    <div class="GridBody">
+
+
+
+        <div class="grid-nav-bar form-row mb-2 SearchControls">
+
+            <div class="col-lg-2 col-sm-3 col-4">
+                <fieldset class="form-group">
+                    @Html.TextBoxFor(m => m.SearchAnyText, new { @class = "form-control input-control", @placeholder = EduSuiteUIResources.Name })
+                </fieldset>
+            </div>
+
+            <div class="col-lg-2 col-sm-3 col-4 d-none DivDate">
+                <fieldset class="form-group">
+                    @Html.TextBoxFor(m => m.SearchDateFrom, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_input_type = "date", @data_inputmask = "'alias': 'dd/mm/yyyy'", @placeholder = EduSuiteUIResources.ScheduleDateFrom })
+                </fieldset>
+            </div>
+            <div class="col-lg-2 col-sm-3 col-4 d-none DivDate">
+                <fieldset class="form-group">
+                    @Html.TextBoxFor(m => m.SearchDateTo, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_input_type = "date", @data_inputmask = "'alias': 'dd/mm/yyyy'", @placeholder = EduSuiteUIResources.ScheduleDateTo })
+                </fieldset>
+            </div>
+            <div class="col-lg-2 col-sm-4 col-6">
+                <fieldset class="form-group">
+                    @Html.DropDownListFor(m => m.SearchBranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.Branch, new { @class = "form-control input-control ", @data_live_search = "true" })
+                </fieldset>
+            </div>
+
+            <div class="col-lg-2 col-sm-3 col-4">
+                <fieldset class="form-group">
+                    @Html.DropDownListFor(m => m.SearchProcessStatusKey, new SelectList(Model.ProcessStatuses, "RowKey", "Text"), EduSuiteUIResources.Status, new { @class = "form-control input-control selectpicker" })
+                </fieldset>
+            </div>
+            <div class="col-lg-2 col-sm-3 col-4">
+                <fieldset class="form-group">
+                    @Html.DropDownListFor(m => m.SearchStudentStatusKey, new SelectList(Model.StudentStatuses, "RowKey", "Text"), EduSuiteUIResources.StudentStatus, new { @class = "form-control input-control selectpicker" })
+                </fieldset>
+            </div>
+            <div class="col-lg-2 col-sm-3 col-4">
+                <fieldset class="form-group">
+                    @Html.DropDownListFor(m => m.SearchUniversityKey, new SelectList(Model.Universities, "RowKey", "Text"), EduSuiteUIResources.AffiliationsTieUps, new { @class = "form-control input-control selectpicker" })
+                </fieldset>
+            </div>
+            <div class="col-lg-2 col-sm-3 col-4">
+                <fieldset class="form-group">
+                    @Html.DropDownListFor(m => m.SearchBatchKey, new SelectList(Model.Batches, "RowKey", "Text"), EduSuiteUIResources.Batch, new { @class = "form-control input-control selectpicker" })
+                </fieldset>
+            </div>
+            <div class="col-lg-2 col-sm-3 col-4">
+                <fieldset class="form-group">
+                    @Html.DropDownListFor(m => m.SearchCourseKey, new SelectList(Model.Courses, "RowKey", "Text"), EduSuiteUIResources.Course, new { @class = "form-control input-control selectpicker" })
+                </fieldset>
+            </div>
+            <div class="col-lg-2 col-sm-3 col-4">
+                <fieldset class="form-group">
+                    @Html.DropDownListFor(m => m.SearchCallTypeKey, new SelectList(Model.CallTypes, "RowKey", "Text"), EduSuiteUIResources.CallType, new { @class = "form-control input-control selectpicker" })
+                </fieldset>
+            </div>
+            <div class="col-lg-2 col-sm-3 col-4">
+                <fieldset class="form-group">
+                    @Html.DropDownListFor(m => m.SearchApplicationCallStatusKey, new SelectList(Model.ApplicationCallStatus, "RowKey", "Text"), EduSuiteUIResources.CallStatus, new { @class = "form-control input-control selectpicker" })
+                </fieldset>
+            </div>
+            <div class="col-lg-2 col-sm-3 col-4">
+                <fieldset class="form-group">
+                    @Html.DropDownListFor(m => m.SearchApplicationScheduleTypeKey, new SelectList(Model.ApplicationScheduleTypes, "RowKey", "Text"), EduSuiteUIResources.ScheduleType, new { @class = "form-control input-control selectpicker" })
+                </fieldset>
+            </div>
+        </div>
+
+
+        <div class="tabs-section mb-2">
+            <div class="tabs-section-nav position-relative">
+
+                <div class="button-group export-buttons">
+                    @*<button id="btnPrint" type="button" class="btn btn-primary btn-sm"><i class="fa fa-print btn-blue" aria-hidden="true"></i></button>*@
+                    <button id="btnExport" type="button" class="btn btn-success btn-sm"><i class="fa fa-file-excel-o fa-align-right" aria-hidden="true"></i></button>
+                </div>
+            </div>
+
+            <nav class="Tabs">
+                <div class="nav nav-tabs FollowupTab" id="nav-tab" role="tablist">
+                    <a value="@DbConstants.ScheduleStatus.Today" class="nav-item nav-link @(Model.SearchTabKey == @DbConstants.ScheduleStatus.Today ? "active" : "")" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Todays Schedule <span class="badge badge-pill badge-secondary ml-2"><i class="fas fa-circle-notch fa-spin"></i></span></a>
+                    <a value="@DbConstants.ScheduleStatus.Tomorrow" class="nav-item nav-link @(Model.SearchTabKey == @DbConstants.ScheduleStatus.Tomorrow ? "active" : "")" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Tomorrows Schedule<span class="badge badge-pill badge-success ml-2"><i class="fas fa-circle-notch fa-spin"></i></span></a>
+                    <a value="@DbConstants.ScheduleStatus.Pending" class="nav-item nav-link @(Model.SearchTabKey == @DbConstants.ScheduleStatus.Pending ? "active" : "")" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Pending Schedule<span class="badge badge-pill badge-danger ml-2"><i class="fas fa-circle-notch fa-spin"></i></span></a>
+                    <a value="@DbConstants.ScheduleStatus.Upcoming" class="nav-item nav-link @(Model.SearchTabKey == @DbConstants.ScheduleStatus.Upcoming ? "active" : "")" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Upcoming Schedule<span class="badge badge-pill badge-warning ml-2"><i class="fas fa-circle-notch fa-spin"></i></span></a>
+                    <a value="@DbConstants.ScheduleStatus.History" class="nav-item nav-link @(Model.SearchTabKey == @DbConstants.ScheduleStatus.History ? "active" : "")" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">History<span class="badge badge-pill badge-primary ml-2"> <i class="fas fa-circle-notch fa-spin"></i></span> </a>
+                    <a value="@DbConstants.ScheduleStatus.Total" class="nav-item nav-link @(Model.SearchTabKey == @DbConstants.ScheduleStatus.Total ? "active" : "")" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Total Lead<span class="badge badge-pill badge-primary ml-2"> <i class="fas fa-circle-notch fa-spin"></i></span> </a>
+                </div>
+            </nav>
+
+            <div class="tab-content mloading_white" id="followupContent">
+                <div class="table-responsive">
+                    <table class="table CustomTable mt-2">
+
+                        <thead>
+                            <tr>
+                                <th scope="col">Name</th>
+                                <th scope="col">Phone</th>
+                                @*<th scope="col">Service Type</th>*@
+                                @*<td>Incoming</td>*@
+                                <th scope="col">Call Status</th>
+                                @*<th scope="col">Duration</th>*@
+                                <th scope="col">Date</th>
+                                <th scope="col">Lead Status</th>
+                                <th scope="col">Next Schedule</th>
+                                <th scope="col">Feedback</th>
+                                <th scope="col">Scheduled By</th>
+                                <th scope="col">Counsellor</th>
+                                <th style="width:170px" scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="followupContentRow"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-12">
+                    <div id="page-selection-down" class="pull-right"></div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+</section>
+
+<script type="text/javascript">
+    var jsonData=@(Html.Raw(Json.Encode(Model)));
+
+    $(document).ready(function () {
+        AppCommon.FormatDateInput();
+        ApplicationSchedule.ApplicationSchedulePartial(jsonData, 1, true);
+        $(document).off('change', '.SearchControls [id*=Search]').on('change', '.SearchControls [id*=Search]', function (e) {
+            ApplicationSchedule.ApplicationSchedulePartial(jsonData, 1, true);
+        });
+
+        $('a[data-toggle="tab"]').off('shown.bs.tab').on('shown.bs.tab', function (e) {
+
+            ApplicationSchedule.ApplicationSchedulePartial(jsonData, 1, true);
+            debugger
+            if ($(".FollowupTab .active").attr("value") == 12) {
+                $(".DivDate").removeClass("d-none");
+            }
+            else {
+                $(".DivDate").addClass("d-none");
+            }
+
+        });
+
+    });
+
+    function setExportTitle(obj) {
+        obj.Title = '@EduSuiteUIResources.Schedule' + ($("#BranchKey").find("option:selected").text() ? ' - ' + $("#BranchKey").find("option:selected").text() : "");
+        obj.SubTitle = $("#FromDate").val() === $("#ToDate").val() ? $("#FromDate").val() : $("#FromDate").val() + " - " + $("#ToDate").val();
+        obj.FileName = (obj.Title + "_" + obj.SubTitle).replace(/-/g, '_')
+    }
+
+
+
+
+</script>
+
+
+

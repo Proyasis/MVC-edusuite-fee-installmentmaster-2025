@@ -1,0 +1,211 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.UniversityCertificateViewModel
+
+
+
+<input type="hidden" id="hdnResetUniversityCertificate" value="@Url.Action("ResetUniversityCertificate", "UniversityCertificate")" />
+<div class="modal-header">
+    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+    <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.AddEdit @EduSuiteUIResources.BlankSpace @EduSuiteUIResources.AffiliationsTieUps @EduSuiteUIResources.BlankSpace @EduSuiteUIResources.Certificate</h4>
+</div>
+@using (Html.BeginForm("AddEditUniversityCertificate", "UniversityCertificate", FormMethod.Post, new { @id = "frmUniversityCertificate" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.ApplicationKey)
+    @Html.ValidationSummary(true)
+
+    <div class="modal-body">
+
+
+        <div id="dvProfileDetails" class="mb-2">
+
+        </div>
+        <div class="form-master">
+            <div class="form-row">
+                <div class="paddingNone">
+                    <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+                </div>
+            </div>
+
+            <div class="form-row mb-2">
+                <div class="col-lg-3 col-6">
+                    @Html.Label(EduSuiteUIResources.Date, htmlAttributes: new { @id = "lblFeeDate", @class = "form-label" })
+
+
+                    @Html.TextBoxFor(m => m.CommonDate, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_input_type = "date", @data_inputmask = "'alias': 'dd/mm/yyyy'" })
+                    <span class="form-control-error-text">
+                        @Html.ValidationMessageFor(m => m.CommonDate)
+                    </span>
+
+                </div>
+            </div>
+            <div id="dynamicRepeater" class="repeater">
+                <table class="table table-responsive ">
+                    <thead class="form-group">
+                        <tr>
+                            <th></th>
+                            <th>
+                                @Html.Label(EduSuiteUIResources.CertificateType, htmlAttributes: new { @class = "form-label" })
+                            </th>
+
+                            <th>
+                                @Html.Label(EduSuiteUIResources.Remarks, htmlAttributes: new { @class = "form-label" })
+                            </th>
+
+                            <th>
+                                @Html.Label(EduSuiteUIResources.Received, htmlAttributes: new { @class = "form-label" })
+                            </th>
+                            <th>
+                                @Html.Label(EduSuiteUIResources.Issued, htmlAttributes: new { @class = "form-label" })
+                            </th>
+                            <th>
+                                @Html.Label(EduSuiteUIResources.UploadFile, htmlAttributes: new { @class = "form-label" })
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody data-repeater-list>
+                        @for (int i = 0; i < Model.UniversityCertificateDetails.Count(); i++)
+                        {
+                            <tr data-repeater-item>
+                                <td class="px-1">
+                                    @*<label class="form-label" style="visibility:hidden">NothingToDisplay</label>*@
+                                    <span data-repeater-delete="" class="btn btn-danger btn-sm">
+                                        <span class="fa fa-remove "></span>
+                                    </span>
+
+                                </td>
+                                <td class="px-1">
+                                    <fieldset class="form-group">
+                                        @Html.DropDownListFor(m => m.UniversityCertificateDetails[i].CertificateTypeKey, new SelectList(Model.CertificateTypeList, "RowKey", "Text", Model.UniversityCertificateDetails[i].CertificateTypeKey), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.CertificateType, new { @class = "form-control input-control selectpicker" })
+                                        <span class="form-control-error-text">
+                                            @Html.ValidationMessageFor(m => m.UniversityCertificateDetails[i].CertificateTypeKey)
+                                        </span>
+                                    </fieldset>
+                                </td>
+                                <td class="px-1">
+                                    <fieldset class="form-group">
+                                        @Html.TextBoxFor(m => m.UniversityCertificateDetails[i].UniversityCertificateDescription, new { @class = "form-control input-control" })
+                                        @Html.HiddenFor(m => m.UniversityCertificateDetails[i].RowKey)
+                                    </fieldset>
+
+                                </td>
+
+                                <td class="px-1 text-center">
+                                    <fieldset class="form-group">
+
+                                        <div class=" checkbox-bird green inline-block mt-2">
+                                            @Html.CheckBoxFor(m => m.UniversityCertificateDetails[i].IsReceived, new { @class = "custom-control-input", @onchange = "CheckIssued(this)" })
+                                            <label for="IsReceived" class="label-for-check form-label">
+                                            </label>
+                                        </div>
+                                        <span class="form-control-error-text">
+                                            @Html.ValidationMessageFor(m => m.UniversityCertificateDetails[i].IsReceived)
+                                        </span>
+                                    </fieldset>
+                                </td>
+                                <td class="px-1 text-center">
+                                    <fieldset class="form-group">
+                                        <div class=" checkbox-bird green inline-block mt-2">
+                                            @Html.CheckBoxFor(m => m.UniversityCertificateDetails[i].IsIssued, new { @class = "custom-control-input", @onchange = "CheckReceive(this)" })
+                                            <label for="IsIssued" class="label-for-check form-label">
+                                            </label>
+                                        </div>
+                                        <span class="form-control-error-text">
+                                            @Html.ValidationMessageFor(m => m.UniversityCertificateDetails[i].IsIssued)
+                                        </span>
+                                    </fieldset>
+                                </td>
+                                <td class="px-1 text-center">
+                                    <div class="custom-file">
+                                        @Html.TextBoxFor(m => m.UniversityCertificateDetails[i].DocumentFile, new { type = "file", @class = "custom-file-input" })
+                                        <label class="custom-file-label" for="DocumentFile">Choose file</label>
+                                    </div>
+                                    @if (Model.UniversityCertificateDetails[i].CertificatePathText != null)
+                                    {
+                                        <a href=@Url.Action("DownloadFile", "UniversityCertificate", new { filename = Model.UniversityCertificateDetails[i].CertificatePath })>@EduSuiteUIResources.Download</a>
+                                    }
+                                    <span class="form-control-error-text">
+                                        @Html.ValidationMessageFor(m => m.UniversityCertificateDetails[i].CertificatePath)
+                                    </span>
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th class="px-1" colspan="4">
+                                <span data-repeater-create class="btn btn-info btn-sm">
+                                    <span class="fa fa-plus"></span>
+                                </span>
+                            </th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <div class="modal-footer justify-content-start">
+        <div class="form-group">
+            <input type="button" value="@EduSuiteUIResources.Save" id="btnSave" class="btn btn-sm btn-success mx-1" />
+            <button type="button" data-dismiss="modal" class="btn btn-sm btn-danger mx-1">@EduSuiteUIResources.Cancel</button>
+
+        </div>
+    </div>
+}
+<script>
+
+    var jsonData=@(Html.Raw(Json.Encode(Model)));
+
+    $(document).ready(function () {
+        AppCommon.FormatInputCase()
+        AppCommon.FormatDateInput();
+        AppCommon.CustomRepeaterRemoteMethod();
+        UniversityCertificate.GetUniversityCertificateDetails(jsonData);
+      Shared.GetProfileDetails('@Url.Action("StudentDetail", "Shared", new { id = (Model.ApplicationKey), AdmissionNo = "" })')
+        $("[data-repeater-item]").each(function (Index) {
+
+            var CheckedList = $("input[type=checkbox][name*=IsReceived]:checked,input[type=checkbox][name*=IsIssued]:checked");
+
+            $(CheckedList).each(function () {
+                $(this).prop("disabled", true);
+            });
+
+
+        });
+
+    });
+
+    function CheckReceive(_this) {
+
+        var item = $(_this).closest("[data-repeater-item]");
+
+        var verify = $("input[type=checkbox][name*=IsReceived]", $(item)).is(":checked");
+
+        if (!verify) {
+
+            $(_this).prop('checked', false);
+
+            EduSuite.AlertMessage({ title: Resources.Warning, content: "This certificate can't be return without verify ! !.Please verify certificate.", type: 'orange' })
+        }
+    };
+    function CheckIssued(_this) {
+
+        var item = $(_this).closest("[data-repeater-item]");
+
+        var verify = $("input[type=checkbox][name*=IsIssued]", $(item)).is(":checked");
+
+        if (verify) {
+
+            $(_this).prop('checked', true);
+
+            EduSuite.AlertMessage({ title: Resources.Warning, content: "This certificate can't be verify. Because this certificate already return.", type: 'orange' })
+
+        }
+    };
+</script>
+

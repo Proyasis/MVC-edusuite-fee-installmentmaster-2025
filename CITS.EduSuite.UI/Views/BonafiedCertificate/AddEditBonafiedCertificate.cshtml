@@ -1,0 +1,147 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.BonafiedCertificateViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+@using CITS.EduSuite.UI
+<div class="modal-header">
+    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+    <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.Issue@EduSuiteUIResources.BlankSpace @EduSuiteUIResources.BonafiedCertificate</h4>
+</div>
+
+
+<input type="hidden" id="hdnFetchTCDetails" value="@Url.Action("FetchTCDetails","BonafiedCertificate")" />
+<input type="hidden" id="hdnBonafiedCertificatePath" value=@Url.Content("~/Templates/NotificationTemplate/BonafiedCertificate.html") />
+
+
+
+@using (Html.BeginForm("AddEditBonafiedCertificate", "BonafiedCertificate", FormMethod.Post, new { @id = "frmAddEditBonafiedCertificate" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(m => m.RowKey)
+    @Html.HiddenFor(m => m.ApplicationKey)
+    @Html.HiddenFor(m => m.TemplateKey)
+    @Html.HiddenFor(m => m.StudentEmail)
+    @Html.HiddenFor(m => m.StudentMobile)
+    <div class="modal-body">
+        <div class="form-master">
+            <div class="form-row">
+                <div class="paddingNone">
+                    <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-lg-3 col-12">
+                    <fieldset class="form-group ">
+                        @Html.Label(EduSuiteUIResources.IsIssued, new { @class = "form-label" })
+                        <div class="switch-check my-2">
+                            @Html.CheckBoxFor(m => m.IsIssued, new { @class = "switch-input" })
+                            <div class="switch-label redgreen" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                            <div class="switch-handle"></div>
+                        </div>
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.IsIssued)
+                        </span>
+
+                    </fieldset>
+                </div>
+                <div class="col-lg-3 col-12">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.IssueDate, htmlAttributes: new { @id = "lblBranch", @class = "form-label" })
+                        <div class="required-icon"><div class="text">*</div></div>
+                        @Html.TextBoxFor(m => m.IssuedDate, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_inputmask = "'alias': 'dd/mm/yyyy'", @data_input_type = "date" })
+
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.IssuedDate)
+                        </span>
+                    </fieldset>
+                </div>
+                <div class="col-12">
+                    <fieldset class="form-group ">
+                        @Html.Label(EduSuiteUIResources.Remarks, htmlAttributes: new { @id = "lblRemarks", @class = "form-label" })<span class="spnStar"></span>
+                        @Html.TextAreaFor(m => m.Remarks, new { @class = "form-control input-control", @InputFor = "lblRemarks" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.Remarks)
+                        </span>
+                    </fieldset>
+                </div>
+            </div>
+            
+            <div class="form-row">
+
+                <div class="col-sm-6 text-left">
+                    @if (ApplicationSettingModel.SMSEnabled)
+                    {
+                        if (!(Model.AutoSMS ?? true))
+                        {
+                            <div class="checkbox-bird green inline-block">
+                                @Html.CheckBox("AutoSMS", (Model.AutoSMS ?? false))
+                                <label for="AutoSMS">@EduSuiteUIResources.SendSms</label>
+                            </div>
+                        }
+                        else
+                        {
+                            @Html.Hidden("AutoSMS", (Model.AutoSMS ?? false), new { @class = "pull-left" })
+                        }
+                    }
+                    @if (ApplicationSettingModel.GuardianSMSEnabled)
+                    {
+                        if (!(Model.GuardianSMS ?? true))
+                        {
+                            <div class="checkbox-bird green inline-block">
+                                @Html.CheckBox("GuardianSMS", (Model.GuardianSMS ?? false))
+                                <label for="GuardianSMS">@EduSuiteUIResources.GuardianSMS</label>
+                            </div>
+                        }
+                        else
+                        {
+                            @Html.Hidden("GuardianSMS", (Model.GuardianSMS ?? false), new { @class = "pull-left" })
+                        }
+                    }
+
+
+                    @if (ApplicationSettingModel.EmailEnabled)
+                    {
+                        if (!(Model.AutoEmail ?? true))
+                        {
+                            <div class="checkbox-bird green inline-block">
+                                @Html.CheckBox("AutoEmail", (Model.AutoEmail ?? false), new { @class = "pull-left" })
+                                <label for="AutoEmail">@EduSuiteUIResources.SendEmail</label>
+                            </div>
+                        }
+                        else
+                        {
+                            @Html.Hidden("AutoEmail", (Model.AutoEmail ?? false))
+                        }
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal-footer justify-content-start">
+        <div class="form-group">
+            <input type="button" value="@EduSuiteUIResources.Save" id="btnSave" onclick="BonafiedCertificate.FormSubmit()" class="btn btn-sm btn-success mx-1" />
+            <button type="button" data-dismiss="modal" class="btn btn-sm btn-danger mx-1">@EduSuiteUIResources.Cancel</button>
+
+        </div>
+    </div>
+}
+<script>
+
+    var jsonData=@(Html.Raw(Json.Encode(Model)));
+
+    $(document).ready(function () {
+
+       // $('link[rel=stylesheet][href="~/Styles/main.css"]').remove();
+        //$('link[href="main.css"]').prop("disabled", true);
+
+
+        AppCommon.FormatInputCase()
+        AppCommon.FormatDateInput();
+        //BonafiedCertificate.FetchBonafiedCertificate();
+
+    });
+
+</script>
+

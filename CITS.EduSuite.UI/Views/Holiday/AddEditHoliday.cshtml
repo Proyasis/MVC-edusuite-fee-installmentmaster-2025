@@ -1,0 +1,179 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.HolidayViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+<div class="modal-header">
+    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+    <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.Add @EduSuiteUIResources.Sla @EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace @EduSuiteUIResources.Holiday</h4>
+</div>
+@using (Html.BeginForm("AddEditHoliday", "Holiday", FormMethod.Post, htmlAttributes: new { @id = "frmHoliday" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.RowKey, new { @class = "hidHolidayKey" })
+    @Html.ValidationSummary(true)
+
+
+    <input type="hidden" id="hdnGetProvinceAndCodeByCountry" value="@Url.Action("GetProvinceAndCodeByCountry", "EmployeeContact")" />
+    <input type="hidden" id="hdnGetDistrictByProvince" value="@Url.Action("GetDistrictByProvince", "EmployeeContact")" />
+    <div class="modal-body">
+        <div class="form-master">
+            <div class="form-row">
+                <div class="col-12">
+                    <span class="ValidateDataMsg"> @Html.ValidationMessage("error_msg")  </span>
+                </div>
+            </div>
+
+            <div class="form-row">
+                @if (Model.Branches.Count == 1)
+                {
+                    {
+                        Model.BranchKey = (short)Model.Branches.Select(row => row.RowKey).FirstOrDefault();
+                    }
+                    @Html.HiddenFor(m => m.BranchKey)
+                }
+                else
+                {
+                    <div class="col-12 d-none">
+                        <div class="form-group ">
+                            @Html.Label(EduSuiteUIResources.Branch, htmlAttributes: new { @id = "lblBranch", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                            @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.All + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Branches, new { @class = "input-control form-control form-control-sm", @InputFor = "lblBranch" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.BranchKey)
+                            </span>
+                        </div>
+                    </div>
+                }
+
+              
+                <div class="col-12">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.Holiday + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Title, htmlAttributes: new { @id = "lblHolidayTitle", @class = "form-label" })
+                        @Html.TextBoxFor(m => m.HolidayTitle, new { @class = "input-control form-control form-control-sm", @InputFor = "lblHolidayTitle" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.HolidayTitle)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.Holiday + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Type, htmlAttributes: new { @id = "lblHolidayTypeKey", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                        @Html.DropDownListFor(m => m.HolidayTypeKey, new SelectList(Model.HolidayTypes, "RowKey", "Text"), new { @class = "input-control form-control form-control-sm", @InputFor = "lblHolidayTypeKey" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.HolidayTypeKey)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.ClassCode, htmlAttributes: new { @class = "form-label" })
+                        @Html.ListBoxFor(m => m.ClassKeys, new SelectList(Model.ClassDetails, "RowKey", "Text"), new { @class = "form-control border-radius input-control selectpicker", @multiple = "multiple", @data_live_search = "true", @data_title = EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.ClassCode })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.ClassKeys)
+                        </span>
+                    </div>
+                </div>
+                @if (Model.HolidayTypeKey == DbConstants.HolidayType.Fixed)
+                {
+                    <div class="col-sm-6 col-12 dynamicHoliday">
+                        <div class="form-group">
+                            @Html.Label(EduSuiteUIResources.HolidayFrom, htmlAttributes: new { @id = "lblHolidayFrom", @class = "form-label" })
+                            <div class="required-icon"><div class="text">*</div></div>
+                            @Html.TextBox("txtHolidayFrom", String.Format("{0:MMM dd}", Model.HolidayFrom), new { @class = "input-control form-control form-control-sm", @data_input_type = "day", @InputFor = "lblHolidayFrom", @data_inputmask = "'alias': 'date'" })
+                            @Html.HiddenFor(m => m.HolidayFrom)
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.HolidayFrom)
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-12 dynamicHoliday">
+                        <div class="form-group">
+                            @Html.Label(EduSuiteUIResources.HolidayTo, htmlAttributes: new { @id = "lblHolidayTo", @class = "form-label" })
+                            @Html.TextBox("txtHolidayTo", String.Format("{0:MMM dd}", Model.HolidayTo), new { @class = "input-control form-control form-control-sm", @data_input_type = "day", @InputFor = "lblHolidayFrom", @data_inputmask = "'alias': 'date'" })
+                            @Html.HiddenFor(m => m.HolidayTo)
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.HolidayTo)
+                            </span>
+                        </div>
+                    </div>
+
+
+                }
+                else
+                {
+                    <div class="col-sm-6 col-12 dynamicHoliday">
+                        <div class="form-group">
+                            @Html.Label(EduSuiteUIResources.HolidayFrom, htmlAttributes: new { @id = "lblHolidayFrom", @class = "form-label" })
+                            <div class="required-icon"><div class="text">*</div></div>
+                            @Html.TextBox("txtHolidayFrom", String.Format("{0:dd/MM/yyyy}", Model.HolidayFrom), new { @class = "input-control form-control form-control-sm", @data_input_type = "date", @InputFor = "lblHolidayFrom", @data_inputmask = "'alias': 'date'" })
+                            @Html.HiddenFor(m => m.HolidayFrom)
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.HolidayFrom)
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-12 dynamicHoliday">
+                        <div class="form-group">
+                            @Html.Label(EduSuiteUIResources.HolidayTo, htmlAttributes: new { @id = "lblHolidayTo", @class = "form-label" })
+                            <div class="required-icon"><div class="text">*</div></div>
+                            @Html.TextBox("txtHolidayTo", String.Format("{0:dd/MM/yyyy}", Model.HolidayTo), new { @class = "input-control form-control form-control-sm", @data_input_type = "date", @InputFor = "lblHolidayFrom", @data_inputmask = "'alias': 'date'" })
+                            @Html.HiddenFor(m => m.HolidayTo)
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.HolidayTo)
+                            </span>
+                        </div>
+                    </div>
+
+
+                }
+
+              
+                <div class="col-12">
+                    <div class="form-group text-center">
+                        <br />
+                        <div class="switch-check w-50">
+                            @Html.CheckBoxFor(m => m.IsDayOff, new { @class = "switch-input" })
+                            <div class="switch-label redgreen" data-on="@EduSuiteUIResources.Offday" data-off="@EduSuiteUIResources.Holiday"></div>
+                            <div class="inclusive switch-handle"></div>
+                        </div>
+
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.IsDayOff)
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="form-group">
+                    @Html.Label(EduSuiteUIResources.Remarks, htmlAttributes: new { @id = "lblRemarks", @class = "form-label" })
+                   
+                    @Html.TextAreaFor(m => m.Remarks, new { @class = "input-control form-control form-control-sm", @InputFor = "lblRemarks" })
+                    <span class="form-control-error-text">
+                        @Html.ValidationMessageFor(m => m.Remarks)
+                    </span>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="modal-footer justify-content-start">
+        <div class="form-group">
+            <button type="submit" id="btnSave" class="btn btn-sm btn-success mx-1"><i class="fa fa-save"></i> @EduSuiteUIResources.Save</button>
+            <button type="button" data-dismiss="modal" class="btn btn-sm btn-danger mx-1">@EduSuiteUIResources.Cancel</button>
+
+        </div>
+    </div>
+
+
+}
+
+
+
+
+
+<script>
+    $(document).ready(function() {
+        $("[id*=ClassKeys]").each(function () {
+            
+            $(this).selectpicker();
+        })
+    })
+</script>

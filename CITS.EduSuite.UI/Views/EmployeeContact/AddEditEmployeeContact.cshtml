@@ -1,0 +1,182 @@
+﻿
+@model  CITS.EduSuite.Business.Models.ViewModels.EmployeeContactViewModel
+@using System.Web.Mvc
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Content/JqueryRepeater")
+    @Scripts.Render("~/Scripts/EmployeeContact")
+}
+
+<input type="hidden" id="hdnDeleteEmployeeContact" value="@Url.Action("DeleteEmployeeContact", "EmployeeContact")" />
+<input type="hidden" id="hdnGetProvinceById" value="@Url.Action("GetProvinceByCountry", "EmployeeContact")" />
+<input type="hidden" id="hdnGetDistrictByProvince" value="@Url.Action("GetDistrictByProvince", "EmployeeContact")" />
+
+@using (Html.BeginForm("AddEditEmployeeContact", "EmployeeContact", FormMethod.Post, new AjaxOptions { UpdateTargetId = "Rules", OnBegin = "onBegin", OnComplete = "onComplete" }))
+{
+
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.EmployeeKey)
+    @Html.ValidationSummary(true)
+
+    <div class="box-typical box-typical-padding">
+        <div class="repeater">
+            <div data-repeater-list>
+
+                @for (int i = 0; i < Model.EmployeeContacts.Count(); i++)
+                {
+                    <div data-repeater-item class="mb-2 border-bottom">
+                        <div class="form-row">
+                            <div class="col-lg-2 col-md-3 col-4">
+                                <fieldset class="form-group">
+                                    @Html.Label(EduSuiteUIResources.AddressType, htmlAttributes: new { @id = "lblAddressType", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                                    @Html.DropDownListFor(m => m.EmployeeContacts[i].AddressTypeKey, new SelectList(Model.EmployeeContacts[i].AddressTypes, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.AddressType, new { @class = "form-control border-radius input-control", @InputFor = "lblAddressType" })
+                                    <span class="form-control-error-text">
+                                        @Html.ValidationMessageFor(m => m.EmployeeContacts[i].AddressTypeKey)
+                                    </span>
+                                    @Html.HiddenFor(m => m.EmployeeContacts[i].RowKey)
+                                </fieldset>
+                            </div>
+                            <div class="col-lg-2 col-md-3 col-4">
+                                <fieldset class="form-group">
+                                    @Html.Label(EduSuiteUIResources.AddressLine1, htmlAttributes: new { @id = "lblAddressLine1", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                                    @Html.TextAreaFor(m => m.EmployeeContacts[i].AddressLine1, new { @class = "form-control input-control", @InputFor = "lblAddressLine1" })
+                                    <span class="form-control-error-text">
+                                        @Html.ValidationMessageFor(m => m.EmployeeContacts[i].AddressLine1)
+                                    </span>
+                                </fieldset>
+                            </div>
+                            <div class="col-lg-2 col-md-3 col-4">
+                                <fieldset class="form-group">
+                                    @Html.Label(EduSuiteUIResources.AddressLine2, htmlAttributes: new { @id = "lblAddressLine2", @class = "form-label" })
+                                    @Html.TextAreaFor(m => m.EmployeeContacts[i].AddressLine2, new { @class = "form-control input-control", @InputFor = "lblAddressLine2" })
+                                    <span class="form-control-error-text">
+                                        @Html.ValidationMessageFor(m => m.EmployeeContacts[i].AddressLine2)
+                                    </span>
+                                </fieldset>
+                            </div>
+                            <div class="col-lg-2 col-md-3 col-4">
+                                <fieldset class="form-group">
+                                    @Html.Label(EduSuiteUIResources.AddressLine3, htmlAttributes: new { @id = "lblAddressLine3", @class = "form-label" })
+                                    @Html.TextAreaFor(m => m.EmployeeContacts[i].AddressLine3, new { @class = "form-control input-control", @InputFor = "lblAddressLine3" })
+                                    <span class="form-control-error-text">
+                                        @Html.ValidationMessageFor(m => m.EmployeeContacts[i].AddressLine3)
+                                    </span>
+                                </fieldset>
+                            </div>
+                            <div class="col-lg-2 col-md-3 col-4">
+                                <fieldset class="form-group">
+                                    @Html.Label(EduSuiteUIResources.Country, htmlAttributes: new { @id = "lblCountry", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+
+                                    @Html.DropDownListFor(m => m.EmployeeContacts[i].CountryKey, new SelectList(Model.EmployeeContacts[i].Countries, "RowKey", "Text", Model.EmployeeContacts[i].CountryKey), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Country, new { @class = "form-control border-radius input-control", @onchange = "EmployeeContacts.GetProvinceById(this)" })
+
+                                    <span class="form-control-error-text">
+                                        @Html.ValidationMessageFor(m => m.EmployeeContacts[i].CountryKey)
+                                    </span>
+                                </fieldset>
+                            </div>
+
+                            <div class="col-lg-2 col-md-3 col-4">
+                                <fieldset class="form-group">
+                                    @Html.Label(EduSuiteUIResources.Province, new { @id = "lblProvince", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                                    @Html.DropDownListFor(m => m.EmployeeContacts[i].ProvinceKey, new SelectList(Model.EmployeeContacts[i].Provinces, "RowKey", "Text", Model.EmployeeContacts[i].ProvinceKey), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Province, new { @class = "form-control border-radius input-control", @onchange = "EmployeeContacts.GetDistrictById(this)" })
+
+                                    <span class="form-control-error-text">
+                                        @Html.ValidationMessageFor(m => m.EmployeeContacts[i].ProvinceKey)
+                                    </span>
+                                </fieldset>
+                            </div>
+
+                            <div class="col-lg-2 col-md-3 col-4">
+                                <fieldset class="form-group">
+                                    @Html.Label(EduSuiteUIResources.District, new { @id = "lblDistrict", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                                    @Html.DropDownListFor(m => m.EmployeeContacts[i].DistrictKey, new SelectList(Model.EmployeeContacts[i].Districts, "RowKey", "Text", Model.EmployeeContacts[i].DistrictKey), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.District, new { @class = "form-control border-radius input-control" })
+                                    <span class="form-control-error-text">
+                                        @Html.ValidationMessageFor(m => m.EmployeeContacts[i].DistrictKey)
+                                    </span>
+                                </fieldset>
+                            </div>
+                            <div class="col-lg-2 col-md-3 col-4">
+                                <fieldset class="form-group">
+                                    @Html.Label(EduSuiteUIResources.City, htmlAttributes: new { @id = "lblCity", @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.EmployeeContacts[i].CityName, new { @class = "form-control input-control", @InputFor = "lblCity" })
+                                    <span class="form-control-error-text">
+                                        @Html.ValidationMessageFor(m => m.EmployeeContacts[i].CityName)
+                                    </span>
+                                </fieldset>
+                            </div>
+                            <div class="col-lg-2 col-md-3 col-4">
+                                <fieldset class="form-group">
+                                    @Html.Label(EduSuiteUIResources.PostalCode, htmlAttributes: new { @id = "lblPostalCode", @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.EmployeeContacts[i].PostalCode, new { @class = "form-control input-control", @InputFor = "lblPostalCode" })
+                                    <span class="form-control-error-text">
+                                        @Html.ValidationMessageFor(m => m.EmployeeContacts[i].PostalCode)
+                                    </span>
+                                </fieldset>
+                            </div>
+
+
+                        </div>
+                        <div class="form-row">
+                            <div class="col-12">
+                                <span data-repeater-delete="" class="btn btn-danger btn-sm float-right">
+                                    <span class="fa fa-remove"></span>
+
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                }
+
+
+
+            </div>
+
+            <div class="form-row">
+                <div class="col-12">
+
+                    <span data-repeater-create class="btn btn-info btn-sm  float-right">
+                        <span class="fa fa-plus-square-o"></span>
+                    </span>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="col-6 form-col">
+                    <div class="form-group">
+                        <input type="button" value="@EduSuiteUIResources.Save" id="btnSave" class="btn btn-sm btn-success mx-1" />
+                        <input type="button" value="@EduSuiteUIResources.Skip" id="btnSkip" onclick=" $('#tab-profile  li a.active').parent().next('li').find('a').trigger('click');" class="btnForm btnSubmit btn btn-sm btn-danger " />
+                        <a id="btnFinish" class="btn btn-sm btn-success mx-1" onclick="location.href='@Url.Action("EmployeeList", "Employee")'">@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Finish</a>
+
+                    </div>
+                    <div class="col-12 paddingNone">
+                        <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+}
+
+<script>
+    var jsonData=@(Html.Raw(Json.Encode(Model)));
+    $(document).ready(function () {
+        EmployeeContacts.GetEmployeeContacts(jsonData);
+        AppCommon.CustomRepeaterRemoteMethod()
+        //$("[id*=CountryKey]").on("change", function () {
+        //    EmployeeContacts.GetProvinceById($(this).val(),$(this).closest("[data-repeater-item]"));
+        //});
+
+        //$("[id*=ProvinceKey]").on("change", function () {
+        //    EmployeeContacts.GetDistrictById($(this).val(),$(this).closest("[data-repeater-item]"));
+        //});
+
+    });
+</script>

@@ -1,0 +1,99 @@
+﻿
+@using System.Web.Mvc
+@model CITS.EduSuite.Business.Models.ViewModels.EmployeeTaskViewModel
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Content/Select2JS")
+    @Scripts.Render("~/Scripts/EmployeeTask")
+}
+<input type="hidden" id="hdnGetEmployeeTasksList" value="@Url.Action("GetEmployeeTask", "EmployeeTask")" />
+<input type="hidden" id="hdnDeleteEmployeeTask" value="@Url.Action("DeleteEmployeeTask", "EmployeeTask")" />
+<input type="hidden" id="hdnGetEmployeesByBranchId" value="@Url.Action("GetEmployeesByBranchId", "EmployeeLoan")" />
+
+
+
+
+<div class="col-12 Page_Head_Master">
+    <div class="col-6 Text_Left">
+        <label class="Page_Heading  ">@EduSuiteUIResources.EmployeeTask</label>
+    </div>
+
+    <div class="col-6 Text_Right">
+        <a id="addEditEmployeeTask" data-href="@Url.Action("AddEditEmployeeTask", "EmployeeTask", new { id =Model.RowKey})" data-modal=" " class=" btn btn-danger btn-sm">
+            <i class="fa fa-plus" aria-hidden="true"></i>  @EduSuiteUIResources.AddNewEmployee @EduSuiteUIResources.Task @*Change Add new button Here *@
+        </a>
+    </div>
+
+
+</div>
+<div class="GridBody">
+
+    <div class="grid-nav-bar form-row justify-content-between">
+        <div class="col">
+            @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Branch, new { @class = "form-control input-control ", @InputFor = "lblBranch", @id = "ddlBranch" })
+        </div>
+        <div class="col">
+            @Html.DropDownListFor(m => m.EmployeeKey, new SelectList(Model.Employees, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Employee, new { @class = "form-control input-control", @data_plugin_type = "select2", @InputFor = "lblEmployee", @id = "ddlEmployee" })
+        </div>
+
+        <div class="col-6 float-right">
+            <a class="btn btn-info btn-sm float-right " onclick='window.location.reload()'>
+                <i class="fa fa-refresh"></i>   @EduSuiteUIResources.Refresh
+            </a>
+        </div>
+
+    </div>
+
+    <br /><br />
+
+
+
+    <div class="portlet-body" id="portletBody">
+        <div class='table-scrollable'>
+            <table id="grid"></table>
+            <div id="pager"></div>
+        </div>
+    </div>
+
+
+
+</div>
+
+
+
+
+<div id='myModal' class='modal fade in'>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id='myModalContent'></div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        AppCommon.FormatSelect2();
+        EmployeeTasks.GetEmployeeTasks();
+        $("#ddlBranch").on("change", function () {
+            EmployeeTasks.GetEmployeesByBranchId($(this).val(), $("#ddlEmployee"));
+            EmployeeTasks.GetEmployeeTasks();
+            setURL();
+        });
+
+        $("#ddlEmployee").on("change", function () {
+            EmployeeTasks.GetEmployeeTasks();
+            setURL();
+        });
+        AppCommon.EditGridPopup($("#addEditEmployeeTask"))
+       
+    });
+    function setURL() {
+        var obj = {};
+        obj.BranchKey = $("#ddlBranch").val();
+        obj.EmployeeKey = $("#ddlEmployee").val();
+        EmployeeTasks.SetUrlParam($("#addEditEmployeeTask"), obj);
+    }
+
+</script>

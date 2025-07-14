@@ -1,0 +1,109 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.ApplicationElectivePaperViewModel
+
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+
+    @Scripts.Render("~/Content/JqueryRepeater")
+    @Scripts.Render("~/Scripts/ApplicationEducationalDetails")
+
+}
+
+<input type="hidden" id="hdnDeleteApplicationElectivePaper" value="@Url.Action("DeleteApplicationElectivePaper", "ApplicationElectivePaper")" />
+@using (Html.BeginForm("AddEditApplicationElectivePaper", "ApplicationElectivePaper", FormMethod.Post, new AjaxOptions { UpdateTargetId = "Rules", OnBegin = "onBegin", OnComplete = "onComplete" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.ApplicationKey)
+    @Html.ValidationSummary(true)
+
+
+    <div class="box-typical box-typical-padding">
+        <div id="dynamicRepeater" class="repeater mb-2 overflow-auto">
+            <table class="table table-striped">
+                <thead class="thead-light">
+                    <tr>
+                        <th class="mw-sm-150">
+                            @Html.Label(EduSuiteUIResources.Subject + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Code, htmlAttributes: new { @class = "form-label" })
+                        </th>
+                        <th class="mw-sm-150">
+                            @Html.Label(EduSuiteUIResources.Subject + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Name, htmlAttributes: new { @class = "form-label" })
+                        </th>
+                        <th class="mw-sm-150">
+                            @Html.Label(EduSuiteUIResources.Subject + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Year, htmlAttributes: new { @class = "form-label" })
+                        </th>
+                        <th class="mw-sm-150">
+                            @Html.Label(EduSuiteUIResources.IsActive, htmlAttributes: new { @class = "form-label" })
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody data-repeater-list>
+                    @for (int i = 0; i < Model.ElectivePapers.Count(); i++)
+                    {
+                        <tr data-repeater-item>
+                            <td>
+
+                                @Html.TextBoxFor(m => m.ElectivePapers[i].SubjectCode, new { @class = "form-control input-control", @readonly = "readonly" })
+
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(m => m.ElectivePapers[i].SubjectName, new { @class = "form-control input-control", @readonly = "readonly" })
+                                @Html.HiddenFor(m => m.ElectivePapers[i].RowKey)
+                                @Html.HiddenFor(m => m.ElectivePapers[i].SubjectKey)
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(m => m.ElectivePapers[i].SubjectYearText, new { @class = "form-control input-control", @readonly = "readonly" })
+                            </td>
+                            <td>
+                                <div class="switch-check my-2">
+                                    @Html.CheckBoxFor(m => m.ElectivePapers[i].IsActive, new { @class = "switch-input" })
+                                    <div class="switch-label yesno" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                                    <div class="switch-handle"></div>
+                                </div>
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => m.ElectivePapers[i].IsActive)
+                                </span>
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+
+            
+        </div>
+
+        <div class="form-row">
+            <div class="col-10">
+                <div class="form-group">
+                    <input type="button" value="@EduSuiteUIResources.Save" id="btnSave" class="btn btn-sm btn-success mx-1" />
+                    <input type="button" value="@EduSuiteUIResources.Skip" id="btnSkip" onclick="  $('#tab-application  li a.active').parent().nextAll('li:visible').first().find('a').trigger('click');" class="btnForm btnSubmit btn btn-sm btn-danger " />
+                    <a id="btnFinish" class="btn btn-sm btn-success mx-1" onclick="location.href='@Url.Action("ApplicationList", "Application")'">@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Finish</a>
+
+                </div>
+                <div class="col-12 paddingNone">
+                    <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+}
+
+<script>
+    var jsonData=@(Html.Raw(Json.Encode(Model)));
+
+
+    $(document).ready(function () {
+
+        ApplicationElectivePaper.GetApplicationElectivePaper(jsonData);
+
+
+        AppCommon.CustomRepeaterRemoteMethod();
+    });
+</script>
+
+
+

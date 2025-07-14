@@ -1,0 +1,322 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.AssetPurchaseMasterViewModel
+
+
+@section scripts{
+    @Scripts.Render("~/Content/JqueryRepeater")
+    @Scripts.Render("~/Scripts/AssetPurchase")
+}
+
+
+@Html.AntiForgeryToken()
+@Html.HiddenFor(m => m.RowKey)
+
+<div class="modal-header">
+    <i data-dismiss="modal" class="fa fa-remove close"></i>
+    <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.View@EduSuiteUIResources.BlankSpace @EduSuiteUIResources.Purchase</h4>
+</div>
+
+<div class="modal-body bottomLine">
+    <div class="row">
+        <div class="col-sm-12">
+            @* SalesOrder *@
+            <div class="form-master border_fieldset">
+                <div class="row">
+                    <div class="col-sm-12 btn-primary  text-center">
+                        <span>@EduSuiteUIResources.Purchase @EduSuiteUIResources.Details</span>
+
+                    </div>
+                </div>
+                <fieldset>
+                    <legend class="col-sm-12"></legend>
+                    <div class="row bottomLine ">
+                        <div class="col-sm-4 form-col  ">
+                            @Html.Label(EduSuiteUIResources.Order + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Number, htmlAttributes: new { @id = "lblOrderNumber", @class = "lblControlHead" })
+
+                            @Html.TextBox("OrderNumber", Model.OrderNumber, new { @class = "form-control input-control", @readonly = "readonly" })
+
+                        </div>
+
+                        <div class="col-sm-4 form-col ">
+                            @Html.Label(EduSuiteUIResources.Order + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Date, htmlAttributes: new { @id = "lblOrderDate", @class = "lblControlHead" })
+
+
+                            @Html.TextBox("OrderDate", Model.BillDate, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @readonly = "readonly" })
+
+                        </div>
+                        <div class="col-sm-4 pull-right">
+                            @Html.Label(EduSuiteUIResources.Party + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Name, htmlAttributes: new { @class = "lblControlHead" })
+
+                            @Html.TextBox("PartyName", Model.PartyName, new { @class = "form-control input-control", @readonly = "readonly" })
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset style="  border: solid 1px white;" class="salesOrderView">
+                    <div class="row bottomLine  gridHead">
+
+                        <div class="form-group">
+                            <div class="col-sm-2 form-col text-center">
+                                @Html.Label(EduSuiteUIResources.AssetType, htmlAttributes: new { @class = "lblControlHead" })
+
+                            </div>
+
+                            <div class="col-sm-2 form-col text-center">
+                                @Html.Label(EduSuiteUIResources.Description, htmlAttributes: new { @class = "lblControlHead" })
+
+                            </div>
+                            <div class="col-sm-2 form-col text-center">
+                                @Html.Label(EduSuiteUIResources.Life + EduSuiteUIResources.BlankSpace+EduSuiteUIResources.Period, htmlAttributes: new { @class = "lblControlHead" })
+
+                            </div>
+
+                            <div class="col-sm-6 form-col">
+
+                                <div class="col-sm-3 form-col text-center">
+                                    @Html.Label(EduSuiteUIResources.Qty, htmlAttributes: new { @class = "lblControlHead" })
+                                </div>
+                                <div class="col-sm-4 form-col text-center">
+                                    @Html.Label(EduSuiteUIResources.Amt, htmlAttributes: new { @class = "lblControlHead" })
+
+                                </div>
+                                <div class="col-sm-4 form-col text-center">
+                                    @Html.Label(EduSuiteUIResources.Total, htmlAttributes: new { @class = "lblControlHead" })
+
+                                </div>
+
+                            </div>
+                            
+
+                        </div>
+
+                    </div>
+
+                    @for (int i = 0; i < Model.AssetPurchaseDetails.Count(); i++)
+                    {
+                        <div class="row bottomLine salesOrderView">
+
+                            <div class="form-group">
+                                <div class="col-sm-2 form-col">
+                                    @Html.TextBox("MaterialName", Model.AssetPurchaseDetails[i].MaterialName, new { @class = "form-control input-control", @readonly = "readonly" })
+
+                                </div>
+
+                                <div class="col-sm-2 form-col ">
+                                    <div class="input-group-transparent">
+                                        @Html.TextBox("Length", Model.AssetPurchaseDetails[i].Description, new { @class = "form-control input-control", @readonly = "readonly" })
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-2 form-col">
+                                    @Html.TextBox("MaterialName", Model.AssetPurchaseDetails[i].Period, new { @class = "form-control input-control", @readonly = "readonly" })
+
+                                </div>
+
+                                <div class="col-sm-6 form-col ">
+                                    <div class="col-sm-3 form-col ">
+                                        @Html.TextBox("Quantity", Model.AssetPurchaseDetails[i].Quantity, "{0:G29}", new { @class = "form-control input-control text-right-decimal", @readonly = "readonly" })
+
+                                    </div>
+                                    <div class="col-sm-4 form-col ">
+                                        <div class="input-group-transparent">
+                                            @Html.TextBox("Amount", Model.AssetPurchaseDetails[i].Amount, "{0:G29}", new { @class = "form-control input-control text-right", @readonly = "readonly" })
+
+                                            <span class="input-group-addon-end spnSquareFeet">@Model.AssetPurchaseDetails[i].RateTypeCode</span>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 form-col ">
+                                        <div class="input-group-transparent">
+                                            @Html.TextBox("Amount", Model.AssetPurchaseDetails[i].RowTotal, "{0:G29}", new { @class = "form-control input-control text-right-decimal", @readonly = "readonly" })
+
+
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                
+                            </div>
+                        </div>
+                    }
+                </fieldset>
+
+
+            </div>
+
+            @* SalesOrder Payments *@
+            <div class="form-master border_fieldset">
+
+                <div class="row" data-toggle="collapse" href="#PurchasePayments">
+                    <div class="col-sm-12 btn-primary  text-center">
+                        <span>@EduSuiteUIResources.Purchase @EduSuiteUIResources.Payment</span><i class="fa fa-toggle-down pull-right" aria-hidden="true">View</i>
+
+                    </div>
+                </div>
+
+                <fieldset id="PurchasePayments" class="salesOrderView panel-collapse in " aria-expanded="true">
+                    <div class="row bottomLine salesOrderView ">
+
+                        <div class="col-sm-2 form-col">
+                            @Html.Label(EduSuiteUIResources.TaxableAmount, htmlAttributes: new { @class = "lblControlHead" })<br />
+                            @Html.TextBox("TaxableAmount", Model.TaxableAmount, "{0:G29}", new { @class = "form-control input-control text-right-decimal", @readonly = "readonly" })
+                        </div>
+                        <div class="col-sm-2 form-col">
+                            @Html.Label(EduSuiteUIResources.NonTaxableAmount, htmlAttributes: new { @class = "lblControlHead" })<br />
+                            @Html.TextBox("NonTaxableAmount", Model.NonTaxableAmount, "{0:G29}", new { @class = "form-control input-control text-right-decimal", @readonly = "readonly" })
+                        </div>
+                        @if (Model.IGSTAmt != null)
+                        {
+                            <div class="col-sm-2 form-col">
+                                @Html.Label(EduSuiteUIResources.IGST, htmlAttributes: new { @class = "lblControlHead" })<br />
+                                @Html.TextBox("IGSTAmt", Model.IGSTAmt, "{0:G29}", new { @class = "form-control input-control text-right-decimal", @readonly = "readonly" })
+
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-sm-2 form-col">
+                                @Html.Label(EduSuiteUIResources.CGST, htmlAttributes: new { @class = "lblControlHead" })<br />
+                                @Html.TextBox("CGSTAmt", Model.CGSTAmt, "{0:G29}", new { @class = "form-control input-control text-right-decimal", @readonly = "readonly" })
+
+                            </div>
+
+                            <div class="col-sm-2 form-col">
+                                @Html.Label(EduSuiteUIResources.SGST, htmlAttributes: new { @class = "lblControlHead" })<br />
+                                @Html.TextBox("SGSTAmt", Model.SGSTAmt, "{0:G29}", new { @class = "form-control input-control text-right-decimal", @readonly = "readonly" })
+
+                            </div>
+                        }
+
+                        <div class="col-sm-3 form-col">
+                            <div class="col-sm-6 form-col">
+                                @Html.Label(EduSuiteUIResources.RoundOff, htmlAttributes: new { @class = "lblControlHead" })<br />
+                                @Html.TextBox("RoundOff", Model.RoundOff, "{0:G29}", new { @class = "form-control input-control text-right-decimal", @readonly = "readonly" })
+
+                            </div>
+                            <div class="col-sm-6 form-col">
+                                @Html.Label(EduSuiteUIResources.Discount, htmlAttributes: new { @class = "lblControlHead" })<br />
+                                @Html.TextBox("Discount", Model.Discount, "{0:G29}", new { @class = "form-control input-control text-right-decimal", @readonly = "readonly" })
+
+                            </div>
+                        </div>
+                        <div class="col-sm-2 form-col">
+                            @Html.Label(EduSuiteUIResources.TotalAmount, htmlAttributes: new { @class = "lblControlHead" })<br />
+                            @Html.TextBox("TotalAmount", Model.TotalAmount, "{0:G29}", new { @class = "form-control input-control text-right-decimal", @readonly = "readonly" })
+                        </div>
+                        @if (Model.OldAdvanceBalance != null && Model.OldAdvanceBalance != 0)
+                        {
+                            <div class="col-sm-2 form-col">
+                                @Html.Label(EduSuiteUIResources.Excess, htmlAttributes: new { @class = "lblControlHead" })<br />
+                                @Html.TextBox("TotalAmountPaid", Model.OldAdvanceBalance, "{0:G29}", new { @class = "form-control input-control text-right-decimal", @readonly = "readonly" })
+                            </div>
+                        }
+                        <div class="col-sm-2 form-col">
+                            @Html.Label(EduSuiteUIResources.AmountPaid, htmlAttributes: new { @class = "lblControlHead" })<br />
+                            @Html.TextBox("BalanceAmount", Model.AmountPaid, "{0:G29}", new { @class = "form-control input-control text-right-decimal", @readonly = "readonly" })
+                        </div>
+                        <div class="col-sm-2 form-col">
+                            @Html.Label(EduSuiteUIResources.BalanceAmount, htmlAttributes: new { @class = "lblControlHead" })<br />
+                            @Html.TextBox("BalanceAmount", Model.BalanceAmount, "{0:G29}", new { @class = "form-control input-control text-right-decimal", @readonly = "readonly" })
+                        </div>
+                    </div>
+                    @if (Model.PurchasePayments.Count() > 0)
+                    {
+                        <div class="row bottomLine gridHead">
+
+                            <div class="col-sm-2 form-col">
+                                @Html.Label(EduSuiteUIResources.Payment + EduSuiteUIResources.Date, htmlAttributes: new { @class = "lblControlHead" })
+                            </div>
+                            <div class="col-sm-3 form-col">
+                                @Html.Label(EduSuiteUIResources.Purpose, htmlAttributes: new { @class = "lblControlHead" })
+                            </div>
+
+                            <div class="col-sm-3 form-col">
+                                @Html.Label(EduSuiteUIResources.PaymentMode, htmlAttributes: new { @class = "lblControlHead" })
+
+                            </div>
+                            <div class="col-sm-2 form-col text-right">
+                                @Html.Label(EduSuiteUIResources.AmountPaid, htmlAttributes: new { @class = "lblControlHead" })
+                            </div>
+                            <div class="col-sm-2 form-col  text-right">
+                                @Html.Label(EduSuiteUIResources.BalanceAmount, htmlAttributes: new { @class = "lblControlHead" })
+                            </div>
+
+                        </div>
+
+                        for (int i = 0; i < Model.PurchasePayments.Count(); i++)
+                        {
+                            <div class="row bottomLine salesOrderView  ">
+
+                                <div class="col-sm-2 form-col">
+                                    @string.Format("{0:dd/MM/yyyy}", Model.PurchasePayments[i].PaymentDate)
+
+                                </div>
+                                <div class="col-sm-3 form-col ">
+
+                                    @string.Format("{0:G29}", Model.PurchasePayments[i].Purpose)
+                                </div>
+
+                                <div class="col-sm-3 form-col">
+                                    @string.Format("{0:G29}", Model.PurchasePayments[i].PaymentModeDetail)
+                                </div>
+
+
+
+                                <div class="col-sm-2 form-col text-right-decimal">
+
+
+                                    @string.Format("{0:G29}", Model.PurchasePayments[i].ReceivedAmount)
+
+                                </div>
+
+                                <div class="col-sm-2 form-col text-right-decimal">
+
+
+                                    @string.Format("{0:G29}", Model.PurchasePayments[i].BalanceAmount)
+
+                                </div>
+
+                            </div>
+
+                        }
+                    }
+                </fieldset>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .form-master {
+        background: #ffffff;
+    }
+
+    .salesOrderView {
+        font-family: initial;
+    }
+
+        .salesOrderView .gridHead {
+            background: #e6e6e6;
+        }
+
+    .modal {
+        overflow: scroll;
+    }
+</style>
+
+<script>
+    function divToggle(e) {
+        var id = $(e).attr('id');
+        //$(".divtoggle").hide();
+        $("#divProductionChild_" + id).toggle();
+    }
+
+</script>
+
+
+<style>
+    .ViewPartyOrder {
+        width: 70%;
+    }
+</style>

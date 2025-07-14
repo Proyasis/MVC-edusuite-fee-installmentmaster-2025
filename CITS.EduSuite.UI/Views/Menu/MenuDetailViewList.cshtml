@@ -1,0 +1,90 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.MenuDetailViewModel
+
+@using System.Web.Mvc
+
+@section scripts{
+
+    @Scripts.Render("~/Scripts/Menu")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/CitsValidation")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Content/Select2JS")
+    @Scripts.Render("~/Content/JqueryRepeater")
+}
+
+<input type="hidden" id="hdnGetMenuDetailView" value="@Url.Action("GetMenuDetailView", "Menu")" />
+<input type="hidden" id="hdnDeleteMenuDetailView" value="@Url.Action("DeleteMenuDetailView", "Menu")" />
+<input type="hidden" id="hdnDeleteMenuAction" value="@Url.Action("DeleteMenuAction", "Menu")" />
+<input type="hidden" id="hdnFilleMenuTypes" value="@Url.Action("FilleMenuTypes", "SelectList")" />
+<input type="hidden" id="hdnAddEditMenuDetailView" value="@Url.Action("AddEditMenuDetailView", "Menu")" />
+
+
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-sm-6 col-12">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.Menu</h3>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 text-right">
+            @*<a id="hdnAddEditMenuDetailView" data-href="@Url.Action("AddEditMenuDetailView", "MenuDetailView")" onclick="Menu.EditMenuDetailViewPopup(null)" class="btn btn-success btn-sm "><i class="fa fa-plus-square-o"></i> <span>@EduSuiteUIResources.New @EduSuiteUIResources.BlankSpace @EduSuiteUIResources.Menu</span></a>*@
+            <a onclick="Menu.EditMenuDetailViewPopup(null)" class="btn btn-success btn-sm "><i class="fa fa-plus-square-o"></i> <span>@EduSuiteUIResources.Menu</span></a>
+
+        </div>
+    </div>
+</header>
+
+<section class="section-content mx-sm-3 mx-0">
+    <div class="GridBody">
+
+        <div class="grid-nav-bar form-row justify-content-between">
+            <div class="col-lg-3 col-5">
+                @Html.DropDownListFor(m => m.MenuTypeKey, new SelectList(Model.MenuTypes, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.MenuType, new { @class = "input-control form-control form-control-sm form-control-sm", })
+            </div>
+            <div class="col-lg-3 col-6">
+                <input id="searchText" type="text" name="focus" class="form-control gridSearchTextBox" placeholder="@EduSuiteUIResources.Search" /> @* Change Search TextBox Placeholder*@
+                <span id="iconSpan" class="iconSpan"><i class="fa fa-times-circle" aria-hidden="true"></i></span>
+            </div>
+
+            <div class="col-lg-6 col-2">
+                <a class="btn btn-info btn-sm float-right " onclick='window.location.reload()'>
+                    <i class="fa fa-refresh"></i>   Refresh
+                </a>
+            </div>
+
+        </div>
+
+        <div class="table-wrapper">
+
+            <div class="jqGrid_wrapper overflow-auto">
+                <table id="grid"></table>
+                <div id="pager"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    $(document).ready(function () {
+        $("#searchText").on("input", function () {
+            Menu.GetMenu();
+        });
+
+        $("#iconSpan").click(function () {
+            $('#searchText').val('');
+            Menu.GetMenu();
+        });
+
+        $("#MenuTypeKey").change(function () {
+            Menu.GetMenu();
+        });
+        Menu.GetMenu();
+
+    });
+</script>

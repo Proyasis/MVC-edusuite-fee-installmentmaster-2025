@@ -1,0 +1,96 @@
+﻿@model List<CITS.EduSuite.Business.Models.ViewModels.StudentEarlyDepartureViewModel>
+@using CITS.EduSuite.Business.Models.ViewModels
+@using CITS.EduSuite.UI
+
+
+<input type="hidden" id="hdnAddEditStudentEarlyDeparture" value="@Url.Action("AddEditStudentEarlyDeparture", "StudentEarlyDeparture", new { id = "" })" />
+<input type="hidden" id="hdnDeleteStudentEarlyDeparture" value="@Url.Action("DeleteStudentEarlyDeparture", "StudentEarlyDeparture", new { id = "" })" />
+<input type="hidden" id="hdnStudentEarlyDepartureList" value="@Url.Action("StudentEarlyDepartureList", "StudentEarlyDeparture", new { id = "" })" />
+
+
+
+
+<section class="card">
+    <header class="card-header w3-indigo">
+        @EduSuiteUIResources.StudentEarlyDeparture@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Details
+    </header>
+    <div class="card-body p-2 overflow-auto">
+        <table class="table table-bordered table-sm" id="divInstallmentFeeDetails">
+
+            <thead>
+                <tr>
+                    <th>
+                        @Html.Label(EduSuiteUIResources.Date, htmlAttributes: new { @class = "form-label" })
+                    </th>
+                    <th>
+                        @Html.Label(EduSuiteUIResources.Time, htmlAttributes: new { @class = "form-label" })
+                    </th>
+                    <th>
+                        @Html.Label(EduSuiteUIResources.Remarks, htmlAttributes: new { @class = "form-label" })
+                    </th>
+                    <th>
+                        @Html.Label(EduSuiteUIResources.Action, htmlAttributes: new { @class = "form-label" })
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.Count; i++)
+                {
+
+                    <tr data-repeater-item>
+                        <td>
+
+                            @String.Format("{0:dd/MM/yyyy}", Model[i].EarlyDepartureDate)
+                            @Html.HiddenFor(m => m[i].RowKey)
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(m => Model[i].EarlyDepartureTime, new { @class = "border-0 input-control", @data_input_type = "time", @data_inputmask = "'alias':'hh:mm t','hourFormat': '12'", @InputFor = "lblCallDuration", @readonly = "readonly" })
+                        </td>
+
+                        <td>
+                            @Model[i].Remarks
+
+                        </td>
+                        <td>
+                            <div class="btn-group">
+
+                                <button type="button" class="btn btn-primary btn-sm mx-1 btnfeeEdit " onclick="javascript:StudentEarlyDeparture.AddEditStudentEarlyDeparture('@Model[i].RowKey');"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+                                <button type="button" class="btn btn-danger btn-sm mx-1" onclick="javascript:StudentEarlyDeparture.DeleteStudentEarlyDeparture('@Model[i].RowKey','@Model[i].ApplicationsKey');return false;">  <i class="fa fa-trash pointer" aria-hidden="true"></i>  </button>
+
+
+                            </div>
+                        </td>
+
+                    </tr>
+
+
+                }
+            </tbody>
+
+
+        </table>
+    </div>
+</section>
+
+<script>
+
+    $(document).ready(function () {
+        setTimeout(function () {
+            $("[data-input-type=time]").each(function () {
+                
+                if ($(this).val() != "") {
+                    $(this).val(moment($(this).val(), ["HH:mm:ss"]).format("hh:mm A"));
+                }
+            })
+
+            AppCommon.FormatDateInput();
+            AppCommon.FormatInputCase();
+            AppCommon.FormatTimeInput();
+
+        });
+    });
+
+
+
+</script>

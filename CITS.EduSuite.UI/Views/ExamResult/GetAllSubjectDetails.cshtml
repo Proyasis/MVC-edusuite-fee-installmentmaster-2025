@@ -1,0 +1,109 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.ExamResultViewModel
+
+
+
+@section scripts{
+
+    @Scripts.Render("~/Scripts/ExamResult")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/CitsValidation")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Content/Select2JS")
+    @Scripts.Render("~/Content/JqueryRepeater")
+    @Scripts.Render("~/Content/JqueryRepeater")
+}
+
+<input type="hidden" id="hdnGetSubjectDetails" value="@Url.Action("GetSubjectDetils", "ExamResult")" />
+<input type="hidden" id="hdnAddEditStudentsMarkList" value="@Url.Action("AddEditStudentsMarkList", "ExamResult")" />
+<input type="hidden" id="hdnDeleteExamResult" value="@Url.Action("DeleteExamResult", "ExamResult")" />
+
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-12">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.Add@EduSuiteUIResources.Hyphen@EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.ExamResult</h3>
+                        <ol class="breadcrumb breadcrumb-simple float-right mb-2">
+                            <li><a href="#" onclick="location.href='@Url.Action("ExamResultList", "ExamResult")' ">@EduSuiteUIResources.ExamResult</a></li>
+                            <li class="active">@EduSuiteUIResources.Add@EduSuiteUIResources.Hyphen@EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.ExamResult</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<section class="section-content mx-sm-3 mx-0">
+    <div class="GridBody">
+
+        @Html.HiddenFor(m => m.BranchKey)
+        @Html.HiddenFor(m => m.AcademicTermKey)
+        @Html.HiddenFor(m => m.CourseKey)
+        @Html.HiddenFor(m => m.UniversityMasterKey)
+        @Html.HiddenFor(m => m.BatchKey)
+        @Html.HiddenFor(m => m.ExamTermKey)
+        @Html.HiddenFor(m => m.ExamYear)
+        @Html.HiddenFor(m => m.SubjectKey)
+
+
+
+
+
+
+        <div class="portlet-body" id="portletBody">
+            <div class='table-scrollable'>
+                <table id="grid"></table>
+                <div id="pager"></div>
+            </div>
+        </div>
+        @*<div class="col-12">
+                <div class="form-group">
+                    <input type="submit" value="@EduSuiteUIResources.Save" id="btnSave" class="btn btn-sm btn-success mx-1pull-left " />
+
+
+                </div>
+            </div>*@
+
+    </div>
+    <div id='myModal' class='modal fade in'>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div id='myModalContent'></div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    $(document).ready(function ()
+    {
+
+        ExamResult.GetSubjectDetils();
+        $("#grid").jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+
+        // AppCommon.EditGridPopup($("#hdnGetSubjectDetils"))
+       
+
+
+        //$("#btnSave", $("#frmStudyMaterials")).on("click", function () {
+        //
+        //    var s = jQuery("#grid").jqGrid('getGridParam', 'selarrrow');
+        //    $(s).each(function (i) {
+        //        var obj = {};
+        //        var key = $('#grid').jqGrid('getCell', this[0], 'RowKey');
+        //        var RowKey = $("<input type='hidden' id='StudyMaterialList[" + i + "].RowKey' name='StudyMaterialList[" + i + "].RowKey'/>")
+        //        $(RowKey).val(key);
+        //        var BookKey = $("<input type='hidden' id='StudyMaterialList[" + i + "].BookKey' name='StudyMaterialList[" + i + "].BookKey'/>")
+        //        $(BookKey).val(this[0]);
+        //        $("#frmStudyMaterials").append(RowKey)
+        //        $("#frmStudyMaterials").append(BookKey)
+        //    });
+        //    //$("#BookKeys").val(s)
+        //})
+
+    });
+</script>
+
+
+

@@ -1,0 +1,451 @@
+﻿@model List<CITS.EduSuite.Business.Models.ViewModels.StudentIDCardList>
+
+<!-- Modal content-->
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/bundles/QRCode")
+
+
+}
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+        <h4 class="modal-title">Print ID Card</h4>
+    </div>
+    <div class="modal-body">
+        <button type="button" class="btn btnForm btn-success" id="btnPrintIDCards" data-dismiss="modal"><i class="fa fa-print"></i>Print</button>
+        <br /><br />
+        <div id="PrintContents" class="PrintContents">
+
+            <style>
+                body {
+                    background-color: #d7d6d3;
+                    font-family: 'verdana';
+                }
+
+                .id-card-holder {
+                    width: 225px;
+                    padding: 4px;
+                    margin: 0 auto;
+                    /*background-color: #1f1f1f;*/
+                    border-radius: 5px;
+                    position: relative;
+                    margin-bottom: 10px;
+                }
+
+                    /*.id-card-holder:after {
+                        content: '';
+                        width: 7px;
+                        display: block;
+                        background-color: #0a0a0a;
+                        height: 100px;
+                        position: absolute;
+                        top: 105px;
+                        border-radius: 0 5px 5px 0;
+                    }
+
+                    .id-card-holder:before {
+                        content: '';
+                        width: 7px;
+                        display: block;
+                        background-color: #0a0a0a;
+                        height: 100px;
+                        position: absolute;
+                        top: 105px;
+                        left: 222px;
+                        border-radius: 5px 0 0 5px;
+                    }*/
+
+                .id-card {
+                    background-color: #fff;
+                    padding: 10px;
+                    border-radius: 10px;
+                    text-align: center;
+                    box-shadow: 0 0 1.5px 0px #b9b9b9;
+                    border:solid;
+                }
+
+                    .id-card img {
+                        margin: 0 auto;
+                    }
+
+                .header img {
+                    width: 100%;
+                    margin-top: 15px;
+                }
+
+                .photo img {
+                    width: 80px;
+                    margin-top: 15px;
+                    height: 80px;
+                }
+
+                h2 {
+                    font-size: 15px;
+                    margin: 5px 0;
+                }
+
+                h3 {
+                    font-size: 12px;
+                    margin: 2.5px 0;
+                    font-weight: 300;
+                }
+
+                .qr-code img {
+                    width: 50px;
+                }
+
+                p {
+                    font-size: 10px;
+                    margin: 2px;
+                }
+
+                .id-card-hook {
+                    background-color: #000;
+                    width: 70px;
+                    margin: 0 auto;
+                    height: 15px;
+                    border-radius: 5px 5px 0 0;
+                }
+
+                    .id-card-hook:after {
+                        content: '';
+                        background-color: #d7d6d3;
+                        width: 47px;
+                        height: 6px;
+                        display: block;
+                        margin: 0px auto;
+                        position: relative;
+                        top: 6px;
+                        border-radius: 4px;
+                    }
+
+                .id-card-tag-strip {
+                    width: 45px;
+                    height: 40px;
+                    background-color: #0950ef;
+                    margin: 0 auto;
+                    border-radius: 5px;
+                    position: relative;
+                    top: 9px;
+                    z-index: 1;
+                    border: 1px solid #0041ad;
+                }
+
+                    .id-card-tag-strip:after {
+                        content: '';
+                        display: block;
+                        width: 100%;
+                        height: 1px;
+                        background-color: #c1c1c1;
+                        position: relative;
+                        top: 10px;
+                    }
+
+                .id-card-tag {
+                    width: 0;
+                    height: 0;
+                    border-left: 100px solid transparent;
+                    border-right: 100px solid transparent;
+                    border-top: 100px solid #0958db;
+                    margin: -10px auto -30px auto;
+                }
+
+                    .id-card-tag:after {
+                        content: '';
+                        display: block;
+                        width: 0;
+                        height: 0;
+                        border-left: 50px solid transparent;
+                        border-right: 50px solid transparent;
+                        border-top: 100px solid #d7d6d3;
+                        margin: -10px auto -30px auto;
+                        position: relative;
+                        top: -130px;
+                        left: -50px;
+                    }
+
+                hr {
+                    margin: 0.5em 0;
+                }
+
+                .qr-code table {
+                    margin: auto;
+                }
+
+                .PrintContents {
+                    display: flex;
+                    -ms-flex-wrap: wrap;
+                    flex-wrap: wrap;
+                    margin-right: -5px;
+                    margin-left: -5px;
+                }
+
+                @@media print {
+                    body {
+                        background-color: #d7d6d3;
+                        font-family: 'verdana';
+                    }
+
+                    .id-card-holder {
+                        width: 225px;
+                        padding: 4px;
+                        margin: 0 auto;
+                        background-color: #1f1f1f;
+                        border-radius: 5px;
+                        position: relative;
+                        margin-bottom: 10px;
+                    }
+
+                        .id-card-holder:after {
+                            content: '';
+                            width: 7px;
+                            display: block;
+                            background-color: #0a0a0a;
+                            height: 100px;
+                            position: absolute;
+                            top: 105px;
+                            border-radius: 0 5px 5px 0;
+                        }
+
+                        .id-card-holder:before {
+                            content: '';
+                            width: 7px;
+                            display: block;
+                            background-color: #0a0a0a;
+                            height: 100px;
+                            position: absolute;
+                            top: 105px;
+                            left: 222px;
+                            border-radius: 5px 0 0 5px;
+                        }
+
+                    .id-card {
+                        background-color: #fff;
+                        padding: 10px;
+                        border-radius: 10px;
+                        text-align: center;
+                        box-shadow: 0 0 1.5px 0px #b9b9b9;
+                    }
+
+                        .id-card img {
+                            margin: 0 auto;
+                        }
+
+                    .header img {
+                        width: 100%;
+                        margin-top: 15px;
+                    }
+
+                    .photo img {
+                        width: 80px;
+                        margin-top: 15px;
+                        height: 80px;
+                    }
+
+                    h2 {
+                        font-size: 15px;
+                        margin: 5px 0;
+                    }
+
+                    h3 {
+                        font-size: 12px;
+                        margin: 2.5px 0;
+                        font-weight: 300;
+                    }
+
+                    .qr-code img {
+                        width: 50px;
+                    }
+
+                    p {
+                        font-size: 10px;
+                        margin: 2px;
+                    }
+
+                    .id-card-hook {
+                        background-color: #000;
+                        width: 70px;
+                        margin: 0 auto;
+                        height: 15px;
+                        border-radius: 5px 5px 0 0;
+                    }
+
+                        .id-card-hook:after {
+                            content: '';
+                            background-color: #d7d6d3;
+                            width: 47px;
+                            height: 6px;
+                            display: block;
+                            margin: 0px auto;
+                            position: relative;
+                            top: 6px;
+                            border-radius: 4px;
+                        }
+
+                    .id-card-tag-strip {
+                        width: 45px;
+                        height: 40px;
+                        background-color: #0950ef;
+                        margin: 0 auto;
+                        border-radius: 5px;
+                        position: relative;
+                        top: 9px;
+                        z-index: 1;
+                        border: 1px solid #0041ad;
+                    }
+
+                        .id-card-tag-strip:after {
+                            content: '';
+                            display: block;
+                            width: 100%;
+                            height: 1px;
+                            background-color: #c1c1c1;
+                            position: relative;
+                            top: 10px;
+                        }
+
+                    .id-card-tag {
+                        width: 0;
+                        height: 0;
+                        border-left: 100px solid transparent;
+                        border-right: 100px solid transparent;
+                        border-top: 100px solid #0958db;
+                        margin: -10px auto -30px auto;
+                    }
+
+                        .id-card-tag:after {
+                            content: '';
+                            display: block;
+                            width: 0;
+                            height: 0;
+                            border-left: 50px solid transparent;
+                            border-right: 50px solid transparent;
+                            border-top: 100px solid #d7d6d3;
+                            margin: -10px auto -30px auto;
+                            position: relative;
+                            top: -130px;
+                            left: -50px;
+                        }
+
+                    hr {
+                        margin: 0.5em 0;
+                    }
+                }
+            </style>
+            @*<div class="id-card-tag"></div>
+                <div class="id-card-tag-strip"></div>
+                <div class="id-card-hook"></div>*@
+            @for (var i = 0; i < Model.Count; i++)
+            {<div class="id-card-holder">
+
+                @Html.HiddenFor(m => m[i].ApplicationKey)
+                 <div class="id-card">
+                     <div class="header">
+                         @*<img src="https://lh3.googleusercontent.com/-ebxWAGWvWg0/WTABBfdBv2I/AAAAAAAAAqw/qef78bVeIngorIsmAUD4tWVUd8WDvZyuQCEw/w140-h74-p/Untitled-2.png">*@
+                         @*<img class="imgProfile" src='@Url.Content("~/images/Proyasislogo.png")' />*@
+                     </div>
+                     <div class="photo">
+                         @*<img src="https://media.licdn.com/mpr/mpr/shrinknp_200_200/AAEAAQAAAAAAAAuXAAAAJDE2YjQzOGZkLTU5YzAtNGRkNC04NTUzLTM3Zjg0ZWVlMGQxZA.jpg">*@
+                         @if (Model[i].StudentPhoto == null)
+                         {
+                             <img class="imgProfile" src='@Url.Content("~/images/no-photo.png")' />
+                         }
+                         else
+                         {
+                             @*<img class="imgProfile" src='@Url.Content("~/UploadFiles/Application/" + @Model[i].ApplicationKey + "/" + @Model[i].StudentPhoto)' />*@
+                             <img class="imgProfile" src="@Url.Content(Model[i].StudentPhotoPath)" alt="User profile picture">
+                         }
+                     </div>
+                     <h2><strong>@Model[i].StudentName</strong></h2>
+                     <div class="qr-code">
+                         @*<img src="https://www.shopify.com/growth-tools-assets/qr-code/shopify-faae7065b7b351d28495b345ed76096c03de28bac346deb1e85db632862fd0e4.png">*@
+                     </div>
+                     <hr>
+                     <p><strong>@EduSuiteUIResources.AdmissionNo :@Model[i].AdmissionNo</strong></p>
+                     <p><strong>@EduSuiteUIResources.EnrollNo : @Model[i].StudentEnrollmentNo</strong></p>
+                     <p>@EduSuiteUIResources.Course : @Model[i].CourseName</p>
+                     <p>@EduSuiteUIResources.University : @Model[i].UniversityName</p>
+                     <p>@EduSuiteUIResources.Batch : @Model[i].BatchName</p>
+                     <p>@EduSuiteUIResources.Address : @Model[i].StudentAddress</p>
+                     <p>@EduSuiteUIResources.Mobile : @Model[i].StudentMobile</p>
+                     <p>@EduSuiteUIResources.Email : @Model[i].StudentEmail</p>
+                     <p>@EduSuiteUIResources.BloodGroup : @Model[i].BloodGroup</p>
+                     <p>@EduSuiteUIResources.DateOfAdmission : @(string.Format("{0:dd/MM/yyyy}", Model[i].StudentDateOfAdmission))</p>
+
+                     <p></p>
+                     @*<p><strong>@Model[i].StudentEnrollmentNo</strong>HOUSE,4th Floor, TC 11/729(4), Division Office Road <p>
+        <p>Near PMG Junction, Thiruvananthapuram Kerala, India <strong>695033</strong></p>
+        <p>Ph: 9446062493 | E-ail: info@onetikk.info</p>*@
+
+                 </div>
+
+            </div>
+            }
+            <br />
+            <br />
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $("#btnPrintIDCards").click(function () {
+
+            
+            var mode = 'iframe'; //popup
+            var close = mode == "popup";
+            var options = { mode: mode, popClose: close };
+            var obj = {};
+            obj.HtmlCntrl = $("#PrintContents");
+
+            AppCommon.PrintHtml(obj)
+            //$("#PrintContents").printArea(options);
+            //w = window.open();
+            //w.document.write($('.PrintContents').html());
+            //w.print();
+            //w.close();
+
+            //var contents = document.getElementById("PrintContents").innerHTML;
+            //var frame1 = document.createElement('iframe');
+            //frame1.name = "frame1";
+            //frame1.style.position = "absolute";
+            //frame1.style.top = "-1000000px";
+            //document.body.appendChild(frame1);
+            //var frameDoc = frame1.contentWindow ? frame1.contentWindow : frame1.contentDocument.document ? frame1.contentDocument.document : frame1.contentDocument;
+            //frameDoc.document.open();
+            //frameDoc.document.write('<html><head><title>DIV Contents</title>');
+            //frameDoc.document.write('</head><body>');
+            //frameDoc.document.write(contents);
+            //frameDoc.document.write('</body></html>');
+            //frameDoc.document.close();
+            //setTimeout(function () {
+            //    window.frames["frame1"].focus();
+            //    window.frames["frame1"].print();
+            //    document.body.removeChild(frame1);
+            //}, 500);
+            //return false;
+        });
+
+        $(".id-card-holder").each(function (index) {
+            
+            //var Object = $('input[id*="ApplicationKey"]', $(this));
+            var Object = $('input[id*="ApplicationKey"]')[index];
+            var url = location.protocol + "//" + location.host + '@Url.Action("ViewApplication","Application")' + "/" + $(Object).val();
+
+            $(".qr-code", $(this)).qrcode({
+                text: url,
+                height: 50,
+                width: 50,
+                render: "table",
+            });
+
+
+        });
+
+    });
+</script>

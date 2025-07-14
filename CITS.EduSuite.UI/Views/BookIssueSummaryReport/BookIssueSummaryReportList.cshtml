@@ -1,0 +1,163 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.BookIssueSummaryReportViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+@using System.Web.Mvc
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/BookIssueSummaryReport")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Content/MultiselectJs")
+    @Scripts.Render("~/Content/ExcelExportJS")
+    @Scripts.Render("~/Scripts/BaseStudentsSearch")
+}
+
+
+
+
+<input type="hidden" id="hdnGetStudentsSummaryReports" value="@Url.Action("GetBookIssueSummaryReport", "BookIssueSummaryReport")" />
+<input type="hidden" id="hdnGetExportStudentsSummaryReport" value="@Url.Action("GetExportStudentsSummaryReport", "BookIssueSummaryReport")" />
+<input type="hidden" id="hdnGetBookDetailsById" value="@Url.Action("GetBookDetailsById", "BookIssueSummaryReport")" />
+
+<style>
+         .colOverload 
+         {
+    width: 11.666667%;
+}
+
+  ul.multiselect-container.dropdown-menu
+   {
+    max-height: 272px;
+    overflow: auto;
+    /* overflow-x: hidden; */
+}
+  .ui-jqgrid .ui-jqgrid-view {
+   
+    /*overflow: scroll !important;*/
+}
+
+  .ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight {
+    border: 1px solid #dad55e;
+    background: #fffb9d !important;
+    color: #777620;
+}
+
+</style>
+
+
+<div class="form-row">
+    <div class="col-12  Page_Head_Master">
+        <div class="col-6 Text_Left">
+            <label class="Page_Heading  ">@EduSuiteUIResources.StudentsSummaryReport</label>
+        </div>
+
+        <div class="col-6 Text_Right">
+        </div>
+    </div>
+</div>
+
+
+@Html.Action("Index","BaseStudentSearch")
+
+<div class="col-12">
+    <button style="float:right" class="right" id='DLtoPrint'><i class="fa fa-print btn-blue" aria-hidden="true"></i></button>
+    <button style="float:right" class="right" id='DLtoExcel'><i class="fa fa-file-excel-o fa-align-right btn-success" aria-hidden="true"></i></button>
+
+    <div style="display:none" class="col-2 colOverload">
+        @*@Html.DropDownListFor(m => m.CourseKey, new SelectList(Model.Course, "RowKey", "Text"), EduSuiteUIResources.Course, new { @class = "form-control input-control " })*@
+        <select class="form-control border-radius input-control multiselect" id="Columns" onchange="StudentSummary.GetCustomizedColumns(this)" multiple="multiple">
+            <option selected="true" value="Name">Name</option>
+            <option selected="true" value="AdmissionNo">AdmissionNo</option>
+            @*<option selected="true" value="CourseType">Course Type</option>*@
+            <option selected="true" value="Course">Course</option>
+            <option selected="true" value="Affiliations">Affiliations/TieUps</option>
+            <option selected="false" value="AcademicTerm">Academic Term</option>
+            <option selected="true" value="Batch">Batch</option>
+            <option selected="true" value="Mode" >Mode</option>
+            <option selected="true" value="NotAvailable">Not Available</option>
+            <option selected="true" value="Available">Available </option>
+            <option selected="true" value="Issued">Issued</option>
+            @*<option value="ClassMode">Class Name</option>
+            <option value="Mobile">MobileNo</option>
+            <option value="Email">Email</option>
+            <option value="EnrollmentNo">Enrollment No</option>
+            <option value="GuardianName">Name of Gurdian</option>
+            <option value="MotherName">Name of Mother</option>
+            <option value="PermanentAddress">Permanent Address</option>
+            <option value="PresentAddress">Present Address</option>
+            <option value="Medium">Medium</option>
+            <option value="StudentStatus">Status Name</option>
+            <option value="Class">Class</option>
+            <option value="Agent">Agent</option>
+            <option value="Income">Income</option>
+            <option value="DOB">StudentDOB</option>
+            <option value="Religion">  Religion </option>
+            <option value="CurrentYear">  Current Year </option>
+            <option value="SecondLanguage">SecondLanguage </option>            
+            <option value="DateOfAdmission">  Date Of Admission</option>
+            <option value="Gender"> Gender</option>
+            <option value="ClassRequired">Class Required</option>
+            <option value="TotalFee">  TotalFee</option>*@
+        </select>
+    </div>
+</div>
+
+<div class="GridBody">   
+    <div class="portlet-body" id="portletBody">
+        <div  class='table-scrollable'>
+            <table id="grid"></table>
+         
+        </div>
+        <div id="pager"></div>
+    </div>
+</div>
+
+<style>
+    .subgrid-data .ui-jqgrid-pager {
+    display: none !important;
+}
+      .ui-jqgrid {
+    width: 100% !important;
+}
+
+      .ui-jqgrid .ui-jqgrid-btable {
+   
+    background: #e8e6e0;
+}
+</style>
+
+    <script type="text/javascript">
+        var jsonDataList=@(Html.Raw(Json.Encode(Model)));
+        $(document).ready(function () 
+        {
+            //var doc = new jsPDF();
+
+                AppCommon.FormatDateInput();
+                AppCommon.FormatSelect2();
+                AppCommon.FormatMultiSelect();
+
+                StudentSummary.GetStudentSummary(jsonDataList);
+
+                $('#btnSearch').on("click", function () 
+                {
+                    StudentSummary.GetStudentSummary(jsonDataList);
+                });
+              
+
+
+                $("#DLtoExcel").click(function ()
+                {
+                    StudentSummary.GetExcelImportData();
+                   
+                });
+
+                $("#DLtoPrint").click(function ()
+                {
+                    StudentSummary.GetPrintData();
+                });
+
+        });
+    </script>
+
+
+

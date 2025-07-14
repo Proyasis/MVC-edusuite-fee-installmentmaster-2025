@@ -1,0 +1,55 @@
+﻿@model List<CITS.EduSuite.Business.Models.ViewModels.EnquiryLeadFeedbackViewModel>
+
+
+<input type="hidden" id="hdnAddEditEnquiryLeadFeedback" value="@Url.Action("AddEditEnquiryLeadFeedback", "EnquiryLead", new { id=""})" />
+<input type="hidden" id="hdnDeleteEnquiryLeadFeedback" value="@Url.Action("DeleteEnquiryLeadFeedback", "EnquiryLead")" />
+
+
+@*<div id="dvAddEditLeadFeedback">
+        @Html.Action("AddEditEnquiryLeadFeedback", "EnquiryLead", new { id = 0, LeadKey = ViewBag.EnquiryLeadKey })
+    </div>*@
+<table class="table table-responsive table-sm mt-2">
+    <thead>
+        <tr>
+            <th>@EduSuiteUIResources.CallType</th>
+            <th>@EduSuiteUIResources.CallStatus</th>
+            <th>@EduSuiteUIResources.Duration</th>
+            <th>@EduSuiteUIResources.Feedback</th>
+            <th>@EduSuiteUIResources.NextCallSchedule</th>
+            <th>@EduSuiteUIResources.Action</th>
+        </tr>
+    </thead>
+
+    @for (var i = 0; i < Model.Count; i++)
+    {
+
+        <tr>
+            <td>@Model[i].CallTypeName</td>
+            <td>@Model[i].EnquiryLeadCallStatusName</td>
+            <td>@Model[i].CallDuration</td>
+            <td>@Model[i].Feedback</td>
+            <td>@(string.Format("{0:dd/MM/yyyy}", Model[i].NextCallSchedule))</td>
+            <td>
+                <div class="action-buttons">
+                    @*<button  onclick="EnquiryLead.EditLeadFeedback('@Model[i].RowKey','@ViewBag.EnquiryLeadKey')" type="button" class="btn btn-primary btn-sm">
+                            <span class="glyphicon glyphicon-pencil" style="margin-right: 0px;"></span>
+                        </button>*@
+
+                    @*<button data-modal="" data-url="@Url.Action("AddEditEnquiryLeadFeedback", "EnquiryLead", new { id = Model[i].RowKey })" type="button" class="btn btn-primary btn-sm">
+                            <span class="fa fa-phone"></span> Call
+                        </button>*@
+                    @if (i == 0 && ViewBag.IsEditable)
+                    {
+                        <button data-modal="" onclick="EnquiryLead.EditFeedbackPopUp(this)" data-url="@Url.Action("AddEditEnquiryLeadFeedback", "EnquiryLead", new { id = Model[i].RowKey })" type="button" class="btn btn-primary btn-sm mx-1">
+                            <span class="fa fa-pencil"></span>
+                        </button>
+
+                        <button onclick="EnquiryLead.DeleteEnquiryLeadFeedback('@Model[i].RowKey',this)" type="button" class="btn btn-danger btn-sm mx-1">
+                            <span class="fa fa-trash"></span>
+                        </button>
+                    }
+                </div>
+            </td>
+        </tr>
+    }
+</table>

@@ -1,0 +1,96 @@
+﻿@using System.Web.Mvc
+@using CITS.EduSuite.Business.Models.ViewModels
+@model CITS.EduSuite.Business.Models.ViewModels.ExamTestViewModel
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/CitsValidation")
+    @Scripts.Render("~/Scripts/ExamTest")
+}
+
+
+<input type="hidden" id="hdnAddEditExamTest" value="@Url.Action("AddEditExamTest", "ExamTest")" />
+<input type="hidden" id="hdnExamReview" value="@Url.Action("ExamReview", "ExamTest")" />
+<input type="hidden" id="hdnExamReviewFilePath" value=@Url.Content("~/Templates/ExamTemplate/ExamReview.html") />
+<input type="hidden" id="hdnGetExamTestDetails" value=@Url.Action("ExamTestDetail", "ExamTest") />
+<input type="hidden" id="hdnGetFilters" value="@Url.Action("GetFilters", "ExamTest")" />
+
+
+<section class="section-content mx-sm-3 mx-0">
+
+    <div class="form-row">
+
+
+
+        
+
+
+
+        <div class="col    col-md-12 RightFilters">
+            <div class="col-12 col-lg-12 col-md-12 col-sm-12 examList" style="width:100%;float:left;text-align:center">
+
+                <div id="ExamTestDetails" class="container">
+
+                </div>
+            </div>
+
+            <div style="margin-top: 104px; float: left;" class="col-12 col-lg-12 col-md-12 col-sm-12">
+
+                <div class="form-row">
+                    <div class="col-md-7">
+                        <div id="page-selection-down" class=" m-0"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+</section>
+
+
+
+<script>
+        var jsonData =@(Html.Raw(Json.Encode(Model)));
+
+    $(window).bind("pageshow", function (event) {
+        if (event.originalEvent.persisted) {
+            window.location.reload();
+        }
+    });
+
+
+
+
+    $(document).ready(function () {
+
+
+        $("form").removeData("validator");
+        $("form").removeData("unobtrusiveValidation");
+        $.validator.unobtrusive.parse("form");
+
+
+      
+
+    
+
+
+    
+        ExamTest.GetExamTestDetails(jsonData, true, 1);
+
+    });
+
+</script>
+
+<style>
+    .form-control, .bootstrap-select.form-control {
+        border-radius: 6px !important;
+        border: 1px solid #a8beabfa;
+    }
+
+    .section-content {
+        background: white;
+    }
+</style>

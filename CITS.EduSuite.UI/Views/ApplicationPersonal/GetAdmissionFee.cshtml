@@ -1,0 +1,190 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.ApplicationPersonalViewModel
+
+
+@Html.HiddenFor(m => m.UniversityCourseKey)
+<table id="divCourseFeeDetails" class="table table-responsive table-sm">
+
+    <thead>
+        <tr>
+            <th>
+                @EduSuiteUIResources.FeeType
+            </th>
+            <th>
+                @EduSuiteUIResources.Amount
+            </th>
+            <th class="hide OldPaidColumns">
+                @EduSuiteUIResources.ExistingPaidAmount
+            </th>
+            <th class="hide ConcessionCoulumns">
+                @EduSuiteUIResources.ConcessionFee
+            </th>
+            @*<th class="intra-state">
+                    @EduSuiteUIResources.CGST
+                </th>
+                <th class="intra-state">
+                    @EduSuiteUIResources.SGST
+                </th>
+                <th class="inter-state">
+                    @EduSuiteUIResources.IGST
+                </th>*@
+            <th>
+                @EduSuiteUIResources.Total
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < Model.AdmissionFees.Count; i++)
+        {
+            if (Model.AdmissionFees[i].AdmissionFeeYear != null && (i == 0 || (i != 0 && Model.AdmissionFees[i].AdmissionFeeYear != Model.AdmissionFees[i - 1].AdmissionFeeYear)))
+            {
+                <tr>
+                    <td class="bg-light" colspan="7">
+                        @Html.Label(Model.AdmissionFees[i].AdmissionFeeYearText, new { @class = "text-center", @id = "lblFeeYearName" })
+
+                        @Html.HiddenFor(m => Model.AdmissionFees[i].AdmissionFeeYear)
+                    </td>
+
+                </tr>
+            }
+            <tr data-repeater-item>
+                @Html.HiddenFor(m => Model.AdmissionFees[i].RowKey)
+                @Html.HiddenFor(m => Model.AdmissionFees[i].HasConcession)
+                @Html.HiddenFor(m => Model.AdmissionFees[i].AdmissionFeeYear)
+                <td class="px-1">
+
+                    @Html.HiddenFor(m => Model.AdmissionFees[i].FeeTypeKey)
+                    @Html.Label(Model.AdmissionFees[i].FeeTypeName, new { @class = "form-label", @id = "lblFeeYearName" })
+                    @Html.HiddenFor(m => Model.AdmissionFees[i].IsUniversity)
+                    @Html.HiddenFor(m => Model.AdmissionFees[i].CenterShareAmountPer)
+                </td>
+                <td class="px-1">
+                    <fieldset class="form-group">
+                        @Html.TextBoxFor(m => Model.AdmissionFees[i].ActualAmount, "{0:G29}", new { @class = "form-control input-control" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => Model.AdmissionFees[i].ActualAmount)
+                        </span>
+                    </fieldset>
+                </td>
+                <td class="OldPaidColumns px-1">
+                    <fieldset class="form-group">
+                        @Html.TextBoxFor(m => Model.AdmissionFees[i].OldPaid, "{0:G29}", new { @class = "form-control input-control" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => Model.AdmissionFees[i].OldPaid)
+                        </span>
+                    </fieldset>
+                </td>
+                <td class="ConcessionCoulumns px-1">
+                    <fieldset class="form-group">
+                        @Html.TextBoxFor(m => Model.AdmissionFees[i].ConcessionAmount, "{0:G29}", new { @class = "form-control input-control" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => Model.AdmissionFees[i].ConcessionAmount)
+                        </span>
+                    </fieldset>
+                </td>
+                @*<td class="px-1 intra-state">
+                        <fieldset class="form-group">
+                            @Html.TextBoxFor(m => Model.AdmissionFees[i].CGSTAmount, "{0:G29}", new { @class = "form-control input-control", @readonly = "readonly" })
+                            @Html.HiddenFor(m => Model.AdmissionFees[i].CGSTRate)
+                        </fieldset>
+
+                    </td>
+                    <td class="px-1 intra-state">
+                        <fieldset class="form-group">
+                            @Html.TextBoxFor(m => Model.AdmissionFees[i].SGSTAmount, "{0:G29}", new { @class = "form-control input-control", @readonly = "readonly" })
+                            @Html.HiddenFor(m => Model.AdmissionFees[i].SGSTRate)
+                        </fieldset>
+                    </td>
+                    <td class="px-1 inter-state">
+                        <fieldset class="form-group">
+                            @Html.TextBoxFor(m => Model.AdmissionFees[i].IGSTAmount, "{0:G29}", new { @class = "form-control input-control", @readonly = "readonly" })
+                            @Html.HiddenFor(m => Model.AdmissionFees[i].IGSTRate)
+                        </fieldset>
+                    </td>*@
+                <td class="px-1">
+                    <fieldset class="form-group">
+                        @*@Html.TextBox("TotalFeeAmount" + i.ToString(), "", new { @class = "form-control input-control", @InputFor = "lblAge", @readonly = "readonly" })*@
+                        @Html.TextBoxFor(m => Model.AdmissionFees[i].AdmissionFeeAmount, "{0:G29}", new { @class = "form-control input-control", @readonly = "readonly" })
+
+                    </fieldset>
+                </td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <th class="px-1">
+                <div class="form-group">
+                    @Html.Label(EduSuiteUIResources.TotalFee, htmlAttributes: new { @id = "lblEligibility", @class = "form-label" })
+                </div>
+            </th>
+            <th class="px-1">
+                <div class="form-group">
+                    @*@Html.TextBox("TotalAdmissionFeeAmount", "", new { @class = "form-control input-control", @InputFor = "lblAge", @readonly = "readonly" })*@
+                    @Html.TextBoxFor(m => m.TotalAdmissionFeeAmount, "{0:G29}", new { @class = "form-control input-control", @InputFor = "lblTotalFeeAmount", @readonly = "readonly" })
+                    <span class="form-control-error-text">
+                        @Html.ValidationMessageFor(m => Model.TotalAdmissionFeeAmount)
+                    </span>
+                </div>
+            </th>
+            <th class="hide OldPaidColumns px-1">
+                <div class="form-group">
+                    @Html.TextBox("TotalOldPaidAmount", "", new { @class = "form-control input-control", @InputFor = "lblAge", @readonly = "readonly" })
+                </div>
+            </th>
+            <th class="hide ConcessionCoulumns px-1">
+                <div class="form-group">
+                    @Html.TextBox("TotalConcessionAmount", "", new { @class = "form-control input-control", @InputFor = "lblAge", @readonly = "readonly" })
+                </div>
+            </th>
+            @*<th class="px-1 intra-state">
+                    <div class="form-group">
+                        @Html.TextBox("TotalCGSTAmount", "", new { @class = "form-control input-control", @InputFor = "lblAge", @readonly = "readonly" })
+                    </div>
+                </th>
+                <th class="px-1 intra-state">
+                    <div class="form-group">
+                        @Html.TextBox("TotalSGSTAmount", "", new { @class = "form-control input-control", @InputFor = "lblAge", @readonly = "readonly" })
+                    </div>
+                </th>
+                <th class="px-1 inter-state">
+                    <div class="form-group">
+                        @Html.TextBox("TotalIGSTAmount", "", new { @class = "form-control input-control", @InputFor = "lblAge", @readonly = "readonly" })
+                    </div>
+                </th>*@
+            <th class="px-1">
+                <div class="form-group">
+                    @*@Html.TextBox("GrandTotalFeeAmount", "", new { @class = "form-control input-control", @InputFor = "lblAge", @readonly = "readonly" })*@
+                    @Html.TextBoxFor(m => m.GrandTotalFeeAmount, "{0:G29}", new { @class = "form-control input-control", @InputFor = "lblTotalFeeAmount", @readonly = "readonly" })
+                    <span class="form-control-error-text">
+                        @Html.ValidationMessageFor(m => Model.GrandTotalFeeAmount)
+                    </span>
+                    <span id="spnTotalFeeSymbol" class="input-group-addon-start arial country-code">@Model.CurrencySymbol</span>
+                </div>
+            </th>
+
+    </tfoot>
+</table>
+
+
+
+<script>
+    $(document).ready(function () {
+        $("form").removeData("validator");
+        $("form").removeData("unobtrusiveValidation");
+        $.validator.unobtrusive.parse("form");
+        $("#DivCourseFee").find("input,textarea,select").each(function (i) {
+            $(this).attr("id", $(this).attr("name"))
+        });
+
+        ApplicationPersonal.CalculateTotal();
+        $("input[id*=ActualAmount],input[id*=ConcessionAmount],input[id*=OldPaid]", $("#DivCourseFee")).on('input', function (e) {
+
+            ApplicationPersonal.CalculateTotal();
+            if ($("#HasOffer")[0].checked)
+                ApplicationPersonal.CalculateOffer();
+        });
+
+
+    });
+
+</script>

@@ -1,0 +1,100 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.EmployeeEnquiryTargetViewModel
+
+@using System.Web.Mvc
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/bundles/CitsValidation")
+    @Scripts.Render("~/Scripts/Common")
+    @Scripts.Render("~/Content/JqueryRepeater")
+    @Scripts.Render("~/Scripts/EmployeeEnquiryTarget")
+}
+
+<input type="hidden" id="hdnGetEmployeeList" value="@Url.Action("GetEmployeeList", "EmployeeEnquiryTarget")" />
+<input type="hidden" id="hdnDeleteEmployee" value="@Url.Action("DeleteEmployee", "EmployeeEnquiryTarget")" />
+<input type="hidden" id="hdnAddEditEmployeeEnquiryTarget" value="@Url.Action("AddEditEmployeeEnquiryTarget", "EmployeeEnquiryTarget")" />
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-sm-6 col-12">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.EmployeeEnquiryTarget</h3>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<section class="section-content mx-sm-3 mx-0">
+    <div class="GridBody">
+
+        <div class="grid-nav-bar form-row justify-content-between">
+            @if (Model.Branches.Count > 1)
+            {
+                <div class="col-lg-3 col-6">
+                    <div class="form-group">
+                        @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Branch, new { @class = "form-control SearchDropDown", @data_live_search = "true" })
+
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.BranchKey)
+                        </span>
+                    </div>
+                </div>
+            }
+            else
+            {
+                @Html.HiddenFor(m => m.BranchKey)
+
+            }
+            <div class="col-lg-3 col-6">
+                <input id="txtsearch" type="text" name="focus" class="form-control gridSearchTextBox" placeholder="@EduSuiteUIResources.SearchEmployees" /> @* Change Search TextBox Placeholder*@
+                <span id="iconSpan" class="iconSpan"><i class="fa fa-times-circle" aria-hidden="true"></i></span>
+            </div>
+
+            <div class="col-lg-6 col-4">
+                <a class="btn btn-info btn-sm float-right " onclick='window.location.reload()'>
+                    <i class="fa fa-refresh"></i>   @EduSuiteUIResources.Refresh
+                </a>
+            </div>
+
+        </div>
+
+        <div class="table-wrapper">
+
+            <div class="jqGrid_wrapper overflow-auto">
+                <table id="grid"></table>
+                <div id="pager"></div>
+            </div>
+        </div>
+
+
+    </div>
+</section>
+
+
+<script>
+    $(document).ready(function () {
+
+        $("#txtsearch").on("input", function () {
+            EmployeeEnquiryTarget.GetEmployee();
+        });
+        $("#EmployeeStatusKey").change(function () {
+            EmployeeEnquiryTarget.GetEmployee();
+        });
+
+        $("#iconSpan").click(function () {
+            $('#txtsearch').val('');
+            EmployeeEnquiryTarget.GetEmployee();
+        });
+        $("#BranchKey").change(function () {
+            EmployeeEnquiryTarget.GetEmployee();
+        });
+        EmployeeEnquiryTarget.GetEmployee();
+
+
+    });
+</script>

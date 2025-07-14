@@ -1,0 +1,129 @@
+﻿<div id="dvGstFilingList" class="col-sm-12 form-col paddingNone">
+
+    <table id="ledgerTable" class="table table-bordered">
+
+
+        <thead>
+            <tr class="ledgerSubHead">
+                <td class="col-sm-1">
+                    Invoice Number
+                </td>
+                <td class="col-sm-1">
+                    Invoice Date
+                </td>
+                <td class="col-sm-1">
+                    Party Name
+                </td>
+                <td class="col-sm-1">
+                    GSTIN Number
+                </td>
+                <td class="col-sm-1">
+                    HSN Code
+                </td>
+                <td class="col-sm-1">
+                    Quantity
+                </td>
+                <td class="col-sm-1">
+                    Rate
+                </td>
+                <td class="col-sm-1">
+                    Taxable Amount
+                </td>
+                <td class="col-sm-1" colspan="2">
+                    SGST
+                </td>
+                <td class="col-sm-1" colspan="2">
+                    CGST
+                </td>
+                <td class="col-sm-1" colspan="2">
+                    IGST
+                </td>
+                <td class="col-sm-1">
+                    Net Amount
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            {{#InvoiceTypes}}
+            {{#if InvoiceType}}
+            <tr><td colspan="15" class="table-group-head">{{InvoiceType}}</td></tr>
+            {{/if}}
+            {{#InvoiceDetails}}
+            <tr>
+                <td>
+                    {{InvoiceNumber}}
+                </td>
+                <td>
+                    {{InvoiceDate}}
+                </td>
+                <td>
+                    {{PartyName}}
+                </td>
+                <td>
+                    {{GSTINNumber}}
+                </td>
+                <td>
+                    {{HSNCode}}
+                </td>
+                <td>
+                    {{G29 Quantity}}
+                </td>
+                <td>
+                    {{G29 Rate}}
+                </td>
+                <td>
+                    {{G29 Total}}
+                </td>
+                <td style="width: 55px">
+                    {{#if SGSTAmt}}
+                    {{G29 SGSTPer}} %
+                    {{/if}}
+
+                </td>
+                <td>
+                    {{#if SGSTAmt}}
+                    {{G29 SGSTAmt}}
+                    {{/if}}
+                </td>
+                <td style="width: 55px">
+                    {{#if CGSTAmt}}
+                    {{G29 CGSTPer}} %
+                    {{/if}}
+                </td>
+                <td>
+                    {{#if CGSTAmt}}
+                    {{G29 CGSTAmt}}
+                    {{/if}}
+
+                </td>
+                <td style="width: 55px">
+
+                    {{#if IGSTAmt}}
+                    {{G29 IGSTPer}} %
+                    {{/if}}
+                </td>
+                <td>
+                    {{#if IGSTAmt}}
+                    {{G29 IGSTAmt}}
+                    {{/if}}
+
+                </td>
+                <td>
+                    {{G29 NetAmount}}
+                </td>
+            </tr>
+
+            {{/InvoiceDetails}}
+            {{/InvoiceTypes}}
+
+
+        </tbody>
+    </table>
+    <style>
+        #ledgerTable .ledgerSubHead td {
+            background-color: #0e7dab;
+            color: white;
+            font-size: 14px;
+        }
+    </style>
+</div>

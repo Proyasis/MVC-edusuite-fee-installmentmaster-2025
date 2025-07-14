@@ -1,0 +1,127 @@
+﻿@using System.Web.Mvc
+@model CITS.EduSuite.Business.Models.ViewModels.StudentTimeTableViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/TimeTable")
+
+}
+
+
+<input type="hidden" id="hdnUrl" value="@Url.Action("GetStudentTimeTable", "StudentTimeTable")" />
+<input type="hidden" id="hdnFillTeachersByClass" value="@Url.Action("FillTeachersByClass", "SelectList")" />
+@Styles.Render("~/Content/FullCalendarCSS")
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-sm-6 col-12">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.TimeTable</h3>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-12 text-right">
+        </div>
+    </div>
+</header>
+
+<section class="section-content mx-sm-3 mx-0">
+    <div class="GridBody">
+        @using (Html.BeginForm("AddEditStudentTimeTable", "StudentTimeTable", FormMethod.Post, new { @id = "frmAddEditStudentTimeTable" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            <div class="grid-nav-bar">
+                <div class="form-row">
+                    @if (Model.Branches.Count > 1)
+                    {
+                        <div class="col-lg-3 col-6">
+                            <div class="form-group">
+                                @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), new { @class = "form-control SearchDropDown", @data_live_search = "true" })
+
+                                <span class="form-control-error-text">
+                                    @Html.ValidationMessageFor(m => m.BranchKey)
+                                </span>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        @Html.HiddenFor(m => m.BranchKey)
+
+                    }
+                </div>
+                <div class=" form-row ">
+
+                    <div id="tab-day" class="form-row tabs-section mb-2">
+                        <div class="tabs-section-nav">
+                            <ul class="nav ScheduleTab1" role="tablist">
+                                @for (int i = 0; i < Model.WeekDays.Count; i++)
+                            {
+                            <li class="nav-item">
+                                <a class="nav-link" href="#@Model.WeekDays[i].RowKey" data-val="@Model.WeekDays[i].RowKey" role="tab" data-toggle="tab">
+                                    <span class="nav-link-in">
+                                        @Model.WeekDays[i].Text
+                                    </span>
+                                </a>
+                            </li>
+                            @Html.HiddenFor(m => m.Day)
+                            }
+
+                            </ul>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div id="dvTimeTableList"></div>
+                <div class="row mt-2">
+                    <div class="form-group">
+                        <div class="col-12">
+                            <fieldset class="form-group">
+                                <input type="button" value="@EduSuiteUIResources.Save" id="btnSave" class="btn btn-sm btn-success mx-1" />
+                                <input type="button" value="@EduSuiteUIResources.Cancel" onclick="location.href='@Url.Action("AttendanceList", "Attendance")' " class="btn btn-sm btn-danger mx-1" />
+                            </fieldset>
+                            <div class="col-12 paddingNone">
+                                <span class="ValidateDataMsg"> @Html.ValidationMessage("error_msg")  </span>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+
+        }
+    </div>
+</section>
+
+<script>
+    $(document).ready(function () {
+
+        @*var Day = '@Model.Day.ToString()'*@
+        $("#tab-day li a").eq(0).addClass('active');
+
+
+
+        $('#tab-day a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            TimeTable.GetTimeTable();
+        });
+        $("#BranchKey").change(function () {
+            TimeTable.GetTimeTable();
+        })
+
+        TimeTable.GetTimeTable();
+        $("#btnSave").on("click", function () {
+
+            TimeTable.FormSubmit();
+        })
+
+    })
+</script>

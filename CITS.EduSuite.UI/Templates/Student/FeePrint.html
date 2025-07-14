@@ -1,0 +1,346 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+</head>
+<body>
+    <div id="dvPrintReciept" class="PrintReciept">
+
+        <div class="FeeDetails border" style="padding-top:50px">
+            <center>
+                <table>
+                    <thead>
+                        <tr>
+
+                            <th style="font-weight:bold">
+                                {{CompanyName}} -  {{CompanySubName}}
+                                </br>
+                                Ph : {{PhoneNumber1}} ,   {{PhoneNumber2}}
+                            </th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+
+                            <td>
+                                {{RollNoCode}}  {{StudentName}}
+                                <br />
+                                Class: {{ClassName}}  {{ProgramName}}
+
+                                <span style="float:right">Receipt No :  {{RecieptNo}}</span>
+                            </td>
+                        </tr>
+
+
+                    </tbody>
+
+                </table>
+            </center>
+        </div>
+
+
+
+        <div class="FeeDetails border" style="padding-top:50px">
+            <center>
+                <table>
+                    <thead>
+                        <tr>
+
+                            <th rowspan="2">PARTICULARS</th>
+                            <th colspan="2">AMOUNT</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+                        {{#PaymentDetailList}}
+                        <tr>
+                            <td>
+                                <ul>
+                                    
+                                    <li>{{FeeTypeName}}</li>
+
+                                    
+                                    {{FeeDate}}
+
+                                </ul>
+
+                            </td>
+
+                            <td colspan="2">
+                                <ul class="FeeDetails-Amount">
+                                   
+                                    <li>{{FeeAmount}}</li>
+
+                                    
+
+                                </ul>
+                            </td>
+
+                        </tr>
+                        {{/PaymentDetailList}}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th rowspan="3" class="FeeDetails-Amount" style="text-align:right;padding-right:50px;">Total</th>
+
+                        </tr>
+                        <tr>
+                            <th id="totalAmount" class="FeeDetails-Amount" style="text-align:right"> {{TotalAmount}}</th>
+
+                        </tr>
+                    </tfoot>
+                </table>
+            </center>
+        </div>
+
+
+        <div class="Contentfooter">
+            <div class="content-div">
+                <div class="content-divleft">Amount in Words</div><span>:</span>
+                <div class="content-divright" id="amountWords"></div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>
+
+<style>
+    body {
+        font-family: 'Oswald', 'sans-serif';
+        font-size: 11px;
+        font-weight: 500;
+    }
+
+    @@media print {
+        .PrintReciept {
+            border: double 8px;
+            border-color: #ad3a3a;
+            border-radius: 5px;
+        }
+
+        .PrintReciept-Details {
+            margin-left: 20px;
+        }
+
+        .HeaderLeft {
+            padding-left: 38px;
+        }
+
+        .HeaderRight {
+            position: relative;
+            top: 70px;
+            font-size: 16px;
+            right: -74px;
+        }
+
+        .Companydetails {
+            text-align: center;
+            font-size: 16px;
+        }
+
+            .Companydetails .CompanyName {
+                font-weight: bold;
+                color: black;
+                margin-bottom: 5px;
+                text-transform: uppercase;
+            }
+
+            .Companydetails .RecieptHead {
+                color: orange;
+                font-weight: bold;
+                margin: 7px 0px;
+                font-size: 18px;
+            }
+
+            .Companydetails .CompanyAddress {
+                margin: 0px 0px 0px;
+                font-weight: bold;
+            }
+
+
+
+        .FeeDetails {
+            margin-top: 15px;
+        }
+
+            .FeeDetails table {
+                width: 95%;
+                border: solid 1px;
+                border-collapse: collapse;
+                top: -30px;
+                position: relative;
+                margin-bottom: -29px;
+            }
+
+                .FeeDetails table th {
+                    text-align: center;
+                }
+
+                .FeeDetails table tr th, .FeeDetails table tr, .FeeDetails table td {
+                    border: 1px solid black;
+                }
+
+            .FeeDetails ul li {
+                list-style: none;
+            }
+
+        .FeeDetails-Amount {
+            text-align: right;
+            padding-right: 5px;
+        }
+
+        .padding-None {
+            padding: 0px;
+        }
+        /*new style*/
+        .Content-left {
+            width: 72%;
+            font-size: 15px;
+            margin-left: 19px;
+        }
+
+        .Content-lef1 .content-divleft {
+            width: 20%;
+            display: inline-block;
+            font-weight: bold;
+        }
+
+        .Content-lef1 .content-divright {
+            border-bottom: dotted 1px black;
+            display: inline-block;
+            width: 20%;
+        }
+
+        .Content-lef2 {
+            margin-left: 49px;
+            margin-top: 9px;
+        }
+
+        .content-div {
+            margin: 6px 0px;
+        }
+
+        .Content-lef2 .content-div .content-divleft {
+            width: 30%;
+            display: inline-block;
+            font-weight: bold;
+        }
+
+        .Content-lef2 .content-div .content-divright {
+            display: inline-block;
+            width: 65%;
+            border-bottom: dotted 1px black;
+        }
+
+        .Content-right {
+            width: 25%;
+            font-size: 15px;
+            margin-left: 19px;
+            float: right;
+            position: relative;
+            top: -155px;
+        }
+
+            .Content-right .content-div .content-divleft {
+                width: 24%;
+                display: inline-block;
+                font-weight: bold;
+            }
+
+            .Content-right .content-div .content-divright {
+                display: inline-block;
+                width: 68%;
+                border-bottom: dotted 1px black;
+            }
+
+        .Contentfooter {
+            font-size: 13px;
+            font-weight: bold;
+            margin: 10px 30px;
+        }
+
+            .Contentfooter .CasType {
+                margin: 10px 0px;
+                font-size: 18px;
+                font-weight: 100;
+            }
+
+                .Contentfooter .CasType .CasType-left {
+                    width: 52%;
+                    display: inline-block;
+                }
+
+            .Contentfooter .content-div .content-divleft {
+                width: 17%;
+                display: inline-block;
+            }
+
+            .Contentfooter .content-div .content-divright {
+                display: inline-block;
+                width: 81%;
+                border-bottom: dotted 1px black;
+            }
+
+            .Contentfooter .content-div .content-DivCheckboxleft {
+                width: 17%;
+                display: inline-block;
+            }
+
+            .Contentfooter .content-div .content-DivCheckbox {
+                display: inline-block;
+                width: 5%;
+            }
+
+
+            .Contentfooter .content-div .content-DivCheckboxright {
+                display: inline-block;
+                font-size: 14px;
+                width: 45%;
+                border-bottom: dotted 1px black;
+                text-transform: capitalize;
+                word-break: break-all;
+                font-weight: bold;
+            }
+
+        .Footer-sign {
+            text-align: right;
+            margin-top: 56px;
+        }
+
+            .Footer-sign .Footer-signright {
+                border-top: solid 2px;
+                text-align: center;
+                padding: 5px 29px 0px;
+            }
+
+        span.Footer-signleft {
+            text-align: left !important;
+            float: left;
+        }
+
+        .FBoldNone {
+            font-weight: 100;
+        }
+
+
+        .table-inner {
+            width: 100% !important;
+            border: none !important;
+            margin: 0px !important;
+            top: 0 !important;
+            text-align: center !important;
+        }
+
+        .border {
+            border: 8px;
+            border-color: #ad3a3a;
+            border-radius: 50px;
+        }
+    }
+</style>

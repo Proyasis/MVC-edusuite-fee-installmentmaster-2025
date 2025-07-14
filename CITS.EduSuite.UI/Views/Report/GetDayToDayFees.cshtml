@@ -1,0 +1,135 @@
+﻿@model List<CITS.EduSuite.Business.Models.ViewModels.ReportViewModel>
+@using CITS.EduSuite.Business.Models.ViewModels
+@using CITS.EduSuite.UI
+
+<input type="hidden" id="hdnViewFeePrint" value="@Url.Action("FeePrint", "ApplicationFeePayment", new { id = "" })" />
+<input type="hidden" id="hdnFeePrintPath" value=@Url.Content("~/Templates/Student/FeePrint.html") />
+
+<section class="card">
+    <header class="card-header w3-indigo">
+        @EduSuiteUIResources.Payment @EduSuiteUIResources.BlankSpace @EduSuiteUIResources.Details
+    </header>
+    <div class="card-body p-2 overflow-auto" id="dynamicRepeater">
+        <table id="GridBody" class="table table-bordered table-sm">
+            <thead>
+                <tr>
+                    <th>
+                        @EduSuiteUIResources.Date
+                    </th>
+                    <th>
+                        @EduSuiteUIResources.SlNo
+                    </th>
+                    <th>
+                        @EduSuiteUIResources.StudentName
+                    </th>
+                    <th>
+                        @EduSuiteUIResources.Branch
+                    </th>
+                    <th>
+                        @EduSuiteUIResources.Academic  @EduSuiteUIResources.Details
+                    </th>
+                    <th>
+                        @EduSuiteUIResources.Receipt @EduSuiteUIResources.No
+                    </th>
+                    <th class="d-none">
+                        @EduSuiteUIResources.Date
+                    </th>
+                    <th>
+                        @EduSuiteUIResources.FeeType
+                    </th>
+                    <th class="">
+                        @EduSuiteUIResources.PaymentMode
+                    </th>
+                    <th>
+                        @EduSuiteUIResources.Amount
+                    </th>
+
+                    <th class="d-none">
+                        @EduSuiteUIResources.Remarks
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @for (var i = 0; i < Model.Count; i++)
+                {
+                    @*if (i == 0 || (i != 0 && Convert.ToDateTime(Model[i].FeeDate).Date != Convert.ToDateTime(Model[i - 1].FeeDate).Date))
+                        {
+                            <tr class="w3-light-grey">
+                                <th colspan="8">
+                                    @(string.Format("{0:dd/MM/yyyy}", Model[i].FeeDate))
+                                </th>
+                            </tr>
+
+                        }*@
+                <tr>
+                    @if (i == 0 || (i != 0 && Convert.ToDateTime(Model[i].FeeDate).Date != Convert.ToDateTime(Model[i - 1].FeeDate).Date))
+                    {
+                        <td rowspan="@(Model.Count(row=>Convert.ToDateTime(row.FeeDate).Date==Convert.ToDateTime(Model[i].FeeDate).Date))">
+                            <strong>  @(string.Format("{0:dd/MM/yyyy}", Model[i].FeeDate))</strong>
+                        </td>
+                    }
+                    <td>
+                        @(i + 1)
+                    </td>
+                    <td>
+                        @Model[i].Name
+                    </td>
+                    <td>
+                        @Model[i].BranchName
+                    </td>
+                    <td>
+                        @EduSuiteUIResources.Course : @Model[i].Course
+                        <br />
+                        @EduSuiteUIResources.ClassCode : @Model[i].Class ,  @EduSuiteUIResources.RollNo : @Model[i].RollNoCode
+                    </td>
+                    <td>
+                        @Model[i].ReceiptNo
+                    </td>
+                    <td class="d-none">
+                        @string.Format("{0:dd/MM/yyyy}", Model[i].FeeDate)
+                    </td>
+                    <td>
+                        @Model[i].FeeTypeName
+
+                        @if (@Model[i].CurrentYearText != "")
+                        {
+                            @EduSuiteUIResources.OpenBracketWithSpace @Model[i].CurrentYearText @EduSuiteUIResources.ClosingBracketWithSpace
+                        }
+
+
+                    </td>
+                    <td class="">
+                        @Model[i].PaymentModeName
+
+                    </td>
+                    <td>
+                        @string.Format("{0:G29}", Model[i].TotalAmount)
+                    </td>
+                    <td class="d-none">
+                        @Model[i].FeeDescreption
+
+                    </td>
+                </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td></td>
+                    <td colspan="7"><strong> @EduSuiteUIResources.Total</strong></td>
+                    <td><strong>@string.Format("{0:G29}", Model.Sum(x => x.TotalAmount)) </strong></td>
+                </tr>
+            </tfoot>
+        </table>
+
+
+    </div>
+</section>
+<script>
+    $(document).ready(function () {
+
+        var amount = parseFloat(cellValue) ? parseFloat(cellValue) : 0;
+        amount = amount.toLocaleString();
+
+    });
+</script>

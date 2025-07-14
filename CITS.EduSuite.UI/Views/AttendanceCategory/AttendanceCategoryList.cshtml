@@ -1,0 +1,86 @@
+﻿
+@using System.Web.Mvc
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Content/JqueryRepeater")
+    @Scripts.Render("~/Scripts/AttendanceCategory")
+}@{
+    ViewBag.Title = EduSuiteUIResources.AttendanceCategory;
+}
+<input type="hidden" id="hdnGetAttendanceCategory" value="@Url.Action("GetAttendanceCategory", "AttendanceCategory")" />
+<input type="hidden" id="hdnAddEditAttendanceCategory" value="@Url.Action("AddEditAttendanceCategory", "AttendanceCategory")" />
+<input type="hidden" id="hdnDeleteAttendanceCategory" value="@Url.Action("DeleteAttendanceCategory", "AttendanceCategory")" />
+<input type="hidden" id="hdnDeleteAttendanceCategoryWeekOff" value="@Url.Action("DeleteAttendanceCategoryWeekOff", "AttendanceCategory")" />
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-sm-6 col-12">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.AttendanceCategory</h3>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 text-right d-none">
+            <a id="addEditAttendanceCategory" data-href="@Url.Action("AddEditAttendanceCategory", "AttendanceCategory")" onclick="AttendanceCategory.EditPopup(this)" class="btn btn-success btn-sm "><i class="fa fa-plus-square-o"></i> <span>@EduSuiteUIResources.New @EduSuiteUIResources.BlankSpace @EduSuiteUIResources.AttendanceCategory</span></a>
+        </div>
+    </div>
+</header>
+<section class="section-content mx-sm-3 mx-0">
+    <div class="GridBody">
+
+        <div class="grid-nav-bar form-row justify-content-between">
+            <div class="col-lg-3 col-6">
+                <input id="txtsearch" type="text" name="focus" class="input-control form-control form-control-sm" placeholder="@EduSuiteUIResources.Search @EduSuiteUIResources.AttendanceCategory" /> @* Change Search TextBox Placeholder*@
+                <span id="iconSpan" class="iconSpan"><i class="fa fa-times-circle" aria-hidden="true"></i></span>
+            </div>
+
+            <div class="col-6">
+                <a class="btn btn-info btn-sm float-right " onclick='window.location.reload()'>
+                    <i class="fa fa-refresh"></i>   Refresh
+                </a>
+            </div>
+
+        </div>
+
+        <div class="table-wrapper">
+
+            <div class="jqGrid_wrapper overflow-auto">
+                <table id="grid"></table>
+                <div id="pager"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<script>
+    $(document).ready(function () {
+        $("#txtsearch").on("input", function () {
+            AttendanceCategory.GetAttendanceCategory();
+        });
+
+        $("#iconSpan").click(function () {
+            $('#txtsearch').val('');
+            AttendanceCategory.GetAttendanceCategory();
+        });
+        AttendanceCategory.GetAttendanceCategory();
+
+        $(window).on("resize", function () {
+            var $grid = $("#grid"),
+                newWidth = $grid.closest(".ui-jqgrid").parent().width();
+            $grid.jqGrid("setGridWidth", newWidth, true);
+        });
+        //AttendanceCategory.EditPopup($("#addEditAttendanceCategory"))
+
+        //$("a[data-modal]").on("click", function (e) {
+        //    e.preventDefault();
+        //    AttendanceCategory.EditPopup($(this));
+        //});
+    });
+</script>
+

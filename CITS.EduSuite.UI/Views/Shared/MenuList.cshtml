@@ -1,0 +1,234 @@
+﻿@model List<CITS.EduSuite.Business.Models.ViewModels.MenuViewModel>
+
+@using CITS.EduSuite.Business.Models.ViewModels
+
+<nav class="bottom-navbar">
+    <div class="container">
+
+        <ul class="nav page-navigation">
+
+            @if (DbConstants.User.ApplicationKey != null && DbConstants.User.ApplicationKey != 0)
+            {
+                <li class="nav-item ">
+                    <a class="nav-link" id="STPT" menuitems href="@Url.Action("StudentDashBoard", "StudentPortal")">
+                        <i class="fa fa-user-md"></i>
+
+                        <span class="menu-title">DashBoard</span>
+                    </a>
+                </li>
+                @*<li class="nav-item ">
+                    <a class="nav-link" id="STFP" menuitems href="@Url.Action("StudentFee", "StudentPortal")">
+                        <i class="fa fa-user-md"></i>
+
+                        <span class="menu-title">@EduSuiteUIResources.FeeDetails</span>
+                    </a>
+                </li>*@
+                <li class="nav-item ">
+                    <a class="nav-link" id="STFP" menuitems href="@Url.Action("ExamTestList", "ExamTest")">
+                        <i class="fa fa-user-md"></i>
+                        <span class="menu-title">Online Test</span>
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" id="STFP" menuitems href="@Url.Action("ViewStudyMaterial", "StudentStudyMaterial")">
+                        <i class="fa fa-user-md"></i>
+                        <span class="menu-title">Study Materials</span>
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" id="STFP" menuitems href="@Url.Action("ViewVideos", "Videos")">
+                        <i class="fa fa-file-video-o"></i>
+                        <span class="menu-title">Videos</span>
+                    </a>
+                </li>
+            }
+            @foreach (var Menu in Model.Where(row => row.MenuDetails.Count > 0))
+            {
+
+                <li class="nav-item mega-menu">
+                    <a href="#" class="nav-link">
+                        <i class="@Menu.MenuTypeIconClassName menu-icon"></i>
+                        <span class="menu-title">@Menu.MenuTypeName</span>
+
+                    </a>
+                    <div class="submenu ">
+                        <div class="form-row">
+                            @{
+                                var MenuList = Menu.MenuDetails.Where(x => x.MenucatagoryKey == null).ToList();
+                            }
+                            @if (MenuList.Count > 0)
+                            {
+                                <div class="col-12">
+
+                                    @*<ul class="submenu-item box-list">
+                                    @foreach (var MenuItem in MenuList)
+                                    {
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="@MenuItem.MenuCode" menuitems href="@Url.Action(MenuItem.ActionName, MenuItem.ControllerName)">
+                                                <i class="fa @MenuItem.IconClassName menu-icon"></i>
+                                                @MenuItem.MenuName
+
+
+                                            </a>
+                                        </li>
+                                    }
+                                </ul>*@
+                                    <div class="card-columns portal-menu">
+                                        @foreach (var MenuItem in MenuList)
+                                        {
+
+                                            <a class="card card-hover p-1" id="@MenuItem.MenuCode" menuitems href="@Url.Action(MenuItem.ActionName, MenuItem.ControllerName)">
+                                                <div class=" text-center">
+                                                    <h1 class="font-light text-black"><i class="fa @MenuItem.IconClassName"></i></h1>
+                                                    <h6 class=""> @MenuItem.MenuName</h6>
+                                                </div>
+                                            </a>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                            @{
+                                MenuList = Menu.MenuDetails.Where(x => x.MenucatagoryKey == 3).ToList();
+                            }
+                            @if (MenuList.Count > 0)
+                            {
+                                <div class="col-12 mb-2">
+                                    <hr class="hr-text" data-content="Reports">
+                                    <ul class="submenu-item box-list ">
+                                        @foreach (var MenuItem in MenuList)
+                                        {
+                                            <li class="nav-item">
+                                                <a class="nav-link" id="@MenuItem.MenuCode" menuitems href="@Url.Action(MenuItem.ActionName, MenuItem.ControllerName)">
+
+                                                    @MenuItem.MenuName
+                                                </a>
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+                            }
+                            @{
+                                MenuList = Menu.MenuDetails.Where(x => x.MenucatagoryKey == 2).ToList();
+                            }
+                            @if (MenuList.Count > 0)
+                            {
+                                <div class="col">
+                                    <hr class="hr-text" data-content="Masters">
+                                    <ul class="submenu-item box-list">
+                                        @foreach (var MenuItem in MenuList)
+                                        {
+                                            <li class="nav-item">
+                                                <a class="nav-link" id="@MenuItem.MenuCode" menuitems href="@Url.Action(MenuItem.ActionName, MenuItem.ControllerName)">
+
+                                                    @MenuItem.MenuName
+
+
+                                                </a>
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+                            }
+                        </div>
+
+                        <ul class="submenu-item d-none">
+                            @{
+                                var i = 0;
+                            }
+                            @foreach (var MenuItem in Menu.MenuDetails)
+                            {
+                                if ((i == 0 || MenuItem.MenucatagoryKey != Menu.MenuDetails[i - 1].MenucatagoryKey) && MenuItem.MenucatagoryKey != null)
+                                {
+                                    <li class="w-100 d-block mt-2">
+                                        <h6 class="sub-title text-uppercase font-weight-bold white-text"> @MenuItem.MenucatagoryName</h6>
+                                    </li>
+                                }
+                                if (MenuItem.MenucatagoryName == "")
+                                {
+
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="@MenuItem.MenuCode" menuitems href="@Url.Action(MenuItem.ActionName, MenuItem.ControllerName)" style="border: solid 1px;">
+
+                                            <i class="fa @MenuItem.IconClassName menu-icon"></i>
+                                            <span class="menu-title"> @MenuItem.MenuName</span>
+
+
+                                        </a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="@MenuItem.MenuCode" menuitems href="@Url.Action(MenuItem.ActionName, MenuItem.ControllerName)">
+
+                                            @MenuItem.MenuName
+
+
+                                        </a>
+                                    </li>
+                                }
+
+                                {
+                                    i++;
+                                }
+                            }
+
+                        </ul>
+
+
+
+                    </div>
+                </li>
+            }
+
+
+        </ul>
+
+    </div>
+</nav>
+
+
+
+<div class="mobile-menu-left-overlay"></div>
+<div class="site-sidebar d-lg-none d-sm-block">
+    <nav class="side-menu">
+        <ul class="side-menu-list">
+
+
+            @foreach (var Menu in Model.Where(row => row.MenuDetails.Count > 0))
+            {
+                <li class="grey with-sub">
+                    <span>
+                        @if (Menu.MenuTypeIconClassName != null)
+                        {
+                            <i class="fa @Menu.MenuTypeIconClassName" aria-hidden="true"></i>
+                        }
+                        else
+                        {
+                            <i class="font-icon font-icon-menu-addl"></i>
+                        }
+                        <span class="lbl">@Menu.MenuTypeName</span>
+                    </span>
+                    <ul class="grey-Ul">
+                        @foreach (var MenuItem in Menu.MenuDetails)
+                        {
+                            @*<li><a id="@MenuItem.MenuCode" menuitems href="@Url.Action(MenuItem.ActionName, MenuItem.ControllerName)"><i class="fa @MenuItem.IconClassName" aria-hidden="true"></i><span class="lbl pl-4">@MenuItem.MenuName</span></a></li>*@
+                            @*<li class="list-group-item"><a href="@Url.Action(MenuItem.ActionName, MenuItem.ControllerName)"><i class="fa @MenuItem.IconClassName" aria-hidden="true"></i> @MenuItem.MenuName</a></li>*@
+                            <li>
+                                <a id="@MenuItem.MenuCode" menuitems href="@Url.Action(MenuItem.ActionName, MenuItem.ControllerName)">
+                                    <i class="fa fa-dot-circle-o" aria-hidden="true"></i>
+                                    <span class="lbl pl-4">@MenuItem.MenuName</span>
+                                </a>
+                            </li>
+                        }
+
+                    </ul>
+                </li>
+            }
+
+        </ul>
+    </nav><!--.side-menu-->
+
+</div>
+
+

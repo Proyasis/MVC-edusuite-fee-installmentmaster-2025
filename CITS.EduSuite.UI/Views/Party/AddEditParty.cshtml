@@ -1,0 +1,346 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.PartyViewModel
+@using CITS.EduSuite.UI.Resources
+
+<div class="modal-header">
+    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+    <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.Add @EduSuiteUIResources.Sla @EduSuiteUIResources.Edit @EduSuiteUIResources.Party</h4>
+</div>
+@using (Html.BeginForm("AddEditParty", "Party", FormMethod.Post, new { @id = "frmParty" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.RowKey)
+    @Html.HiddenFor(m => m.IsUpdateOpeningBalance)
+    @Html.HiddenFor(m => m.IsOpeningBalance)
+    @Html.ValidationSummary(true)
+
+    <input type="hidden" id="hdnFillLocation" value="@Url.Action("FillLocation", "Party")" />
+    <input type="hidden" id="hdnFillPartyTypeById" value="@Url.Action("FillPartyTypeById", "Party")" />
+    <input type="hidden" id="hdnAddEditLocation" value="@Url.Action("AddEditLocation", "Location")" />
+    <div class="modal-body bottomLine">
+        <div class="topMarginSpace  form-master fnone">
+
+            <div class="form-row">
+                @if (Model.Branches.Count > 1)
+                {
+                    <div class="col-sm-3 ">
+                        <div class="form-group">
+                            @Html.Label(EduSuiteUIResources.Branch, htmlAttributes: new { @class = "lblControlHead" })<div class="required-icon"><div class="text">*</div></div>
+                            @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Branch, new { @class = "form-control input-control" })
+                            <span class="red">
+                                @Html.ValidationMessageFor(m => m.BranchKey)
+                            </span>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    @Html.HiddenFor(m => m.BranchKey)
+
+                }
+                <div class="col-sm-3  openingBlance">
+                    <div class="form-group">
+
+                        @Html.Label(EduSuiteUIResources.PartyType, htmlAttributes: new { @class = "lblControlHead" })
+                        <div class="required-icon"><div class="text">*</div></div>
+                        @Html.DropDownListFor(m => m.PartyTypeKey, new SelectList(Model.PartyTypes, "RowKey", "Text", Model.PartyTypeKey), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.PartyType, new { @class = "form-control input-control", @onChange = "Party.FillOtherPartyTypes()" })
+                        <span class="red">
+                            @Html.ValidationMessageFor(m => m.PartyTypeKey)
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-sm-4 ">
+                    <div class="form-group ">
+                        @Html.Label(EduSuiteUIResources.Company + @EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Name, htmlAttributes: new { @id = "lblPartyName", @class = "lblControlHead" })<div class="required-icon"><div class="text">*</div></div>
+                        @Html.TextBoxFor(m => m.PartyName, new { @class = "form-control input-control", @InputFor = "lblPartyName" })
+                        <span class="red">
+                            @Html.ValidationMessageFor(m => m.PartyName)
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="col-sm-4 ">
+                    <div class="form-group ">
+                        @Html.Label(EduSuiteUIResources.MobileNumber1, htmlAttributes: new { @id = "lblMobileNumber1", @class = "lblControlHead" })<div class="required-icon"><div class="text">*</div></div>
+                        @Html.TextBoxFor(m => m.MobileNumber1, new { @class = "form-control input-control", @InputFor = "lblMobileNumber1", @CharSpace = "RemoveSpace" })
+                        <span class="red">
+                            @Html.ValidationMessageFor(m => m.MobileNumber1)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-sm-4 ">
+                    <div class="form-group ">
+                        @Html.Label(EduSuiteUIResources.MobileNumber2, htmlAttributes: new { @id = "lblMobileNumber2", @class = "lblControlHead" })
+                        @Html.TextBoxFor(m => m.MobileNumber2, new { @class = "form-control input-control", @CharSpace = "RemoveSpace" })
+                        <span class="red">
+                            @Html.ValidationMessageFor(m => m.MobileNumber2)
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-sm-4 ">
+                    <div class="form-group ">
+                        @Html.Label(EduSuiteUIResources.Contact + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Person, htmlAttributes: new { @class = "lblControlHead" })
+                        @Html.TextBoxFor(m => m.ContactPerson, new { @class = "form-control input-control" })
+                        <span class="red">
+                            @Html.ValidationMessageFor(m => m.ContactPerson)
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div id="divContactPersonDetails">
+                    <div class="col-sm-4 ">
+                        <div class="form-group ">
+                            @Html.Label(EduSuiteUIResources.Person + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Designation, htmlAttributes: new { @class = "lblControlHead" })
+                            @Html.TextBoxFor(m => m.Designation, new { @class = "form-control input-control" })
+                            <span class="red">
+                                @Html.ValidationMessageFor(m => m.Designation)
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="col-sm-4 ">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.States, htmlAttributes: new { @class = "lblControlHead" })
+                        <div class="required-icon"><div class="text">*</div></div>
+                        <div class="form-group">
+                            @Html.DropDownListFor(m => m.StateKey, new SelectList(Model.States, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.States, new { @class = "form-control input-control", @data_live_search = "true" })
+                            <span class="red">
+                                @Html.ValidationMessageFor(m => m.StateKey)
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4 ">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.Location, htmlAttributes: new { @id = "lblLocation", @class = "lblControlHead" })
+                        <div class="required-icon"><div class="text">*</div></div>
+                        <div class="form-group">
+                            @Html.TextBoxFor(m => m.LocationName, new { @class = "form-control input-control" })
+                            <span class="red">
+                                @Html.ValidationMessageFor(m => m.LocationName)
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4 ">
+                    <div class="form-group ">
+                        @Html.Label(EduSuiteUIResources.AddressLine1, htmlAttributes: new { @id = "lblAddress1", @class = "lblControlHead" })<div class="required-icon"><div class="text">*</div></div>
+                        @Html.TextAreaFor(m => m.Address, new { @class = "form-control input-control" })
+                        <span class="red">
+                            @Html.ValidationMessageFor(m => m.Address)
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-sm-4 ">
+                    <div class="form-group">
+
+                        @Html.Label(EduSuiteUIResources.Email, htmlAttributes: new { @class = "lblControlHead" })
+
+                        @Html.TextBoxFor(m => m.EmailId, new { @class = "form-control input-control", @data_convert = "lowercase" })
+                        <span class="red">
+                            @Html.ValidationMessageFor(m => m.EmailId)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-sm-4 ">
+                    @Html.Label(EduSuiteUIResources.IsActive + "?", htmlAttributes: new { @class = "lblControlHead" })
+                    <div class="switch-check">
+                        @Html.CheckBoxFor(m => m.IsActive, new { @class = "switch-input" })
+                        <div class="switch-label" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                        <div class="switch-handle"></div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="form-row">
+                <div class="col-sm-4 ">
+                    @Html.Label(EduSuiteUIResources.Is + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.GSTIN + "?", htmlAttributes: new { @class = "lblControlHead" })<br />
+                    <div class="switch-check">
+                        @Html.CheckBoxFor(m => m.IsTax, new { @class = "switch-input" })
+                        <div class="switch-label" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                        <div class="switch-handle"></div>
+                    </div>
+                </div>
+                <div id="divTax" class="col-sm-4 ">
+                    <div class="form-group ">
+                        @Html.Label(EduSuiteUIResources.GSTIN + @EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Number, htmlAttributes: new { @class = "lblControlHead" })
+                        <div class="required-icon"><div class="text">*</div></div>
+                        @Html.TextBoxFor(m => m.GSTINNumber, new { @class = "form-control input-control", @data_convert = "uppercase" })
+                        <span class="red">
+                            @Html.ValidationMessageFor(m => m.GSTINNumber)
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal-footer justify-content-start">
+        <div class="form-group">
+            <button type="submit" id="btnSave" class="btn btn-sm btn-success mx-1"><i class="fa fa-save"></i> @EduSuiteUIResources.Save</button>
+            <button type="button" data-dismiss="modal" class="btn btn-sm btn-danger mx-1"><i class="fa fa-close"></i>@EduSuiteUIResources.Cancel</button>
+
+        </div>
+    </div>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            setTimeout(function () {
+                AppCommon.FormatSelect2($("#frmParty"));
+                if($("#IsUpdateOpeningBalance").val()!='True')
+                {
+                    $(".openingBlance").find("input,select").attr("disabled",true)
+                }
+
+                $("#IsTax").on("click", function () {
+                    if (this.checked == true) {
+                        $("#divTax").show();
+                    } else {
+                        $("#divTax").hide();
+                        $("#GSTINNumber").val("");
+                    }
+                });
+                if (@Model.IsTax.ToString().ToLower() == true) {
+                    $("#divTax").show();
+                } else {
+                    $("#divTax").hide();
+                }
+
+                //$("#PartyName",$("#frmParty")).on("input", function () {
+                //    $("#ContactPerson").val($("#PartyName",$("#frmParty")).val());
+                //});
+                $("#IsOpeningBalance").on("click", function () {
+                    if (this.checked == true) {
+                        $("#divOpeningBalance").show();
+                    } else {
+                        $("[id*=CreditBalance]").val("");
+                        $("[id*=CashFlowTypeKey]").val("");
+
+                        $("#divOpeningBalance").hide();
+                    }
+                });
+                if (@Model.IsOpeningBalance.ToString().ToLower() == true) {
+                    $("#divOpeningBalance").show();
+                } else {
+                    $("[id*=CreditBalance]").val("");
+                    $("[id*=CashFlowTypeKey]").val("");
+                    $("#divOpeningBalance").hide();
+                }
+
+                $("#PartyTypeKey",$("#frmParty")).on("change", function () {
+                    if ($(this).val() == "1") {
+                        $("#divContactPersonDetails").show();
+                    } else {
+                        $("#divContactPersonDetails").hide();
+                    }
+                });
+                if ($("#PartyTypeKey",$("#frmParty")).val() == "1") {
+                    $("#divContactPersonDetails").show();
+                } else {
+                    $("#divContactPersonDetails").hide();
+                    $("#Designation").val() == "";
+                }
+
+                $("select#StateKey",$("#frmParty")).on("change",function(){
+                    Party.GetLocation($(this).val());
+                });
+
+                @*$.ajaxSetup({ cache: false });
+                $("#addEditLocation").popupform({
+                    formAction: "@Url.Action("AddEditLocation", "Location")",
+                    load: function () {
+                        AppCommon.FormatInputCase();
+                    },
+                    rebind: function (response) {
+                        Party.GetLocation($("select#StateKey",$("#frmParty")).val(),response.RowKey);
+                    }
+                });*@
+
+
+
+
+                AppCommon.Autosize();
+                AppCommon.FormatSelect2();
+                if($("#IsUpdateOpeningBalance").val()!='True')
+                {
+                    $(".openingBlance").find("input,select").attr("disabled",true)
+                }
+
+                $("#IsTax").on("click", function () {
+                    if (this.checked == true) {
+                        $("#divTax",$("#frmParty")).show();
+                    } else {
+                        $("#divTax",$("#frmParty")).hide();
+                        $("#GSTINNumber",$("#frmParty")).val("");
+                    }
+                });
+                if (@Model.IsTax.ToString().ToLower() == true) {
+                    $("#divTax",$("#frmParty")).show();
+                } else {
+                    $("#divTax",$("#frmParty")).hide();
+                }
+
+                //$("#PartyName",$("#frmParty")).on("input", function () {
+                //    $("#ContactPerson").val($("#PartyName",$("#frmParty")).val());
+                //});
+                $("#IsOpeningBalance").on("click", function () {
+                    if (this.checked == true) {
+                        $("#divOpeningBalance").show();
+                    } else {
+                        $("[id*=CreditBalance]").val("");
+                        $("[id*=CashFlowTypeKey]").val("");
+
+                        $("#divOpeningBalance").hide();
+                    }
+                });
+                if (@Model.IsOpeningBalance.ToString().ToLower() == true) {
+                    $("#divOpeningBalance").show();
+                } else {
+                    $("[id*=CreditBalance]").val("");
+                    $("[id*=CashFlowTypeKey]").val("");
+                    $("#divOpeningBalance").hide();
+                }
+
+                $("#PartyTypeKey",$("#frmParty")).on("change", function () {
+                    if ($(this).val() == "1") {
+                        $("#divContactPersonDetails").show();
+                    } else {
+                        $("#divContactPersonDetails").hide();
+                    }
+                });
+                if ($("#PartyTypeKey",$("#frmParty")).val() == "1") {
+                    $("#divContactPersonDetails").show();
+                } else {
+                    $("#divContactPersonDetails").hide();
+                    $("#Designation").val() == "";
+                }
+
+                $("select#StateKey",$("#frmParty")).on("change",function(){
+                    Party.GetLocation($(this).val());
+                });
+
+            }, 500)
+        });
+    </script>
+}
+<style>
+    .btn-sm, .btn-xs {
+        padding: 2px 10px;
+    }
+
+    .select2-container {
+        width: 100% !important;
+    }
+</style>
+

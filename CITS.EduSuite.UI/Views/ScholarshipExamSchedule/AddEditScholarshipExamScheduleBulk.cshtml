@@ -1,0 +1,155 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.ScholarshipExamScheduleViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+@using System.Web.Mvc
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Content/JqueryRepeater")
+    @Scripts.Render("~/Scripts/Common")
+    @Scripts.Render("~/bundles/CitsValidation")
+    @Scripts.Render("~/Scripts/ScholarshipExamSchedule")
+    @Scripts.Render("~/Content/DatePickerJS")
+
+}
+
+
+<input type="hidden" id="hdnGetSerchBranchByDistrict" value="@Url.Action("GetSerchBranchByDistrict", "ScholarshipExamSchedule")" />
+<input type="hidden" id="hdnScholarshipExamScheduleList" value="@Url.Action("ScholarshipExamScheduleList", "ScholarshipExamSchedule")" />
+<input type="hidden" id="hdnUrl" value="@Url.Action("GetScholarshipExamScheduleDetails", "ScholarshipExamSchedule", new { id = "" })" />
+<input type="hidden" id="hdnResetInternalExamSchedule" value="@Url.Action("ResetInternalExamSchedule", "InternalExamSchedule")" />
+
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-12">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.Add@EduSuiteUIResources.Hyphen@EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.ScholarshipExam</h3>
+                        <ol class="breadcrumb breadcrumb-simple mb-2 float-sm-right">
+                            <li><a href="#" onclick="location.href='@Url.Action("ScholarshipExamScheduleList", "ScholarshipExamSchedule")' ">@EduSuiteUIResources.ScholarshipExam</a></li>
+                            <li class="active">@EduSuiteUIResources.Add@EduSuiteUIResources.Hyphen@EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.ScholarshipExam</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="section-content mx-sm-3 mx-0">
+    <div class="form-master">
+
+        @using (Html.BeginForm("AddEditScholarshipExamScheduleBulk", "ScholarshipExamSchedule", FormMethod.Post, new { @id = "frmScholarshipExamSchedule" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            @*@Html.HiddenFor(m => m.RowKey)*@
+
+            <div class="form-row">
+               @if (DbConstants.Role.AdminUserTypes.Contains(DbConstants.User.RoleKey))
+                {
+                    <div class="col-lg-2 col-sm-4 col-6">
+                        <fieldset class="form-group">
+                            @Html.DropDownListFor(m => m.DistrictKey, new SelectList(Model.Districts, "RowKey", "Text"), EduSuiteUIResources.BlankSpace + EduSuiteUIResources.District, new { @class = "form-control input-control selectpicker", @data_live_search = "true" })
+                        </fieldset>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-lg-2 col-sm-4 col-6">
+                        <fieldset class="form-group">
+                            @Html.DropDownListFor(m => m.DistrictKey, new SelectList(Model.Districts, "RowKey", "Text"), new { @class = "form-control input-control selectpicker", @data_live_search = "true" })
+                        </fieldset>
+                    </div>
+                }
+               @if (DbConstants.Role.AdminUserTypes.Contains(DbConstants.User.RoleKey))
+                {
+                    <div class="col-lg-2 col-sm-4 col-6">
+                        <fieldset class="form-group">
+                            @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.center, new { @class = "form-control input-control selectpicker", @data_live_search = "true" })
+                        </fieldset>
+                    </div>
+
+
+                }
+                else
+                {
+                    <div class="col-lg-2 col-sm-4 col-6">
+                        <fieldset class="form-group">
+                            @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), new { @class = "form-control input-control selectpicker", @data_live_search = "true" })
+                        </fieldset>
+                    </div>
+                }
+
+
+
+
+                <div class="col-lg-2 col-sm-4 col-6">
+                    <fieldset class="form-group">
+                        @Html.DropDownListFor(m => m.ScholarshipTypeKey, new SelectList(Model.ScholarshipTypes, "RowKey", "Text"), EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Scholarship + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Type, new { @class = "form-control input-control" })
+                    </fieldset>
+                </div>
+
+
+            </div>
+            <div id="dvStudentsList"></div>
+
+
+            <div class="row mt-2">
+                <div class="form-group">
+                    <div class="col-12">
+                        <fieldset class="form-group">
+                            <input type="button" value="@EduSuiteUIResources.Save" id="btnSave" class="btn btn-sm btn-success mx-1" />
+                            <input type="button" value="@EduSuiteUIResources.Cancel" onclick="location.href='@Url.Action("InternalExamScheduleList", "InternalExamSchedule")' " class="btn btn-sm btn-danger mx-1" />
+                        </fieldset>
+                        <div class="col-12 paddingNone">
+                            <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+        }
+    </div>
+</section>
+<script>
+    var jsonData=@(Html.Raw(Json.Encode(Model)));
+    // jsonData["InternalExamDetails"]=[];
+    $(document).ready(function () {
+        AppCommon.FormatInputCase();
+        AppCommon.FormatMultiSelect();
+        AppCommon.FormatDateInput();
+        AppCommon.CustomRemoteMethod();
+        //AppCommon.EditGridPopup($("#btnSave"))
+
+        ScholarshipExamSchedule.LoadData(jsonData);
+
+        $("#btnSave").on("click",function(){
+
+            ScholarshipExamSchedule.FormSubmit(jsonData);
+
+        })
+
+        // Bind Class Details
+
+
+       
+
+
+        $("#DistrictKey").on("change",function(){
+            var obj = {};
+            obj.id = $(this).val() != "" ? $(this).val() : 0;
+            AppCommon.BindDropDownbyId(obj, $("#hdnGetSerchBranchByDistrict").val(), $("#BranchKey"),  Resources.center, "Branches");
+
+        });
+
+        $("#Branchkey,#DistrictKey,#ScholarshipTypeKey").on("change", function () {
+            ScholarshipExamSchedule.LoadData(jsonData);
+        });
+
+    });
+
+</script>

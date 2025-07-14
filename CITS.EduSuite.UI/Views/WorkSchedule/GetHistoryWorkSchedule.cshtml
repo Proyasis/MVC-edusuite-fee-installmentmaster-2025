@@ -1,0 +1,107 @@
+﻿@model List<CITS.EduSuite.Business.Models.ViewModels.WorkscheduleSubjectmodel>
+@using CITS.EduSuite.Business.Models.ViewModels
+
+
+
+<div class="modal-header">
+    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+    <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.WorkSchedule @EduSuiteUIResources.BlankSpace @EduSuiteUIResources.History</h4>
+</div>
+<div class="modal-body">
+    <div class="form-master">
+        <div class="card-body p-0 overflow-auto">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>@EduSuiteUIResources.Date</th>
+                        <th>@EduSuiteUIResources.Duration</th>
+                        <th>@EduSuiteUIResources.StartTime</th>
+                        <th>@EduSuiteUIResources.EndTime</th>
+                        <th>@EduSuiteUIResources.Status</th>
+                        <th>@EduSuiteUIResources.Employee</th>
+                    </tr>
+                </thead>
+                <tbody id="DivHistoryWorkScheduleDetails">
+                    @foreach (var item in Model)
+                    {
+                        <tr data-repeater-item>
+                            <td>
+                                @String.Format("{0:dd/MM/yyyy}", item.WorkScheduleDate)
+                            </td>
+                            <td>
+                                <span id="spnTotalWorkDuration"></span>
+                                @Html.HiddenFor(m => item.Duration)
+                                @Html.HiddenFor(m => item.RowKey)
+                                @Html.HiddenFor(m => item.MasterRowKey)
+                                @Html.HiddenFor(m => item.ProgressStatus)
+                            </td>
+                            <td>
+                                @item.TimeIn
+                            </td>
+                            <td>
+                                @item.TimeOut
+                            </td>
+                            <td>
+                                <span id="spnTotalProgressStatus"></span>
+                                @Html.HiddenFor(m => item.CurrentProgressStatus)
+                            </td>
+                            <td>
+                                @item.EmployeeName
+                            </td>
+                            <td class="px-1">
+                                @if (DbConstants.User.UserKey == item.AppUserKey || DbConstants.Role.AdminUserTypes.Contains(DbConstants.User.RoleKey))
+                                {
+                                    <button type="button" class="btn btn-primary btn-sm mx-1" onclick="WorkSchedule.WorkScheduleDetailsCustomPopup(this,'Edit')"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+                                    <button type="button" class="btn btn-danger btn-sm mx-1" onclick="WorkSchedule.DeleteWorkScheduleDetails(this)"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                                }
+
+                            </td>
+
+
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+
+
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+
+        $("[data-repeater-item]", $("#DivHistoryWorkScheduleDetails")).each(function (i) {
+
+            var TotalWorkDuration = $("input[id*=Duration]", $(this)).val();
+            TotalWorkDuration = parseInt(TotalWorkDuration) ? parseInt(TotalWorkDuration) : 0;
+            var num = TotalWorkDuration;
+            var hours = (num / 60);
+            var rhours = Math.floor(hours);
+            var minutes = (hours - rhours) * 60;
+            var rminutes = Math.round(minutes);
+            var TotalWorkDurationText = rhours + " HR : " + rminutes + " Min.";
+            $("#spnTotalWorkDuration", $(this)).html(TotalWorkDurationText).attr("style", "color:Green;");
+
+            var ProgressStatus = $("input[id*=CurrentProgressStatus]", $(this)).val();
+
+            ProgressStatus = parseInt(ProgressStatus) ? parseInt(ProgressStatus) : 0;
+
+            if (ProgressStatus < 100) {
+                $("#spnTotalProgressStatus", $(this)).html("(" + ProgressStatus + " % )").attr("style", "color:Red;");
+            }
+            else if (ProgressStatus == 0) {
+                $("#spnTotalProgressStatus", $(this)).html("(" + ProgressStatus + " % )").attr("style", "color:Red;");
+            }
+            else if (ProgressStatus >= 100) {
+                $("#spnTotalProgressStatus", $(this)).html("(" + ProgressStatus + " % )").attr("style", "color:Green;");
+            }
+        })
+    })
+
+</script>
+
+
+
+
+

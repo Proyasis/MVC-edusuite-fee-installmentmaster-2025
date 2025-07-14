@@ -1,0 +1,77 @@
+﻿<div class="table-responsive">
+    <table class="table verticle-middle h-100">
+
+        <thead>
+            <tr>
+                <th class="text-center">
+                    Student Name
+                </th>
+                <th class="text-center">
+                    Admission No
+                </th>
+
+                <th class="text-center">
+                    Mobile No
+                </th>
+                <th class="text-center">
+                    Gender
+                </th>
+                <th class="text-center">
+                    Course
+                </th>
+                <th class="text-center">
+                    Affiliation / Tie-Ups
+                </th>
+
+                <th class="text-center">
+                    Batch
+                </th>
+                <th class="text-center">
+                    Date Of Admission
+                </th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {{#StudentList}}
+
+            <tr data-repeater-item>
+                <td class="text-center">
+                    {{StudentName}}
+                </td>
+
+                <td class="text-center">
+                    {{AdmissionNo}}
+                </td>
+
+                <td class="text-center">
+                    {{StudentMobile}}
+
+                </td>
+                <td class="text-center">
+
+                    {{#ifCond StudentGender '==' 2}}
+                    <span><i class="fa fa-female w3-text-pink" aria-hidden="true"></i> Female</span>
+                    {{else}}
+                    <span><i class="fa fa-male w3-text-indigo" aria-hidden="true"></i> Male</span>
+                    {{/ifCond}}
+                </td>
+                <td class="text-center">
+                    {{CourseName}}
+                </td>
+                <td class="text-center">
+                    {{UniversityMasterName}}
+                </td>
+                <td class="text-center">
+                    {{BatchName}}
+                </td>
+                <td class="text-center">
+                    {{dateformat StudentDateOfAdmission 'DD MMM YYYY '}}
+                </td>
+            </tr>
+            {{/StudentList}}
+        </tbody>
+
+
+    </table>
+</div>

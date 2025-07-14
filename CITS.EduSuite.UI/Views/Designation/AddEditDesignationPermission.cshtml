@@ -1,0 +1,83 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.DesignationViewModel
+@using CITS.EduSuite.UI
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Content/JSTreeJS")
+    @Scripts.Render("~/Scripts/Designation")
+}
+<input type="hidden" id="hdnGetDesingationPermissionById" value="@Url.Action("GetDesignationPermissionById", "Designation", new { id = Model.RowKey })" />
+<input type="hidden" id="hdnAddEditDesignationPermission" value="@Url.Action("AddEditDesignationPermission", "Designation", new { id = "" })" />
+
+
+
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-12">
+            <div class="tbl">
+                <div class="tbl-row  px-1">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.Add@EduSuiteUIResources.Hyphen@EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Permission</h3>
+                        <ol class="breadcrumb breadcrumb-simple mb-2 float-sm-right">
+                            <li><a href="#" onclick="location.href='@Url.Action("DesignationList", "Designation")' ">@EduSuiteUIResources.Designation@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Details</a></li>
+                            <li class="active">@EduSuiteUIResources.Backto @EduSuiteUIResources.Designation@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Details</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<div class="col-sm-12 form-master">
+    <div class="topMarginSpace  form-master fnone">
+
+        <div class="row">
+            <div class="col-sm-12 mandatoryHead ">
+                <span>@EduSuiteUIResources.FieldsMarkedAs<span class="mandatoryStar"> * </span>@EduSuiteUIResources.AreMandatory</span>
+
+            </div>
+        </div>
+        @using (Html.BeginForm("AddEditDesignationPermission", "Designation", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.RowKey)
+            @Html.ValidationSummary(true)
+
+
+            <fieldset class="row bottomLine">
+                <legend class="col-sm-12">@EduSuiteUIResources.MenuAccesses</legend>
+
+                <div class="col-sm-12">
+                    <div id="dvDesignationPermission" class="jstree-inline"></div>
+                </div>
+
+            </fieldset>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <input type="button" value="@EduSuiteUIResources.Save" id="btnSave" class="btnForm btnSubmit btn btn-sm btn-default pull-left " />
+                </div>
+            </div>
+            <div class="row">
+                <div class="paddingNone">
+                    <span class="ValidateDataMsg"> @Html.ValidationMessage("error_msg")  </span>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<script>
+    var jsonData=@(Html.Raw(Json.Encode(Model)));
+    $(document).ready(function() {
+        Designation.GetDesignationPermissionById();
+        $("#btnSave").on("click", function () {
+            Designation.FormPermissionSubmit($(this),jsonData)
+
+        })
+    });
+
+</script>

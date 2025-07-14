@@ -1,0 +1,61 @@
+﻿<div class="table-responsive">
+    <table class="table verticle-middle h-100">
+
+        <thead>
+            <tr>
+                <th class="text-center">
+                    Cheque Date
+                </th>
+                <th class="text-center">
+                    Cheque No
+                </th>
+                <th class="text-center">
+                   Bank & Account No
+                </th>
+
+
+                <th class="text-center">
+                   Purpose
+                </th>
+                <th class="text-center">
+                     Status
+                </th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {{#ChequeDetails}}
+
+            <tr data-repeater-item>
+                <td>
+                    {{dateformat ClearanceDate 'DD MMM YYYY '}}
+                </td>
+                <td class="text-center">
+                    {{ChequeOrDDNumber}} 
+                </td>
+
+                <td class="text-center">
+                    {{AccountNo}}
+                </td>
+
+                <td class="text-center">
+
+                    {{#ifCond CashFlowTypeKey '==' 1}}
+                    <p class="text-muted mb-0">Received  {{#if Purpose}} for {{{Purpose}}}{{/if}}{{#if TransactionTypeName}} of {{{TransactionTypeName}}}{{/if}}</p>
+                    {{else}}
+                    <p class="text-muted mb-0">Paid {{#if Purpose}} for {{{Purpose}}}{{/if}}{{#if TransactionTypeName}} of {{{TransactionTypeName}}}{{/if}}</p>
+                    {{/ifCond}}
+
+                </td>
+                <td class="text-center" style="background-color:{{Color}}">
+                    {{CheckStatus}}
+
+                </td>
+
+            </tr>
+            {{/ChequeDetails}}
+        </tbody>
+
+
+    </table>
+</div>

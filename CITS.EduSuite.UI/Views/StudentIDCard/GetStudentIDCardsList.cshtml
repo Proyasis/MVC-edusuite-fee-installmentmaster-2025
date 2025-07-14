@@ -1,0 +1,378 @@
+﻿@model List<CITS.EduSuite.Business.Models.ViewModels.StudentIDCardList>
+
+
+<input type="hidden" id="hdnPrintStudentIdCard" value="@Url.Action("PrintStudentIdCard", "StudentIDCard")" />
+
+<input type="hidden" id="hdnTotalRecords" value="@ViewBag.TotalRecords" />
+
+<div id="dynamicRepeater" class="repeater mb-2">
+    <table id="dvRepeaterList" class="table table-striped">
+        <thead class="thead-light">
+            <tr>
+                <th>
+                    <div class="checkbox my-2">
+                        @Html.CheckBox("ChkSelectAll", new { @onchange = "CheckboxAllChange(this, 'ChkSelectRow')" })
+                        <label for="ChkSelectAll" class="label-for-check form-label">
+                            <span id="SelectedRowCount"></span>
+                        </label>
+                    </div>
+
+                </th>
+                <th>@EduSuiteUIResources.AdmissionNo</th>
+                <th>@EduSuiteUIResources.StudentName</th>
+                <th>@EduSuiteUIResources.Course</th>
+                <th>@EduSuiteUIResources.CurrentYear</th>
+                <th>@EduSuiteUIResources.EnrollmentNo</th>
+                <th>
+                    <div class="checkbox-bird green inline-block">
+                        @Html.CheckBox("ChkReceivedAll", new { @InputFor = "lblhkReceivedAll", @class = "switch-input", @onchange = "CheckboxAllChange(this, 'IsReceived')" })
+                        <label for="ChkReceivedAll">@EduSuiteUIResources.ReceivedAll <span id="RecivedAllCount"></span></label>
+
+                    </div>
+                </th>
+                <th>
+                    <div class="checkbox-bird green inline-block">
+                        @Html.CheckBox("ChkIssuedAll", new { @InputFor = "lblChkIssuedAll", @class = "switch-input", @onchange = "CheckboxAllChange(this, 'IsIssued')" })
+                        <label for="ChkIssuedAll">@EduSuiteUIResources.IssuedAll <span id="IssedAllCount"></span></label>
+                    </div>
+                </th>
+                <th>@EduSuiteUIResources.Reset</th>
+            </tr>
+        </thead>
+        <tbody data-repeater-list>
+            @for (int i = 0; i < Model.Count(); i++)
+            {
+                <tr data-repeater-item>
+                    <td class="px-1">
+                        <div class="checkbox m-3">
+                            @Html.CheckBox("[" + i.ToString() + "].ChkSelectRow")
+                            <label for="[@i.ToString()].ChkSelectRow" class="label-for-check form-label">
+                            </label>
+                        </div>
+
+                        @Html.HiddenFor(m => m[i].StudentIDCardRowKey)
+                        @Html.HiddenFor(m => m[i].ApplicationKey)
+                    </td>
+                    <td class="px-1">
+                        @Html.DisplayFor(m => m[i].AdmissionNo, new { @class = "form-control input-control" })
+                    </td>
+
+                    <td class="px-1">
+                        @Html.DisplayFor(m => m[i].StudentName, new { @class = "form-control input-control" })
+                    </td>
+
+                    <td class="px-1">
+                        @Html.DisplayFor(m => m[i].CourseName, new { @class = "form-control input-control" })
+                        @EduSuiteUIResources.Hyphen
+                        @Html.DisplayFor(m => m[i].UniversityName, new { @class = "form-control input-control" })
+                    </td>
+
+                    <td class="px-1">
+                        @Html.DisplayFor(m => m[i].CurrentYearText, new { @class = "form-control input-control" })
+                    </td>
+
+                    <td class="px-1">
+                        @Html.TextBoxFor(m => Model[i].StudentEnrollmentNo, new { @class = "form-control input-control EmptyEnrollmentNo" })
+
+
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessage("StudentIDCardList[" + i + "].StudentEnrollmentNo")
+                        </span>
+                    </td>
+
+
+
+
+                    <td class="px-1">
+                        @if (Model[i].IsReceived == false)
+                        {
+
+                            <div class="checkbox-bird green inline-block">
+                                @Html.CheckBoxFor(m => m[i].IsReceived, new { @InputFor = "lblConsession", @class = "switch-input ChkIsRecieved" })
+                                <label for="[@i].IsReceived">@EduSuiteUIResources.Received</label>
+
+                            </div>
+                        }
+                        else
+                        {
+                            <span><i class="fa fa-check" aria-hidden="true"></i>Received</span>
+                        }
+                    </td>
+
+
+
+
+                    <td class="px-1">
+
+                        @if (Model[i].IsReceived == true)
+                        {
+                            <div class="checkbox-bird green inline-block">
+                                @Html.CheckBoxFor(m => m[i].IsIssued, new { @InputFor = "lblConsession", @class = "switch-input ChkIsIssued" })
+                                <label for="[@i].IsReceived">@EduSuiteUIResources.Issued</label>
+
+                            </div>
+                        }
+
+
+                    </td>
+                    <td class="px-1">
+                        @if (Model[i].StudentIDCardRowKey != null)
+                        {
+
+                            <span onclick="StudentIDCards.ResetStudentIDCard(@Model[i].StudentIDCardRowKey)" class="btn btn-danger btn-sm btnDeleteRow">
+                                <span class="glyphicon glyphicon-remove"></span> @EduSuiteUIResources.Reset
+                            </span>
+
+                        }
+                    </td>
+                </tr>
+
+
+            }
+
+        </tbody>
+    </table>
+    <div class="form-row">
+        <div class="col-6">
+            <fieldset class="form-group">
+                <button type="submit" id="btnSave" class="btn btn-sm btn-success">@EduSuiteUIResources.Save</button>
+
+                <button type="button" class="btn btn-sm btn-primary" onclick="return FetchApplicationKey()">@EduSuiteUIResources.Print</button>
+                <input type="hidden" id="PrintApplicationKeys" name="PrintApplicationKeys" />
+
+            </fieldset>
+            <div class="col-12">
+                <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script>
+
+    function FetchApplicationKey() {
+        var Keys = [];
+
+        if ($("[name*=ChkSelectRow]:checked").length == 0) {
+            //alert("Please select atleast one Record !.");
+            EduSuite.AlertMessage({ title: Resources.Warning, content: "Please select atleast one Record !.", type: 'orange' })
+            return false;
+        }
+        else {
+            $('#myModal').modal('toggle');
+            $("[name*=ChkSelectRow]:checked").each(function (index) {
+                var row = $(this).closest('tr');
+                var Object = $('input[name*=ApplicationKey]', row);
+                Keys.push(Object.val())
+            });
+
+            $("#PrintApplicationKeys").val(Keys.join(","));
+
+            StudentIDCards.GetPrintStudentIDCards(jsonData);
+        }
+    }
+
+
+    $(document).ready(function () {
+
+        AppCommon.FormatDateInput();
+        StudentIDCards.GetStudentIDCardDetails(jsonData);
+        $("[data-repeater-list]").find("input,select,textarea").each(function () {
+
+            var name = $(this).attr("name");
+            name = "StudentIDCardList" + name
+            $(this).attr("name", name);
+            $(this).attr("id", name);
+            $(this).next("label[for]").attr("for", name);
+        })
+        $("form").removeData("validator");
+        $("form").removeData("unobtrusiveValidation");
+        $.validator.unobtrusive.parse("form");
+        $(".ChkIsRecieved").change(function () {
+            var row = $(this).closest('tr');
+            var Object = $('input[name*=StudentEnrollmentNo]', row)[0];
+
+            //var Object = $('input[id*="StudentEnrollmentNo"].EmptyEnrollmentNo')[row_index];
+            if (this.checked == true) {
+                $(Object).removeAttr("readonly");
+            }
+            else {
+                $(Object).attr("readonly", "true");
+            }
+
+
+        });
+
+
+
+        $(".ChkIsRecieved").change(function () {
+            CheckRecivedAllCount();
+        });
+
+
+        $(".ChkIsIssued").change(function () {
+            CheckIssuedAllCount();
+        });
+
+        $(".SelectRow").change(function () {
+            CheckSelectedAllCount();
+        });
+
+
+    });
+
+
+    function CheckboxAllChange(chk, id) {
+
+        $("[data-repeater-item]").each(function (index) {
+            var Object = $('input[id*=' + id + ']', $(this))[0];
+            if (Object != undefined) {
+                if (Object.disabled) {
+
+                }
+                else {
+                    if (chk.checked == true) {
+                        $(Object).prop("checked", true);
+                        //var obj = $('input[id*="StudentEnrollmentNo"]');
+                        //$(obj).removeAttr("readonly");
+                    }
+                    else {
+                        $(Object).prop("checked", false);
+                        //var obj = $('input[id*="StudentEnrollmentNo"]');
+                        //$(obj).attr("readonly", "true");
+                    }
+                }
+            }
+        });
+
+
+        CheckRecivedAllCount();
+        CheckIssuedAllCount();
+        CheckSelectedAllCount();
+    }
+
+
+
+
+    function CheckRecivedAllCount() {
+        var ReceivedCount = 0;
+        var CheckedAll = true;
+
+        $(".ChkIsRecieved").each(function (index) {
+            if (this.checked == true) {
+                ReceivedCount = ReceivedCount + 1;
+            }
+            else {
+                CheckedAll = false;
+            }
+        });
+
+        $("#RecivedAllCount").html("");
+        if (ReceivedCount != 0) {
+            $("#RecivedAllCount").html("(" + ReceivedCount + ")");
+
+            if (CheckedAll == true) {
+                $("#ChkReceivedAll").prop("checked", true);
+            }
+            else {
+                $("#ChkReceivedAll").prop("checked", false);
+            }
+        }
+
+
+
+        $(".ChkIsRecieved.EmptyEnrollmentNo").each(function (index) {
+            var row_index = $(this).closest('div[data-repeater-item]').index();
+            var Object = $('input[id*="StudentEnrollmentNo"]')[row_index];
+            if (this.checked == true) {
+                $(Object).removeAttr("readonly");
+            }
+            else {
+                $(Object).attr("readonly", "true");
+            }
+        });
+
+
+
+    }
+
+
+    function CheckIssuedAllCount() {
+        var IssuedCount = 0;
+        var CheckedAll = true;
+
+
+        $(".ChkIsIssued").each(function (index) {
+            if (this.checked == true) {
+                IssuedCount = IssuedCount + 1;
+            }
+            else {
+                CheckedAll = false;
+            }
+        });
+        $("#IssedAllCount").html("");
+        if (IssuedCount != 0) {
+            $("#IssedAllCount").html("(" + IssuedCount + ")");
+            if (CheckedAll == true) {
+                $("#ChkIssuedAll").prop("checked", true);
+            }
+            else {
+                $("#ChkIssuedAll").prop("checked", false);
+            }
+        }
+        $(".ChkIsIssued.EmptyEnrollmentNo").each(function (index) {
+            var row_index = $(this).closest('div[data-repeater-item]').index();
+            var Object = $('input[id*="StudentEnrollmentNo"]')[row_index];
+            if (this.checked == true) {
+                $(Object).removeAttr("readonly");
+            }
+            else {
+                $(Object).attr("readonly", "true");
+            }
+        });
+
+
+
+    }
+
+
+    function CheckSelectedAllCount() {
+        var SelectedRowCount = 0;
+        var CheckedAll = true;
+
+        $(".SelectRow").each(function (index) {
+            if (this.checked == true) {
+                SelectedRowCount = SelectedRowCount + 1;
+            }
+            else {
+                CheckedAll = false;
+            }
+        });
+
+        $("#SelectedRowCount").html("");
+        if (SelectedRowCount != 0) {
+            $("#SelectedRowCount").html("(" + SelectedRowCount + ")");
+
+            if (CheckedAll == true) {
+                $("#ChkSelectAll").prop("checked", true);
+            }
+            else {
+                $("#ChkSelectAll").prop("checked", false);
+            }
+        }
+
+
+
+    }
+
+</script>
+<!-- Modal -->
+@*<div class="modal fade" id="myModal" role="dialog">
+        <div style="width: 100%" class="modal-dialog">
+
+            <div id="PrintDiv">
+
+            </div>
+
+        </div>
+    </div>*@

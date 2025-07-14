@@ -1,0 +1,185 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.StudentLeaveViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+@using CITS.EduSuite.UI
+
+@if (Model.ApplicationsKey != 0)
+{
+
+<div class="card">
+    <input type="hidden" id="hdnStudentLeaveList" value="@Url.Action("StudentLeaveList", "StudentLeave", new { id = Model.ApplicationsKey })" />
+    <input type="hidden" id="hdnFillAttendanceTypeByDate" value="@Url.Action("FillAttendanceTypeByDate", "SelectList")" />
+
+    @using (Html.BeginForm("AddEditStudentLeave", "StudentLeave", new { id = "" }, FormMethod.Post, htmlAttributes: new { @id = "frmAddEditStudentLeave" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.RowKey)
+        @Html.HiddenFor(m => m.ApplicationsKey)
+        @Html.HiddenFor(m => m.AttendanceDetailsKey)
+        @Html.HiddenFor(m => m.StudentEmail)
+        @Html.HiddenFor(m => m.StudentMobile)
+        @Html.HiddenFor(m => m.TemplateKey)
+        @Html.HiddenFor(m => m.StudentGuardianPhone)
+        @Html.Hidden("OldAttendanceTypeKey", Model.AttendanceTypeKey)
+        @Html.ValidationSummary(true)
+
+        <div class="card-header w3-deep-purple">
+            <div class="form-row">
+                @EduSuiteUIResources.StudentLeave
+
+                <div class="exportbutton">
+                    <div class="form-group ">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="form-row">
+
+                <div class="col-12 col-sm-12 col-lg-12">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.FromDate, htmlAttributes: new { @id = "lblFeeDate", @class = "form-label" })
+                        <div class="required-icon"><div class="text">*</div></div>
+                        @Html.TextBoxFor(m => m.LeaveDateFrom, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_input_type = "date", @InputFor = "lblFeeDate", @data_inputmask = "'alias': 'dd/mm/yyyy'", @onchange = " StudentLeave.FillAttendanceTypeByDate();" })
+                    </fieldset>
+                    <span class="form-control-error-text">
+                        @Html.ValidationMessageFor(m => m.LeaveDateFrom)
+                    </span>
+                </div>
+                <div class="col-12 col-sm-12 col-lg-12">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.ToDate, htmlAttributes: new { @id = "lblFeeAmount", @class = "form-label" })
+                        @Html.TextBoxFor(m => m.LeaveDateTo, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_input_type = "date", @InputFor = "lblFeeDate", @data_inputmask = "'alias': 'dd/mm/yyyy'", @onchange = " StudentLeave.FillAttendanceTypeByDate();" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.LeaveDateTo)
+                        </span>
+                    </fieldset>
+                </div>
+                <div class="col-12 col-sm-12 col-lg-12" data-hidden>
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.AttendanceType, htmlAttributes: new { @id = "lblFeeAmount", @class = "form-label" })
+                        <div class="required-icon"><div class="text">*</div></div>
+                        @Html.DropDownListFor(m => m.AttendanceTypeKey, new SelectList(Model.AttendanceTypes, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.AttendanceType, new { @class = "form-control input-control" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.AttendanceTypeKey)
+                        </span>
+                    </fieldset>
+                </div>
+                <div class="col-12">
+                    <fieldset class="form-group">
+
+                        @Html.Label(EduSuiteUIResources.Remarks, htmlAttributes: new { @id = "lblRemarks", @class = "form-label" })
+                        <div class="required-icon"><div class="text">*</div></div>
+                        @Html.TextAreaFor(m => m.Remarks, new { @class = "input-control form-control full-width", @InputFor = "lblRemarks" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.Remarks)
+                        </span>
+                    </fieldset>
+
+                </div>
+            </div>
+
+
+            <div class="form-row">
+
+                <div class="col-sm-6 text-left">
+                    @if (ApplicationSettingModel.SMSEnabled)
+                    {
+                        if (!(Model.AutoSMS ?? true))
+                        {
+                            <div class="checkbox-bird green inline-block">
+                                @Html.CheckBox("AutoSMS", (Model.AutoSMS ?? false))
+                                <label for="AutoSMS">@EduSuiteUIResources.SendSms</label>
+                            </div>
+                        }
+                        else
+                        {
+                            @Html.Hidden("AutoSMS", (Model.AutoSMS ?? false), new { @class = "pull-left" })
+                        }
+                    }
+                    @if (ApplicationSettingModel.GuardianSMSEnabled)
+                    {
+                        if (!(Model.GuardianSMS ?? true))
+                        {
+                            <div class="checkbox-bird green inline-block">
+                                @Html.CheckBox("GuardianSMS", (Model.GuardianSMS ?? false))
+                                <label for="GuardianSMS">@EduSuiteUIResources.GuardianSMS</label>
+                            </div>
+                        }
+                        else
+                        {
+                            @Html.Hidden("GuardianSMS", (Model.GuardianSMS ?? false), new { @class = "pull-left" })
+                        }
+                    }
+
+
+                    @if (ApplicationSettingModel.EmailEnabled)
+                    {
+                        if (!(Model.AutoEmail ?? true))
+                        {
+                            <div class="checkbox-bird green inline-block">
+                                @Html.CheckBox("AutoEmail", (Model.AutoEmail ?? false), new { @class = "pull-left" })
+                                <label for="AutoEmail">@EduSuiteUIResources.SendEmail</label>
+                            </div>
+                        }
+                        else
+                        {
+                            @Html.Hidden("AutoEmail", (Model.AutoEmail ?? false))
+                        }
+                    }
+
+                </div>
+            </div>
+            <div class="col-12">
+                <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+            </div>
+            <div class="form-row">
+                <div class="col-6">
+                    <div class="form-group">
+
+                        <input type="button" value="@EduSuiteUIResources.Save" id="btnSave" class="btn btn-sm btn-success" />
+
+                        @if (Model.RowKey != 0)
+                        {
+                            <button type="button" id="btnCancel" class="btn btn-sm btn-danger mx-1">@EduSuiteUIResources.Cancel</button>
+                        }
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    }
+
+
+
+</div>
+}
+<script>
+    var jsonData=@(Html.Raw(Json.Encode(Model)));
+
+    $(document).ready(function () {
+        setTimeout(function () {
+            AppCommon.FormatDateInput();
+            $("#btnSave").on("click",function(){
+                StudentLeave.FormSubmit(jsonData);
+            })
+
+              $("#btnCancel").on("click", function ()
+            {
+                 StudentLeave.BindStudentLeaveDetails();
+                StudentLeave.AddEditStudentLeave(null, @Model.ApplicationsKey);
+        })
+        });
+    });
+
+
+
+</script>
+<style>
+    .exportbutton {
+        position: absolute;
+        right: 11px;
+        top: 11px;
+    }
+</style>

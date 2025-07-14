@@ -1,0 +1,80 @@
+﻿@model List<CITS.EduSuite.Business.Models.ViewModels.StudentLeaveViewModel>
+@using CITS.EduSuite.Business.Models.ViewModels
+@using CITS.EduSuite.UI
+
+
+<input type="hidden" id="hdnAddEditStudentLeave" value="@Url.Action("AddEditStudentLeave", "StudentLeave", new { id = "" })" />
+<input type="hidden" id="hdnDeleteStudentLeave" value="@Url.Action("DeleteStudentLeave", "StudentLeave", new { id = "" })" />
+<input type="hidden" id="hdnStudentLeaveList" value="@Url.Action("StudentLeaveList", "StudentLeave", new { id = "" })" />
+
+
+
+
+<section class="card">
+    <header class="card-header bg-light">
+        @EduSuiteUIResources.StudentLeave  @EduSuiteUIResources.BlankSpace  @EduSuiteUIResources.Details
+    </header>
+    <div class="card-body p-2 overflow-auto">
+        <table class="table table-bordered table-sm" id="divInstallmentFeeDetails">
+
+            <thead>
+                <tr>
+                    <th>
+                        @Html.Label(EduSuiteUIResources.FromDate, htmlAttributes: new { @class = "form-label" })
+                    </th>
+                    <th>
+                        @Html.Label(EduSuiteUIResources.ToDate, htmlAttributes: new { @class = "form-label" })
+                    </th>
+
+                    <th>
+                        @Html.Label(EduSuiteUIResources.Remarks, htmlAttributes: new { @class = "form-label" })
+                    </th>
+                    <th>
+                        @Html.Label(EduSuiteUIResources.Action, htmlAttributes: new { @class = "form-label" })
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.Count; i++)
+                {
+
+                    <tr data-repeater-item>
+                        <td>
+
+                            @String.Format("{0:dd/MM/yyyy}", Model[i].LeaveDateFrom)
+                            @Html.HiddenFor(m => m[i].RowKey)
+
+
+
+                        </td>
+
+                        <td>
+                            @String.Format("{0:dd/MM/yyyy}", Model[i].LeaveDateTo)
+                        </td>
+
+                        <td>
+                            @Model[i].Remarks
+
+                        </td>
+                        <td>
+                            <div class="btn-group">
+
+                                <button type="button" class="btn btn-primary btn-sm mx-1 btnfeeEdit" onclick="javascript:StudentLeave.AddEditStudentLeave('@Model[i].RowKey');"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+                                <button type="button" class="btn btn-danger btn-sm mx-1" onclick="javascript:StudentLeave.DeleteStudentLeave('@Model[i].RowKey','@Model[i].ApplicationsKey');return false;">  <i class="fa fa-trash pointer" aria-hidden="true"></i>  </button>
+
+
+                            </div>
+                        </td>
+
+                    </tr>
+
+
+                }
+            </tbody>
+
+
+        </table>
+    </div>
+</section>
+

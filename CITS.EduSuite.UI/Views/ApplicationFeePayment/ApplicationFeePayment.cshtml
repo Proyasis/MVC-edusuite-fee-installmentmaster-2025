@@ -1,0 +1,154 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.ApplicationFeePaymentViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+<input type="hidden" id="hdnAddEditApplicationFeePayment" value="@Url.Action("AddEditApplicationFeePayment", "ApplicationFeePayment", new { id = ""})" />
+<input type="hidden" id="hdnTotalFeeDetails" value="@Url.Action("TotalFeeDetails", "ApplicationFeePayment",new { id= Model.ApplicationKey})" />
+<input type="hidden" id="hdnInstallmentFeeDetails" value="@Url.Action("InstallmentFeeDetails", "ApplicationFeePayment",new { id= Model.ApplicationKey})" />
+<input type="hidden" id="hdnApplicationFeePaymentList" value="@Url.Action("ApplicationFeePaymentList", "ApplicationFeePayment",new { id= Model.ApplicationKey})" />
+<input type="hidden" id="hdnFeeScheduleDetails" value="@Url.Action("FeeScheduleDetails", "ApplicationFeePayment",new { id= Model.ApplicationKey})" />
+<input type="hidden" id="hdnAddEditFeeFollowUp" value="@Url.Action("AddEditFeeFollowUp","FeeFollowup")" />
+<input type="hidden" id="hdnDeleteFeeFollowup" value="@Url.Action("DeleteFeeFollowup","FeeFollowup")" />
+<div class="form-row">
+    <div class="col-sm-5 col-lg-4 col-12">
+        <div id="dvFeeDetails">
+        </div>
+
+    </div>
+    <div class="col-sm-7 col-lg-8  col-12">
+        @if ((Model.ApplicationKey != 0) || !String.IsNullOrEmpty(Model.AdmissionNo))
+        {
+            @Html.Action("StudentDetail", "Shared", new { id = Model.ApplicationKey, AdmissionNo = Model.AdmissionNo })
+        }
+        <section class="tabs-section mt-2">
+
+            <div class="tabs-section-nav  rounded shadow">
+                <ul id="tab-feedetails" class="nav nav-tabs nav-pills with-arrow  text-center" role="tablist">
+                    <li class="nav-item ">
+                        <a aria-controls="discover" role="tab" class="nav-link text-uppercase font-weight-bold mr-sm-3 rounded-0 border active" data-toggle="tab" href="#dvTotalFeeDetails">
+                            <span class="nav-link-in">
+                                @EduSuiteUIResources.FeeDetails
+                            </span>
+                        </a>
+                    </li>
+                    @if ((bool)ViewBag.FeeSchedule)
+                    {
+                        <li class="nav-item">
+                            <a aria-controls="discover" role="tab" class="nav-link" data-toggle="tab" href="#dvFeeSchedule" >
+                                <span class="nav-link-in">
+                                    @EduSuiteUIResources.Fee@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Schedule
+                                </span>
+                            </a>
+                        </li>
+                    }
+                    <li class="nav-item" id="dvInstallement">
+                        <a aria-controls="discover" role="tab" class="nav-link" data-toggle="tab" href="#dvInstallmentFeeDetails">
+                            <span class="nav-link-in">
+                                @EduSuiteUIResources.Installment@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Details
+                            </span>
+                        </a>
+                    </li>
+
+                </ul>
+                @if ((bool)ViewBag.FeeSchedule)
+                {
+                    <a onclick="FeeFollowUp.EditFeeFollowUpPopup(@Model.ApplicationKey,null)" class="btn btn-success btn-sm" style="position: absolute; top: 3px; right: 7px;"><i class="fa fa-plus-square-o"></i> <span>@EduSuiteUIResources.Schedule</span></a>
+                }
+            </div>
+
+            <div class="tab-content p-0">
+                <div class="tab-pane active" id="dvTotalFeeDetails"></div>
+                <div class="tab-pane fade" id="dvInstallmentFeeDetails"></div>
+                <div class="tab-pane fade" id="dvFeeSchedule"></div>
+
+            </div>
+
+        </section>
+
+        <div class="form-row mt-2">
+            <div id="dvFeePaymentDetails" class="col-12">
+
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        setTimeout(function(){
+            ApplicationFeePayment.EditApplicationFeePayment(null, @Model.ApplicationKey);
+            ApplicationFeePayment.BindTotalFeeDetails();
+            ApplicationFeePayment.BindInstallmentFeeDetails();
+            ApplicationFeePayment.BindFeePaymentDetails();
+            ApplicationFeePayment.BindFeeScheduleDetails();
+        },500)
+
+    })
+</script>
+
+<style>
+
+    /* With arrow tabs */
+
+    .with-arrow .nav-link.active {
+        position: relative;
+    }
+
+        .with-arrow .nav-link.active::after {
+            content: '';
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 6px solid #2b90d9;
+            position: absolute;
+            bottom: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: block;
+        }
+
+    /* lined tabs */
+
+    .lined .nav-link {
+        border: none;
+        border-bottom: 3px solid transparent;
+    }
+
+        .lined .nav-link:hover {
+            border: none;
+            border-bottom: 3px solid transparent;
+        }
+
+        .lined .nav-link.active {
+            background: none;
+            color: #555;
+            border-color: #2b90d9;
+        }
+
+
+    body {
+        background: #304352;
+        background: -webkit-linear-gradient(to right, #304352, #d7d2cc);
+        background: linear-gradient(to right, #304352, #d7d2cc);
+        min-height: 100vh;
+    }
+
+    .nav-pills .nav-link {
+        color: #555;
+    }
+
+    .text-uppercase {
+        letter-spacing: 0.1em;
+    }
+
+    .tabs-section-nav .nav-link.active .nav-link-in {
+        border-bottom-color: #064475;
+    }
+
+    .tabs-section-nav .nav-link-in {
+        border-bottom: solid 4px transparent;
+        border-top: none;
+    }
+</style>

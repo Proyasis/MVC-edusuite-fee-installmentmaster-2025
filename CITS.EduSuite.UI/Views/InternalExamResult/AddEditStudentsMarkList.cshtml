@@ -1,0 +1,263 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.InternalExamResultViewModel
+
+@using CITS.EduSuite.Business.Models.ViewModels
+
+<div class="modal-header">
+    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+    <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.Add @EduSuiteUIResources.Sla @EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace @EduSuiteUIResources.InternalExamResult</h4>
+</div>
+@using (Html.BeginForm("AddEditStudentsMarkList", "InternalExamResult", FormMethod.Post, new { @id = "frmStudentsmarkList" }))
+{
+
+    @*<input type="hidden" id="hdnGetRollNumberList" value="@Url.Action(" getrollnumberlist", "DivisionAllocation" )" />
+        <input type="hidden" id="hdnAddEditDivisionAllocationSubmit" value="@Url.Action(" addeditdivisionallocationsubmit", "DivisionAllocation" )" />*@
+    @Html.AntiForgeryToken()
+
+
+    @Html.HiddenFor(m => m.InternalExamKey)
+    @Html.HiddenFor(m => m.ClassDetailsKey)
+    @Html.HiddenFor(m => m.SubjectKey)
+    @Html.HiddenFor(m => m.TemplateKey)
+
+
+    @Html.ValidationSummary(true)
+
+    <div class="modal-body">
+        <div class="form-master">
+            <div class="form-row">
+                <div class="paddingNone">
+                    <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+                </div>
+            </div>
+            <div id="dynamicRepeater" class="repeater">
+                <table class="table table-responsive table-stripped">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.Label(EduSuiteUIResources.AdmissionNo, htmlAttributes: new { @class = "form-label" })
+                            </th>
+
+                            <th>
+                                @Html.Label(EduSuiteUIResources.StudentName, htmlAttributes: new { @class = "form-label" })
+                            </th>
+                            <th>
+                                @Html.Label(EduSuiteUIResources.Mark, htmlAttributes: new { @class = "form-label" })
+                            </th>
+                            <th>
+                                @Html.Label(EduSuiteUIResources.MinimumMark, htmlAttributes: new { @class = "form-label" })
+                            </th>
+                            <th>
+                                @Html.Label(EduSuiteUIResources.MaximumMark, htmlAttributes: new { @class = "form-label" })
+                            </th>
+
+                            <th>
+                                @Html.Label(EduSuiteUIResources.Status, htmlAttributes: new { @class = "form-label" })
+                            </th>
+                            <th>
+                                @Html.Label(EduSuiteUIResources.Absent, htmlAttributes: new { @class = "form-label" })
+                            </th>
+
+                            <th>
+                                @Html.Label(EduSuiteUIResources.Remarks, htmlAttributes: new { @class = "form-label" })
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody data-repeater-list id="DivInternalExamResult">
+                        @for (int i = 0; i < Model.InternalExamResultDetails.Count(); i++)
+                        {
+                            <tr data-repeater-item>
+                                <td class="px-1">
+                                    @Html.DisplayFor(m => m.InternalExamResultDetails[i].AdmissionNo, new { @class = "form-control input-control smallFont", @readonly = "true" })
+                                    @Html.HiddenFor(m => m.InternalExamResultDetails[i].RowKey, new { @class = "rowKeyClass" })
+                                    @Html.HiddenFor(m => m.InternalExamResultDetails[i].InternalExamKey)
+                                    @Html.HiddenFor(m => m.InternalExamResultDetails[i].ApplicationKey)
+                                    @Html.HiddenFor(m => m.InternalExamResultDetails[i].SubjectKey)
+                                    @Html.HiddenFor(m => m.InternalExamResultDetails[i].InternalExamDetailsKey)
+                                    @Html.HiddenFor(m => m.InternalExamResultDetails[i].AdmissionNo)
+
+                                    @Html.HiddenFor(m => m.InternalExamResultDetails[i].StudentEmail)
+                                    @Html.HiddenFor(m => m.InternalExamResultDetails[i].MobileNumber)
+                                    @Html.HiddenFor(m => m.InternalExamResultDetails[i].CourseName)
+                                    @Html.HiddenFor(m => m.InternalExamResultDetails[i].UniversityName)
+                                    @Html.HiddenFor(m => m.InternalExamResultDetails[i].BatchName)
+                                    @Html.HiddenFor(m => m.InternalExamResultDetails[i].SubjctName)
+                                    @Html.HiddenFor(m => m.InternalExamResultDetails[i].ExamYearText)
+                                    @*@Html.HiddenFor(m => m.InternalExamResultDetails[i].EmailStatus)*@
+                                    @Html.HiddenFor(m => m.InternalExamResultDetails[i].InternalExamTermName)
+
+
+                                </td>
+                                <td class="px-1">
+                                    &nbsp;&nbsp;   @Html.DisplayFor(m => m.InternalExamResultDetails[i].StudentName, new { @class = "form-control input-control", @readonly = "true" })
+                                    @Html.HiddenFor(m => m.InternalExamResultDetails[i].StudentName)
+
+
+                                </td>
+                                <td class="px-1">
+                                    @Html.TextBoxFor(m => m.InternalExamResultDetails[i].Mark, new { @class = "form-control input-control", @placeholder = EduSuiteUIResources.Mark })
+                                    <span class="form-control-error-text">    @Html.ValidationMessageFor(m => m.InternalExamResultDetails[i].Mark)</span>
+                                </td>
+                                <td class="px-1">
+                                    @Html.TextBoxFor(m => m.InternalExamResultDetails[i].MinimumMark, new { @class = "form-control input-control", @readonly = "true" })
+                                </td>
+                                <td class="px-1">
+                                    @Html.TextBoxFor(m => m.InternalExamResultDetails[i].MaximumMark, new { @class = "form-control input-control", @readonly = "true" })
+                                </td>
+
+                                <td class="px-1">
+                                    <span id="spnResultStatus"></span>
+                                    @Html.HiddenFor(m => m.InternalExamResultDetails[i].ResultStatus)
+
+
+                                </td>
+
+
+                                <td class="px-1">
+                                    <div class="switch-check switch">
+                                        @Html.CheckBoxFor(m => m.InternalExamResultDetails[i].AbsentStatus, new { @class = "switch-input" })
+                                        <div class="switch-label redgreen" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                                        <div class="switch-handle"></div>
+                                    </div>
+                                </td>
+
+                                <td class="px-1">
+                                    @Html.TextBoxFor(m => m.InternalExamResultDetails[i].Remarks, new { @class = "form-control input-control", @placeholder = EduSuiteUIResources.Remarks })
+
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+
+
+        </div>
+    </div>
+
+    <div class="modal-footer justify-content-start">
+        <div class="form-row">
+            <div class="col-sm-12 text-left">
+                @if (ApplicationSettingModel.SMSEnabled)
+                {
+                    if (!(Model.AutoSMS ?? true))
+                    {
+                        <div class="checkbox-bird green inline-block">
+                            @Html.CheckBox("AutoSMS", (Model.AutoSMS ?? false))
+                            <label for="AutoSMS">@EduSuiteUIResources.SendSms</label>
+                        </div>
+                    }
+                    else
+                    {
+                        @Html.Hidden("AutoSMS", (Model.AutoSMS ?? false), new { @class = "pull-left" })
+                    }
+                }
+
+
+                @if (ApplicationSettingModel.EmailEnabled)
+                {
+                    if (!(Model.AutoEmail ?? true))
+                    {
+                        <div class="checkbox-bird green inline-block">
+                            @Html.CheckBox("AutoEmail", (Model.AutoEmail ?? false), new { @class = "pull-left" })
+                            <label for="AutoEmail">@EduSuiteUIResources.SendEmail</label>
+                        </div>
+                    }
+                    else
+                    {
+                        @Html.Hidden("AutoEmail", (Model.AutoEmail ?? false))
+                    }
+                }
+
+            </div>
+
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="@EduSuiteUIResources.Save" id="btnSave" class="btn btn-sm btn-success mx-1" />
+            <button type="button" data-dismiss="modal" class="btn btn-sm btn-danger mx-1">@EduSuiteUIResources.Cancel</button>
+
+        </div>
+    </div>
+}
+<script>
+    $(document).ready(function () {
+        AppCommon.FormatInputCase()
+        var jsonData=@(Html.Raw(Json.Encode(Model)));
+        SetExamResultStatus();
+        $("input[id*=Mark]",$("#DivInternalExamResult")).on('input',function()
+        {
+            SetExamResultStatus();
+        });
+
+        $("input[id*=Mark]",$("#DivInternalExamResult")).on('keydown',function(e)
+        {
+            if(e.keycode=='13')
+            {
+                var tr = $(this).closest(tr).next();
+                $("input[id*=Mark]",$(tr)).focus();
+            }
+            if(e.keycode=='38')
+            {
+                var tr = $(this).closest(tr).prev();
+                $("input[id*=Mark]",$(tr)).focus();
+            }
+
+        });
+
+        $("input[id*=AbsentStatus]",$("#DivInternalExamResult")).change(function()
+        {
+            SetExamResultStatus();
+        });
+
+    });
+
+    function SetExamResultStatus() {
+
+        $("#DivInternalExamResult [data-repeater-item]").each(function (i) {
+            //var item = $(_this).closest("[data-repeater-item]");
+            var AbsentStatus = $("input[type=checkbox][id*=AbsentStatus]", $(this)).is(":checked");
+            var Mark = $("input[id*=Mark]", $(this))[0];
+            var MinimumMark = $("input[id*=MinimumMark]", $(this)).val();
+            var MaximumMark = $("input[id*=MaximumMark]", $(this)).val();
+            var ResultStatus = $("input[id*=ResultStatus]", $(this))[0];
+            if (AbsentStatus == true) {
+                $("#spnResultStatus", $(this)).html("Absent").attr("style", "color:orange;");
+
+                ResultStatus.value = "A";
+                Mark.value = "";
+                Mark.disabled = true;
+            }
+            else {
+                Mark.disabled = false;
+                if (Mark.value == "") {
+                    $("#spnResultStatus", $(this)).html("No Result").attr("style", "color:black;");
+                    ResultStatus.value = "N";
+                }
+
+                else if (parseFloat(Mark.value) < parseFloat(MinimumMark)) {
+                    if (parseFloat(Mark.value) < parseFloat(0)) {
+                        Mark.value = 0;
+                    }
+                    $("#spnResultStatus", $(this)).html("Fail").attr("style", "color:red;");
+
+                    ResultStatus.value = "F";
+                }
+                else if (parseFloat(Mark.value) >= parseFloat(MinimumMark)) {
+                    if (parseFloat(Mark.value) > parseFloat(MaximumMark)) {
+                        Mark.value = MaximumMark;
+                    }
+                    $("#spnResultStatus", $(this)).html("Pass").attr("style", "color:green;");
+
+                    ResultStatus.value = "P";
+                }
+            }
+
+        });
+
+    }
+</script>
+
+
+
+

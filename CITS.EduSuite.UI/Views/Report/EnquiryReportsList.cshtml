@@ -1,0 +1,739 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.EnquiryReportViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+@using System.Web.Mvc
+
+@section scripts{
+
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/bundles/CitsValidation")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Content/MultiselectJs")
+    @Scripts.Render("~/Scripts/EnquiryCallReport")
+    @Scripts.Render("~/Content/momentJS")
+
+
+
+
+}
+<input type="hidden" id="hdnGetReportHistory" value="@Url.Action("GetHistoryList", "Report")" />
+<input type="hidden" id="hdnGetCallReports" value="@Url.Action("GetCallReports", "Report")" />
+<input type="hidden" id="hdnGetCallReportsData" value="@Url.Action("ReportData", "Report")" />
+
+<input type="hidden" id="hdnGetCallReportsDetailed" value="@Url.Action("GetCallReportsDetailed", "Report")" />
+<input type="hidden" id="hdnDeleteApplication" value="@Url.Action("DeleteApplication", "Application")" />
+<input type="hidden" id="hdnViewApplication" value="@Url.Action("ViewApplication", "Application")" />
+
+<input type="hidden" id="hdnAddEditVisaStatus" value="@Url.Action("AddEditVisaStatus", "ApplicationPersonal")" />
+
+<input type="hidden" id="hdnGetEmployeesByBranchId" value="@Url.Action("GetEmployeesByBranchId", "Application")" />
+<input type="hidden" id="hdnGetCallStatusByEnquiryStatus" value="@Url.Action("GetCallStatusByEnquiryStatus", "EnquirySchedule")" />
+<input type="hidden" id="hdnSpamApplication" value="@Url.Action("SpamApplication", "Application")" />
+<input type="hidden" id="hdnRefundApplication" value="@Url.Action("RefundApplicationFee", "ApplicationFeePayment")" />
+
+
+<div class="">
+    <input type="hidden" id="hdnCounsellingCallStatusKey" value="@DbConstants.EnquiryCallStatus.Counselling" />
+    @Html.TextBoxFor(m => m.DateTomorrow, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_input_type = "date", @InputFor = "lblNextCallSchedule", @data_inputmask = "'alias': 'date'", @style = "display:none" })
+    @Html.TextBoxFor(m => m.DateToday, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_input_type = "date", @InputFor = "lblNextCallSchedule", @data_inputmask = "'alias': 'date'", @style = "display:none" })
+    @Html.TextBoxFor(m => m.MonthStartDate, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_input_type = "date", @InputFor = "lblNextCallSchedule", @data_inputmask = "'alias': 'date'", @style = "display:none" })
+    @Html.TextBoxFor(m => m.MonthEndDate, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_input_type = "date", @InputFor = "lblNextCallSchedule", @data_inputmask = "'alias': 'date'", @style = "display:none" })
+    @Html.TextBoxFor(m => m.DateYesterday, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_input_type = "date", @InputFor = "lblNextCallSchedule", @data_inputmask = "'alias': 'date'", @style = "display:none" })
+    @Html.TextBoxFor(m => m.DateUpcoming, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_input_type = "date", @InputFor = "lblNextCallSchedule", @data_inputmask = "'alias': 'date'", @style = "display:none" })
+    <input type="hidden" value="@DateTimeUTC.Now.AddDays(-3).ToString("dd/MM/yyyy")" id="threeDaysAgo" />
+    <input type="hidden" value="@DateTimeUTC.Now.AddDays(-4).ToString("dd/MM/yyyy")" id="fourDaysAgo" />
+    <input type="hidden" value="@DateTimeUTC.Now.AddDays(-5).ToString("dd/MM/yyyy")" id="fiveDaysAgo" />
+    <input type="hidden" value="@DateTimeUTC.Now.AddDays(-6).ToString("dd/MM/yyyy")" id="sixDaysAgo" />
+    <input type="hidden" value="@DateTimeUTC.Now.AddDays(-7).ToString("dd/MM/yyyy")" id="sevenDaysAgo" />
+</div>
+
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-12">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.CallReportSummary</h3>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</header>
+<section class="section-content mx-sm-3 mx-0">
+    <div class="GridBody">
+
+        <div class="grid-nav-bar ">
+            <div class="form-row">
+
+                @if ((User as CITS.EduSuite.Business.Models.Security.CITSEduSuitePrincipal) != null && DbConstants.Role.AdminUserTypes.Contains(DbConstants.User.RoleKey))
+                {
+                    <div class="col-lg-2 col-sm-3 col-4">
+                        <fieldset class="form-group">
+                            @Html.DropDownListFor(m => m.SearchBranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.Branch, new { @class = "form-control input-control autohide-select", @data_plugin_type = "select2", @InputFor = "lblBranch", @data_live_search = "true" })
+                        </fieldset>
+                    </div>
+                    <div class="col-lg-2 col-sm-3 col-4">
+                        <fieldset class="form-group">
+                            @Html.DropDownListFor(m => m.SearchCounselllingBranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.CounsellingBranch, new { @class = "form-control input-control autohide-select", @data_plugin_type = "select2", @InputFor = "lblBranch", @data_live_search = "true" })
+                        </fieldset>
+                    </div>
+                    <div class="col-lg-2 col-sm-3 col-4">
+                        <fieldset class="form-group">
+                            @Html.DropDownListFor(m => m.SearchEmployeeKey, new SelectList(Model.Employees, "RowKey", "Text"), EduSuiteUIResources.CounsellingEmployee, new { @class = "form-control input-control autohide-select", @data_plugin_type = "select2", @InputFor = "lblBranch", @data_live_search = "true" })
+                        </fieldset>
+                    </div>
+                    <div class="col-lg-2 col-sm-3 col-4">
+                        <fieldset class="form-group">
+                            @Html.DropDownListFor(m => m.SearchScheduledEmployeeKey, new SelectList(Model.Employees, "RowKey", "Text"), EduSuiteUIResources.ScheduledEmployee, new { @class = "form-control input-control autohide-select", @data_plugin_type = "select2", @InputFor = "lblBranch", @data_live_search = "true" })
+                        </fieldset>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-lg-2 col-sm-3 col-4">
+                        <fieldset class="form-group">
+                            @Html.DropDownListFor(m => m.SearchBranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Branch, new { @class = "form-control input-control ", @InputFor = "lblBranch" })
+                        </fieldset>
+                    </div>
+                    <div class="col-lg-2 col-sm-3 col-4">
+                        <fieldset class="form-group">
+                            @Html.DropDownListFor(m => m.SearchCounselllingBranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.CounsellingBranch, new { @class = "form-control input-control ", @InputFor = "lblBranch" })
+                        </fieldset>
+                    </div>
+                    <div class="col-lg-2 col-sm-3 col-4">
+                        <fieldset class="form-group">
+                            @Html.DropDownListFor(m => m.SearchEmployeeKey, new SelectList(Model.Employees, "RowKey", "Text"), EduSuiteUIResources.BlankSpace + EduSuiteUIResources.CounsellingEmployee, new { @class = "form-control input-control autohide-select", @data_plugin_type = "select2", @InputFor = "lblEmployee", @data_live_search = "true" })
+                        </fieldset>
+                    </div>
+
+                    <div class="col-lg-2 col-sm-3 col-4">
+                        <fieldset class="form-group">
+                            @Html.DropDownListFor(m => m.SearchScheduledEmployeeKey, new SelectList(Model.Employees, "RowKey", "Text"), EduSuiteUIResources.BlankSpace + EduSuiteUIResources.ScheduledEmployee, new { @class = "form-control input-control autohide-select", @data_plugin_type = "select2", @InputFor = "lblEmployee", @data_live_search = "true" })
+                        </fieldset>
+                    </div>
+
+                }
+                <div class="col-lg-2 col-sm-3 col-4">
+                    <fieldset class="form-group">
+                        @Html.ListBoxFor(m => m.ApplicationStatusKeys, new SelectList(Model.ApplicationStatuses, "RowKey", "Text"), new { @class = "form-control input-control selectpicker", @multiple = "multiple", @data_live_search = "true", @data_title = EduSuiteUIResources.ApplicationStatus })
+
+
+                    </fieldset>
+                </div>
+
+                <div class="col-lg-2 col-sm-3 col-4">
+                    <fieldset class="form-group">
+                        @Html.DropDownListFor(m => m.SearchSubEnquiryStatusKey, new SelectList(Model.EnquiryStatus, "RowKey", "Text"), EduSuiteUIResources.EnquiryStatus, new { @class = "form-control input-control ", @InputFor = "lblBranch" })
+                    </fieldset>
+                </div>
+                @*<div class="col-lg-2 col-sm-3 col-4">
+                    <fieldset class="form-group">
+                        @Html.DropDownListFor(m => m.SearchCountryKey, new SelectList(Model.Countries, "RowKey", "Text"), EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Country, new { @class = "form-control input-control ", @data_plugin_type = "select2", @InputFor = "lblBranch", @data_live_search = "true" })
+                    </fieldset>
+                </div>*@
+
+
+            </div>
+
+
+            <div class="form-row">
+
+                <div class="col-lg-2 col-sm-3 col-4">
+                    <fieldset class="form-group">
+                        @Html.TextBoxFor(m => m.SearchFromDate, "{0:dd/MM/yyyy}", new { @readonly = "true", @class = "form-control input-control", @data_input_type = "date", @InputFor = "lblNextCallSchedule", @data_inputmask = "'alias': 'date'", @placeholder = @EduSuiteUIResources.FromDate })
+                    </fieldset>
+                </div>
+
+                <div class="col-lg-2 col-sm-3 col-4">
+                    <fieldset class="form-group">
+                        @Html.TextBoxFor(m => m.SearchToDate, "{0:dd/MM/yyyy}", new { @readonly = "true", @class = "form-control input-control", @data_input_type = "date", @InputFor = "lblNextCallSchedule", @data_inputmask = "'alias': 'date'", @placeholder = @EduSuiteUIResources.ToDate })
+                    </fieldset>
+                </div>
+                <div style="display:none" class="col-lg-2 col-sm-3 col-4">
+                    <fieldset class="form-group">
+                        @Html.DropDownListFor(m => m.SearchDateTypeKey, new SelectList(Model.DateTypes, "RowKey", "Text"), new { @class = "form-control input-control ", @InputFor = "lblBranch" })
+                    </fieldset>
+                </div>
+                <div class="col-lg-2 col-sm-3 col-4">
+                    <fieldset class="form-group">
+                        @Html.DropDownListFor(m => m.SearchCallStatusKey, new SelectList(Model.EnquiryCallStatuses, "RowKey", "Text"), EduSuiteUIResources.CallStatus, new { @class = "form-control input-control ", @data_plugin_type = "select2", @InputFor = "lblBranch", @data_live_search = "true" })
+                    </fieldset>
+                </div>
+
+                <div class="col-lg-2 col-sm-3 col-4">
+                    <fieldset class="form-group">
+                        @Html.DropDownListFor(m => m.SearchCallTypeKey, new SelectList(Model.CallTypes, "RowKey", "Text"), EduSuiteUIResources.CallType, new { @class = "form-control input-control ", @InputFor = "lblBranch" })
+                    </fieldset>
+                </div>
+
+                <div class="col-lg-2 col-sm-3 col-4">
+                    <fieldset class="form-group">
+                        @Html.TextBoxFor(m => m.SearchLocation, new { @class = "form-control input-control", @placeholder = EduSuiteUIResources.District + "," + EduSuiteUIResources.Location })
+                    </fieldset>
+                </div>
+                <div class="col-lg-2 col-sm-3 col-4">
+                    <input id="SearchAnyText" type="text" name="focus" class="form-control input-control gridSearchTextBox" placeholder="@EduSuiteUIResources.Search" /> @* Change Search TextBox Placeholder*@
+                    <span id="iconSpan" class="iconSpan"><i class="fa fa-times-circle" aria-hidden="true"></i></span>
+                </div>
+            </div>
+
+            <div class="form-row justify-content-between">
+                <div class="col-lg-2 col-sm-3 col-4">
+                    <fieldset class="form-group">
+                        @Html.DropDownListFor(m => m.SearchAcademicTermKey, new SelectList(Model.AcademicTerms, "RowKey", "Text"), EduSuiteUIResources.AcademicTerm, new { @class = "form-control input-control ", @InputFor = "lblBranch" })
+                    </fieldset>
+                </div>
+
+                <div class="col-lg-2 col-sm-3 col-4">
+                    <div class="button-group float-right">
+                        <button type="button" onclick="location.reload()" class="btn btn-info btn-sm"><i class="fa fa-refresh btn-blue" aria-hidden="true"></i>  @EduSuiteUIResources.Refresh</button>
+                        <button type="button" onclick='CallReports.GetApplication(jsonData)' class="btn btn-success btn-sm"><i class="fa fa-refresh btn-blue" aria-hidden="true"></i> @EduSuiteUIResources.Search</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        
+
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+            <div id="navbarContent" class="collapse navbar-collapse">
+                <ul class="navbar-nav mr-auto">
+                    <!-- Level Enquiry dropdown -->
+                    <li class="nav-item dropdown">
+                        <a id="dropdownMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Enquiry</a>
+                        <ul aria-labelledby="dropdownMenu1" class="dropdown-menu border-0 shadow">
+
+                            <li class="dropdown-divider"></li>
+
+                            <!-- Level two dropdown-->
+                            <li class="dropdown-submenu">
+                                <a id="dropdownMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">New Enquiry</a>
+                                <ul aria-labelledby="dropdownMenu2" class="dropdown-menu border-0 shadow">
+                                    <li><a tabindex="-1" class="dropdown-item" onclick="FillTodaysEnquiryReport()" href="#">Todays New Enquiry</a></li>
+                                    <li><a class="dropdown-item" onclick="FillYesterdaysEnquiryReport()" href="#">Yesterdays New Enquiry</a></li>
+                                </ul>
+                            </li>
+                            <!-- End Level two -->
+                            <li class="dropdown-divider"></li>
+                            <li class="dropdown-submenu">
+                                <a id="dropdownMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Counselling</a>
+                                <ul aria-labelledby="dropdownMenu2" class="dropdown-menu border-0 shadow">
+                                    <li class="dropdown-submenu">
+                                        <a id="dropdownMenu3" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Todays</a>
+                                        <ul aria-labelledby="dropdownMenu3" class="dropdown-menu border-0 shadow">
+                                            <li><a href="#" class="dropdown-item" onclick="FillTodaysCounselling()">Counselling Schedule</a></li>
+                                            <li><a href="#" class="dropdown-item" onclick="FillYesterdayCounsellingCalled()">Counselling Called</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="dropdown-submenu">
+                                        <a id="dropdownMenu3" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Yesterdays</a>
+                                        <ul aria-labelledby="dropdownMenu3" class="dropdown-menu border-0 shadow">
+                                            <li><a href="#" class="dropdown-item" onclick="FillYesterdayCounselling()">Pending Counselling Schedule</a></li>
+                                            <li><a href="#" class="dropdown-item" onclick="FillYesterdayCounsellingCalled()">Counselling Called</a></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a tabindex="-1" class="dropdown-item" onclick="FillTomorrowsCounselling()" href="#">Tomorrows Counselling</a>
+                                    </li>
+                                    <li>
+                                        <a tabindex="-1" class="dropdown-item" onclick="FillUpcomingCounselling()" href="#">Upcoming Counselling</a>
+                                    </li>
+                                    <li>
+                                        <a tabindex="-1" class="dropdown-item" onclick="FillPendingCounselling()" href="#">Pending Counselling</a>
+                                    </li>
+
+                                    <!-- Level three dropdown-->
+                                    <li class="dropdown-submenu">
+                                        <a id="dropdownMenu3" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Counselling Call History</a>
+                                        <ul aria-labelledby="dropdownMenu3" class="dropdown-menu border-0 shadow">
+                                            <li><a class="dropdown-item" onclick="FillEnquiryRescheduledCounselling('#threeDaysAgo')" href="#"> 3 Days</a></li>
+                                            <li><a class="dropdown-item" onclick="FillEnquiryRescheduledCounselling('#fourDaysAgo')" href="#"> 4 Days</a></li>
+                                            <li><a class="dropdown-item" onclick="FillEnquiryRescheduledCounselling('#fiveDaysAgo')" href="#"> 5 Days</a></li>
+                                            <li><a class="dropdown-item" onclick="FillEnquiryRescheduledCounselling('#sixDaysAgo')" href="#"> 6 Days</a></li>
+                                            <li><a class="dropdown-item" onclick="FillEnquiryRescheduledCounselling('#sevenDaysAgo')" href="#"> 7 Days</a></li>
+
+                                        </ul>
+                                    </li>
+                                    <!-- End Level three -->
+
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- End Enquiry one -->
+                    <!-- Level EnquiryLead dropdown -->
+                    <li class="nav-item dropdown">
+                        <a id="dropdownMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">EnquiryLead</a>
+                        <ul aria-labelledby="dropdownMenu1" class="dropdown-menu border-0 shadow">
+
+
+                            <!-- Level two dropdown-->
+                            <li class="dropdown-submenu">
+                                <a id="dropdownMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Today</a>
+                                <ul aria-labelledby="dropdownMenu2" class="dropdown-menu border-0 shadow">
+                                    <li><a tabindex="-1" class="dropdown-item" onclick="FillTodaysAddedEnquiryReport()" href="#">Added To Enquiry</a></li>
+                                </ul>
+                            </li>
+                            <!-- End Level two -->
+                            <!-- Level two dropdown-->
+                            <li class="dropdown-submenu">
+                                <a id="dropdownMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Yesterday</a>
+                                <ul aria-labelledby="dropdownMenu2" class="dropdown-menu border-0 shadow">
+                                    <li><a tabindex="-1" class="dropdown-item" onclick="FillYesterdaysAddedEnquiryReport()" href="#">Added To Enquiry</a></li>
+                                </ul>
+                            </li>
+                            <!-- End Level two -->
+
+                        </ul>
+                    </li>
+                    <!-- End EnquiryLead Two -->
+                    <!-- Level Schedule dropdown -->
+                    <li class="nav-item dropdown">
+                        <a id="dropdownMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Schedule</a>
+                        <ul aria-labelledby="dropdownMenu1" class="dropdown-menu border-0 shadow">
+
+
+                            <!-- Level two dropdown-->
+                            <li class="dropdown-submenu">
+                                <a id="dropdownMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">EnquiryLead/Enquiry</a>
+                                <ul aria-labelledby="dropdownMenu2" class="dropdown-menu border-0 shadow">
+                                    <li><a tabindex="-1" class="dropdown-item" onclick="FillEnquiryEnquiryLeadTodaysCallScheduleReport()" href="#" reportpath="Call History/Today/Enquiry/EnquiryLead Call History">Todays Schedule</a></li>
+                                    <li><a tabindex="-1" class="dropdown-item" onclick="FillEnquiryEnquiryLeadTomorrowsCallScheduleReport()" href="#">Tomorrows Schedule</a></li>
+                                    <li><a tabindex="-1" class="dropdown-item" onclick="FillEnquiryEnquiryLeadUpcomingCallScheduleReport()" href="#">Upcoming Schedule</a></li>
+                                    <li><a tabindex="-1" class="dropdown-item" onclick="FillEnquiryEnquiryLeadPendingCallScheduleReport()" href="#">Pending Schedule</a></li>
+
+                                </ul>
+                            </li>
+                            <!-- End Level two -->
+                            <!-- Level two dropdown-->
+                            <li class="dropdown-submenu">
+                                <a id="dropdownMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">EnquiryLead</a>
+                                <ul aria-labelledby="dropdownMenu2" class="dropdown-menu border-0 shadow">
+                                    <li><a tabindex="-1" class="dropdown-item" onclick="FillEnquiryLeadTodaysCallScheduleReport()" href="#">Todays Schedule</a></li>
+                                    <li><a class="dropdown-item" onclick="FillEnquiryLeadTomorrowsCallScheduleReport()" href="#">Tomorrows Schedule</a></li>
+                                    <li><a class="dropdown-item" onclick="FillEnquiryLeadPendingCallScheduleReport()" href="#">Pending Schedule</a></li>
+                                    <li><a class="dropdown-item" onclick="FillEnquiryLeadUpcomingCallScheduleReport()" href="#">Upcoming Schedule</a></li>
+                                </ul>
+                            </li>
+                            <!-- End Three two -->
+                            <!-- Level two dropdown-->
+                            <li class="dropdown-submenu">
+                                <a id="dropdownMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Enquiry</a>
+                                <ul aria-labelledby="dropdownMenu2" class="dropdown-menu border-0 shadow">
+                                    <li><a class="dropdown-item" onclick="FillEnquiryTodaysCallScheduleReport()" href="#">Todays Schedule</a></li>
+                                    <li><a class="dropdown-item" onclick="FillEnquiryTomorrowsCallScheduleReport()" href="#">Tomorrows Schedule</a></li>
+                                    <li><a class="dropdown-item" onclick="FillEnquiryUpcomingCallScheduleReport()" href="#">Upcoming Schedule</a></li>
+                                    <li><a class="dropdown-item" onclick="FillEnquiryPendingCallScheduleReport()" href="#">Pending Schedule</a></li>
+                                </ul>
+                            </li>
+                            <!-- End Three two -->
+
+                        </ul>
+                    </li>
+                    <!-- End Schedule Two -->
+                    <!-- Level Call History dropdown -->
+                    <li class="nav-item dropdown">
+                        <a id="dropdownMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Call History</a>
+                        <ul aria-labelledby="dropdownMenu1" class="dropdown-menu border-0 shadow">
+
+
+                            <!-- Level two dropdown-->
+                            <li class="dropdown-submenu">
+                                <a id="dropdownMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Today</a>
+                                <ul aria-labelledby="dropdownMenu2" class="dropdown-menu border-0 shadow">
+                                    <li><a class="dropdown-item" onclick="FillTodaysEnquiryEnquiryLeadCallReport()" href="#">Enquiry/EnquiryLead Call History</a></li>
+                                    <li><a class="dropdown-item" onclick="FillTodaysEnquiryLeadCallReport()" href="#">EnquiryLead Call History</a></li>
+                                    <li><a class="dropdown-item" onclick="FillTodaysEnquiryCallReport()" href="#">Enquiry Call History</a></li>
+
+                                </ul>
+                            </li>
+                            <!-- End Level two -->
+                            <!-- Level two dropdown-->
+                            <li class="dropdown-submenu">
+                                <a id="dropdownMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Yesterday</a>
+                                <ul aria-labelledby="dropdownMenu2" class="dropdown-menu border-0 shadow">
+                                    <li><a class="dropdown-item" onclick="FillYesterdaysEnquiryEnquiryLeadCallReport()" href="#">Enquiry/EnquiryLead Call History</a></li>
+                                    <li><a class="dropdown-item" onclick="FillYesterdaysEnquiryLeadCallReport()" href="#">EnquiryLead Call History</a></li>
+                                    <li><a class="dropdown-item" onclick="FillYesterdaysEnquiryCallReport()" href="#">Enquiry Call History</a></li>
+                                </ul>
+                            </li>
+                            <!-- End Three two -->
+
+
+                        </ul>
+                    </li>
+                    <!-- End Schedule Two -->
+
+                    <li class="nav-item">
+
+                        <div class="checkbox-bird green inline-block mt-3 ml-2">
+                            @Html.CheckBox("ShowEmptyRecord", false, new { @Id = "ShowEmptyRecord", @onclick = "ShowHideEmptyRecords()", @class = "switch-input" })
+                            <label for="ShowEmptyRecord">Hide Empty Record</label>
+                        </div>
+                    </li>
+
+                </ul>
+            </div>
+        </nav>
+
+
+        <div class="grid-nav-bar d-none">
+
+            <div style="display:none" class="col-lg-2 col-sm-3 col-4 pull-left">
+                @*@Html.DropDownListFor(m => m.ScheduleTypeKey, new SelectList(Model.ScheduleTypes, "RowKey", "Text"), EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Schedule + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Type, new { @class = "form-control input-control autoselect-select", @data_plugin_type = "select2", @InputFor = "lblBranch" })*@
+                @Html.ListBoxFor(m => m.ScheduleTypeKeys, new SelectList(Model.ScheduleTypes, "RowKey", "Text"), new { @class = "form-control input-control selectpicker", @multiple = "multiple", @data_live_search = "true", @data_title = EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Schedule + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Type })
+
+            </div>
+
+            <div style="display:none" class="col-lg-2 col-sm-3 col-4">
+                @Html.DropDownListFor(m => m.EmployeeFilterTypeKey, new SelectList(Model.EmployeeFilterTypes, "RowKey", "Text"), new { @class = "form-control input-control ", @InputFor = "lblBranch" })
+            </div>
+
+        </div>
+
+
+        <div class="form-row mt-2 ">
+            <div class="col text-center">
+                <span class="text-center" id="ReportPath"></span>
+            </div>
+        </div>
+       
+
+
+        <div class="form-row mt-2">
+            <div class="col text-center">
+                <div class="form-group text-center">
+
+                    <button type="button" data-val="1" employeekey="" onclick="CallReports.GetCallReportDetailed(this,1,true)" class="btn btn-primary mt-1">
+                        Follow Up <span class="badge badge-light" id="TotalFollowUpCount"></span>
+                    </button>
+
+                    <button data-val="3" employeekey="" onclick="CallReports.GetCallReportDetailed(this,1,true)" class="btn btn-secondary mt-1">
+                        Intrested <span class="badge badge-light" id="TotalIntrestedCount"></span>
+                    </button>
+
+                    <button data-val="2" employeekey="" onclick="CallReports.GetCallReportDetailed(this,1,true)" class="btn btn-success mt-1">
+                        Admission Taken <span class="badge badge-light" id="TotalAdmissionTakenCount"></span>
+
+                    </button>
+
+                    <button data-val="4" employeekey="" onclick="CallReports.GetCallReportDetailed(this,1,true)" class="btn btn-info mt-1">
+                        Closed <span class="badge badge-light" id="TotalClosedCount"></span>
+                    </button>
+
+                    <button data-val="5" employeekey="" onclick="CallReports.GetCallReportDetailed(this,1,true)" class="btn btn-warning mt-1">
+                        Σ Total No of Records <span class="badge badge-light" id="TotalCount"></span>
+                    </button>
+                    <button data-val="6" employeekey="" onclick="CallReports.GetCallReportDetailed(this,1,true)" class="btn btn-danger mt-1">
+                        Repeated Calls <span class="badge badge-light" id="TotalReScheduledCount"></span>
+
+                    </button>
+
+                    <button data-val="7" employeekey="" onclick="CallReports.GetCallReportDetailed(this,1,true)" class="btn btn-dark mt-1">
+                        Total Calls <span class="badge badge-light" id="TotalCallsCount"></span>
+                    </button>
+
+                    <button data-val="8" employeekey="" onclick="CallReports.GetCallReportDetailed(this,1,true)" class="btn btn-primary mt-1">
+                        Productive Calls <span class="badge badge-light" id="TotalProductiveCallsCount"></span>
+                    </button>
+
+                    @*<button data-val="9" employeekey="" onclick="CallReports.GetCallReportDetailed(this,1,true)" class="btn btn-primary">
+                Refund <span class="badge badge-light" id="TotalRefundCount"></span>
+            </button>*@
+                </div>
+            </div>
+            </div>
+            <br /><br />
+
+            <div class="portlet-body" id="portletBody">
+                <div class='table-scrollable'>
+                    <table id="grid"></table>
+                    <div id="pager"></div>
+                </div>
+            </div>
+
+
+
+        </div>
+</section>
+
+
+
+<script>
+    var jsonData=@(Html.Raw(Json.Encode(Model)));
+</script>
+
+
+<script>
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+
+
+
+</script>
+
+
+<script>
+    $(document).ready(function ()
+    {
+        $("#SearchScheduledEmployeeKey").val("");
+        AppCommon.FormatDateInput();
+        //AppCommon.FormatSelect2();
+        //AppCommon.FormatMultiSelect();
+
+        //$("#EmployeeFilterTypeKey").val("3");
+
+
+
+
+        $("#txtSearchApplicantName").on("keyup blur", function () {
+            //CallReports.GetApplication(jsonData);
+        });
+
+        $("#iconSpan").click(function () {
+            $('#txtsearch').val('');
+            //CallReports.GetApplication(jsonData);
+        });
+
+        $("#SearchBranchKey").change(function ()
+        {
+            CallReports.GetEmployeesByBranchId($(this).val(), $("#SearchEmployeeKey"),$("#SearchScheduledEmployeeKey"));
+            //CallReports.GetApplication(jsonData);
+        });
+
+        //$("#SearchEmployeeKey,#SearchApplicationStatusKey,#SearchApplicationScheduleStatusKey,#SearchDateAddedFrom,#SearchDateAddedTo,#SearchCountryKey,#SearchInTakeKey,#SearchLocation").on("change", function () {
+        //    CallReports.GetApplication(jsonData);
+        //});
+
+
+        FillTodaysEnquiryEnquiryLeadCallReport();
+
+      
+    });
+</script>
+
+
+
+
+
+
+
+@if (!DbConstants.Role.AdminUserTypes.Contains((User as CITS.EduSuite.Business.Models.Security.CITSEduSuitePrincipal).RoleKey))
+{
+    <script>
+        var DefaultBranchKey = jsonData["BranchKey"];
+        var DefaultEmployeeKey = jsonData["SearchEmployeeKey"];
+    </script>
+
+}
+else
+{
+    <script>
+        var DefaultBranchKey = false;
+        var DefaultEmployeeKey = false;
+    </script>
+}
+
+
+
+<script>
+    function LoadHistory(object) {
+        $("#ClosedFeedbackList").empty();
+        $(".tempRow").remove();
+        var RowIndex = parseInt($(object).closest('td').parent()[0].sectionRowIndex);
+        var MobileNumber = $(object).attr("mobilenumber");
+        var TelephoneCodeKey=$(object).attr("telephonecode");
+        MobileNumber  = MobileNumber.substr(2, MobileNumber.length)
+
+
+        var Obj = {};
+        Obj.TelephoneCodeKey = TelephoneCodeKey;
+        Obj.MobileNumber =MobileNumber;
+        Obj.RowIndex=RowIndex;
+
+        GetHistoryByMobileNumber(Obj);
+
+
+    }
+</script>
+
+
+<script>
+    //$(document).ready(function(){
+    //    $(".MonthSelect").change(function()
+    //    {
+
+
+    //        var StartDay="01/";
+    //        var Month=this.selectedIndex+1+"/";
+    //        var EndDay=this.value+"/";
+    //        var Year= $(".YearSelect").val();
+
+    //        $("#SearchFromDate").val(StartDay+Month+Year);
+    //        $("#SearchToDate").val(EndDay+Month+Year);
+
+    //        $(".MonthSelect").prop('selectedIndex', this.selectedIndex);
+
+    //    });
+
+
+    //    $(".YearSelect").change(function()
+    //    {
+
+
+    //        var StartDay="01/";
+    //        var Month=parseInt( $(".MonthSelect").prop('selectedIndex'))+parseInt(1)+"/";
+    //        var EndDay=$(".MonthSelect").prop('selectedIndex')+"/";
+    //        var Year= this.value;
+
+    //        $("#SearchFromDate").val(StartDay+Month+Year);
+    //        $("#SearchToDate").val(EndDay+Month+Year);
+    //        $(".YearSelect").prop('selectedIndex', this.selectedIndex);
+
+    //    });
+
+
+
+
+
+    //});
+
+
+
+    $(document).ready(function(){
+        var d = new Date();
+
+        $('.YearSelect').val(d.getFullYear());
+        $('.MonthSelect').prop('selectedIndex',  d.getMonth());
+
+
+
+        //$('.YearSelect option[value="'+d.getFullYear()+'"]').prop("selected",true);
+
+    });
+
+
+</script>
+
+
+
+<style>
+    a.multiselect-all {
+        display: none !important;
+    }
+
+    .CustomizeCol .multiselect-container {
+        max-height: 100vh !important;
+    }
+
+    .TotalCount {
+        color: #dc0a0a;
+        font-size: 14px;
+        background: #ffffff;
+        text-align: center;
+        min-width: 113px;
+        padding: 5px 3px;
+        font-size: 13px;
+    }
+</style>
+
+<style>
+    button.multiselect {
+        min-width: 114px;
+        height: 25px;
+        padding: 3px 6px;
+        box-shadow: none !important;
+    }
+
+        button.multiselect:hover {
+            background: white !important;
+            box-shadow: none !important;
+        }
+
+    #CallReportContentDiv {
+        display: none;
+    }
+
+
+
+
+
+    span.callHistory:hover {
+        transform: scale(1.1) !important;
+        background: #05961d;
+        display: inline-block;
+        color: white;
+        transition: 0.5s;
+    }
+
+
+    span.callHistory {
+        background: #d6d6d6;
+        padding: 0px 6px;
+        color: #6b1b1b;
+        border-radius: 1px;
+        cursor: pointer;
+        transition: 0.5s;
+    }
+
+    span#feedbackToolTip {
+        transform: scale(0);
+        transition: 0.3s;
+        display: none;
+        font-size: 13px !important;
+    }
+
+    .ReportTable tr:hover span#feedbackToolTip {
+        position: fixed;
+        background: #000000;
+        padding: 6px;
+        top: 0px;
+        right: 0px;
+        left: 0px;
+        margin: auto;
+        width: 52%;
+        text-align: center;
+        border-radius: 0px;
+        color: white;
+        font-size: 11px;
+        transition: 0.3s;
+        transform: scale(1) !important;
+        display: block !important;
+    }
+
+    .label {
+        display: inline;
+        padding: .2em .6em .3em;
+        font-size: 75%;
+        font-size: 8px;
+        font-weight: 700;
+        line-height: 0;
+        color: #fff;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: baseline;
+        border-radius: 0px;
+        min-width: 55px !important;
+        display: inline-block;
+        padding: 8px;
+        text-align: center;
+        padding-bottom: 9px;
+        position: relative;
+        top: -3px;
+    }
+    span.lblDate {
+        background: #f9ff9f;
+        padding: 0px 10px;
+        padding-bottom: 2px;
+        color: #880606;
+    }
+</style>

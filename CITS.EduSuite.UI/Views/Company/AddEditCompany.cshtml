@@ -1,0 +1,138 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.CompanyViewModel
+
+<div class="modal-header">
+    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+    <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.Add @EduSuiteUIResources.Sla @EduSuiteUIResources.Edit @EduSuiteUIResources.Company</h4>
+</div>
+
+@using (Html.BeginForm("AddEditCompany", "Company", FormMethod.Post, new { enctype = "multipart/form-data", @id = "frmCompany" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.RowKey, new { @class = "hidCompanyKey" })
+    @Html.HiddenFor(m => m.CompanyLogo)
+
+    @Html.ValidationSummary(true)
+
+    <input type="hidden" id="hdnDeleteCompanyLogo" value="@Url.Action("DeleteCompanyLogo", "Company")" />
+    <input type="hidden" id="hdnGetProvinceAndCodeByCountry" value="@Url.Action("GetProvinceAndCodeByCountry", "Company")" />
+    <input type="hidden" id="hdnGetDistrictByProvince" value="@Url.Action("GetDistrictByProvince", "Company")" />
+    <div class="modal-body">
+        <div class="form-master">
+            <div class="form-row">
+                <div class="paddingNone">
+                    <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+                </div>
+            </div>
+            <div class="form-row">
+               
+                <div class="col-12 col-lg-9 col-sm-7">
+                    <fieldset class="form-group">
+                        @Html.LabelFor(m => m.CompanyName, htmlAttributes: new { @id = "lblCompanyName", @class = "form-label" })
+                        <div class="required-icon"><div class="text">*</div></div>
+                        @Html.TextBoxFor(m => m.CompanyName, new { @class = "form-control input-control", @InputFor = "lblCompanyName" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.CompanyName)
+                        </span>
+                    </fieldset>
+                </div>              
+            </div>
+
+            <div class="form-row">
+                <div class="col-12 col-lg-6">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.CompanySubName, htmlAttributes: new { @id = "lblAddressLine1", @class = "form-label" })                       
+                        @Html.TextBoxFor(m => m.CompanySubName, new { @class = "form-control input-control", @InputFor = "lblAddressLine1" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.CompanySubName)
+                        </span>
+                    </fieldset>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.WebSite, htmlAttributes: new { @id = "lblAddressLine2", @class = "form-label" })
+                        @Html.TextBoxFor(m => m.Website, new { @class = "form-control input-control", @InputFor = "lblAddressLine2" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.Website)
+                        </span>
+                    </fieldset>
+                </div>
+                <div class="col-12 col-lg-4">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.GSTINNumber, htmlAttributes: new { @id = "lblAddressLine3", @class = "form-label" })
+                        @Html.TextBoxFor(m => m.GSTINNumber, new { @class = "form-control input-control", @InputFor = "lblAddressLine3"})
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.GSTINNumber)
+                        </span>
+                    </fieldset>
+                </div>
+
+            </div>
+            <div class="form-row">                
+                <div class="col-12 col-lg-4">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.Multiple+EduSuiteUIResources.BlankSpace+ EduSuiteUIResources.Branch, new { @class = "form-label" })
+
+                        <div class="switch-check my-2">
+                            @Html.CheckBoxFor(m => m.HasMultipleBranches, new { @class = "switch-input" })
+                            <div class="switch-label redgreen" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                            <div class="switch-handle"></div>
+                        </div>
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.HasMultipleBranches)
+                        </span>
+                    </fieldset>
+                </div>
+               
+                <div class="col-lg-2 col-12">
+                    <div class="form-group MemberPhotoUpload" style="width: 150px; height: 200px;">
+
+                        @if (Model.CompanyLogoPath != null)
+                        {
+                            <img id="CompanyLogos" src="@Url.Content(Model.CompanyLogoPath)" alt="Image" class="img-thumbnail" />
+                        }
+
+                        <div class="custom-file">
+                            @Html.TextBoxFor(m => m.PhotoFile, new { type = "file", @class = "custom-file-input" })
+                            <label class="custom-file-label" for="MFile">Choose file</label>
+                        </div>
+
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.PhotoFile)
+                        </span>
+                        <input type="button" value="@EduSuiteUIResources.Delete" id="btnPhotoDelete" class="btn btn-sm btn-danger mx-1" style="display:none" />
+                    </div>
+
+                </div>
+            </div>        
+
+        </div>
+    </div>
+
+    <div class="modal-footer justify-content-start">
+        <div class="form-group">
+            <input type="button" value="@EduSuiteUIResources.Save" id="btnSave" onclick="Company.FormSubmit()" class="btn btn-sm btn-success mx-1" />
+            <button type="button" data-dismiss="modal" class="btn btn-sm btn-danger mx-1">@EduSuiteUIResources.Cancel</button>
+
+        </div>
+    </div>
+
+}
+
+
+<script>
+    $(document).ready(function () {
+
+        var CompanyLogo = '@Model.CompanyLogo';
+        if (CompanyLogo != "") {
+            $("#btnPhotoDelete").show();
+        }
+
+        $('#btnPhotoDelete').click(function () {
+            Company.DeleteCompanyLogo('@Model.RowKey');
+        });
+
+    })
+
+</script>
+
+

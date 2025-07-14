@@ -1,0 +1,296 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.StudentStudyMaterialViewModel
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/CitsValidation")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Content/JqueryRepeater")
+    @Scripts.Render("~/Scripts/StudyMaterialUpload")
+}
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-12">
+            <div class="tbl">
+                <div class="tbl-row  px-1">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.Add@EduSuiteUIResources.Hyphen@EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.StudyMaterialUpload</h3>
+                        <ol class="breadcrumb breadcrumb-simple mb-2 float-sm-right">
+                            <li><a href="#" onclick="location.href='@Url.Action("StudyMaterialList","StudyMaterialUpload")' ">@EduSuiteUIResources.StudyMaterials</a></li>
+                            <li class="active">@EduSuiteUIResources.Add@EduSuiteUIResources.Hyphen@EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.StudyMaterialUpload</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<input type="hidden" id="hdnDeleteStudyMaterialDetails" value="@Url.Action("DeleteStudyMaterialDetails", "StudyMaterialUpload")" />
+<input type="hidden" id="hdnStudyMaterialList" value="@Url.Action("StudyMaterialList", "StudyMaterialUpload")" />
+<input type="hidden" id="hdnGetStudyMaterialsByStudyMaterialDetailsId" value="@Url.Action("GetStudyMaterialsByStudyMaterialDetailsId", "StudyMaterialUpload")" />
+<input type="hidden" id="hdnDeleteStudyMaterialDetails" value="@Url.Action("DeleteStudyMaterialDetails", "StudyMaterialUpload")" />
+
+
+
+<div id="progressBar">
+
+
+    <div class="progress">
+        <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%;">
+            0
+        </div>
+    </div>
+
+</div>
+
+<section class="section-content mx-sm-3 mx-0">
+
+    <div class="form-master w3-white p-2 col-12 col-md-12 co-lg-6">
+        @using (Html.BeginForm("AddEditStudyMaterialUpload", "StudyMaterialUpload", FormMethod.Post, new { enctype = "multipart/form-data", id = "frmOpenNewComplaint", @RedirectUrl = "/StudyMaterialUpload/StudyMaterialList" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.RowKey)
+            @Html.ValidationSummary(true)
+
+
+            <div class="form-row">
+                <div class="col-12 col-sm-3 col-lg-2">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.StudyMaterialSubject, htmlAttributes: new { @id = "lblServiceType", @class = "form-label" })
+                        <div class="required-icon"><div class="text">*</div></div>
+                        @Html.DropDownListFor(m => m.SubjectKey, new SelectList(Model.Subjects, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.StudyMaterialSubject, new { @class = "input-control form-control form-control-sm", @InputFor = "lblServiceType", @data_live_search = "true" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.SubjectKey)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-5 col-lg-3">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.StudyMaterialTitle, htmlAttributes: new { @id = "lblServiceType", @class = "form-label" })
+                        <div class="required-icon"><div class="text">*</div></div>
+                        @Html.TextBoxFor(m => m.StudyMaterialTitle, new { @class = "input-control form-control form-control-sm", @InputFor = "lblEnquiryName" })
+
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.StudyMaterialTitle)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-5 col-lg-4">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.StudyMaterialDescriptions, htmlAttributes: new { @id = "lblServiceType", @class = "form-label" })
+                        <div class="required-icon"><div class="text">*</div></div>
+                        @Html.TextBoxFor(m => m.StudyMaterialDecription, new { @class = "input-control form-control form-control-sm", @InputFor = "lblEnquiryName" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.StudyMaterialDecription)
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-2 col-lg-2">
+                    <fieldset class="form-group ">
+                        @Html.Label(EduSuiteUIResources.IsActive, new { @class = "form-label" })
+                        <div class="switch-check my-2">
+                            @Html.CheckBoxFor(m => m.IsActive, new { @class = "switch-input" })
+                            <div class="switch-label redgreen" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                            <div class="switch-handle"></div>
+                        </div>
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.IsActive)
+                        </span>
+
+                    </fieldset>
+                </div>
+
+
+            </div>
+
+            <div class="form-row">
+                <div id="dynamicRepeater" class="repeater">
+                    <table class=" table table-responsive">
+                        <thead>
+                            <tr>
+                                <th></th>
+
+                                <th>
+                                    @Html.Label(EduSuiteUIResources.Descreption, htmlAttributes: new { @class = "form-label" })
+                                </th>
+                                <th>
+                                    @Html.Label(EduSuiteUIResources.Attachment, htmlAttributes: new { @class = "form-label" })
+                                </th>
+                                <th>
+                                    @Html.Label(EduSuiteUIResources.IsActive, htmlAttributes: new { @class = "form-label" })
+                                </th>
+                                <th>
+                                    @Html.Label(EduSuiteUIResources.IsAllowDownload, htmlAttributes: new { @class = "form-label" })
+                                </th>
+                                <th>
+                                    @Html.Label(EduSuiteUIResources.IsAllowPreview, htmlAttributes: new { @class = "form-label" })
+                                </th>
+
+                            </tr>
+                        </thead>
+                        <tbody data-repeater-list id="DivInternalExamResult">
+                            @for (int i = 0; i < Model.StudentStudyMaterialDetailsList.Count(); i++)
+                            {
+                            <tr data-repeater-item>
+                                <td class="p-1">
+                                    <span data-repeater-delete="" class="btn btn-danger btn-sm btnDeleteRow">
+                                        <span class=" fa fa-remove"></span>
+                                    </span>
+                                </td>
+                                <td class="p-1">
+                                    @Html.TextBoxFor(m => Model.StudentStudyMaterialDetailsList[i].StudyMaterialName, new { @class = "form-control input-control", @InputFor = "lblCourseName" })
+                                    <span class="form-control-error-text">
+                                        @Html.ValidationMessageFor(m => Model.StudentStudyMaterialDetailsList[i].StudyMaterialName)
+                                    </span>
+                                    @Html.HiddenFor(m => Model.StudentStudyMaterialDetailsList[i].RowKey)
+
+                                </td>
+                                <td class="p-1">
+                                    <div class="custom-file">
+                                        @Html.TextBoxFor(m => m.StudentStudyMaterialDetailsList[i].StudyMaterialFileAttachment, new { @onchange = "CheckExtension(this)", type = "file", @class = "custom-file-input" })
+                                        <label class="custom-file-label" for="DocumentFile">Choose file</label>
+                                    </div>
+                                    @if (Model.StudentStudyMaterialDetailsList[i].StudyMaterialFilePath != null)
+                                    {
+                                        <a href=@Url.Action("DownloadFile", "StudyMaterialUpload", new { filename = Model.StudentStudyMaterialDetailsList[i].StudyMaterialFilePath })>@EduSuiteUIResources.Download</a>
+                                    }
+                                    <span class="form-control-error-text">
+                                        @Html.ValidationMessageFor(m => m.StudentStudyMaterialDetailsList[i].StudyMaterialFilePath)
+                                    </span>
+                                </td>
+                                <td class="p-1">
+                                    <fieldset class="form-group">
+                                        <div class="switch-check switch">
+                                            @Html.CheckBoxFor(m => m.StudentStudyMaterialDetailsList[i].IsActive, new { @class = "switch-input" })
+                                            <div class="switch-label redgreen" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                                            <div class="switch-handle"></div>
+                                        </div>
+                                    </fieldset>
+                                </td>
+                                <td class="p-1">
+                                    <fieldset class="form-group">
+                                        <div class="switch-check switch">
+                                            @Html.CheckBoxFor(m => m.StudentStudyMaterialDetailsList[i].IsAllowDownload, new { @class = "switch-input" })
+                                            <div class="switch-label redgreen" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                                            <div class="switch-handle"></div>
+                                        </div>
+                                    </fieldset>
+                                </td>
+                                <td class="p-1">
+                                    <fieldset class="form-group">
+                                        <div class="switch-check switch">
+                                            @Html.CheckBoxFor(m => m.StudentStudyMaterialDetailsList[i].IsAllowPreview, new { @class = "switch-input" })
+                                            <div class="switch-label redgreen" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                                            <div class="switch-handle"></div>
+                                        </div>
+                                    </fieldset>
+                                </td>
+                               
+                            </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="5">
+                                    <span data-repeater-create class="btn btn-info btn-sm float-right">
+                                        <span class="fa fa-plus-square-o"></span>
+                                    </span>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    
+                </div>
+  
+            </div>
+
+            <div class="row mt-2">
+                <div class="col-12">
+                    <div class="form-group">
+                        <button type="button" id="btnSave" class="btn btn-sm btn-success mx-1"><i class="fa fa-save"></i> @EduSuiteUIResources.Save</button>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <span class="ValidateDataMsg"> @Html.ValidationMessage("error_msg")  </span>
+                </div>
+            </div>
+
+
+
+        }
+
+
+
+    </div>
+</section>
+
+
+
+<style>
+    .progress {
+        border-radius: 0px;
+    }
+</style>
+
+
+@*<script type="text/javascript">
+        var progressBar = document.getElementById("progress"),
+            xhr = new XMLHttpRequest();
+        xhr.open("POST", "https://zinoui.com/demo/progress-bar/upload.php");
+        xhr.upload.onprogress = function (e) {
+            if (e.lengthComputable) {
+                progressBar.max = e.total;
+                progressBar.value = e.loaded;
+            }
+        }
+        xhr.upload.onloadstart = function (e) {
+            progressBar.value = 0;
+        }
+        xhr.upload.onloadend = function (e) {
+            progressBar.value = e.loaded;
+        }
+        xhr.send(new FormData());
+    </script>*@
+
+
+<script>
+    var jsonData=@(Html.Raw(Json.Encode(Model)));
+  $(document).ready(function ()
+  {
+
+      AppCommon.CustomRepeaterRemoteMethod();
+      StudyMaterialUpload.GetStudyMaterialUpload(jsonData);
+
+      //var doc = document;
+
+      //$("#btnSave2").click(function () {
+      //    StudyMaterialUpload.AjaxSubmit(jsonData);
+      //});
+
+
+
+
+    });
+
+
+
+</script>
+
+
+<script>
+
+
+    function CheckExtension(_this) {
+        var ext = _this.value.split(".");
+        ext = ext[ext.length - 1].toLowerCase();
+        var fileExtension = ['pdf', 'doc', 'docx'];
+        if (fileExtension.lastIndexOf((ext ? ext : "").toLowerCase()) == -1) {
+            alert("Only formats are allowed : " + fileExtension.join(', '));
+            $(_this).val("")
+            return false;
+        }
+
+
+    };
+</script>

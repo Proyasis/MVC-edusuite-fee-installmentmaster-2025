@@ -1,0 +1,63 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.MailMessagesViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+@using System.Web.Mvc
+
+<style>
+    hr {
+        margin: 0px;
+        padding: 0px 4px;
+    }
+
+    .messageBody {
+        padding: 10px;
+        padding-bottom: 51px;
+        font-size: 0.8em;
+    }
+
+    .fileAttachMent, .fileAttachMent:hover {
+        text-decoration: none;
+    }
+
+    .pagination {
+        display: none;
+    }
+</style>
+
+<div class="panel messageBody">
+    <div class="pull-right col-sm-2">
+        <a class="btn btn-default btn-sm pull-right" id="btnPrintDiv"><i class="fa fa-print"></i></a>
+    </div>
+    @Model.MailFromUserName<br />
+
+    @(string.Format("{0:dd/MM/yyyy}", Model.CreatedOn))   @(string.Format("{0:  hh:mm:ss tt}", Model.CreatedOn))
+    <div id="dvPrintDiv">
+        <h3>@Model.MessageSubject</h3>
+        <hr />
+
+        @Html.Raw(Model.MessageContent)
+    </div>
+    @foreach (var FileName in Model.FilesNames)
+    {
+        <a target="_blank" class="fileAttachMent" href="@Url.Content("~/UploadFiles/MailBoxFiles/" + FileName.FileName)"><i class="fa fa-file"></i> Attachment @FileName.FileName</a>
+    }
+
+
+
+
+
+
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("button[data-modal]").off("click").on("click", function () {
+            MailMessage.EditComposePopUp($(this))
+        });
+        $("#btnPrintDiv").off("click").on("click", function () {
+            $("#dvPrintDiv").printArea();
+        });
+
+    })
+
+</script>

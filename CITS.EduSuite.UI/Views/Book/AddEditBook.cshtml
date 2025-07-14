@@ -1,0 +1,280 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.BookViewModel
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Content/JqueryRepeater")
+    @Scripts.Render("~/Scripts/Common")
+    @Scripts.Render("~/Scripts/Book")
+}
+
+
+<input type="hidden" id="hdnFillCourse" value="@Url.Action("FillCourse", "Book")" />
+<input type="hidden" id="hdnFillUniversity" value="@Url.Action("FillUniversity", "Book")" />
+<input type="hidden" id="hdnDeleteBookItem" value="@Url.Action("DeleteBook", "Book")" />
+<input type="hidden" id="hdnBookList" value="@Url.Action("BookList", "Book")" />
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-12">
+            <div class="tbl">
+                <div class="tbl-row  px-1">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.Add@EduSuiteUIResources.Hyphen@EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Book</h3>
+                        <ol class="breadcrumb breadcrumb-simple mb-2 float-sm-right">
+                            <li><a href="#" onclick="location.href='@Url.Action("ApplicationList","Application")' ">@EduSuiteUIResources.Book</a></li>
+                            <li class="active">@EduSuiteUIResources.Add@EduSuiteUIResources.Hyphen@EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Book</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="section-content mx-sm-3 mx-0">
+
+    <div class="form-master">
+
+        @using (Html.BeginForm("AddEditBook", "Book", FormMethod.Post, new { @id = "frmBook" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+
+            <div class="form-row">
+
+                <div class="col-lg-2 col-sm-3 col-6">
+                    <div class="form-group ">
+                        @Html.Label(EduSuiteUIResources.AcademicTerm, htmlAttributes: new { @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                        @Html.DropDownListFor(m => m.AcademicTermKey, new SelectList(Model.AcademicTerms, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.AcademicTerm, new { @class = "form-control border-radius input-control autoselect-select" })<span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.AcademicTermKey)
+                        </span>
+                    </div>
+
+                </div>
+
+                <div class="col-lg-2 col-sm-3 col-6">
+                    <div class="form-group ">
+                        @Html.Label(EduSuiteUIResources.CourseType, htmlAttributes: new { @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                        @Html.DropDownListFor(m => m.CourseTypeKey, new SelectList(Model.CourseTypes, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.CourseType, new { @class = "form-control border-radius input-control autoselect-select" })<span class="form-control-error-text">
+
+                            @Html.ValidationMessageFor(m => m.CourseTypeKey)
+                        </span>
+                    </div>
+
+                </div>
+
+                <div class="col-lg-2 col-sm-3 col-6">
+                    <div class="form-group ">
+                        @Html.Label(EduSuiteUIResources.Course, htmlAttributes: new { @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                        @Html.DropDownListFor(m => m.CourseKey, new SelectList(Model.Courses, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Course, new { @class = "form-control border-radius input-control autoselect-select" })<span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.CourseKey)
+                        </span>
+                    </div>
+
+                </div>
+
+                <div class="col-lg-2 col-sm-3 col-6">
+                    <div class="form-group ">
+                        @Html.Label(EduSuiteUIResources.University, htmlAttributes: new { @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                        @Html.DropDownListFor(m => m.UniversityKey, new SelectList(Model.Universities, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.University, new { @class = "form-control border-radius input-control autoselect-select" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.UniversityKey)
+                        </span>
+                    </div>
+
+                </div>
+            </div>
+            <table id="dynamicRepeater" class="table table-responsive table-stripped">
+                <thead>
+                    <tr>
+                        <th>
+
+                        </th>
+                        <th>
+                            <div class="required-icon"><div class="text">*</div></div>
+                            @EduSuiteUIResources.Book@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Code
+                        </th>
+                        <th>
+                            <div class="required-icon"><div class="text">*</div></div>
+                            @EduSuiteUIResources.Book@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Name
+
+
+                        </th>
+
+                        <th>
+                            <div class="required-icon"><div class="text">*</div></div>
+                            @EduSuiteUIResources.Book@EduSuiteUIResources.BlankSpace @EduSuiteUIResources.Year
+
+                        </th>
+                        <th>
+                            <div class="required-icon"><div class="text">*</div></div>
+                            @EduSuiteUIResources.Book@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Type
+
+                        </th>
+                        <th>
+                            @EduSuiteUIResources.HasStudyMaterials
+                        </th>
+                        <th>
+
+                            @EduSuiteUIResources.IsActive
+                        </th>
+                        <th>
+
+
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody data-repeater-list>
+                    @for (int i = 0; i < Model.BookDetails.Count(); i++)
+                    {
+                        <tr data-repeater-item class="mb-2">
+                            <td>
+
+                                <span data-repeater-delete="" class="btn btn-danger btn-sm">
+                                    <span class="fa fa-remove"></span>
+                                </span>
+
+                            </td>
+                            <td class="px-1">
+                                <fieldset class="form-group">
+                                    @Html.TextBoxFor(m => m.BookDetails[i].BookCode, new { @class = "form-control input-control", @data_convert = "uppercase" })
+                                    <span class="form-control-error-text">
+                                        @Html.ValidationMessageFor(m => m.BookDetails[i].BookCode)
+                                    </span>
+                                    @Html.HiddenFor(m => m.BookDetails[i].RowKey)
+                                </fieldset>
+                            </td>
+
+                            <td class="px-1">
+                                <fieldset class="form-group">
+                                    @Html.TextBoxFor(m => m.BookDetails[i].BookName, new { @class = "form-control input-control" })
+                                    <span class="form-control-error-text">
+                                        @Html.ValidationMessageFor(m => m.BookDetails[i].BookName)
+                                    </span>
+                                </fieldset>
+                            </td>
+
+                            <td class="px-1">
+                                <fieldset class="form-group">
+                                    @Html.DropDownListFor(m => m.BookDetails[i].BookYearKey, new SelectList(Model.BookYears, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Book + EduSuiteUIResources.Year, new { @class = "form-control input-control" })
+                                    <span class="form-control-error-text">
+                                        @Html.ValidationMessageFor(m => m.BookDetails[i].BookYearKey)
+                                    </span>
+                                </fieldset>
+                            </td>
+
+                            <td class="px-1">
+                                <fieldset class="form-group">
+                                    @Html.DropDownListFor(m => m.BookDetails[i].BookType, new List<SelectListItem>
+                                                    {
+                                                        new SelectListItem{ Text=EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Book + EduSuiteUIResources.Type, Value = "" },
+                                                        new SelectListItem{ Text=EduSuiteUIResources.Compulsory, Value = "C" },
+                                                        new SelectListItem{ Text=EduSuiteUIResources.Elective, Value = "E" },
+
+                                                     }, new { @class = "form-control input-control" })
+                                    <span class="form-control-error-text">
+                                        @Html.ValidationMessageFor(m => m.BookDetails[i].BookType)
+                                    </span>
+                                </fieldset>
+                            </td>
+
+                            <td class="text-center">
+                                <fieldset class=" form-group ">
+                                    <div class="switch-check my-2">
+                                        @Html.CheckBoxFor(m => m.BookDetails[i].HasBook, new { @class = "switch-input" })
+                                        <div class="switch-label redgreen" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                                        <div class="switch-handle"></div>
+                                    </div>
+                                    <span class="form-control-error-text">
+                                        @Html.ValidationMessageFor(m => m.BookDetails[i].HasBook)
+                                    </span>
+                                </fieldset>
+                            </td>
+
+                            <td class="text-center">
+                                <fieldset class=" form-group ">
+                                    <div class=" switch-check my-2">
+                                        @Html.CheckBoxFor(m => m.BookDetails[i].IsActive, new { @class = "switch-input" })
+                                        <div class="switch-label redgreen" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                                        <div class="switch-handle"></div>
+                                    </div>
+                                    <span class="form-control-error-text">
+                                        @Html.ValidationMessageFor(m => m.BookDetails[i].IsActive)
+                                    </span>
+
+                                </fieldset>
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td>
+                            <span data-repeater-create class="btn btn-info btn-sm  btnadd pull-left btnadd">
+                                <span class="fa fa-plus-square-o"></span>
+                            </span>
+                        </td>
+                    </tr>
+
+                </tfoot>
+
+
+            </table>
+
+
+            <div class="row mt-2">
+                <div class="form-group">
+                    <div class="col-12">
+                        <fieldset class="form-group">
+                            <input type="button" value="@EduSuiteUIResources.Save" id="btnSave" class="btn btn-sm btn-success mx-1" />
+                            <input type="button" value="@EduSuiteUIResources.Cancel" onclick="location.href='@Url.Action("BookList", "Book")' " class="btn btn-sm btn-danger mx-1" />
+                        </fieldset>
+                        <div class="col-12 paddingNone">
+                            <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+        }
+    </div>
+</section>
+<script>
+    var jsonData=@(Html.Raw(Json.Encode(Model)));
+
+    $(document).ready(function () {
+        AppCommon.FormatInputCase()
+
+
+        Book.GetBookAdvanceDetail(jsonData);
+        AppCommon.CustomRepeaterRemoteMethod();
+
+        $("#CourseTypeKey").on("change", function () {
+            var obj={};
+            obj.key=$(this).val()!=""?$(this).val():0;
+            AppCommon.BindDropDownbyId(obj, $("#hdnFillCourse").val(), $("#CourseKey"), Resources.Course);
+        });
+
+        $("#AcademicTermKey,#CourseKey").on("change", function () {
+            var obj={};
+            obj.key=$("#CourseKey").val()!=""?$("#CourseKey").val():0;
+            obj.AcademicTermKey=$("#AcademicTermKey").val()!=""?$("#AcademicTermKey").val():0;
+            AppCommon.BindDropDownbyId(obj, $("#hdnFillUniversity").val(), $("#UniversityKey"), Resources.University);
+        });
+        $("#UniversityKey").on("change", function () {
+            var obj={};
+            obj.CourseId=$("#CourseKey").val();
+            obj.UniversityId=$("#UniversityKey").val();
+            obj.AcademicTermKey=$("#AcademicTermKey").val();
+            window.location.href='@Url.Action("AddEditBook", "Book", new { id = "" })'+"?"+$.param(obj)
+        });
+    });
+
+
+</script>
+

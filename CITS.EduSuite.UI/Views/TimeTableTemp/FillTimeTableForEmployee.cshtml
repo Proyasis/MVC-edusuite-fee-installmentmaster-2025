@@ -1,0 +1,90 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.TimeTableTempMasterViewModel
+@using CITS.EduSuite.UI
+@using CITS.EduSuite.Business.Models.ViewModels
+<script src="~/Scripts/tinymce/tiny_mce.js"></script>
+<div class="repeater col-12 px-1">
+
+
+    <table id="tblAttendance" class="table table-stripped table-bordered table-attendance">
+        <thead class="thead-dark">
+            <tr>
+
+                <th>
+                    @Html.Label(EduSuiteUIResources.ClassCode, htmlAttributes: new { @class = "form-label" })
+                </th>
+
+                @foreach (var item in (Model.WeeklyPeriods as List<SelectListModel>))
+                {
+                    <th class="active">
+                        @item.Text
+                    </th>
+                }
+            </tr>
+        </thead>
+        <tbody data-repeater-list>
+            @{
+                var index = 0;
+            }
+            @foreach (var classItem in (Model.WeekDays as List<SelectListModel>))
+            {
+                <tr data-repeater-item>
+                    <td class="py-0">
+                        @classItem.Text
+                    </td>
+                    @foreach (var item in (Model.WeeklyPeriods as List<SelectListModel>))
+                    {
+                        <td class="p-0 text-center font-weight-bold">
+                            @{
+                        var currItem = Model.TimeTableTempDetailsModel.Where(row => row.PeriodKey == item.RowKey && row.Day == classItem.RowKey).FirstOrDefault() as TimeTableTempDetailsModel;
+                            }
+                            @if (currItem != null)
+                            {
+                                @Html.Hidden("[" + index + "].RowKey", currItem.RowKey)
+                                @Html.Hidden("[" + index + "].PeriodKey", item.RowKey)
+                                @Html.Hidden("[" + index + "].Day", currItem.Day)
+                                @Html.Hidden("[" + index + "].ClassDetailsKey", currItem.ClassDetailsKey)
+                                @Html.Display("[" + index + "].ClassDetailsName", currItem.ClassDetailsName)
+                                if (currItem.TempMasterKey != 0)
+                                {
+                                    <span style="color:red"> @currItem.ClassDetailsName</span>
+                                }
+                                else
+                                {
+                                    <span> @currItem.ClassDetailsName</span>
+                                }
+                              
+
+
+                                { index++; }
+                            }
+                        </td>
+
+                    }
+                </tr>
+
+            }
+
+
+        </tbody>
+    </table>
+
+
+</div>
+
+<div class="col-12">
+    <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+</div>
+<script>
+    $(document).ready(function () {
+        AppCommon.FormatInputCase();
+        //$("[data-repeater-item]").each(function () {
+
+        //    TimeTableTemp.GetEmployeeById(this);
+        //})
+
+
+
+    });
+
+
+</script>

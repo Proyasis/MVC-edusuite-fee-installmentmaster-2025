@@ -1,0 +1,77 @@
+﻿
+
+@section scripts{
+    @Scripts.Render("~/Content/OrgChartJS")
+    @Scripts.Render("~/Scripts/Employee")
+}
+<input type="hidden" id="hdnGetOrganizationChart" value="@Url.Action("GetOrganizationChart", "Employee")" />
+
+
+<div class="form-row">
+    <div class="col-12 Page_Head_Master">
+        <div class="col-6 Text_Left">
+            <label class="Page_Heading  ">@EduSuiteUIResources.Add @EduSuiteUIResources.Sla @EduSuiteUIResources.Edit @EduSuiteUIResources.Account</label>
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="col-12 form-master">
+    <div class="form-master">
+
+        <div class="form-row">
+
+            <div class="col-12">
+                <div id="dvOrganizationChart" class="jstree-inline"></div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        var response = AjaxHelper.ajax("Get", $("#hdnGetOrganizationChart").val(),
+                            {
+
+                            });
+
+
+        var peopleElement = $("#dvOrganizationChart")[0];
+        var orgChart = new getOrgChart(peopleElement, {
+            primaryFields: ["name", "title", "branch", "department"],
+            photoFields: ["image"],
+            dataSource: response
+        });
+    });
+    function ModifyData(data) {
+        var newData = {},
+        levels = [{ "AppUserKey": "id" }, { "FullName": "name" }, { "DesignationName": "title" }];
+
+        // For each data row, loop through the expected levels traversing the output tree
+        data.forEach(function (d) {
+            // Keep this as a reference to the current level
+            var depthCursor = newData;
+            // Go down one level at a time
+            levels.forEach(function (property, depth) {
+
+                // Look to see if a branch has already been created
+                var index;
+                depthCursor.forEach(function (child, i) {
+                    if (d[property] == child.name) index = i;
+                });
+                // Add a branch if it isn't there
+                if (isNaN(index)) {
+                    depthCursor.push({ name: d[property], children: [] });
+                    index = depthCursor.length - 1;
+                }
+                // Now reference the new child array as we go deeper into the tree
+                depthCursor = depthCursor[index].children;
+                // This is a leaf, so add the last element to the specified branch
+                if (depth === levels.length - 1) depthCursor.push({ name: d.model, size: d.size });
+            });
+        });
+    }
+</script>

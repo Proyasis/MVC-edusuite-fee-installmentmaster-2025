@@ -1,0 +1,225 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.UniversityCourseViewModel
+
+
+
+<input type="hidden" id="hdnDeleteUniversityCourseAmount" value="@Url.Action("DeleteUniversityCourseAmount", "UniversityCourse")" />
+<input type="hidden" id="hdnUniversityCourseList" value="@Url.Action("UniversityCourseList", "UniversityCourse")" />
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/Scripts/UniversityCourse")
+    @Scripts.Render("~/Content/JqueryRepeater")
+    @Scripts.Render("~/Scripts/Common")
+    @Scripts.Render("~/bundles/CitsValidation")
+}
+<div class="modal-header">
+    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+    <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.Add @EduSuiteUIResources.Sla @EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace @EduSuiteUIResources.University@EduSuiteUIResources.Course@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Fee</h4>
+</div>
+
+
+@using (Html.BeginForm("AddEditUniversityCourseAmount", "UniversityCourse", FormMethod.Post, new { @id = "frmUniversityCourseAmount" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.RowKey)
+    @Html.HiddenFor(m => m.AllowCenterShare)
+    @Html.ValidationSummary(true)
+
+    <div class="modal-body">
+        <div class="form-master">
+            <div class="form-row">
+                <div class="card-body p-0  mb-2">
+                    <table class="table table-sm">
+                        <thead class="w3-indigo">
+                            <tr>
+                                <th class=" text-white align-middle text-center">
+                                    @Html.Label(EduSuiteUIResources.Course, htmlAttributes: new { @class = "form-label" })
+                                </th>
+                                <th class=" text-white align-middle text-center">
+                                    @Html.Label(EduSuiteUIResources.AffiliationsTieUps, htmlAttributes: new { @class = "form-label" })
+                                </th>
+                                <th class=" text-white align-middle text-center">
+                                    @Html.Label(EduSuiteUIResources.AcademicTerm, htmlAttributes: new { @class = "form-label" })
+                                </th>
+                                <th class=" text-white align-middle text-center">
+                                    @Html.Label(EduSuiteUIResources.Duration, htmlAttributes: new { @class = "form-label" })
+                                </th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="text-primary align-middle text-center font-weight-bold border-right border-primary">
+                                    @Model.CourseName
+                                </td>
+                                <td class="align-middle text-center font-weight-bold border-right border-primary">
+                                    @Model.UniversityName
+                                </td>
+                                <td class="text-danger align-middle text-center font-weight-bold border-right border-primary">
+                                    @Model.AcademicTermName
+                                </td>
+                                <td class="w3-text-cyan w3-white align-middle text-center font-weight-bold ">
+                                    @Model.Duration
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div id="dynamicRepeater" class="repeater ">
+                <table class="table  table-bordered">
+                    <thead class="w3-light-blue">
+                        <tr>
+                            <th class="w-50 text-center">
+                                @Html.Label(EduSuiteUIResources.FeeType, htmlAttributes: new { @class = "form-label" })
+                            </th>
+
+                            <th class="w-25 text-center ">
+                                @Html.Label(EduSuiteUIResources.Amount, htmlAttributes: new { @class = "form-label" })
+                            </th>
+                            @if (Model.AllowCenterShare)
+                            {
+                                <th class="w-25 text-center">
+                                    @Html.Label(EduSuiteUIResources.center + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.share + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.PercentageSymbol, htmlAttributes: new { @class = "form-label" })
+                                </th>
+                            }
+                            <th class="w-25 text-center">
+                                <div class="checkbox-bird green inline-block">
+                                    <input type="checkbox" id="chekAll" onchange="CheckboxAllChange(this, 'IsActive')" class="switch-input chkIsActive" />
+                                    <label for="chekAll">@EduSuiteUIResources.Active </label>
+
+                                </div>
+                                <span id="CheckedAllCount"></span>
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody data-repeater-list id="DivUniversityCourseAmount">
+                        @for (int i = 0; i < Model.UniversityCourseFeeModel.Count(); i++)
+                        {
+                            if (Model.UniversityCourseFeeModel[i].FeeYear != null && (i == 0 || (i != 0 && Model.UniversityCourseFeeModel[i].FeeYear != Model.UniversityCourseFeeModel[i - 1].FeeYear)))
+                            {
+                                <tr>
+                                    <td class="text-center  bg-light" colspan="4">
+                                        <strong>@Model.UniversityCourseFeeModel[i].FeeYearText</strong>
+                                        @Html.HiddenFor(m => m.UniversityCourseFeeModel[i].FeeYear)
+                                    </td>
+                                </tr>
+                            }
+                            <tr data-repeater-item>
+                                <td class="px-1 text-center">
+                                    @Model.UniversityCourseFeeModel[i].FeeTypeName
+                                    @Html.HiddenFor(m => m.UniversityCourseFeeModel[i].RowKey, new { @class = "rowKeyClass" })
+                                    @Html.HiddenFor(m => m.UniversityCourseFeeModel[i].FeeTypeKey)
+                                    @Html.HiddenFor(m => m.UniversityCourseFeeModel[i].IsUniversity)
+                                    @Html.HiddenFor(m => m.UniversityCourseFeeModel[i].FeeYear)
+
+                                    @Html.HiddenFor(m => m.UniversityCourseFeeModel[i].IsCenterShare)
+                                </td>
+                                <td class="px-1 text-center">
+                                    @Html.TextBoxFor(m => m.UniversityCourseFeeModel[i].FeeAmount, "{0:G29}", new { @class = "form-control input-control text-right", @placeholder = EduSuiteUIResources.Amount, @oninput = "UniversityCourse.CalculateUniversityfee()" })
+                                    <span class="form-control-error-text">    @Html.ValidationMessageFor(m => m.UniversityCourseFeeModel[i].FeeAmount)</span>
+                                </td>
+                                @if (Model.AllowCenterShare)
+                                {
+                                    <td class="px-1 text-center">
+                                        @Html.TextBoxFor(m => m.UniversityCourseFeeModel[i].CenterShareAmountPer, "{0:G29}", new { @class = "form-control input-control text-right", @placeholder = EduSuiteUIResources.center + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.share, @oninput = "UniversityCourse.CalculateCenterShare()" })
+                                        <span class="form-control-error-text">
+                                            @Html.ValidationMessageFor(m => m.UniversityCourseFeeModel[i].CenterShareAmountPer)
+                                        </span>
+                                    </td>
+                                }
+                                <td class="px-1 text-center">
+                                    <div class="switch-check switch">
+                                        @Html.CheckBoxFor(m => m.UniversityCourseFeeModel[i].IsActive, new { @class = "switch-input", @onclick = "IsCenterShare(this)" })
+                                        <div class="switch-label redgreen" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                                        <div class="switch-handle"></div>
+                                    </div>
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td class="px-1 text-center">
+                                @Html.Label(EduSuiteUIResources.Total, htmlAttributes: new { @class = "form-label" })
+                            </td>
+                            <td class="px-1 text-center">
+                                @{
+                                    Model.TotalUniversityCoursefee = Model.UniversityCourseFeeModel.Select(x => x.FeeAmount ?? 0).DefaultIfEmpty().Sum();
+                                }
+                                @Html.TextBoxFor(m => Model.TotalUniversityCoursefee, "{0:G29}", new { @class = "form-control input-control text-right", @readonly = "readonly" })
+
+                            </td>
+                            @if (Model.AllowCenterShare)
+                            {
+                                <td class="px-1 text-center">
+                                    @{
+                                        Model.TotalCenterShareAmountPer = Model.UniversityCourseFeeModel.Select(x => x.CenterShareAmountPer ?? 0).DefaultIfEmpty().Sum();
+                                    }
+                                    @Html.TextBoxFor(m => Model.TotalCenterShareAmountPer, "{0:G29}", new { @class = "form-control input-control text-right", @readonly = "readonly" })
+
+                                </td>
+                            }
+                            <td class="px-1 text-center"></td>
+                        </tr>
+
+                    </tfoot>
+                </table>
+            </div>
+            <div class="form-row">
+                <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer justify-content-start">
+        <div class="form-group">
+            <input type="submit" value="@EduSuiteUIResources.Submit" id="btnSave" class="btn btn-sm btn-success mx-1" />
+            <button type="button" data-dismiss="modal" class="btn btn-sm btn-danger mx-1">@EduSuiteUIResources.Cancel</button>
+            <button type="button" class="btn btn-sm btn-danger mx-1" onclick="Javascript:UniversityCourse.ResetUniversityCourseFee('@Model.RowKey');return false">@EduSuiteUIResources.Reset@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.All@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.FeeAmount</button>
+
+        </div>
+    </div>
+    <script>
+        var jsonData=@(Html.Raw(Json.Encode(Model)));
+
+        function CheckboxAllChange(chk, name) {
+
+            $("[data-repeater-item]").each(function (index) {
+
+                var Object = $('input[name*=' + name + ']', $(this))[0];
+                if (Object != undefined) {
+                    if (!Object.disabled) {
+                        Object.checked = chk.checked
+                        IsCenterShare(Object);
+                    }
+                }
+            });
+        }
+
+        function IsCenterShare(_this) {
+
+            var item = $(_this).closest("[data-repeater-item]");
+            var chk = $("input[type=checkbox][name*=IsActive]", $(item)).is(":checked");
+            var IsUniversity = $("input[id*=IsUniversity]", $(item)).val();
+            IsUniversity = JSON.parse(IsUniversity.toLowerCase()) ? JSON.parse(IsUniversity.toLowerCase()) : false;
+            if (chk && IsUniversity) {
+                $("input[id*=IsCenterShare]", $(item)).val(true);
+            }
+            else {
+                $("input[id*=IsCenterShare]", $(item)).val(false);
+            }
+            UniversityCourse.CalculateUniversityfee();
+            UniversityCourse.CalculateCenterShare();
+
+        }
+    </script>
+}
+
+
+
+
+

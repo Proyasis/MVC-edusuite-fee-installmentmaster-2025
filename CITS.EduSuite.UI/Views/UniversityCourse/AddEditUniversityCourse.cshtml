@@ -1,0 +1,121 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.UniversityCourseViewModel
+
+
+<input type="hidden" id="hdnFillCourse" value="@Url.Action("FillCourse", "UniversityCourse")" />
+<input type="hidden" id="hdnFillAcademicTerm" value="@Url.Action("FillAcademicTerm", "UniversityCourse")" />
+
+<div class="modal-header">
+    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+    <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.Add @EduSuiteUIResources.Sla @EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace @EduSuiteUIResources.AffiliationsTieUpsCourse</h4>
+</div>
+@using (Html.BeginForm("AddEditUniversityCourse", "UniversityCourse", FormMethod.Post, new { @id = "frmUniversityCourse" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.RowKey)
+    @Html.HiddenFor(m => m.IsUpdate)
+    @Html.ValidationSummary(true)
+
+    <div class="modal-body bottomLine">
+        <div class="form-master">
+            <div class="form-row">
+                <div class="paddingNone">
+                    <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+                </div>
+            </div>
+
+            <div class="form-row">
+
+                <div class="col-lg-4">
+                    <fieldset class="form-group ">
+                        @Html.Label(EduSuiteUIResources.AffiliationsTieUps, htmlAttributes: new { @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                        @Html.DropDownListFor(m => m.UniversityMasterKey, new SelectList(Model.Universities, "RowKey", "Text", Model.UniversityMasterKey), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.AffiliationsTieUps, new { @class = "form-control input-control autoselect-select selectpicker" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.UniversityMasterKey)
+                        </span>
+                    </fieldset>
+                </div>
+
+
+                <div class="col-lg-4">
+                    <fieldset class="form-group ">
+                        @Html.Label(EduSuiteUIResources.CourseType, htmlAttributes: new { @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                        @Html.DropDownListFor(m => m.CourseTypeKey, new SelectList(Model.CourseTypes, "RowKey", "Text", Model.CourseTypeKey), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.CourseType, new { @class = "form-control input-control autoselect-select selectpicker" })<span class="form-control-error-text">
+
+                            @Html.ValidationMessageFor(m => m.CourseTypeKey)
+                        </span>
+                    </fieldset>
+                </div>
+
+                <div class="col-lg-4">
+                    <fieldset class="form-group ">
+                        @Html.Label(EduSuiteUIResources.Course, htmlAttributes: new { @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                        @Html.DropDownListFor(m => m.CourseKey, new SelectList(Model.Courses, "RowKey", "Text", Model.CourseKey), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Course, new { @class = "form-control input-control autoselect-select selectpicker" })<span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.CourseKey)
+                        </span>
+                    </fieldset>
+
+                </div>
+
+
+                @if ((bool)ViewBag.ShowAcademicTerm)
+                {
+                <div class="col-lg-4">
+                    <fieldset class="form-group ">
+                        @Html.Label(EduSuiteUIResources.AcademicTerm, htmlAttributes: new { @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                        @Html.DropDownListFor(m => m.AcademicTermKey, new SelectList(Model.AcademicTerms, "RowKey", "Text", Model.AcademicTermKey), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.AcademicTerm, new { @class = "form-control input-control autoselect-select selectpicker" })<span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.AcademicTermKey)
+                        </span>
+                    </fieldset>
+
+                </div>
+                }
+                    else
+                {
+                    {
+                        Model.AcademicTermKey = (byte)Model.AcademicTerms.Select(row => row.RowKey).FirstOrDefault();
+
+                    }
+                    @Html.HiddenFor(m => m.AcademicTermKey)
+                }
+
+
+
+
+
+                <div class="col-lg-4">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.IsActive, new { @class = "form-label" })
+
+                        <div class="switch-check my-2">
+                            @Html.CheckBoxFor(m => m.IsActive, new { @class = "switch-input" })
+                            <div class="switch-label redgreen" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                            <div class="switch-handle"></div>
+                        </div>
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.IsActive)
+                        </span>
+                    </fieldset>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer justify-content-start">
+        <div class="form-group">
+            @if (Model.IsUpdate == false)
+            {
+                <input type="submit" value="@EduSuiteUIResources.Submit" id="btnSave" class="btn btn-sm btn-success mx-1" />
+            }
+            else
+            {
+                <div class="alert alert-info">
+                    <strong>Info!</strong> This Course exists Application on <a onclick="location.href='@Url.Action("ApplicationList", "Application")' " class="alert-link" target="_blank">Application Module</a>.
+                </div>
+            }
+            <button type="button" data-dismiss="modal" class="btn btn-sm btn-danger mx-1">@EduSuiteUIResources.Cancel</button>
+        </div>
+    </div>
+}
+
+

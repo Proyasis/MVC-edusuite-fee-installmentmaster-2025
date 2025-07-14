@@ -1,0 +1,11 @@
+﻿@using CITS.EduSuite.UI
+@if (ViewData.ContainsKey("Toastr"))
+{
+    Toastr toastr = ViewData["Toastr"] as Toastr;
+    @ToastrBuilder.ShowToastMessages(toastr);
+}
+else if (TempData.ContainsKey("Toastr"))
+{
+    Toastr toastr = TempData["Toastr"] as Toastr;
+    @ToastrBuilder.ShowToastMessages(toastr);
+}

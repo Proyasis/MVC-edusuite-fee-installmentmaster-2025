@@ -1,0 +1,85 @@
+﻿
+.divTimeSetterContainer  {
+    padding: 0;
+}
+
+    .divTimeSetterContainer input.timePart {
+        float: left;
+        margin-top: 1px;
+        text-align: center;
+        height: 25px;
+        border: none;
+        font-size: 1em;
+        font-weight: bold;
+        border-radius: 3px;
+        padding: 0;
+        cursor: text;
+        outline: none;
+    }
+
+    .divTimeSetterContainer input.hours {
+        width: 25px;
+    }
+
+    .divTimeSetterContainer input.minutes {
+        width: 16px;
+    }
+
+    .divTimeSetterContainer input.seconds {
+        width: 15px;
+    }
+
+    .divTimeSetterContainer span.hourSymbol,
+    .divTimeSetterContainer span.minuteSymbol,
+    .divTimeSetterContainer span.secondSymbol {
+        float: left;
+        margin: 6px 2px 0 2px;
+        font-size: 0.9em;
+    }
+
+    .divTimeSetterContainer span.timeDelimiter {
+        float: left;
+        font-size: 1.2em;
+        font-weight: bold;
+        margin: 2px 2px 0 2px;
+    }
+
+    .divTimeSetterContainer .postfix-position {
+        position: relative;
+        right: -3px;
+        top: 5px;
+        font-weight: bold;
+    }
+
+    .divTimeSetterContainer .button-time-control {
+        width: 20px;
+        float: left;
+        position: relative;
+        right: -2px;
+        top: -1px;
+        cursor: pointer;
+    }
+
+        .divTimeSetterContainer .button-time-control div.updownButton {
+            width: 20px;
+            float: left;
+            height: 15px;
+            border: 1px solid #bebebe;
+            text-align: center;
+        }
+
+            .divTimeSetterContainer .button-time-control div.updownButton:first-child {
+                border-top-right-radius: 3px;
+                border-bottom: none;
+                /* to remove double line */
+            }
+
+            .divTimeSetterContainer .button-time-control div.updownButton:last-child {
+                border-bottom-right-radius: 3px;
+            }
+
+            .divTimeSetterContainer .button-time-control div.updownButton i {
+                font-weight: bold;
+                font-size: 0.7em;
+                top: -2px;
+            }

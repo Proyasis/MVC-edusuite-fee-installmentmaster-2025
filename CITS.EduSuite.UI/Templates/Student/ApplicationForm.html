@@ -1,0 +1,783 @@
+
+<div id="dvPrintContainer">
+    <div class="water-mark">
+        <img src="../../Images/edusuitelogo-mob.png" height="250" />
+    </div>
+    <table class="table-progresscard">
+        <tbody>
+            <tr>
+                <td class="text-center no-border-right  no-border-top">
+                    <!--<img src="../../UploadFiles/Company/Logo/logo.png" style="width: 165px; height: 44px;" />-->
+                    <img src="{{url CompanyLogoPath}}" style="width: 165px; height: 44px;" />
+                </td>
+                <td class="no-border-top no-border-left no-border-right  vertical-align text-center">
+
+                    <h3 class="progressmain-title full-width">{{BranchName}}</h3>
+                    <h5 class="progresssub-title full-width">{{{CityName}}}</h5>
+                    <p>
+                        <span class="full-width">
+                            {{{AddressLine1}}}
+                            {{{AddressLine2}}}
+                            {{{AddressLine3}}}
+                            {{{CityName}}}{{PostalCode}}
+                        </span>
+                        <span class="full-width">{{TelephoneCode}}{{PhoneNumber1}}{{#if PhoneNumber}},{{TelephoneCode}}{{PhoneNumber2}}{{/if}}</span>
+                        <span class="full-width">{{{EmailAddress}}} </span>
+                    </p>
+                </td>
+                <td class="text-center no-border-left  no-border-top"></td>
+            </tr>
+            <tr>
+                <td colspan="3" class="profile-title text-center"> Application Form</td>
+            </tr>
+
+            <tr class="vertical-align">
+                <td width="160" class="no-padding no-border">
+                    <span class="profile-picture">
+                        {{#if ApplicationNo}}
+                        <span>
+                            {{{ApplicationNo}}}
+                        </span>
+                        {{/if}}
+                        {{#if StudentPhotoPath}}
+                        <img class="editable img-responsive" alt=" photo" id="avatar2" height="200" width="150" src="{{url ApplicantPhoto}}">
+
+                        {{else}}
+                        <img class="editable img-responsive" alt=" photos" id="avatar2" height="200" width="150" src="../../Images/no-photo.png">
+                        {{/if}}
+                        <span>
+                            {{{AdmissionNo}}}
+                        </span>
+                    </span>
+                </td>
+                <td class="no-padding" colspan="2">
+                    <h4 class="profile-name no-border-top">
+                        {{{ApplicantName}}}
+                    </h4>
+                    <div class="profile-user-info">
+                        <div class="profile-info-row">
+                            <div class="profile-info-name full-colon-after">Enrollment No</div>
+                            <div class="profile-info-value">
+                                <span>{{{EnrollmentNo}}}</span>
+
+
+                            </div>
+                        </div>
+                        <div class="profile-info-row">
+                            <div class="profile-info-name full-colon-after">Course</div>
+                            <div class="profile-info-value">
+                                <span>{{{CourseName}}}</span>
+
+
+                            </div>
+                        </div>
+                        <div class="profile-info-row">
+                            <div class="profile-info-name full-colon-after">University</div>
+                            <div class="profile-info-value">
+                                <span>{{{UniversityName}}}</span>
+
+
+                            </div>
+                        </div>
+                        <div class="profile-info-row">
+                            <div class="profile-info-name full-colon-after">Batch</div>
+                            <div class="profile-info-value">
+                                <span>{{{BatchName}}}</span>
+
+                            </div>
+                        </div>
+                        <div class="profile-info-row">
+                            <div class="profile-info-name full-colon-after"> Current Year</div>
+                            <div class="profile-info-value">
+                                <span>{{{CurrentYearText}}}</span>
+                            </div>
+                        </div>
+
+                        <div class="profile-info-row">
+                            <div class="profile-info-name full-colon-after"> Address</div>
+                            <div class="profile-info-value">
+                                <span>{{{PresentAddress}}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+
+            </tr>
+            <tr>
+                <td class="no-padding" colspan="3">
+                    <div class="profile-user-info">
+                        <div class="profile-info-row">
+                            <div class="profile-info-name full-colon-after">Mobile</div>
+                            <div class="profile-info-value">
+                                <span>{{MobileNumber}}</span>
+                            </div>
+                            <div class="profile-info-name full-colon-after">Land Phone Number</div>
+                            <div class="profile-info-value">
+                                <span>{{PhoneNumber}}</span>
+
+                            </div>
+                            <div class="profile-info-name full-colon-after">Email ID</div>
+                            <div class="profile-info-value">
+                                <span>{{{StudentEmail}}}</span>
+
+                            </div>
+                        </div>
+                        <div class="profile-info-row">
+                            <div class="profile-info-name full-colon-after">Guardian Name</div>
+                            <div class="profile-info-value">
+                                <span>{{{ApplicantGuardianName}}}</span>
+                            </div>
+                            <div class="profile-info-name full-colon-after">Mother Name</div>
+                            <div class="profile-info-value">
+                                <span>{{{ApplicantMotherName}}}</span>
+
+                            </div>
+                            <div class="profile-info-name full-colon-after">Religion</div>
+                            <div class="profile-info-value">
+                                <span>{{{ReligionName}}}</span>
+
+                            </div>
+                        </div>
+                        <div class="profile-info-row">
+                            <div class="profile-info-name full-colon-after">Gender</div>
+                            <div class="profile-info-value">
+
+                                <span>{{{Gender}}}</span>
+
+                            </div>
+                            <div class="profile-info-name full-colon-after">Date of Birth</div>
+                            <div class="profile-info-value">
+                                <span>{{dateformat DateOfBirth 'DD-MMM-YYYY'}}</span>
+
+                            </div>
+                            <div class="profile-info-name full-colon-after">Mode</div>
+                            <div class="profile-info-value">
+                                <span>{{{ModeName}}}</span>
+
+                            </div>
+                        </div>
+                        <div class="profile-info-row" style="display:none">
+                            <div class="profile-info-name full-colon-after">Income Group</div>
+                            <div class="profile-info-value">
+
+                                <span>{{{IncomeName}}}</span>
+
+                            </div>
+                            <div class="profile-info-name full-colon-after">Second Lang</div>
+                            <div class="profile-info-value">
+                                <span>{{{SecondLanguageName}}}</span>
+
+                            </div>
+                            <div class="profile-info-name full-colon-after">Class Mode</div>
+                            <div class="profile-info-value">
+                                <span>{{{ClassModeName}}}</span>
+
+                            </div>
+                        </div>
+                        <div class="profile-info-row " style="display:none">
+                            <div class="profile-info-name full-colon-after">Class Required</div>
+                            <div class="profile-info-value">
+
+                                <span>{{yesno StudentClassRequired}}</span>
+
+                            </div>
+                            <div class="profile-info-name full-colon-after">Concession Type</div>
+                            <div class="profile-info-value">
+                                <span>{{{ConcessionTypeName}}}</span>
+
+                            </div>
+                            <div class="profile-info-name full-colon-after">Nature of Eqry</div>
+                            <div class="profile-info-value">
+                                <span>{{{NatureOfEnquiryName}}}</span>
+
+                            </div>
+                        </div>
+                        <div class="profile-info-row">
+                            <div class="profile-info-name full-colon-after">Date of Admn</div>
+                            <div class="profile-info-value">
+                                <span>{{dateformat DateOfApplication 'DD-MMM-YYYY'}}</span>
+
+                            </div>
+                            <div class="profile-info-name full-colon-after">Branch</div>
+                            <div class="profile-info-value">
+                                <span>{{{BranchName}}}</span>
+
+                            </div>
+                            <div class="profile-info-name full-colon-after">Total Fee</div>
+                            <div class="profile-info-value">
+                                <span>{{G29 TotalFeeAmount}}</span>
+
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3" class="profile-title text-center"> Certificate Details</td>
+            </tr>
+            <tr>
+                <td colspan="3" class="no-padding no-border vertical-align-top">
+                    <table class="table-marklist">
+                        <tbody>
+                            <tr>
+                                <th class="text-center">
+                                    Course
+                                </th>
+                                <th class="text-center">
+                                    Board/University
+                                </th>
+                                <th class="text-center">
+                                    Completed Year
+                                </th>
+                                <th class="text-center">
+                                    Percent
+                                </th>
+
+                                <th class="text-center">
+                                    Status
+                                </th>
+                            </tr>
+                            {{#StudentsCertificateReturnDetail}}
+                            <tr>
+                                <td>{{{EducationQualificationName}}}</td>
+                                <td>{{{EducationQualificationUniversity}}}</td>
+                                <td>{{EducationQualificationYear}}</td>
+                                <td>{{EducationQualificationPercentage}}%</td>
+                                <td>
+                                    {{{CertificateStatusName}}}
+                                    <span>By</span> {{{CertificateStatusBy}}}
+                                    <span>On</span> <span class="label label-danger">  {{dateformat IssuedDate 'DD-MMM-YYYY'}}</span>
+
+                                </td>
+
+
+                            </tr>
+                            {{/StudentsCertificateReturnDetail}}
+
+
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3" class="profile-title text-center"> Fee Details</td>
+            </tr>
+            <tr>
+                <td colspan="3" class="no-padding no-border vertical-align-top">
+                    <table class="table-marklist">
+                        <tbody>
+                            <tr>
+                                <th class="text-center">
+                                    Receipt
+                                </th>
+                                <th class="text-center">
+                                    Date
+                                </th>
+                                <th class="text-center">
+                                    Fee Type
+                                </th>
+                                <th class="text-center">
+                                    Payment Mode
+                                </th>
+
+                                <th class="text-center">
+                                    Paid
+                                </th>
+                            </tr>
+                            {{#FeePyamentDetails}}
+                            <tr>
+                                <td>{{{RecieptNo}}}</td>
+                                <td>{{dateformat FeeDate 'DD-MMM-YYYY'}}</td>
+                                <td>
+                                    <ul class="list-unstyled">
+                                        {{#ApplicationFeePaymentDetails}}
+
+                                        <li class="col-md-9"><em>{{{FeeYearText}}} {{{FeeTypeName}}}</em></li>
+
+                                        {{/ApplicationFeePaymentDetails}}
+                                    </ul>
+                                </td>
+                                <td>
+                                    <ul class="list-unstyled">
+                                        <li>Paid By : <span class="text-red"> {{{PaymentModeName}}}</span></li>
+
+                                        {{#if ChequeOrDDNumber}}
+                                        <li>Cheque Or DDNumber : <span> {{{ChequeOrDDNumber}}}</span></li>
+                                        {{/if}}
+                                        {{#if ChequeOrDDDate}}
+                                        <li>Cheque Or DDDate: <span>{{dateformat ChequeClearanceDate 'DD-MMM-YYYY'}}</span></li>
+                                        {{/if}}
+                                        {{#if CardNumber}}
+                                        <li>Card Number: <span> {{{CardNumber}}}</span></li>
+                                        {{/if}}
+                                        {{#if BankAccountName}}
+                                        <li>Bank Account: <span> {{{BankAccountName}}}</span></li>
+                                        {{/if}}
+                                    </ul>
+                                </td>
+                                <td>{{sum ApplicationFeePaymentDetails 'FeeAmount'}}</td>
+
+                            </tr>
+                            {{/FeePyamentDetails}}
+
+
+                        </tbody>
+                    </table>
+                </td>
+
+            </tr>
+
+            <tr>
+                <td colspan="3" class="no-border">
+                    <strong> FOR OFFICE USE ONLY</strong>
+                </td>
+            </tr>
+            <tr class="signature-row">
+                <td colspan="3">
+                    <span style="display:inline-block;width:90%"> Admitted/Not</span>
+                    <span style="display:inline-block;width:90%"> For</span>Year {{YearNow}}
+                </td>
+
+            </tr>
+
+        </tbody>
+    </table>
+</div>
+<style>
+    html, body {
+        margin: 0;
+        min-width: 0;
+    }
+
+    .progressmain-title, .progresssub-title {
+        color: #41417ecc !important;
+        font-weight: bold;
+        -webkit-print-color-adjust: exact !important;
+        margin-bottom: 3px;
+    }
+
+    .profile-picture {
+        font-weight: bold;
+    }
+
+    .no-border-top {
+        border-top: none !important;
+    }
+
+    .no-border-left {
+        border-left: none !important;
+    }
+
+    .no-border-right {
+        border-right: none !important;
+    }
+
+    .no-border {
+        border: none !important;
+    }
+
+    .no-padding {
+        padding: 0 !important;
+    }
+
+    .vertical-align-top {
+        vertical-align: top;
+    }
+
+    table {
+        margin: 0 !important;
+    }
+
+    [id*=dvPrintContainer] {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        border: solid 5px #41417ecc;
+        background: #fff;
+        position: relative;
+    }
+
+        [id*=dvPrintContainer] .water-mark {
+            position: absolute;
+            opacity: 0.2;
+            transform: rotate(-30deg);
+            top: 40%;
+            left: 40%;
+        }
+
+    .table-progresscard {
+        height: 100%;
+    }
+
+    .vertical-align {
+        vertical-align: top;
+    }
+
+    .profile-user-info {
+        display: table;
+        width: 100%;
+    }
+
+    .profile-info-row {
+        display: table-row;
+    }
+
+    .profile-info-name,
+    .profile-info-value {
+        display: table-cell;
+        border-top: 1px dotted #403636;
+    }
+
+    .profile-info-name, .profile-name {
+        padding: 6px 10px 6px 4px;
+        font-weight: 400;
+        color: #667E99;
+        background-color: transparent;
+        vertical-align: middle;
+    }
+
+    .profile-name {
+        border-bottom: double 2px #41417ecc;
+    }
+
+    .profile-info-value {
+        padding: 6px 4px 6px 6px;
+    }
+
+        .profile-info-value > span + span:before {
+            display: inline;
+            content: ",";
+            margin-left: 1px;
+            margin-right: 3px;
+            color: #666;
+            border-bottom: 1px solid #FFF;
+        }
+
+        .profile-info-value > span + span.editable-container:before {
+            display: none;
+        }
+
+    .profile-info-row:first-child .profile-info-name,
+    .profile-info-row:first-child .profile-info-value {
+        border-top: none;
+    }
+
+    .profile-user-info-striped {
+        border: 1px solid #DCEBF7;
+    }
+
+        .profile-user-info-striped .profile-info-name {
+            color: #336199;
+            background-color: #EDF3F4;
+            border-top: 1px solid #F7FBFF;
+        }
+
+        .profile-user-info-striped .profile-info-value {
+            border-top: 1px dotted #DCEBF7;
+            padding-left: 12px;
+        }
+
+    .profile-picture {
+        background-color: #FFF;
+        padding: 4px;
+        display: inline-block;
+        max-width: 100%;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        /*box-shadow: 1px 1px 1px rgba(0, 0, 0, .15);*/
+        border: none;
+    }
+
+        .profile-picture span {
+            display: block;
+            padding: 3px 0px;
+            text-align: center;
+            width: 100%;
+            color: #444484;
+        }
+
+
+
+    .table-progresscard, .table-marklist {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .table-progresscard td, .table-progresscard th {
+            border: solid 1px #403636;
+            padding: 2px 3px;
+        }
+
+            .table-progresscard td:first-child, .table-progresscard th:first-child {
+                border-left: none !important;
+            }
+
+            .table-progresscard td:last-child, .table-progresscard th:last-child {
+                border-right: none !important;
+            }
+
+        .table-marklist th {
+            background: #ad8585 !important;
+            color: #fff !important;
+            -webkit-print-color-adjust: exact !important;
+        }
+
+        .table-marklist th, .table-marklist td {
+            padding: 5px 3px;
+            -webkit-print-color-adjust: exact !important;
+            font-size: 0.8em;
+        }
+
+        .table-marklist tr:nth-child(2n) {
+            background: #fee3e3 !important;
+        }
+
+    .signature-row tr {
+        padding-top: 10px;
+    }
+
+    .no-border {
+        border: none;
+    }
+
+    .full-colon-after:after {
+        content: ':';
+        margin: 0px 5px;
+        float: right;
+    }
+
+
+
+
+    .profile-title {
+        background: #41417ecc !important;
+        color: #fff !important;
+        font-weight: bold;
+        padding: 10px;
+    }
+
+    .profile-sub-title {
+        background: #ad8585 !important;
+        color: #fff !important;
+        font-weight: bold;
+        padding: 10px;
+        -webkit-print-color-adjust: exact !important;
+    }
+
+    .profile-name {
+        width: 100%;
+        text-align: left;
+        margin: 0;
+        text-indent: 10px;
+        font-weight: bold;
+        color: #444484;
+        background: #e0e0e0;
+        -webkit-print-color-adjust: exact !important;
+    }
+
+    tr.signature-row td {
+        height: 150px;
+    }
+
+    tr.signature-row span {
+        display: inline-block;
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+        tr.signature-row span:after {
+            content: '';
+            width: 90%;
+            display: inline-block;
+            border-bottom: dotted 1px !important;
+        }
+
+    @media print {
+        html, body {
+            margin: 0 !important;
+            padding: 0 !important;
+            min-width: 0;
+        }
+
+        .progressmain-title, .progresssub-title {
+            color: #41417ecc !important;
+            font-weight: bold;
+            -webkit-print-color-adjust: exact !important;
+        }
+
+        * {
+            -webkit-print-color-adjust: exact !important;
+        }
+
+        .profile-title {
+            background: #41417ecc !important;
+            color: #fff !important;
+            font-weight: bold;
+            padding: 10px;
+        }
+
+        .profile-sub-title {
+            background: #ad8585 !important;
+            color: #fff !important;
+            font-weight: bold;
+            padding: 10px;
+            -webkit-print-color-adjust: exact !important;
+        }
+
+        .profile-name {
+            width: 100%;
+            text-align: left;
+            margin: 0;
+            text-indent: 10px;
+            font-weight: bold;
+            color: #444484;
+            background: #e0e0e0;
+            -webkit-print-color-adjust: exact !important;
+        }
+
+
+        [id*=dvPrintContainer] .water-mark {
+            position: absolute;
+            opacity: 0.2;
+            transform: rotate(-30deg);
+            top: 40%;
+            left: 40%;
+        }
+
+        .table-progresscard {
+            height: 100%;
+        }
+
+        .vertical-align {
+            vertical-align: top;
+        }
+
+        .profile-user-info {
+            display: table;
+            width: 100%;
+        }
+
+        .profile-info-row {
+            display: table-row;
+        }
+
+        .profile-info-name,
+        .profile-info-value {
+            display: table-cell;
+            border-top: 1px dotted #403636;
+        }
+
+        .profile-info-name, .profile-name {
+            padding: 6px 10px 6px 4px;
+            font-weight: 400;
+            color: #667E99;
+            background-color: transparent;
+            vertical-align: middle;
+        }
+
+
+        .profile-info-value {
+            padding: 6px 4px 6px 6px;
+        }
+
+            .profile-info-value > span + span:before {
+                display: inline;
+                content: ",";
+                margin-left: 1px;
+                margin-right: 3px;
+                color: #666;
+                border-bottom: 1px solid #FFF;
+            }
+
+            .profile-info-value > span + span.editable-container:before {
+                display: none;
+            }
+
+        .profile-info-row:first-child .profile-info-name,
+        .profile-info-row:first-child .profile-info-value {
+            border-top: none;
+        }
+
+        .profile-user-info-striped {
+            border: 1px solid #DCEBF7;
+        }
+
+            .profile-user-info-striped .profile-info-name {
+                color: #336199;
+                background-color: #EDF3F4;
+                border-top: 1px solid #F7FBFF;
+            }
+
+            .profile-user-info-striped .profile-info-value {
+                border-top: 1px dotted #DCEBF7;
+                padding-left: 12px;
+            }
+
+        .profile-picture {
+            background-color: #FFF;
+            padding: 4px;
+            display: inline-block;
+            max-width: 100%;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            /*box-shadow: 1px 1px 1px rgba(0, 0, 0, .15);*/
+            border: none;
+        }
+
+            .profile-picture span {
+                display: block;
+                padding: 3px 0px;
+                text-align: center;
+                width: 100%;
+                color: #444484;
+            }
+
+        .table-progresscard, .table-marklist {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+            .table-progresscard td, .table-progresscard th {
+                border: solid 1px #403636;
+                padding: 2px 3px;
+            }
+
+                .table-progresscard td:first-child, .table-progresscard th:first-child {
+                    border-left: none !important;
+                }
+
+                .table-progresscard td:last-child, .table-progresscard th:last-child {
+                    border-right: none !important;
+                }
+
+            .table-marklist th {
+                background: #ad8585 !important;
+                color: #fff !important;
+                -webkit-print-color-adjust: exact !important;
+            }
+
+            .table-marklist th, .table-marklist td {
+                padding: 5px 3px;
+                -webkit-print-color-adjust: exact !important;
+                font-size: 0.8em;
+            }
+
+            .table-marklist tr:nth-child(2n) {
+                background: #fee3e3 !important;
+            }
+
+        .signature-row tr {
+            padding-top: 10px;
+        }
+
+        .no-border {
+            border: none;
+        }
+
+        .full-colon-after:after {
+            content: ':';
+            margin: 0px 5px;
+            float: right;
+        }
+    }
+</style>

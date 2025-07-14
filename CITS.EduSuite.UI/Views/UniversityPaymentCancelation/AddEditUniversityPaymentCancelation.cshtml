@@ -1,0 +1,139 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.UniversityCancelationViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+
+<div class="modal-header">
+    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+    <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.AddEdit@EduSuiteUIResources.BlankSpace @EduSuiteUIResources.UniversityPaymentCancelation</h4>
+</div>
+
+@using (Html.BeginForm("AddEditUniversityPaymentCancelation", "UniversityPaymentCancelation", FormMethod.Post, htmlAttributes: new { @id = "frmUniversityPaymentCancelation" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.RowKey)
+    @Html.HiddenFor(m => m.ApplicationKey)
+    @Html.HiddenFor(m => m.UniversityPaymentDetailsKey)
+    @Html.ValidationSummary(true)
+
+    if ((Model.ApplicationKey != 0))
+    {
+        @Html.Action("StudentDetail", "Shared", new { id = Model.ApplicationKey, AdmissionNo = "" })
+    }
+    <div class="modal-body">
+        <div class="form-master">
+            <div class="form-row">
+                <div class="paddingNone">
+                    <span class="ValidateDataMsg"> @Html.ValidationMessage("error_msg")  </span>
+                </div>
+            </div>
+            <div class="form-row ">
+                <div class="col-12 col-sm-4 col-lg-4">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.Date, htmlAttributes: new { @id = "lblTransactionDate", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                        @Html.TextBoxFor(m => m.CancelDate, "{0:dd/MM/yyyy}", new { @class = "input-control form-control form-control-sm", @data_input_type = "date", @InputFor = "lblTransactionDate", @data_inputmask = "'alias': 'dd/mm/yyyy'" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.CancelDate)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-4 col-lg-4">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.TotalPaid, htmlAttributes: new { @id = "lblAmount", @class = "form-label" })
+                        @Html.TextBoxFor(m => m.TotalAmount, "{0:G29}", new { @class = "input-control form-control form-control-sm", @InputFor = "lblAmount", @readonly = "readonly" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.TotalAmount)
+                        </span>
+                    </div>
+                </div>
+            </div>
+           
+            <div class="form-row">
+                <div class="col-6 col-lg-4">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.AllowServiceCharge, new { @class = "form-label" })
+                        <div class="switch-check my-2">
+                            @Html.CheckBoxFor(m => m.IfServiceCharge, new { @class = "switch-input", @onchange = "UniversityPaymentCancelation.CheckServiceCharge()" })
+                            <div class="switch-label redgreen" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                            <div class="switch-handle"></div>
+                        </div>
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.IfServiceCharge)
+                        </span>
+                    </fieldset>
+                </div>
+                @*@Html.HiddenFor(m => m.IfServiceCharge)*@
+
+                <div class="col-12 col-sm-4 col-lg-4 divServiceCharge">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.AccountHeadCode, htmlAttributes: new { @id = "lblAccountHeadType", @class = "form-label" })
+
+                        @Html.DropDownListFor(m => m.AccountHeadKey, new SelectList(Model.AccountHead, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.AccountHead, new { @class = "form-control input-control" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.AccountHeadKey)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-4 col-lg-4 divServiceCharge">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.ServiceCharge, htmlAttributes: new { @id = "lblAmount", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                        @Html.TextBoxFor(m => m.ServiceFee, "{0:G29}", new { @class = "input-control form-control form-control-sm", @InputFor = "lblAmount", @oninput = "UniversityPaymentCancelation.CalculateDeductionFee(this)" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.ServiceFee)
+                        </span>
+
+                    </div>
+
+                </div>
+                <div class="col-12 col-sm-4 col-lg-4">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.Deduct, htmlAttributes: new { @id = "lblAmount", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                        @Html.TextBoxFor(m => m.TotalDeductionFee, "{0:G29}", new { @class = "input-control form-control form-control-sm", @InputFor = "lblAmount", @readonly = "readonly" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.TotalDeductionFee)
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="form-row">
+                <div class="col-12 col-sm-4 col-lg-4">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.Remarks, htmlAttributes: new { @id = "lblRemarks", @class = "form-label" })
+                        @Html.TextAreaFor(m => m.Remarks, new { @class = "input-control form-control form-control-sm", @InputFor = "lblRemarks" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.Remarks)
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <input type="submit" value="@EduSuiteUIResources.Save" id="btnSave" class="btn btn-sm btn-success mx-1"  />
+                <button type="button" data-dismiss="modal" class="btn btn-sm btn-danger mx-1">@EduSuiteUIResources.Cancel</button>
+            </div>
+        </div>
+    </div>
+
+}
+
+
+<script>
+    $(document).ready(function () {
+        AppCommon.AutoHideDropdown();
+        AppCommon.FormatDateInput();
+
+
+
+    });
+
+
+</script>

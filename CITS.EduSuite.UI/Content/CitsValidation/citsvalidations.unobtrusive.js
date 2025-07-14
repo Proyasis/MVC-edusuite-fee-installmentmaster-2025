@@ -1,0 +1,458 @@
+﻿var citsvalidation = function () { };
+citsvalidation.is = function (value1, operator, value2, passOnNull) {
+    if (passOnNull && JSON.parse(passOnNull.toLowerCase())) {
+        var isNullish = function (input) {
+            return input == null || input == undefined || input == "";
+        };
+
+        var value1nullish = isNullish(value1);
+        var value2nullish = isNullish(value2);
+
+        //if ((value1nullish && !value2nullish) || (value2nullish && !value1nullish))
+        if (value2nullish || value1nullish)
+            return true;
+    }
+
+    var isNumeric = function (input) {
+        return (input - 0) == input && input.length > 0;
+    };
+
+    var isDate = function (input) {//Change for date Validation
+        var arr = input.split(/[-/]+/);
+        input = arr[1] + "/" + arr[0] + "/" + arr[2]
+        var dateTest = new RegExp(/(?=\d)^(?:(?!(?:10\D(?:0?[5-9]|1[0-4])\D(?:1582))|(?:0?9\D(?:0?[3-9]|1[0-3])\D(?:1752)))((?:0?[13578]|1[02])|(?:0?[469]|11)(?!\/31)(?!-31)(?!\.31)|(?:0?2(?=.?(?:(?:29.(?!000[04]|(?:(?:1[^0-6]|[2468][^048]|[3579][^26])00))(?:(?:(?:\d\d)(?:[02468][048]|[13579][26])(?!\x20BC))|(?:00(?:42|3[0369]|2[147]|1[258]|09)\x20BC))))))|(?:0?2(?=.(?:(?:\d\D)|(?:[01]\d)|(?:2[0-8])))))([-.\/])(0?[1-9]|[12]\d|3[01])\2(?!0000)((?=(?:00(?:4[0-5]|[0-3]?\d)\x20BC)|(?:\d{4}(?!\x20BC)))\d{4}(?:\x20BC)?)(?:$|(?=\x20\d)\x20))?((?:(?:0?[1-9]|1[012])(?::[0-5]\d){0,2}(?:\x20[aApP][mM]))|(?:[01]\d|2[0-3])(?::[0-5]\d){1,2})?$/);
+        return dateTest.test(input);
+    };
+    var isTime = function (input) {//Change for date Validation
+        var dateTest = new RegExp(/^([0-1]?[0-9]|[2][0-3]):([0-5][0-9])(:[0-5][0-9])? (AM|am|PM|pm)$/);
+        return dateTest.test(input);
+    };
+
+
+    var isBool = function (input) {
+        return input === true || input === false || input === "true" || input === "false";
+    };
+
+    var formatTime = function (time) {
+        var d = new Date();
+        var hours = Number(time.match(/^(\d+)/)[1]);
+        var minutes = Number(time.match(/:(\d+)/)[1]);
+        var seconds = Number(time.match(/:(\d+ )/)[1]);
+        var AMPM = time.match(/\s(.*)$/)[1];
+        if (AMPM.toUpperCase() == "PM" && hours < 12) hours = hours + 12;
+        if (AMPM.toUpperCase() == "AM" && hours == 12) hours = hours - 12;
+
+        d.setHours(hours);
+        d.setMinutes(minutes);
+        d.setMinutes(seconds != "" ? seconds : 0);
+        return d;
+    };
+
+    if (isDate(value1) && isDate(value2)) {//Change for date Validation
+        var arr = value1.split(/[-/]+/);
+        value1 = arr[1] + "/" + arr[0] + "/" + arr[2]
+        value1 = Date.parse(value1);
+        arr = value2.split(/[-/]+/);
+        value2 = arr[1] + "/" + arr[0] + "/" + arr[2]
+        value2 = Date.parse(value2);
+    }
+    else if (isTime(value1) && isTime(value2)) {//Change for time Validation
+
+        value1 = formatTime(value1);
+
+        value2 = formatTime(value2);
+    }
+    else if (isBool(value1)) {
+        if (value1.toLowerCase() == "false") value1 = false;
+        if (value2.toLowerCase() == "false") value2 = false;
+        value1 = !!value1;
+        value2 = !!value2;
+    }
+    else if (isNumeric(value1)) {
+        value1 = parseFloat(value1);
+        value2 = parseFloat(value2);
+    }
+
+    switch (operator) {
+        case "EqualTo": if (value1 == value2) return true; break;
+        case "NotEqualTo": if (value1 != value2) return true; break;
+        case "GreaterThan": if (value1 > value2) return true; break;
+        case "LessThan": if (value1 < value2) return true; break;
+        case "GreaterThanOrEqualTo": if (value1 >= value2) return true; break;
+        case "LessThanOrEqualTo": if (value1 <= value2) return true; break;
+        case "RegExMatch": return (new RegExp(value2)).test(value1); break;
+        case "NotRegExMatch": return !(new RegExp(value2)).test(value1); break;
+    }
+
+    return false;
+};
+
+citsvalidation.getId = function (element, dependentPropety) {
+    var pos = element.id.lastIndexOf("_") + 1;
+    return element.id.substr(0, pos) + dependentPropety.replace(/\./g, "_");
+};
+
+citsvalidation.getName = function (element, dependentPropety) {
+    var pos = element.name.lastIndexOf(".") + 1;
+    return element.name.substr(0, pos) + dependentPropety;
+};
+citsvalidation.getValue = function (element, dependentPropety) {
+    var $form = $(element).closest("form");
+    var name = $(element)[0].name;
+    var lastIndxDot = name.lastIndexOf('.');
+    dependentPropety = (lastIndxDot > 0 ? name.substring(0, lastIndxDot) + "." + dependentPropety : dependentPropety);
+    var cntrl = $("[name='" + dependentPropety + "']", $form);
+
+    var Value = cntrl.length > 0 ? cntrl[0].value : null;
+    if (cntrl.length > 1) {
+        for (var index = 0; index != cntrl.length; index++)
+            if (cntrl[index]["checked"]) {
+                Value = cntrl[index].value;
+                break;
+            }
+            else {
+                Value = cntrl[index].value;
+            }
+
+        if (Value == null)
+            Value = "false";
+    }
+    else if (cntrl.length)
+        Value = cntrl[0].value;
+    return Value
+};
+(function () {
+    jQuery.validator.addMethod("is", function (value, element, params) {
+        var operator = params["operator"];
+        var passOnNull = params["passonnull"];
+
+        var dependentValue = citsvalidation.getValue(element, params["dependentproperty"]);
+        if (citsvalidation.is(value, operator, dependentValue, passOnNull))
+            return true;
+
+        return false;
+    });
+
+    jQuery.validator.addMethod("requiredif", function (value, element, params) {
+        var dependentTestValue = params["dependentvalue"];
+        var operator = params["operator"];
+        var pattern = params["pattern"];
+        var dependentValue = citsvalidation.getValue(element, params["dependentproperty"]);
+
+        if (dependentValue != undefined && citsvalidation.is(dependentValue, operator, dependentTestValue)) {
+            if (pattern == null) {
+                if (value != null && value.toString().replace(/^\s\s*/, '').replace(/\s\s*$/, '') != "")
+                    return true;
+            }
+            else
+                return (new RegExp(pattern)).test(value);
+        }
+        else
+            return true;
+
+        return false;
+    });
+
+    jQuery.validator.addMethod("requiredifempty", function (value, element, params) {
+        var dependentValue = citsvalidation.getValue(element, params["dependentproperty"]);
+
+        if (dependentValue == null || dependentValue.toString().replace(/^\s\s*/, '').replace(/\s\s*$/, '') == "") {
+            if (value != null && value.toString().replace(/^\s\s*/, '').replace(/\s\s*$/, '') != "")
+                return true;
+        }
+        else
+            return true;
+
+        return false;
+    });
+
+    jQuery.validator.addMethod("requiredifnotempty", function (value, element, params) {
+        var dependentValue = citsvalidation.getValue(element, params["dependentproperty"]);
+
+
+        if (dependentValue != null && dependentValue.toString().replace(/^\s\s*/, '').replace(/\s\s*$/, '') != "") {
+            if (value != null && value.toString().replace(/^\s\s*/, '').replace(/\s\s*$/, '') != "")
+                return true;
+        }
+        else
+            return true;
+
+        return false;
+    });
+    jQuery.validator.addMethod("lessthanorequaltoif", function (value, element, params) {
+        var comparepropertyname = params.comparepropertyname;
+        var dependentvalue1 = params.dependentvalue1;
+        var dependentvalue2 = params.dependentvalue2;
+
+        var comparepropertyValue = citsvalidation.getValue(element, params["comparepropertyname"]);
+        var dependentPropertyValue1 = citsvalidation.getValue(element, params["dependentproperty1"]);
+        var dependentPropertyValue2 = citsvalidation.getValue(element, params["dependentproperty2"]);
+        value = parseFloat(value) ? parseFloat(value) : 0;
+        comparepropertyValue = parseFloat(comparepropertyValue) ? parseFloat(comparepropertyValue) : 0;
+
+        if (value == null || value == "")
+            return true;
+
+        if (value > comparepropertyValue && dependentPropertyValue1 != dependentvalue1 && dependentPropertyValue2 != dependentvalue2) return false;
+
+
+
+        return true;
+    });
+
+    jQuery.validator.addMethod("greaterthanorequaltoif", function (value, element, params) {
+        var dependentvalue1 = params.dependentvalue1;
+        var dependentvalue2 = params.dependentvalue2;
+        var comparepropertyValue = citsvalidation.getValue(element, params["comparepropertyname"]);
+        var dependentPropertyValue1 = citsvalidation.getValue(element, params["dependentproperty1"]);
+        var dependentPropertyValue2 = citsvalidation.getValue(element, params["dependentproperty2"]); value = parseFloat(value) ? parseFloat(value) : 0;
+        comparepropertyValue = parseFloat(comparepropertyValue) ? parseFloat(comparepropertyValue) : 0;
+
+
+        if (value == null || value == "")
+            return true;
+
+        if (value < comparepropertyValue && dependentPropertyValue1 != dependentvalue1 && dependentPropertyValue2 != dependentvalue2) return false;
+
+
+
+        return true;
+    });
+
+
+    jQuery.validator.addMethod("daterestriction", function (value, element, params) {
+        var comparepropertyname = params.comparepropertyname;
+        var comparepropertyValue = citsvalidation.getValue(element, params["comparepropertyname"]);
+        comparepropertyValue = comparepropertyValue ? 0 : comparepropertyValue;
+        var DateCount = parseInt(Resources.DateValidationBefore) ? parseInt(Resources.DateValidationBefore) : 0
+        var d = new Date();
+        var month = d.getMonth() + 1;
+        var day = d.getDate();
+
+        var output = d.getFullYear() + '/' +
+            (month < 10 ? '0' : '') + month + '/' +
+            (day < 10 ? '0' : '') + day;
+
+        var dateAr = value.split('/');
+        value = dateAr[2] + '/' + dateAr[1] + '/' + dateAr[0].slice(-2);
+
+        var compareDate = new Date(value);
+        var Today_date = new Date(output);
+        var diff_date = Today_date - compareDate;
+        //var valueDifference = Math.floor(((diff_date % 31536000000) % 2628000000) / 86400000);
+        var valueDifference = Math.floor(diff_date / 86400000);
+
+        if (value == null || value == "")
+            return true;
+
+        //if ((valueDifference > DateCount || valueDifference < 0) && comparepropertyValue == 0) return false;
+        if ((valueDifference > DateCount && comparepropertyValue == 0) || valueDifference < 0) return false; // Edit Future Date blocking
+
+        return true;
+    });
+
+    jQuery.validator.addMethod("blockpartyconversion", function (value, element, params) {
+        var $form = $(element).closest("form");
+        var dependentvalue1 = params.dependentvalue1;
+        var comparepropertyValue = citsvalidation.getValue(element, params["comparepropertyname"]);
+        var dependentPropertyValue1 = citsvalidation.getValue(element, params["dependentproperty1"]);
+
+        if (dependentPropertyValue1 != dependentvalue1) {
+            return true;
+        }
+        if ((((comparepropertyValue == null ? "" : comparepropertyValue) == "" && (value == null ? "" : value) == "") || ((comparepropertyValue == null ? "" : comparepropertyValue) != "" && (value == null ? "" : value) != ""))) return true;
+
+
+
+        return false;
+    });
+
+    jQuery.validator.addMethod("filetype", function (value, element, param) {
+        var extension = getExtension(value);
+
+        return this.optional(element) || $.inArray((extension ? extension : "").toLowerCase(), param.extensions) !== -1;
+    });
+    jQuery.validator.addMethod('filesize', function (value, element, param) {
+        var size = param.maxsize * 1024;
+        return this.optional(element) || (element.files[0].size <= size)
+    });
+    jQuery.validator.addMethod("customrequired", function (value, element, params) {
+        var enabled = params.enabled;
+        enabled = enabled ? JSON.parse(enabled.toLowerCase()) : true;
+        var required = params.required;
+        required = required && enabled ? JSON.parse(required.toLowerCase()) : false;
+
+
+
+
+        if (required) {
+            if (value != null && value.toString().replace(/^\s\s*/, '').replace(/\s\s*$/, '') != "")
+                return true;
+        }
+        else
+            return true;
+
+        return false;
+    });
+    jQuery.validator.addMethod("customrequiredif", function (value, element, params) {
+        var dependentTestValue = params["dependentvalue"];
+        var enabled = params.enabled;
+        enabled = enabled ? JSON.parse(enabled.toLowerCase()) : true;
+        var required = params.required;
+        required = required && enabled ? JSON.parse(required.toLowerCase()) : false;
+        var operator = "EqualTo";
+
+        var comparepropertyValue = citsvalidation.getValue(element, params["comparepropertyname"]);
+        var dependentValue = citsvalidation.getValue(element, params["dependentproperty"]);
+        if (required && dependentValue != undefined && citsvalidation.is(dependentValue, operator, dependentTestValue)) {
+            if (value != null && value.toString().replace(/^\s\s*/, '').replace(/\s\s*$/, '') != "")
+                return true;
+        }
+        else
+            return true;
+
+        return false;
+    });
+    jQuery.validator.addMethod("stringlengthdynamic", function (value, element, params) {
+        var maxLengthProperty = params.maxlengthproperty;
+        var minLengthProperty = params.minlengthproperty;
+
+        var maxlengthpropertyValue = citsvalidation.getValue(element, params["maxlengthproperty"]);
+        var minlengthpropertyValue = citsvalidation.getValue(element, params["minlengthproperty"]);
+        maxlengthpropertyValue = parseInt(maxlengthpropertyValue) ? parseInt(maxlengthpropertyValue) : 0;
+        minlengthpropertyValue = parseInt(minlengthpropertyValue) ? parseInt(minlengthpropertyValue) : 0;
+        //value = parseFloat(value) ? parseFloat(value) : 0;
+
+        if (value == null || value == "")
+            return true;
+
+        if (value.length > maxlengthpropertyValue || value.length < minlengthpropertyValue) return false;
+
+        return true;
+    });
+
+    var setValidationValues = function (options, ruleName, value) {
+        options.rules[ruleName] = value;
+        if (options.message) {
+            options.messages[ruleName] = options.message;
+        }
+    };
+
+    var $Unob = $.validator.unobtrusive;
+
+    $Unob.adapters.add("requiredif", ["dependentproperty", "dependentvalue", "operator", "pattern"], function (options) {
+        var value = {
+            dependentproperty: options.params.dependentproperty,
+            dependentvalue: options.params.dependentvalue,
+            operator: options.params.operator,
+            pattern: options.params.pattern
+        };
+        setValidationValues(options, "requiredif", value);
+    });
+
+    $Unob.adapters.add("is", ["dependentproperty", "operator", "passonnull"], function (options) {
+        setValidationValues(options, "is", {
+            dependentproperty: options.params.dependentproperty,
+            operator: options.params.operator,
+            passonnull: options.params.passonnull
+        });
+    });
+
+    $Unob.adapters.add("requiredifempty", ["dependentproperty"], function (options) {
+        setValidationValues(options, "requiredifempty", {
+            dependentproperty: options.params.dependentproperty
+        });
+    });
+
+    $Unob.adapters.add("requiredifnotempty", ["dependentproperty"], function (options) {
+        setValidationValues(options, "requiredifnotempty", {
+            dependentproperty: options.params.dependentproperty
+        });
+    });
+    $Unob.adapters.add('customrequired', ['required', 'enabled'], function (options) {
+        var value = {
+            required: options.params.required,
+            enabled: options.params.enabled
+        };
+        var enabled = options.params.enabled;
+        enabled = enabled ? JSON.parse(enabled.toLowerCase()) : true;
+        var required = options.params.required;
+        required = required && enabled ? JSON.parse(required.toLowerCase()) : false;
+        if (!enabled) {
+            var parent = $($(options.element).closest("[data-customise]"));
+            $(parent).after(options.element);
+            $(parent).remove();
+            $(options.element).replaceWith(function () {
+                return $("<input>", {
+                    class: this.className,
+                    value: this.value,
+                    type: 'hidden',
+                    id: this.id,
+                    name: this.name
+                });
+            });
+
+        }
+        else if (required && $(options.element)[0].type != "hidden") {
+            var closest = $(options.element).closest('[data-customise]')
+            if (closest[0]) {
+                if (!$(closest[0]).prev(".required-icon")[0]) {
+                    $(closest[0]).find("label.form-label").after('<div class="required-icon"><div class="text">*</div></div>');
+                }
+
+            }
+
+        }
+        setValidationValues(options, "customrequired", value);
+    });
+    $Unob.adapters.add('customrequiredif', ['required', 'enabled', "dependentproperty", "dependentvalue"], function (options) {
+        var value = {
+            required: options.params.required,
+            enabled: options.params.enabled,
+            dependentproperty: options.params.dependentproperty,
+            dependentvalue: options.params.dependentvalue
+        };
+        var enabled = options.params.enabled;
+        enabled = enabled ? JSON.parse(enabled.toLowerCase()) : true;
+        var required = options.params.required;
+        required = required && enabled ? JSON.parse(required.toLowerCase()) : false;
+        if (!enabled) {
+
+            var parent = $($(options.element).closest("[data-customise]"));
+            $(parent).after(options.element);
+            $(parent).remove();
+            $(options.element).replaceWith(function () {
+                return $("<input>", {
+                    class: this.className,
+                    value: this.value,
+                    type: 'hidden',
+                    id: this.id,
+                    name: this.name
+                });
+            });
+
+        }
+        else if (required && $(options.element)[0].type != "hidden") {
+            var closest = $(options.element).closest('[data-customise]')
+            if (closest[0]) {
+                if (!$(closest[0]).prev(".required-icon")[0]) {
+                    $(closest[0]).find("label.form-label").after('<div class="required-icon"><div class="text">*</div></div>');
+                }
+
+            }
+
+        }
+        setValidationValues(options, "customrequiredif", value);
+    });
+
+
+
+    $Unob.adapters.add("stringlengthdynamic", ["maxlengthproperty","minlengthproperty"], function (options) {
+        var value = {
+            maxlengthproperty: options.params.maxlengthproperty,
+            minlengthproperty: options.params.minlengthproperty,
+        };
+        setValidationValues(options, "stringlengthdynamic", value);
+    });
+})();
+

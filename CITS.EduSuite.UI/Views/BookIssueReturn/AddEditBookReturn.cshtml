@@ -1,0 +1,172 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.BookIssueReturnMasterViewModel
+
+
+
+<div class="modal-header">
+    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+    <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.Add @EduSuiteUIResources.Sla @EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace @EduSuiteUIResources.BookReturn</h4>
+</div>
+
+@using (Html.BeginForm("AddEditBookReturn", "BookIssueReturn", FormMethod.Post, htmlAttributes: new { @id = "frmBookReturn" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.RowKey)
+    @Html.HiddenFor(m => m.CardId)
+    @Html.ValidationSummary(true)
+
+    <input type="hidden" id="hdnAutoFillFine" value="@Url.Action("AutoFillFine", "BookIssueReturn")" />
+    <div class="modal-body">
+
+
+        <div class="form-master">
+            <div class="form-row">
+                <div class="col-12">
+                    @if (!String.IsNullOrEmpty(Model.CardId))
+                    {
+                        @Html.Action("LibraryDetail", "Shared", new { id = 0, CardId = Model.CardId })
+                    }
+                </div>
+            </div>
+            <div class="form-row mt-2">
+
+
+
+                <div class="col-12 col-sm-3 col-lg-2">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.IssueDate, htmlAttributes: new { @id = "lblIssueDate", @class = "form-label" })
+                        @Html.TextBoxFor(m => m.IssueDate, "{0:dd/MM/yyyy}", new { @class = "form-control border-radius datetimepicker", @data_input_type = "date", @data_inputmask = "'alias': 'dd/mm/yyyy'", @readonly = "readonly" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.IssueDate)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-3 col-lg-2">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.DueDate, htmlAttributes: new { @id = "lblDueDate", @class = "form-label red" })
+                        @Html.TextBoxFor(m => m.DueDate, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @InputFor = "lblDueDate", @readonly = "readonly" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.DueDate)
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+            <div class="form-row">
+                <div class=" card">
+                    <div class="card-header w3-deep-purple">
+                        <div class="form-row">
+                            @EduSuiteUIResources.BookReturn@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Details
+
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div id="dynamicRepeater" class="repeater">
+                            <table class="table table-responsive table-bordered ">
+                                <thead>
+                                    <tr>
+                                        <th>@EduSuiteUIResources.Book</th>
+                                        <th>@EduSuiteUIResources.BookCopy</th>
+
+                                        <th>@EduSuiteUIResources.ReturnDate</th>
+                                        <th>@EduSuiteUIResources.IfAnyFine</th>
+                                        <th>@EduSuiteUIResources.BookStatus</th>
+                                        <th>@EduSuiteUIResources.Remarks</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody id="dvRepeaterList" data-repeater-list>
+                                    @for (int i = 0; i < Model.BookIssueReturnDetails.Count; i++)
+                                    {
+
+
+                                        <tr data-repeater-item>
+
+
+                                            <td class="p-1 vw-100">
+
+                                                @Html.TextBoxFor(m => m.BookIssueReturnDetails[i].BookName, new { @class = "form-control input-control", @InputFor = "lblBookName", @readonly = "readonly" })
+                                                <span class="form-control-error-text">
+                                                    @Html.ValidationMessageFor(m => m.BookIssueReturnDetails[i].BookName)
+                                                </span>
+                                                @Html.HiddenFor(m => m.BookIssueReturnDetails[i].RowKey)
+
+                                            </td>
+                                            <td class="p-1 vw-100">
+
+                                                @Html.TextBoxFor(m => m.BookIssueReturnDetails[i].BookCopySlNo, new { @class = "form-control input-control", @InputFor = "lblBookEdition", @readonly = "readonly" })
+                                                <span class="form-control-error-text">
+                                                    @Html.ValidationMessageFor(m => m.BookIssueReturnDetails[i].BookCopySlNo)
+                                                </span>
+                                                @Html.HiddenFor(m => m.BookIssueReturnDetails[i].BookCopyKey)
+                                            </td>
+
+
+                                            <td class="p-1 vw-100">
+                                                @Html.TextBoxFor(m => m.BookIssueReturnDetails[i].ReturnDate, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_input_type = "date", @InputFor = "lblDateOfApplication", @data_inputmask = "'alias': 'dd/mm/yyyy'",@onchange= "BookIssueReturn.FillFine(this)" })
+
+                                                <span class="form-control-error-text">
+                                                    @Html.ValidationMessageFor(m => m.BookIssueReturnDetails[i].ReturnDate)
+                                                </span>
+                                            </td>
+                                            <td class="vw-100">
+                                                @Html.TextBoxFor(m => m.BookIssueReturnDetails[i].IfAnyFine, new { @class = "form-control input-control IfAnyFine", @InputFor = "lblIfAnyFine", @readonly = "readonly" })
+                                                <span class="form-control-error-text">
+                                                    @Html.ValidationMessageFor(m => m.BookIssueReturnDetails[i].IfAnyFine)
+                                                </span>
+                                            </td>
+                                            <td class="vw-100">
+                                                @Html.DropDownListFor(m => m.BookIssueReturnDetails[i].BookStatusKey, new SelectList(Model.BookIssueReturnDetails[i].BookStatus, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.BookCopy, new { @class = "form-control border-radius input-control", @InputFor = "lblBookStatusKey" })
+                                                <span class="form-control-error-text">
+                                                    @Html.ValidationMessageFor(m => m.BookIssueReturnDetails[i].BookStatusKey)
+                                                </span>
+                                            </td>
+                                            <td class="p-1 vw-100">
+                                                @Html.TextBoxFor(m => m.BookIssueReturnDetails[i].Remark, new { @class = "form-control input-control", @InputFor = "lblRemark" })
+                                                <span class="form-control-error-text">
+                                                    @Html.ValidationMessageFor(m => m.BookIssueReturnDetails[i].Remark)
+                                                </span>
+                                            </td>
+                                        </tr>
+
+                                    }
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer justify-content-start">
+        <div class="form-group">
+            <input type="submit" value="@EduSuiteUIResources.Save" id="btnSave" class="btn btn-sm btn-success mx-1" />
+            <button type="button" data-dismiss="modal" class="btn btn-sm btn-danger mx-1">@EduSuiteUIResources.Cancel</button>
+
+        </div>
+    </div>
+
+}
+
+<script>
+    $(document).ready(function () {
+        AppCommon.FormatDateInput();
+    });
+</script>
+
+
+<style>
+
+    /*@@media (max-width: 767px) {
+
+    input.form-control {
+        width: auto;
+    }
+    }*/
+
+    input.form-control {
+        width: auto;
+    }
+</style>

@@ -1,0 +1,150 @@
+﻿
+@model CITS.EduSuite.Business.Models.ViewModels.EnquiryScheduleViewModel
+<style>
+
+
+    button.btn.btn-info.btn-lg.btnRightTogle {
+        position: fixed;
+        top: -162px;
+        right: 0px;
+        bottom: 0px;
+        height: 45px;
+        margin: auto;
+        transform: rotate(90deg);
+        margin-right: -12px;
+        border-radius: 0px;
+        background: #29af96;
+        border: 0px;
+        font-size: 17px;
+        height: 31px;
+        padding: 7px 7px;
+    }
+
+    .historyRow {
+        border-top: solid #d2d2d2 1px;
+        padding: 1px 10px !important;
+        display: block;
+        float: none;
+        height: 23px;
+        background: #e7e7e7;
+        width: 100%;
+    }
+
+        .historyRow .col-sm-1 {
+            font-weight: bold;
+            /*color: #0d9457;*/
+        }
+</style>
+
+<script>
+    $(document).ready(function () {
+
+        //$("input").bind('keyup', function (e)
+        //{
+
+
+
+        //});
+
+        $("#btnSearchHistory").click(function () {
+            $("#txtMobileNumberValidationMessage").hide();
+            $("#FeedbackValidationMessage").hide();
+            var Obj = {};
+            Obj.TelephoneCodeKey = $("#SearchHistoryTelephoneCodeKey").val();
+            Obj.TelephoneCodeName = $("#SearchHistoryTelephoneCodeKey option:selected").text();
+            Obj.MobileNumber = Obj.TelephoneCodeName + $("#txtMobileNumber").val().trim();
+            Obj.SearchType = 1;
+            Obj.Feedback = $("#Feedback").val().trim();
+
+            if (Obj.MobileNumber == "") {
+
+                $("#txtMobileNumberValidationMessage").show();
+            }
+            else if (Obj.Feedback == "") {
+                $("#FeedbackValidationMessage").show();
+            }
+            else {
+                EnquiryScheduleHistory.GetAllHistoryByMobileNumber(Obj.MobileNumber, Obj.SearchType);
+            }
+
+        });
+
+        $("#_btnShowAllHistory").click(function () {
+
+        });
+
+
+
+
+        $('#AllHistoryModal').modal({
+            backdrop: 'static',
+            keyboard: false,
+            show: false
+        })
+
+
+
+    });
+</script>
+
+
+
+
+
+<div class="modal-header">
+    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+    <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.CallHistory</h4>
+</div>
+
+<div class="modal-body">
+    <div class="topMarginSpace  form-master fnone">
+        <div class="formMaster paddingNone">
+            <div class="form-row" id="MobileNumberSearchHistory" style="display:none">
+
+                <div class="col-5">
+                    <div class="input-group">
+                        <div class="input-group-prepend" id="SearchHistoryPopupCountryCode">
+                            @Html.DropDownListFor(m => m.SearchHistoryTelephoneCodeKey, new SelectList(Model.TelephoneCodes, "RowKey", "Text"), EduSuiteUIResources.BlankSpace, new { @class = "form-control input-control", @InputFor = "lblTelephoneCodeOptional" })
+                        </div>
+                        <input type="text" id="txtMobileNumber" placeholder="@EduSuiteUIResources.Search@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.MobileNumber" class="form-control" />
+                        <span style="display:none" id="txtMobileNumberValidationMessage" class="red">
+                            <span class="field-validation-error" data-valmsg-for="EnquiryName" data-valmsg-replace="true"><span id="EnquiryName-error" class="">MobileNumber is Required</span></span>
+                        </span>
+                    </div>
+
+                </div>
+                <div class="col-4">
+                    @Html.TextBoxFor(m => m.Feedback, new { @class = "form-control input-control", @InputFor = "lblDistrict", @Placeholder = "Write Purpose" })
+                    <span style="display:none" id="FeedbackValidationMessage" class="red">
+                        <span class="field-validation-error" data-valmsg-for="EnquiryName" data-valmsg-replace="true"><span id="EnquiryName-error" class="">Please enter Purpose</span></span>
+                    </span>
+                </div>
+
+                <div class="col-3">
+
+                    <button class="btn btn-sm btn-success pull-left" id="btnSearchHistory">Search</button>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-sm-12 form-col paddingNone">
+                    <div class="form-group">
+                        <div id="ClosedFeedbackList" class="col-sm-12">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    $(document).ready(function () {
+
+        $("#SearchHistoryTelephoneCodeKey").val(51);
+
+    });
+</script>

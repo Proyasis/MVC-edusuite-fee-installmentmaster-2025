@@ -1,0 +1,205 @@
+﻿
+@model CITS.EduSuite.Business.Models.ViewModels.EmployeeSalaryMasterViewModel
+@using System.Web.Mvc
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/CitsValidation")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Content/Select2JS")
+    @Scripts.Render("~/Scripts/EmployeeSalary")
+    @Scripts.Render("~/Scripts/PaymentWindow")
+    @Scripts.Render("~/Content/Mustache")
+    @Scripts.Render("~/Content/momentJS")
+    @Scripts.Render("~/Scripts/PrintInvoice")
+
+}
+
+<input type="hidden" id="hdnGetEmployeeSalaryList" value="@Url.Action("GetEmployeeSalary", "EmployeeSalary")" />
+<input type="hidden" id="hdnDeleteEmployeeSalary" value="@Url.Action("DeleteEmployeeSalary", "EmployeeSalary")" />
+<input type="hidden" id="hdnAddEditEmployeeSalary" value="@Url.Action("AddEditEmployeeSalary", "EmployeeSalary")" />
+<input type="hidden" id="hdnAddEditEmployeeSalaryPayment" value="@Url.Action("AddEditEmployeeSalaryPayment", "EmployeeSalary", new {id="" })" />
+<input type="hidden" id="hdnSalaryPaySlip" value=@Url.Action("SalaryPaySlip", "EmployeeSalary") />
+<input type="hidden" id="hdnGetEmployeesByBranchId" value="@Url.Action("GetEmployeesByBranchId", "EmployeeSalary")" />
+
+<input type="hidden" id="hdnGetEmployeePaymentDetails" value="@Url.Action("GetEmployeePaymentDetails", "EmployeeSalary")" />
+<input type="hidden" id="hdnAddEditEmployeeSalaryPaymentEdit" value="@Url.Action("AddEditEmployeeSalaryPaymentEdit", "EmployeeSalary")" />
+<input type="hidden" id="hdnDeleteSalaryPayment" value="@Url.Action("DeleteSalaryPayment", "EmployeeSalary")" />
+<input type="hidden" id="hdnPrintReciept" value="@Url.Action("PrintReciept", "PrintInvoice")" />
+<input type="hidden" id="hdnReceiptPath" value=@Url.Content("~/UploadedFiles/InvoiceTemplate/Voucher.html") />
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-sm-6 col-12">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.Employee@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Salary</h3>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 text-right">
+            <a id="addEditEmployeeSalary" href="@Url.Action("AddEditEmployeeSalary", "EmployeeSalary")" class="btn btn-success btn-sm"><i class="fa fa-plus-square-o"></i> <span>@EduSuiteUIResources.New @EduSuiteUIResources.BlankSpace @EduSuiteUIResources.Employee@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Salary</span></a>
+        </div>
+    </div>
+</header>
+<section class="section-content mx-sm-3 mx-0">
+    <div class="GridBody">
+
+        <div class="grid-nav-bar form-row justify-content-between">
+            <div class="col-sm-2 col-6">
+                @Html.TextBoxFor(m => m.SalaryMonth, "{0:MMM yyyy}", new { @class = "input-control form-control form-control-sm", @data_input_type = "month", @readonly = "readonly", @InputFor = "lblSalaryYear" })
+
+            </div>
+            <div class="col-sm-3 col-6">
+                @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Branch, new { @class = "input-control form-control form-control-sm form-control-sm", @InputFor = "lblBranch" })
+            </div>
+
+            <div class="col-sm-3 col-6">
+                @Html.DropDownListFor(m => m.EmployeeKey, new SelectList(Model.Employees, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Employee, new { @class = "input-control form-control form-control-sm", @InputFor = "lblEmployee", @data_live_search = "true" })
+            </div>
+
+
+            <div class="col-sm-4 col-6">
+                <a class="btn btn-info btn-sm float-right " onclick='window.location.reload()'>
+                    <i class="fa fa-refresh"></i>   Refresh
+                </a>
+            </div>
+
+        </div>
+
+        <div class="table-wrapper">
+
+            <div class="jqGrid_wrapper overflow-auto">
+                <table id="grid"></table>
+                <div id="pager"></div>
+            </div>
+        </div>
+
+
+    </div>
+</section>
+
+@*<header class="section-header">
+        <div class="row justify-content-between px-1">
+            <div class="col-12">
+                <div class="tbl">
+                    <div class="tbl-row">
+                        <div class="tbl-cell">
+                            <h3>@EduSuiteUIResources.Application</h3>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="section-content p-0 mx-sm-3 mx-0">
+            <ul id="tab-application" class="form-row pagination pagination-lg bootpag  w-100" >
+                <li class="page-item"><a class="page-link" href="#">«</a></li>
+                @for (int i = 1; i <= 11; i++)
+                {
+
+                    if (Convert.ToInt32(DateTimeUTC.Now.Month.ToString("0#")) == i)
+                    {
+                        <li class="page-item disabled">
+                            <a href="#@i.ToString()" aria-controls="discover" class="page-link p-0">
+                                <div class="card text-white font-14 p-0">
+                                    <div class="card-body bg-primary b-b">
+                                        @System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(i)
+                                    </div>
+                                    <div class="card-footer bg-primary font-14  p-1">
+                                        Current
+                                    </div>
+                                </div>
+
+                            </a>
+                        </li>
+                    }
+                    else if (Convert.ToInt32(DateTimeUTC.Now.Month.ToString("0#")) < i)
+                    {
+                        <li class="page-item">
+                            <a href="#@i.ToString()" aria-controls="discover" class="page-link p-0">
+                                <div class="card text-white font-14 p-0">
+                                    <div class="card-body w3-grey b-b">
+                                        @System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(i)
+                                    </div>
+                                    <div class="card-footer bg-secondary  font-14 p-1">
+                                        Up Comming
+                                    </div>
+                                </div>
+
+                            </a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item">
+                            <a href="#@i.ToString()" aria-controls="discover" class="page-link p-0">
+                                <div class="card text-white font-14 p-0">
+                                    <div class="card-body w3-green b-b">
+                                        @System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(i)
+                                    </div>
+                                    <div class="card-footer bg-success  font-14 p-1">
+                                        Complete
+                                    </div>
+                                </div>
+
+                            </a>
+                        </li>
+                    }
+
+                }
+
+                <li class="page-item"><a class="page-link" href="#">»</a></li>
+            </ul>
+    </section>*@
+
+
+
+<script>
+    $(document).ready(function () {
+
+
+        AppCommon.FormatSelect2();
+        AppCommon.FormatMonthInput();
+        setAddEditURL();
+        EmployeeSalary.GetEmployeeSalaries();
+        EmployeeSalary.GetEmployeesByBranchId($("#BranchKey").val(), $("#EmployeeKey"));
+        $("#BranchKey").on("change", function () {
+            setAddEditURL();
+            EmployeeSalary.GetEmployeesByBranchId($(this).val(), $("#EmployeeKey"));
+            EmployeeSalary.GetEmployeeSalaries();
+        });
+        $("input#SalaryMonth").on('changeDate', function (ev) {
+            setAddEditURL();
+            EmployeeSalary.GetEmployeeSalaries();
+        });
+        $("#EmployeeKey").on("change", function () {
+            setAddEditURL();
+            EmployeeSalary.GetEmployeeSalaries();
+        });
+
+        $(window).on("resize", function () {
+            var $grid = $("#grid"),
+            newWidth = $grid.closest(".ui-jqgrid").parent().width();
+            $grid.jqGrid("setGridWidth", newWidth, true);
+        });
+    });
+    function setAddEditURL() {
+        var obj = {};
+        obj.id = @Model.SalaryMasterKey;
+        obj.employeeKey = $("#EmployeeKey").val();
+        obj.branchKey = $("#BranchKey").val();
+        var month = AppCommon.ParseMMMYYYYDate($("input#SalaryMonth").val());
+        obj.salaryMonthKey = moment(month).month()+1;
+        obj.salaryYearKey = moment(month).year();
+        $("#addEditEmployeeSalary").attr("href", "@Url.Action("AddEditEmployeeSalary", "EmployeeSalary")"+"?"+$.param(obj))
+    }
+</script>
+
+
+

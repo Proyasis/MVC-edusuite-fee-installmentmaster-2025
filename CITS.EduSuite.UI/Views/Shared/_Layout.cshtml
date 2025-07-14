@@ -1,0 +1,310 @@
+﻿@using System.Reflection
+
+@using CITS.EduSuite.Business.Models.Security
+@using System.Web.Optimization
+@using CITS.EduSuite.Business.Models.ViewModels
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title></title>
+    <link rel="icon" href="~/Images/EduSuite.ico" />
+    @* <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">*@
+    @*<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans" />*@
+    @*<link href="~/Styles/google-font.css" rel="stylesheet" />*@
+    <link href="~/Content/ExcelSheet/jquery.jexcel.css" rel="stylesheet" />
+    <link href="~/Content/font-awesome.css" rel="stylesheet" />
+    <link href="~/Content/themes/default/style.min.css" rel="stylesheet" />
+    <link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
+    <link href="~/Content/icofont.css" rel="stylesheet" />
+    @{
+        var MeadiScreen = @"<link href=""{0}"" rel=""stylesheet""  media=""screen"" />";
+
+    }
+    <link href="~/Styles/style.css" rel="stylesheet" />
+    @if ((User as CITSEduSuitePrincipal) != null)
+    {
+        @RenderPage("~/Views/Shared/Resources.cshtml")
+    }
+    @*@Styles.Render("~/Content/BootstrapCSS")*@
+    @Styles.RenderFormat(MeadiScreen, "~/Content/BootstrapCSS")
+    @*@Styles.Render("~/Content/MultiselectCSS")*@
+    @Styles.Render("~/Content/DatePickerCSS")
+    @Styles.Render("~/Content/LoadMaskCSS")
+    @Styles.Render("~/Content/Select2CSS")
+    @Styles.Render("~/Content/BootstrapSelectCSS")
+    @Styles.Render("~/Content/JqGridCSS")
+    @Styles.Render("~/Content/ToastrCSS")
+    @Styles.Render("~/Content/JCropCSS")
+    @Styles.Render("~/Content/ChartCSS")
+    @*@Styles.Render("~/Content/DatatableCSS")*@
+    @Styles.Render("~/Styles/css")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/Scripts/Shared")
+    @Scripts.Render("~/Scripts/TeacherPortal")
+    <link href="~/Content/jquery.timesetter.css" rel="stylesheet" />
+    <link href="~/Content/jquery-confirm.min.css" rel="stylesheet" />
+    <link href="~/Styles/elements/jqTable.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-daterangepicker/daterangepicker.min.css" rel="stylesheet" />
+</head>
+
+
+<body class="with-side-menu">
+    @if (!User.Identity.IsAuthenticated)
+    {
+        Response.Redirect(Url.Action("LogOut", "Login"));
+    }
+
+
+    <div class="horizontal-menu">
+        <nav class="navbar top-navbar col-lg-12 col-12 p-0">
+            <div class="container-fluid">
+                <button id="show-hide-sidebar-toggle" class="show-hide-sidebar ml-3">
+                    <span>toggle menu</span>
+                </button>
+
+                <button class="hamburger hamburger--htla">
+                    <span>toggle menu</span>
+                </button>
+                <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center ">
+                    <a class="navbar-brand brand-logo site-logo" href="@Url.Action("DashBoard", "Home") "><img src="~/Images/edusuitelogo.png" alt="logo" /></a>
+                    <a class="navbar-brand brand-logo-mini site-logo" href="@Url.Action("DashBoard", "Home") "><img src="~/Images/edusuitelogo-mob.png" alt="logo" /></a>
+                </div>
+                <div class="navbar-menu-wrapper d-flex align-items-center">
+                    <ul class="navbar-nav navbar-nav-right">
+                        <li>
+                            <a class="navbar-brand brand-logo site-logo" href="@Url.Action("DashBoard", "Home") ">
+                                @if ((DbConstants.User.CompanyLogo ?? "") != "")
+                                {
+                                    <img src="@Url.Content(DbConstants.User.CompanyLogo)" alt="logo" width="100px">
+                                }
+                                else
+                                {
+                                    <img src="~/UploadFiles/Company/Logo/logo.png" alt="logo" width="100px" />
+                                }
+
+
+                            </a>
+                        </li>
+                        <li class="nav-item dropdown mr-1">
+                            <a class="nav-link d-flex justify-content-center align-items-center" href="#" id="fullscreen-button">
+                                <i class="glyphicon glyphicon-fullscreen mx-0"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item dropdown mr-1 d-none">
+                            <a class="nav-link count-indicator dropdown-toggle d-flex justify-content-center align-items-center" id="messageDropdown" href="#" data-toggle="dropdown">
+                                <i class="fa fa-envelope mx-0"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="messageDropdown">
+                                <p class="mb-0 font-weight-normal float-left dropdown-header">Messages</p>
+                                <a class="dropdown-item preview-item">
+                                </a>
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown mr-4 d-none">
+                            <a class="nav-link count-indicator dropdown-toggle d-flex align-items-center justify-content-center" id="notificationDropdown" href="#" data-toggle="dropdown">
+                                <i class="fa fa-bell mx-0"></i>
+                                <input type="hidden" id="hdnPushNotificationCount" value="" />
+                                <span id="spnPushNotificationCount"></span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="dd-notification">
+                                <p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
+                                <a class="dropdown-item preview-item">
+                                    <ul id="listNotification" class="dropdown-menu-notif-list-media"></ul>
+                                </a>
+                            </div>
+                        </li>
+                        <li class="nav-item nav-profile dropdown mr-0 mr-sm-2">
+                            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
+                                @if ((DbConstants.User.Photo ?? "") != "")
+                                {
+                                    <img class="img-circle" src="@Url.Content(DbConstants.User.Photo)" alt="profile">
+                                }
+                                else
+                                {
+                                    <img src="~/Images/avatar-2-64.png" alt="">
+                                }
+
+                                <span class="nav-profile-name">@(DbConstants.User.Name)</span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
+                                @if (!DbConstants.Role.AdminUserTypes.Contains(DbConstants.User.RoleKey))
+                                {
+                                    @*<a class="dropdown-item" href="#" onclick="ViewProfile()"><span class="glyphicon glyphicon-user mr-2"></span>Profile</a>*@
+
+                                    @*<a class="dropdown-item" href="#" onclick="TeacherPortal.EmployeeTimeTable()"><span class="fa fa-calendar mr-2"></span>Time Table</a>
+                                        <a class="dropdown-item" href="#" onclick="TeacherPortal.EmployeeEvents()"><span class="fa fa-calendar-check-o mr-2"></span>Events</a>*@
+                                    if (DbConstants.User.IsTeacher)
+                                    {
+                                        <a class="dropdown-item" href="#" onclick="location.href='@Url.Action("Index", "TeacherPortal")' "><span class="glyphicon glyphicon-user mr-2"></span>@EduSuiteUIResources.TeacherPortal</a>
+
+                                    }
+                                }
+
+                                <a class="dropdown-item" href="@Url.Action("DashBoard", "Home") "><span class="icofont icofont-dashboard-web  mr-2"></span>Home</a>
+                                <a class="dropdown-item" href="#" onclick="window.location.reload(true)"><span class="icofont icofont-data  mr-2"></span>Clear Cache</a>
+
+                                <a class="dropdown-item" href="#" onclick="ViewChangePassswordPopup()"><span class="glyphicon glyphicon-lock mr-2"></span>Change Password</a>
+                                <a class="dropdown-item d-none" href="#" onclick="GetBackupPopup()"><span class="fa fa-database mr-2"></span>Get Backup</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="@Url.Action("LogOut", "Login") "><span class=" glyphicon glyphicon-log-out mr-2"></span>Logout</a>
+
+                            </div>
+                        </li>
+                    </ul>
+                    <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="horizontal-menu-toggle">
+                        <span class="fa fa stack"></span>
+                    </button>
+
+                </div>
+
+
+            </div>
+        </nav>
+
+        @Html.Action("MenuList", "Shared")
+
+
+
+    </div>
+
+    <!-- partial -->
+
+    <div class="page-content">
+        <div class="container-fluid p-0 m-0">
+            @RenderBody()
+        </div><!--.container-fluid-->
+        @Html.Partial("_Toastr")
+    </div>
+    <!--.page-content-->
+    <button type="button" data-url="@Url.Action("EnquiryFeedbacksList", "Shared")" onclick="EnquiryScheduleHistory.SearchPhoneNumberPopup(this)" class="btn btn-info btn-sm rounded-circle position-fixed btnRightTogle" data-toggle="modal" id="_btnShowAllHistory" data-target="#AllHistoryModal"> <i class="fa fa-search"></i> </button>
+
+    <input type="hidden" id="hdnGetHistory" value="@Url.Action("GetAllHistoryList", "EnquirySchedule")" />
+
+    <script src="~/Scripts/App/plugins.js"></script>
+
+    @Scripts.Render("~/bundles/BootstrapJS")
+    @Scripts.Render("~/Content/ToastrJs")
+    @Scripts.Render("~/Content/LoadMaskJS")
+    @Scripts.Render("~/Content/InputMaskJS")
+    @Scripts.Render("~/Content/JqGridJS")
+    @Scripts.Render("~/Content/MomentJS")
+    @Scripts.Render("~/Content/BootstrapSelectJS")
+    @*@Scripts.Render("~/Content/DatatableJS")*@
+
+    @Scripts.Render("~/Scripts/Common")
+    @RenderSection("scripts", required: false)
+    <script src="~/Scripts/App/app.js"></script>
+    <script src="~/Scripts/jquery.popupform.js"></script>
+    <script src="~/Scripts/jquery.contextMenu.min.js"></script>
+    <script src="~/Scripts/jquery.bootpag.min.js"></script>
+    <script src="~/Scripts/jquery.timesetter.js"></script>
+    <script src="~/Scripts/excelexport.js"></script>
+    <script src="~/Scripts/jquery.PrintArea.js"></script>
+    <script src="~/Scripts/jquery.serializeToJSON.js"></script>
+    <script src="~/Scripts/handlebars.js"></script>
+    <script src="~/Scripts/handlebars.min.js"></script>
+    <script src="~/Scripts/QRCodeJS.js"></script>
+    <script src="~/Scripts/tableHeadFixed.js"></script>
+    <script src="~/Scripts/bootstrap3-typeahead.min.js"></script>
+    <script src="~/Scripts/jquery.signalR-2.4.1.min.js"></script>
+    <script src="~/signalr/hubs"></script>
+    <script src="~/Content/bootstrap-daterangepicker/daterangepicker.min.js"></script>
+    @Scripts.Render("~/Scripts/PushNotification")  @*Notification Count *** Required*@
+    <input type="hidden" id="hdnGetLatestNotification" value="@Url.Action("GetLatestNotification", "NotificationTemplate")" />
+    <input type="hidden" id="hdnGetLatestNotificationCount" value="@Url.Action("GetLatestNotificationCount", "NotificationTemplate")" />
+    <input type="hidden" id="hdnViewEmployee" value="@Url.Action("ViewEmployee", "Employee")" />
+    <input type="hidden" id="hdnEmployeeTimeTable" value="@Url.Action("ViewTimeTableEmployee", "TimeTableTemp")" />
+    <input type="hidden" id="hdnEventsScheduledList" value="@Url.Action("EventsScheduledList", "TeacherPortal")" />
+
+    <script>
+        var ajaxNotificationCall = null;
+
+        $(function () {
+            PushNotification.PushNotificationInit();
+            PushNotification.GetLastestNotificationCount();
+            $("#lnkNotification").on('shown.bs.dropdown', function (e) {
+                var pageIndex = 1;
+                var count = $("#spnPushNotificationCount").val();
+                count = parseInt(count) ? parseInt(count) : 0;
+                $("#spnPushNotificationCount").closest("a").removeClass("active")
+                if ($("#listNotification").find("li").length == 0 || count > 0) {
+                    PushNotification.GetNotifications(1);
+                }
+                //$("#spnPushNotificationCount").html("")
+            });
+
+        });
+
+        //$(document).on('click', '.dropdown-menu', function (e) {
+        //    e.stopPropagation();
+        //});
+
+    </script>
+
+    <script>
+    function ViewChangePassswordPopup() {
+
+        var validator = null
+        var url = "@Url.Action("ChangePassword", "Login")";
+        $.customPopupform.CustomPopup({}, url);
+        //$('#myModalContentChangePassword').load(url, function () {
+        //    if ($(this).html() != "") {
+        //        $("#myModalChangePassword").one('show.bs.modal', function () {
+
+        //        }).modal({
+        //            backdrop: 'static',
+        //            keyboard: false
+        //        }, 'show');
+        //    }
+        //});
+        }
+
+        function GetBackupPopup() {
+
+        var validator = null
+        var url = "@Url.Action("GetBackup", "Shared")";
+        $.customPopupform.CustomPopup({}, url);
+
+    }
+      function ViewProfile() {
+            var EmployeeKey = "@DbConstants.User.EmployeeKey";
+            href = $("#hdnViewEmployee").val() + "/" + EmployeeKey
+            window.location.href = href
+        }
+        localStorage.removeItem("teacherPortalRebind");
+    </script>
+    <style>
+        @@media all and (min-width: 992px) {
+            .navbar {
+                padding-top: 0;
+                padding-bottom: 0;
+            }
+
+                .navbar .has-megamenu {
+                    position: static !important;
+                }
+
+                .navbar .megamenu {
+                    left: 0;
+                    right: 0;
+                    width: 100%;
+                    padding: 20px;
+                }
+
+                .navbar .nav-link {
+                    padding-top: 1rem;
+                    padding-bottom: 1rem;
+                }
+        }
+    </style>
+
+
+
+</body>
+
+</html>
+

@@ -1,0 +1,110 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.ApplicationWebFormViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+@using System.Web.Mvc
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Scripts/ApplicationWebForm")
+    @Scripts.Render("~/Content/JqueryRepeater")
+}
+
+<input type="hidden" id="hdnGetApplicationWebForm" value="@Url.Action("GetApplicationWebForm", "ApplicationWebForm")" />
+<input type="hidden" id="hdnDeleteApplicationWebForm" value="@Url.Action("DeleteApplicationWebForm", "ApplicationWebForm")" />
+<input type="hidden" id="hdnAddEditApplicationPersonal" value="@Url.Action("AddEditApplication", "Application")" />
+<div class="card-header">
+    <header class="section-header">
+        <div class="row justify-content-between px-1">
+            <div class="col-sm-6 col-12">
+                <div class="tbl">
+                    <div class="tbl-row">
+                        <div class="tbl-cell">
+                            <h3>Application Web Form</h3>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+</div>
+<div class="card-body">
+    <section class="section-content mx-sm-3 mx-0">
+        <div class="GridBody">
+
+            <div class="grid-nav-bar">
+                <div class="form-row">
+                    @if (Model.Branches.Count == 1)
+                    {
+                        {
+                            Model.BranchKey = (Model.BranchKey == 0 || Model.BranchKey == null) ? (short)Model.Branches.Select(x => x.RowKey).FirstOrDefault() : Model.BranchKey;
+                        }
+                        @Html.HiddenFor(m => m.BranchKey)
+                    }
+                    else
+                    {
+                        <div class="col-lg-2 col-sm-4 col-6">
+                            <fieldset class="form-group">
+                                @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.Branch, new { @class = "form-control input-control ", @data_live_search = "true" })
+                            </fieldset>
+                        </div>
+                    }
+                    <div class="col-lg-2 col-sm-4 col-6">
+                        <fieldset class="form-group">
+                            @Html.DropDownListFor(m => m.WebFormStatusKey, new SelectList(Model.WebFormStatus, "RowKey", "Text"), EduSuiteUIResources.Status, new { @class = "form-control input-control " })
+                        </fieldset>
+                    </div>
+                    <div class="col-lg-2 col-sm-4 col-6">
+                        <fieldset class="form-group">
+                            @Html.DropDownListFor(m => m.EnquiryStatusKey, new SelectList(Model.WebEnquiryStatus, "RowKey", "Text"), EduSuiteUIResources.EnquiryStatus, new { @class = "form-control input-control " })
+                        </fieldset>
+                    </div>
+
+                    <div class="col-lg-2 col-sm-4 col-6">
+                        <div class="form-group">
+                            <input id="txtSearchApplicantName" type="text" name="focus" class="form-control gridSearchTextBox" placeholder="@EduSuiteUIResources.Search" /> @* Change Search TextBox Placeholder*@
+                            <span id="iconSpan" class="iconSpan"><i class="fa fa-times-circle" aria-hidden="true"></i></span>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-sm-4 col-6 float-right">
+                        <a class="btn btn-info btn-sm float-right " onclick='window.location.reload()'>
+                            <i class="fa fa-refresh"></i>   Search
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+            <div class="table-wrapper">
+
+                <div class="jqGrid_wrapper overflow-auto">
+                    <table id="grid"></table>
+                    <div id="pager"></div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#txtSearchApplicantName").on("input", function () {
+            ApplicationWebForm.GetApplicationWebForm();
+        });
+        $("#iconSpan").click(function () {
+            $('#txtsearch').val('');
+            ApplicationWebForm.GetApplicationWebForm();
+        });
+        $("#BranchKey").change(function () {
+            ApplicationWebForm.GetApplicationWebForm();
+        });
+        $("#WebFormStatusKey").change(function () {
+            ApplicationWebForm.GetApplicationWebForm();
+        });
+        $("#EnquiryStatusKey").change(function () {
+            ApplicationWebForm.GetApplicationWebForm();
+        });
+        ApplicationWebForm.GetApplicationWebForm();
+    });
+</script>

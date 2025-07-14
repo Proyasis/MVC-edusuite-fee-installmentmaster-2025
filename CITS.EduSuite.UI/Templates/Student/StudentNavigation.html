@@ -1,0 +1,14 @@
+﻿
+<div class="card">
+    <div class="card-header w3-light-blue">
+        {{#if PrevApplicationKey}}
+
+        <a onclick=" Application.GetApplicationDetails({{PrevApplicationKey}})"> <span><i class="fa fa-arrow-circle-o-left"></i> {{PrevApplicationName}} ({{PrevApplicationRollNoCode}} ) </span></a>
+        {{/if}}
+        {{#if NextApplicationKey}}
+
+        <a onclick=" Application.GetApplicationDetails({{NextApplicationKey}})"> <span class="float-right">{{NextApplicationName}} ( {{NextApplicationRollNoCode}} ) <i class="fa fa-arrow-circle-o-right"></i></span></a>
+        {{/if}}
+    </div>
+
+</div>

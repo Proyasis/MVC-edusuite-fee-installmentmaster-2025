@@ -1,0 +1,145 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.NotificationDataViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+@using System.Web.Mvc
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Scripts/NotificationData")
+    @Scripts.Render("~/bundles/CitsValidation")
+    @Scripts.Render("~/Content/DatePickerJS")
+
+
+
+
+}
+
+<input type="hidden" id="hdnGetNotification" value="@Url.Action("GetNotification", "NotificationData")" />
+
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-sm-6 col-12">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.Notifications</h3>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</header>
+
+<section class="section-content mx-sm-3 mx-0">
+    <div class="GridBody">
+        <div class="form-row tabs-section mb-2">
+            <div class="tabs-section-nav">
+                <ul id="tab-componets" class="nav nav-tabs" role="tablist">
+                    <li class="nav-item"><a data-toggle="tab" data-val="true" href="#" aria-expanded="true" class="nav-link"><span class="nav-link-in">Notification  </span></a></li>
+                    <li class="nav-item "><a data-toggle="tab" data-val="false" href="#" aria-expanded="true" class="nav-link"><span class="nav-link-in">Push Notification</span></a></li>
+
+                </ul>
+            </div>
+        </div>
+        <div class="grid-nav-bar">
+            <form id="frmScholarshipExam">
+                <div class=" form-row ">
+
+                    <div class="col-lg-2 col-sm-4 col-6">
+                        <fieldset class="form-group">
+                            @Html.TextBoxFor(m => m.SearchText, new { @class = "form-control input-control", @placeholder = EduSuiteUIResources.Name })
+
+                        </fieldset>
+                    </div>
+
+                 
+                    <div class="col-lg-2 col-sm-4 col-6">
+                        <fieldset class="form-group">
+                            @Html.TextBox("txtsearchFromDate", "", "{0:dd/MM/yyyy}", new { @class = "form-control gridSearchTextBox", @data_inputmask = "'alias': 'dd/mm/yyyy'", @data_input_type = "date" })
+                        </fieldset>
+
+                    </div>
+                    <div class="col-lg-2 col-sm-4 col-6">
+                        <fieldset class="form-group">
+                            @Html.TextBox("txtsearchToDate", "", "{0:dd/MM/yyyy}", new { @class = "form-control gridSearchTextBox", @data_inputmask = "'alias': 'dd/mm/yyyy'", @data_input_type = "date" })
+                        </fieldset>
+
+                    </div>
+
+                </div>
+                <div class="form-row justify-content-end">
+
+
+
+                </div>
+            </form>
+        </div>
+
+        <div class="table-wrapper">
+
+            <div class="jqGrid_wrapper overflow-auto">
+                <table id="grid"></table>
+                <div id="pager"></div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+<script>
+    var jsonData=@(Html.Raw(Json.Encode(Model)));
+    $(document).ready(function () {
+        AppCommon.FormatDateInput();
+        AppCommon.FormatInputCase();
+
+        $("#tab-componets li:first-child a").addClass('active');
+
+        $("#txtsearchFromDate").datepicker("setDate", new Date());
+        $("#txtsearchToDate").datepicker("setDate", new Date());
+
+        $('#tab-componets a[data-toggle="tab"]').on('shown.bs.tab', function (e)
+        {
+            NotificationData.GetNotification();
+        });
+
+        $("#txtsearchFromDate,#txtsearchToDate").on("changeDate", function () {
+            NotificationData.GetNotification();
+        })
+
+
+
+
+        $("#SearchText").on("input", function () {
+            NotificationData.GetNotification();
+        });
+
+        $("#iconSpan").click(function () {
+            NotificationData.GetNotification();
+        });
+      
+
+        NotificationData.GetNotification();
+
+
+    });
+
+</script>
+
+<style type="text/css">
+    .ui-jqgrid tr.jqgrow td {
+        word-wrap: break-word; /* IE 5.5+ and CSS3 */
+        white-space: pre-wrap; /* CSS3 */
+        white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+        white-space: -pre-wrap; /* Opera 4-6 */
+        white-space: -o-pre-wrap; /* Opera 7 */
+        overflow: hidden;
+        height: auto;
+        vertical-align: middle;
+        padding-top: 3px;
+        padding-bottom: 3px;
+    }
+</style>

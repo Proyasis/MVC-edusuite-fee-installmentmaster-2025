@@ -1,0 +1,148 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.ScholarshipExamResultViewModel
+
+
+
+
+<div class="modal-header">
+    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+    <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.Add @EduSuiteUIResources.Sla @EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace @EduSuiteUIResources.ScholarshipExamResult</h4>
+</div>
+
+<input type="hidden" id="hdnGetStudentDetailsByStudentKey" value="@Url.Action("GetStudentDetailsByStudentKey", "Application")" />
+
+@using (Html.BeginForm("AddEditScholarshipExamResult", "ScholarshipExamResult", FormMethod.Post, new { @id = "frmAddEditScholarshipExamResult" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <div class="modal-body">
+        <div class="form-master">
+            <div class="form-row">
+                <div class="paddingNone">
+                    <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+                </div>
+            </div>
+
+
+            <div id="dynamicRepeater" class="repeater">
+                <table class="table table-stripped">
+                    <thead class="form-group">
+                        <tr>
+                            @*<th></th>*@
+                            <th>
+                                @Html.Label(EduSuiteUIResources.Name, htmlAttributes: new { @class = "form-label" })
+                            </th>
+
+                            <th>
+                                @Html.Label(EduSuiteUIResources.ExamRegNo, htmlAttributes: new { @class = "form-label" })
+                            </th>
+
+                            <th>
+                                @Html.Label(EduSuiteUIResources.Mark, htmlAttributes: new { @class = "form-label" })
+                            </th>
+                            <th>
+                                @Html.Label(EduSuiteUIResources.Status, htmlAttributes: new { @class = "form-label" })
+                            </th>
+                            <th>
+                                @Html.Label(EduSuiteUIResources.Absent, htmlAttributes: new { @class = "form-label" })
+                            </th>
+                            <th>
+                                @Html.Label(EduSuiteUIResources.Remarks, htmlAttributes: new { @class = "form-label" })
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody data-repeater-list id="DivScholarshipExamResult">
+                        @for (int i = 0; i < Model.ScholarshipExamDetails.Count(); i++)
+                        {
+                            <tr data-repeater-item>
+                             
+                                <td class="px-1">
+                                    @Html.TextBoxFor(m => Model.ScholarshipExamDetails[i].ScholarShipName, new { @class = "form-control input-control", @readonly = "readonly" })
+                                    @*<label class="form-label">@Model.ScholarshipExamDetails[i].ScholarShipName</label>*@
+
+                                    @Html.HiddenFor(m => Model.ScholarshipExamDetails[i].ScholarshipExamScheduleKey)
+                                    @Html.HiddenFor(m => Model.ScholarshipExamDetails[i].RowKey)
+                                    @*@Html.DropDownListFor(m => m.EnRollmentNoDetailsViewModel[i].ApplicationKey, new SelectList(Model.StudentList, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Students, new { @class = "form-control input-control" })
+                                    <span class="red">
+                                        @Html.ValidationMessageFor(m => m.EnRollmentNoDetailsViewModel[i].ApplicationKey)
+                                    </span>*@
+                                </td>
+                                <td class="px-1">
+                                    @Html.TextBoxFor(m => Model.ScholarshipExamDetails[i].ExamRegNo, new { @class = "form-control input-control", @readonly = "readonly" })
+                                    @*<label class="form-control">@Model.ScholarshipExamDetails[i].ExamRegNo</label>*@
+                                </td>
+
+                                <td class="px-1 text-center">
+                                    @Html.TextBoxFor(m => Model.ScholarshipExamDetails[i].Mark, "{0:G29}", new { @class = "form-control input-control", })
+                                    <span class="form-control-error-text">
+                                        @Html.ValidationMessageFor(m => m.ScholarshipExamDetails[i].Mark)
+                                    </span>
+                                </td>
+                                <td class="px-1">
+                                    <span id="spnResultStatus"></span>
+                                    @Html.HiddenFor(m => m.ScholarshipExamDetails[i].ResultStatus)
+
+
+                                </td>
+
+
+                                <td class="px-1">
+                                    <div class="switch-check switch">
+                                        @Html.CheckBoxFor(m => m.ScholarshipExamDetails[i].AbsentStatus, new { @class = "switch-input" })
+                                        <div class="switch-label redgreen" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                                        <div class="switch-handle"></div>
+                                    </div>
+                                </td>
+                                <td class="px-1 text-center">
+                                    @Html.TextBoxFor(m => Model.ScholarshipExamDetails[i].Remarks, new { @class = "form-control input-control" })
+                                    <span class="form-control-error-text">
+                                        @Html.ValidationMessageFor(m => m.ScholarshipExamDetails[i].Remarks)
+                                    </span>
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+                    @*<tfoot>
+                            <tr>
+                                <th class="px-1" colspan="4">
+                                    <span data-repeater-create class="btn btn-info btn-sm">
+                                        <span class="fa fa-plus"></span>
+                                    </span>
+                                </th>
+                            </tr>
+                        </tfoot>*@
+                </table>
+            </div>
+
+
+        </div>
+    </div>
+
+
+    <div class="modal-footer justify-content-start">
+        <div class="form-group">
+            <input type="submit" value="@EduSuiteUIResources.Save" id="btnSave" class="btn btn-sm btn-success mx-1" />
+            <button type="button" data-dismiss="modal" class="btn btn-sm btn-danger mx-1">@EduSuiteUIResources.Cancel</button>
+
+        </div>
+    </div>
+}
+<script>
+
+    var jsonData=@(Html.Raw(Json.Encode(Model)));
+
+    $(document).ready(function () {
+        AppCommon.FormatInputCase()
+        AppCommon.FormatDateInput();
+        AppCommon.CustomRepeaterRemoteMethod();
+        ScholarshipExamResult.GetScholarshipExamResultDetails(jsonData);
+    });
+
+
+    
+
+</script>
+

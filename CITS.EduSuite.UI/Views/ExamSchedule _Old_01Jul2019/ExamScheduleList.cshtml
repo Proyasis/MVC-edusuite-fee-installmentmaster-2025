@@ -1,0 +1,105 @@
+﻿@using CITS.EduSuite.UI.Resources
+@using System.Web.Mvc
+
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Content/JqueryRepeater")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Scripts/Common")
+    @Scripts.Render("~/Scripts/ExamSchedule")
+    @Scripts.Render("~/bundles/CitsValidation")
+}
+
+
+
+
+<input type="hidden" id="hdnGetExamScheduleListdetails" value="@Url.Action("GetExamScheduleListdetails", "ExamSchedule")" />
+<input type="hidden" id="hdnDeleteExamSchedule" value="@Url.Action("DeleteExamSchedule", "ExamSchedule")" />
+<input type="hidden" id="hdnAddEditExamSchedule" value="@Url.Action("AddEditExamSchedule", "ExamSchedule")" />
+
+
+
+<header class="section-header">
+    <div class="row px-1">
+        <div class="col-sm-6 col-12">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@CITSEduSuiteUIResources.ExamSchedule</h3>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <a href="@Url.Action("AddEditExamSchedule", "ExamSchedule")" class="btn btn-success btn-sm float-right my-3"><i class="fa fa-plus-square-o"></i> <span>@CITSEduSuiteUIResources.New @CITSEduSuiteUIResources.BlankSpace @CITSEduSuiteUIResources.ExamSchedule</span></a>
+        </div>
+    </div>
+</header>
+<section class="section-content mx-sm-3 mx-0">
+    <div class="GridBody">
+
+        <div class="grid-nav-bar row justify-content-between">
+            <div class="col-sm-3 col-6">
+                <input id="txtsearch" type="text" name="focus" class="form-control gridSearchTextBox" placeholder="@CITSEduSuiteUIResources.Search" />
+
+                <span id="iconSpan" class="iconSpan"><i class="fa fa-times-circle" aria-hidden="true"></i></span>
+            </div>
+
+            <div class="col-6">
+                <a class="btn btn-info btn-sm float-right " onclick='ExamSchedule.GetExamSchedule()'>
+                    <i class="fa fa-refresh"></i>   @CITSEduSuiteUIResources.Refresh
+                </a>
+            </div>
+
+        </div>
+
+        <div class="table-wrapper">
+
+            <div class="jqGrid_wrapper overflow-auto">
+                <table id="grid"></table>
+                <div id="pager"></div>
+            </div>
+        </div>
+
+
+    </div>
+</section>
+
+<script>
+    $(document).ready(function ()
+    {
+
+        AppCommon.FormatDateInput();
+        //$("#txtsearchDate").datepicker("setDate", new Date());
+
+        $("#txtsearch").on("input", function ()
+        {
+            ExamSchedule.GetExamSchedule();
+        });
+        //$("#txtsearchDate").on("changeDate", function () {
+        //    ExamSchedule.GetExamSchedule();
+        //})
+
+        $("#iconSpan").click(function ()
+        {
+            $('#txtsearch').val('');
+            //$('#txtsearchDate').val('');
+
+            ExamSchedule.GetExamSchedule();
+        });
+        ExamSchedule.GetExamSchedule();
+        //AppCommon.EditGridPopup($("#addEditStudentsPromotion"))
+
+        $(window).on("resize", function ()
+        {
+            var $grid = $("#grid"),
+            newWidth = $grid.closest(".ui-jqgrid").parent().width();
+            $grid.jqGrid("setGridWidth", newWidth, true);
+        });
+
+
+
+    });
+</script>

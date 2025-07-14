@@ -1,0 +1,61 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.LoginModel
+
+
+<div class="modal-header">
+    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+    <h4 class="modal-title" id="myModalLabel">Get DataBase Backup</h4>
+</div>
+
+@using (Html.BeginForm("GetBakup", "Shared", FormMethod.Post, new { @id = "frmGetBackup" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    @Scripts.Render("~/bundles/jqueryval")
+    <div class="modal-body bottomLine">
+        <div class="form-master">
+            <div class="form-row">
+                <div class="paddingNone">
+                    <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="col-4 form-col d-none">
+                    <div class="form-group ">
+                        @Html.Label(EduSuiteUIResources.Name, htmlAttributes: new { @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+
+                        <input id="txtDbName" type="text" name="focus" class="form-control" placeholder="@EduSuiteUIResources.Search @EduSuiteUIResources.Division" />
+                       
+                        <span class="form-control-error-text">
+
+                        </span>
+                    </div>
+                </div>
+                <div class="col-10 form-col">
+                    <div class="form-group ">
+                        @Html.Label(EduSuiteUIResources.Location, htmlAttributes: new { @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                                                                      
+                        <input id="txtDbLocation" type="text" name="focus" class="form-control" />
+                        <span class="form-control-error-text" id="errdiv">
+
+                        </span>
+                    </div>
+                </div>
+                
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <div class="col-12">
+            <div class="form-group">
+                <input type="button" value="@EduSuiteUIResources.Save" id="btnSave" class="btn btn-sm btn-success mx-1" onclick="GetBackup()" />
+                <button type="button" data-dismiss="modal" class="btn btn-sm btn-danger mx-1">@EduSuiteUIResources.Cancel</button>
+            </div>
+
+        </div>
+    </div>
+
+}

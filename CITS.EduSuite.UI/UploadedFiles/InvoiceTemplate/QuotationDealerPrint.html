@@ -1,0 +1,288 @@
+﻿
+<div id="dvPrintContainer">
+    <div class="maindiv ">
+        <table class="table-head" printheader style="width:100%;table-layout:fixed">
+            <tr>
+            <tr>
+                <td colspan="2" class="address text-center">
+                    <h3>
+                        <strong> {{CompanyName}}</strong>
+                    </h3>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="address text-center">
+                    <span>
+                        {{CompanyAddress}}<br />
+                        {{CompanyMobileNumbers}}
+                        {{CompanyWebsite}} &nbsp;&nbsp;{{#if CompanyEmailId}}|&nbsp; {{CompanyEmailId}}{{/if}}
+                    </span>
+                </td>
+            </tr>
+            {{#if CompanyGSTINNumber}}
+            <tr>
+                <td colspan="2" class="address text-center">
+
+                    GSTIN Number &nbsp;&nbsp;:&nbsp; {{CompanyGSTINNumber}}
+
+                </td>
+            </tr>
+            {{/if}}
+
+            <tr>
+                <td class="lblControlHead"> To</td>
+                <td class="lblControlHeadBold text-right">{{#if JobTitle}} Job Title :  {{JobTitle}} {{/if}}</td>
+
+            </tr>
+
+            <tr>
+                <td class="lblControlHead">{{PartyName}}</td>
+                <td class="lblControlHeadBold text-right"> Quotation No :   {{OrderNumber}}</td>
+
+            </tr>
+            <tr>
+                <td class="lblControlHead">{{PartyMobile}}</td>
+                <td class="lblControlHeadBold text-right"> Date :   {{OrderDate}}</td>
+            </tr>
+            <tr>
+                <td colspan="2" class="text-center">
+                    <h4><strong> QUOTATION </strong> </h4>
+                </td>
+            </tr>
+        </table>
+        <table class="table-body" style="width:100%;table-layout:fixed;">
+            <thead>
+                <tr>
+                    <th rowspan="2">
+                        S.No
+                    </th>
+                    <th rowspan="2" width="100px">
+                        Dealer
+                    </th>
+                    <th rowspan="2" width="150px">
+                        Product Name
+                    </th>
+                    <th rowspan="2">
+                        Size (WxH)
+                    </th>
+                    <th rowspan="2">
+                        Qty
+
+                    </th>
+                    <th rowspan="2">
+                        SQ.FT
+                    </th>
+                    <th rowspan="2">
+                        Rate
+
+                    </th>
+                    <th rowspan="2" width="100px">
+                        Amount
+                    </th>
+                    {{#if IsExclusive}}
+                    <th colspan="2">
+                        GST
+                    </th>
+
+                    {{/if}}
+
+                </tr>
+                <tr>
+
+                    {{#if IsExclusive}}
+                    <td width="50px">
+                        %
+                    </td>
+                    <td width="100px">
+                        Amt
+                    </td>
+                    {{/if}}
+
+                </tr>
+            </thead>
+            <tbody printitem>
+                {{#SalesOrderDetails}}
+
+                <tr style="{{style}}">
+
+                    {{#if DealerName}}
+                    <td rowspan="{{RowSpan}}">
+                        {{SLNo}}
+                    </td>
+                    <td rowspan="{{RowSpan}}">
+
+                        {{DealerName}}
+
+                    </td>
+                    {{/if}}
+                    <td>
+                        {{MaterialProductFullName}}
+                        {{#if OtherSpecifications}}
+
+                        <br />
+                        <span style="padding-left: 5px;color: #7a7a7a;font-size: 11px;">
+                            {{OtherSpecifications}}
+                        </span>
+
+                        {{else}}
+
+                        <br />
+                        {{/if}}
+                        {{#if  SalesOrderDetailsWorkTypes}}
+                        <span style="padding-left: 5px;color: #7a7a7a;font-size: 11px;">
+                            {{SalesOrderDetailsWorkTypes}}
+                        </span>
+                        {{/if}}
+                    </td>
+                    <td class="text-center ">
+                        {{#if StandardSizeKey}}
+                        {{G29 SizeOfFrameWidth}} x {{G29 SizeOfFrameHeight}} {{MeasurementOfUnitCode}}
+                        {{/if}}
+                    </td>
+                    <td class="text-center ">
+                        {{G29 NoOfCopies}}
+                    </td>
+
+                    <td class="text-center ">
+                        {{G29 TotalSqFeet}}
+                    </td>
+                    <td class="text-right ">
+                        {{G29 SqFeetRate}}
+                    </td>
+                    <td class="text-right">
+                        {{G29 Amount}}
+                    </td>
+                    {{#if GSTAmount}}
+                    <td class="text-center">
+                        {{G29 GSTPer}}
+                    </td>
+                    <td class="text-right">
+                        {{G29 GSTAmount}}
+                    </td>
+                    {{/if}}
+
+                </tr>
+
+                {{/SalesOrderDetails}}
+            </tbody>
+            <tfoot>
+                <tr printitemtotal>
+                    {{#if IsExclusive}}
+                    <th colspan="2">
+                        Totals
+                    </th>
+                    <th colspan="5">
+                        {{#SqFeetDetails}}
+                        {{Key}} = {{Value}},
+                        {{/SqFeetDetails}}
+                    </th>
+                    <th class="text-right">{{G29 TaxableAmount}}</th>
+                    <th></th>
+                    <th class="text-right">{{G29 GSTAmount}}</th>
+                    {{else}}
+                    <th colspan="2">
+
+                    </th>
+                    <th colspan="5">
+                    </th>
+                    <th class="text-right">{{G29 TaxableAmount}}</th>
+                    {{/if}}
+
+                </tr>
+                {{#if IsExclusive}}
+                {{#SalesOrderOtherChargeDetails}}
+                <tr>
+                    <th colspan="2">
+                        {{OtherChargesName}}
+                    </th>
+                    <th colspan="7">
+
+                    </th>
+
+                    <th class="text-right">{{G29 Amount}}</th>
+
+                </tr>
+                {{/SalesOrderOtherChargeDetails}}
+                {{else}}
+                {{#SalesOrderOtherChargeDetails}}
+                <tr>
+                    <th colspan="2">
+                        {{OtherChargesName}}
+                    </th>
+                    <th colspan="5">
+
+                    </th>
+                    <th class="text-right">{{G29 Amount}}</th>
+
+                </tr>
+                {{/SalesOrderOtherChargeDetails}}
+                {{/if}}
+                {{#if CessAmount}}
+                <tr>
+                    <th colspan="2">
+                        Kerala Flood Cess @{{G29 CessPercentage}}%
+                    </th>
+                    <th colspan="5">
+
+                    </th>
+                    <th class="text-right">{{G29 CessAmount}}</th>
+
+                </tr>
+                {{/if}}
+                <tr printitemtotal>
+                    {{#if IsExclusive}}
+                    <th colspan="2">
+                        Grand Total
+                    </th>
+                    <th colspan="7">
+
+                    </th>
+
+                    <th class="text-right">{{G29 TotalAmount}}</th>
+                    {{else}}
+                    <th colspan="2">
+                        Grand Total
+                    </th>
+                    <th colspan="5">
+
+                    </th>
+
+                    <th class="text-right">{{G29 TotalAmount}}</th>
+                    {{/if}}
+                </tr>
+            </tfoot>
+        </table>
+        <br />
+        <p><span>{{AmountWords}}</span></p>
+        <br />
+        <ul style="list-style-type:none;margin:0;padding:0">
+            <li>1) Payment 50% in Advance. Balance once the bill submitted along with photograph.</li>
+            <li>2) Work will start only after receiving the confirmed work order with seal and guarantee of the person.</li>
+            <li>3) This is a computer generated Document so need not to be signed individually</li>
+        </ul>
+        <br />
+        <br />
+        <span>Authorized Signatory</span>
+    </div>
+    <style>
+        #dvPrintContainer {
+            font-family: "Times New Roman", Times, serif;
+            font-size:12px;
+        }
+
+            #dvPrintContainer table.table-body td, #dvPrintContainer table.table-body th {
+                padding: 3px;
+                border: solid 1px;
+                text-align: center;
+                vertical-align: text-top;
+            }
+
+                #dvPrintContainer table.table-body td.text-right #dvPrintContainer table.table-body th.text-right  {
+                    text-align: right;
+                }
+
+        @page {
+            size: A4;
+        }
+    </style>
+</div>

@@ -1,0 +1,106 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.TimeTableTempMasterViewModel
+@using CITS.EduSuite.UI
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/Common")
+    @Scripts.Render("~/Scripts/TimeTableTemp")
+    @Scripts.Render("~/Content/DatePickerJS")
+}
+
+<input type="hidden" id="hdnUrl" value="@Url.Action("FillTimeTableForEmployee", "TimeTableTemp", new { id = "" })" />
+<input type="hidden" id="hdnDeleteStudyMaterial" value="@Url.Action("DeleteStudyMaterial", "CourseSubject")" />
+<input type="hidden" id="hdnFillTeachersByClass" value="@Url.Action("FillTeachersByClass", "SelectList")" />
+<input type="hidden" id="hdnIndex" value="@Url.Action("Index", "TimeTableTemp")" />
+
+
+
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-12">
+            <div class="tbl">
+                <div class="tbl-row  px-1">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.TimeTable</h3>
+                        <ol class="breadcrumb breadcrumb-simple mb-2 float-sm-right">
+                            <li><a href="#" onclick="location.href='@Url.Action("Index", "TeacherPortal")' ">@EduSuiteUIResources.TeacherPortal</a></li>
+                            <li class="active">@EduSuiteUIResources.Backto@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.TeacherPortal</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="section-content mx-sm-3 mx-0">
+
+    <div class="form-master">
+
+
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(m => m.EmployeeKey)
+
+
+        <div class=" form-row d-none">
+
+            <div id="tab-day" class="form-row tabs-section mb-2">
+                <div class="tabs-section-nav">
+                    <ul class="nav ScheduleTab1" role="tablist">
+                        @for (int i = 0; i < Model.WeekDays.Count; i++)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" href="#@Model.WeekDays[i].RowKey" data-val="@Model.WeekDays[i].RowKey" role="tab" data-toggle="tab">
+                                    <span class="nav-link-in">
+                                        @Model.WeekDays[i].Text
+                                    </span>
+                                </a>
+                            </li>
+                            @*@Html.HiddenFor(m => m.Day)*@
+                        }
+
+                    </ul>
+                </div>
+            </div>
+
+
+        </div>
+
+
+
+        <div id="dvTimeTableDetails"></div>
+
+
+
+
+
+    </div>
+</section>
+<script>
+    var jsonData=@(Html.Raw(Json.Encode(Model)));
+
+    $(document).ready(function () {
+        AppCommon.FormatInputCase()
+        AppCommon.FormatDateInput();
+
+
+        //$("#tab-day li a").eq(0).addClass('active');
+
+
+
+        //$('#tab-day a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+
+        //    TimeTableTemp.GetTimeTableTemp();
+        //});
+        TimeTableTemp.GetTimeTableTemp(jsonData);
+
+
+        $("#EmployeeKey").on("change", function () {
+            TimeTableTemp.GetTimeTableTemp(jsonData);
+        });
+    });
+
+
+</script>
+

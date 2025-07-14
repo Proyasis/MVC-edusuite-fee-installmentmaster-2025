@@ -1,0 +1,98 @@
+﻿
+@model CITS.EduSuite.Business.Models.ViewModels.EnquiryLeadViewModel
+
+
+<div class="modal-header">
+    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+    <h4 class="modal-title" id="myModalLabel"> @EduSuiteUIResources.AllocateSelectedLead</h4>
+</div>
+
+@using (Html.BeginForm("AddEditLeadAllocation", "EnquiryLead", FormMethod.Post, htmlAttributes: new { @id = "frmEnquiryLeadFeedback" }))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.ValidationSummary(true)
+
+
+
+    <div class="modal-body">
+        <div class="form-master">
+            <div class="form-row">
+                <span class="ValidateDataMsg"> @Html.ValidationMessage("error_msg")  </span>
+            </div>
+            <div class="form-row">
+
+                <div style="display:none" class="col-lg-4 col-6">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.Lead, htmlAttributes: new { @id = "lblCallType", @class = "form-label" })
+                        <select id="EnquiryLeadKeys" name="EnquiryLeadKeys" multiple></select>
+
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-6">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.Branch, htmlAttributes: new { @id = "lblCallType", @class = "form-label" })
+                        @Html.DropDownListFor(m => m.SearchAllocateBranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Branch, new { @class = "input-control form-control form-control-sm form-control-sm", @InputFor = "lblBranch" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.SearchAllocateBranchKey)
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-6">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.Employee, htmlAttributes: new { @id = "lblCallType", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                        @Html.DropDownListFor(m => m.EmployeeKey, new SelectList(Model.Employees, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Employee, new { @class = "input-control form-control form-control-sm form-control-sm", @InputFor = "lblBranch" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.EmployeeKey)
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-6">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.LeadDate, htmlAttributes: new { @id = "lblCallType", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                        @Html.TextBoxFor(m => m.LeadDate, "{0:dd/MM/yyyy}", new { @class = "input-control form-control form-control-sm", @InputFor = "lblAdmissionNo", @placeholder = "Date from", @data_input_type = "date", @data_inputmask = "'alias': 'dd/mm/yyyy'" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.LeadDate)
+                        </span>
+                    </div>
+                </div>
+
+
+              
+
+
+
+
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer justify-content-start">
+        <div class="form-group">
+            <button type="submit" id="btnSave" class="btn btn-sm btn-success mx-1"><i class="fa fa-save"></i> @EduSuiteUIResources.Save</button>
+
+            <button type="button" data-dismiss="modal" class="btn btn-sm btn-danger mx-1">@EduSuiteUIResources.Cancel</button>
+
+        </div>
+    </div>
+}
+
+
+    <script>
+        $(document).ready(function ()
+        {
+            AppCommon.FormatDateInput();
+            selection.AppendList("#EnquiryLeadKeys");
+            $("#SearchAllocateBranchKey").on("change", function () {
+
+        
+                Leads.GetEmployeesByBranchId($("#SearchAllocateBranchKey").val(), $("#EmployeeKey"));
+
+
+            });
+        });
+
+    </script>
+

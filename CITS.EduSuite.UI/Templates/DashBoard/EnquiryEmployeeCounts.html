@@ -1,0 +1,80 @@
+﻿<div class="table-responsive">
+    <table class="table verticle-middle h-100" id="divInstallmentFeeDetails">
+
+        <thead>
+            <tr>
+                <th class="text-center">
+                    Employee
+                </th>
+                <th class="text-center">
+                    Total
+                </th>
+
+                <th class="text-center">
+                    Folow Up
+                </th>
+                <th class="text-center">
+                    Intrseted
+                </th>
+                <th class="text-center">
+                    Admission Taken
+                </th>
+                <th class="text-center">
+                    Closed
+                </th>
+                <!--<th class="text-center">
+                    Productivity Call
+                </th>-->
+                <th class="text-center">
+                    Total Calls
+                </th>
+                <th class="text-center">
+                    Repeated Calls
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#LeadSource}}
+
+            <tr data-repeater-item>
+                <td class="text-center">
+                    {{EmployeeName}}
+                </td>
+
+                <td class="text-center">
+                    {{TotalEnquiryCount}}
+                </td>
+
+                <td class="text-center">
+                    {{TotalFollowUpCount}}
+
+                </td>
+                <td class="text-center">
+                    {{TotalIntrestedCount}}
+                </td>
+                <td class="text-center">
+                    {{TotalAdmissionTakenCount}}
+                </td>
+                <td class="text-center">
+                    {{TotalClosedCount}}
+                </td>
+                <!--<td class="text-center">
+                    {{TotalProductiveCallsCount}}
+                </td>-->
+                
+
+                <td class="text-center">
+                    
+                    {{TotalCallsCount}}
+                </td>
+                <td class="text-center">
+                    {{RepeatedCallsCount}}
+                </td>
+
+            </tr>
+            {{/LeadSource}}
+        </tbody>
+
+
+    </table>
+</div>

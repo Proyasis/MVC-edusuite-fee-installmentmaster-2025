@@ -1,0 +1,114 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.EmplyeeHeirarchyViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+<input type="hidden" id="hdnAddEditEmployeeHeirarchy" value="@Url.Action(" AddEditEmployeeHeirarchy", "EmployeeHeirarchy" , new { id="" })" />
+
+<div class="modal-content">
+    <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.EmployeeHeirarchy</h4>
+        <i data-dismiss="modal" class="fa fa-remove close"></i>
+    </div>
+    <div class="position-relative modal-body">
+        @using (Html.BeginForm("AddEditEmployeeHeirarchy", "EmployeeHeirarchy", FormMethod.Post, new { @id = "frmEmployeeHeirarchy", @class = "w-100" }))
+        {
+@Html.AntiForgeryToken()
+                @Html.HiddenFor(m => m.EmployeeKey)
+                                @Html.ValidationSummary(true) if ((Model.EmployeeKey != 0))
+                                {
+                @Html.Action("EmployeeDetail", "Shared", new { id = Model.EmployeeKey, EmployeeCode = "" }) }
+<div class="box-typical box-typical-padding">
+    <div id="dynamicRepeater" class="repeater mb-2 overflow-auto">
+        <table data-repeater-list class="table fixed-table-body-columns">
+            <thead class="thead-light">
+                <tr>
+
+                    <th class="mw-sm-150">@EduSuiteUIResources.Employee</th>
+                    <th class="mw-sm-150">
+
+                        <div class="checkbox-bird green inline-block">
+                            @Html.CheckBox("ChkReceivedAll", new { @InputFor = "lblhkReceivedAll", @class = "switch-input", @onchange = "CheckboxAllChange(this, 'IsActive')" })
+                            <label for="ChkReceivedAll">@EduSuiteUIResources.DataView <span id="RecivedAllCount"></span></label>
+
+                        </div>
+                    </th>
+                    <th class="mw-sm-150 ">
+                        <div class="checkbox-bird green inline-block">
+                            @Html.CheckBox("ChkDataAccessAll", new { @InputFor = "lblhkReceivedAll", @class = "switch-input", @onchange = "CheckboxAllChange(this, 'DataAccess')" })
+                            <label for="ChkDataAccessAll">@EduSuiteUIResources.DataAccess <span id="RecivedAllCount"></span></label>
+
+                        </div>
+                    </th>
+
+
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.EmployeeHeirarchyDetails.Count(); i++)
+                {
+<tr data-repeater-item>
+
+    <td class="px-1 mw">
+        @Html.TextBoxFor(m => Model.EmployeeHeirarchyDetails[i].ToEmployeeName, new { @class = "form-control input-control", @InputFor = "lblCourseName", @readonly = "readonly" })
+        <span class="form-control-error-text">
+            @Html.ValidationMessageFor(m => Model.EmployeeHeirarchyDetails[i].ToEmployeeName)
+        </span>
+        @Html.HiddenFor(m => Model.EmployeeHeirarchyDetails[i].RowKey)
+        @Html.HiddenFor(m => Model.EmployeeHeirarchyDetails[i].ToEmployeeKey)
+    </td>
+    <td class="px-1">
+        <div class="form-group col-md-12">
+            @Html.CheckBoxFor(m => m.EmployeeHeirarchyDetails[i].IsActive, new { @class = "form-control" })
+            <span class="form-control-error-text"> @Html.ValidationMessageFor(m => m.EmployeeHeirarchyDetails[i].IsActive)</span>
+        </div>
+    </td>
+    <td class="px-1 text-center">
+        <div class="form-group col-md-12">
+
+            @Html.CheckBoxFor(m => m.EmployeeHeirarchyDetails[i].DataAccess, new { @class = "form-control" })
+            <span class="form-control-error-text"> @Html.ValidationMessageFor(m => m.EmployeeHeirarchyDetails[i].DataAccess)</span>
+        </div>
+
+    </td>
+</tr>
+}
+            </tbody>
+        </table>
+    </div>
+
+
+</div>
+
+                <div class="form-row mt-1">
+                    <div class="form-group col-12">
+                        <button type="button" id="btnSave" class="btn btn-success CustomBtn pull-right mr-2" onclick="Employee.FormEmployeeHeirarchySubmit();"><i class="fa fa-save mx-1"></i>@EduSuiteUIResources.Save</button>
+                    </div>
+                </div>}
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+
+    });
+    function CheckboxAllChange(chk, id) {
+        debugger
+        $("[data-repeater-item]").each(function (index) {
+            var Object = $('input[id*=' + id + ']', $(this))[0];
+            if (Object != undefined) {
+                if (Object.disabled) {
+
+                }
+                else {
+                    if (chk.checked == true) {
+                        $(Object).prop("checked", true);
+
+                    }
+                    else {
+                        $(Object).prop("checked", false);
+
+                    }
+                }
+            }
+        });
+
+
+    }</script>

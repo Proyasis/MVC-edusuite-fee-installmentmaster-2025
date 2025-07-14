@@ -1,0 +1,704 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.EmployeeSalaryMasterViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+
+
+@Html.HiddenFor(m => m.SalaryMonthKey)
+@Html.HiddenFor(m => m.SalaryYearKey)
+@Html.HiddenFor(m => m.SalaryMasterKey)
+@Html.HiddenFor(m => m.SalaryTypeKey)
+@Html.HiddenFor(m => m.DaysInMonth)
+@Html.HiddenFor(m => m.IsFixed)
+@Html.HiddenFor(m => m.EmployeeKey)
+
+@*@Html.Hidden("PerDayAmount", Model.AdditionalDayAmount)*@
+
+
+@{
+
+    String displayNone = "";
+    if (Model.SalaryTypeKey == 3)
+    {
+        displayNone = "none";
+    }
+}
+
+<div class="card-header p-2">
+
+    <div class="form-row d-none">
+        <div class="col-lg-2 col-sm-3 col-6">
+            <div class="form-group">
+                @Html.Label("Days In Month", htmlAttributes: new { @class = "form-label" })
+                @Html.TextBoxFor(m => m.DaysInMonth, "{0:G29}", new { @class = "input-control form-control form-control-sm", @readonly = true, @onClick = "this.setSelectionRange(0, this.value.length)" })
+                <span class="form-control-error-text">
+                    @Html.ValidationMessageFor(m => m.DaysInMonth)
+                </span>
+            </div>
+        </div>
+
+        @if ((Model.WeekOffCount ?? 0) > 0)
+        {
+            <div class="col-lg-1 col-sm-3 col-6">
+                <div class="form-group">
+                    @Html.Label("Week Off", htmlAttributes: new { @class = "form-label" })
+                    @Html.TextBoxFor(m => m.WeekOffCount, "{0:G29}", new { @class = "input-control form-control form-control-sm", @readonly = true, @onClick = "this.setSelectionRange(0, this.value.length)" })
+                    <span class="form-control-error-text">
+                        @Html.ValidationMessageFor(m => m.WeekOffCount)
+                    </span>
+                </div>
+            </div>
+        }
+        @if ((Model.OffdayCount ?? 0) > 0)
+        {
+            <div class="col-lg-1 col-sm-3 col-6">
+                <div class="form-group">
+                    @Html.Label("Off", htmlAttributes: new { @class = "form-label" })
+                    @Html.TextBoxFor(m => m.OffdayCount, "{0:G29}", new { @class = "input-control form-control form-control-sm", @readonly = true, @onClick = "this.setSelectionRange(0, this.value.length)" })
+                    <span class="form-control-error-text">
+                        @Html.ValidationMessageFor(m => m.OffdayCount)
+                    </span>
+                </div>
+            </div>
+        }
+        @if ((Model.HolidayCount ?? 0) > 0)
+        {
+            <div class="col-lg-1 col-sm-3 col-6">
+                <div class="form-group">
+                    @Html.Label("Holidays", htmlAttributes: new { @class = "form-label" })
+                    @Html.TextBoxFor(m => m.HolidayCount, "{0:G29}", new { @class = "input-control form-control form-control-sm", @readonly = true, @onClick = "this.setSelectionRange(0, this.value.length)" })
+                    <span class="form-control-error-text">
+                        @Html.ValidationMessageFor(m => m.HolidayCount)
+                    </span>
+                </div>
+            </div>
+        }
+        <div class="col-lg-2 col-sm-3 col-6">
+            <div class="form-group">
+                @Html.Label("Total Working Days", htmlAttributes: new { @class = "form-label" })
+
+                @Html.TextBoxFor(m => m.TotalWorkingDays, "{0:G29}", new { @class = "input-control form-control form-control-sm", @readonly = true, @onClick = "this.setSelectionRange(0, this.value.length)" })
+                <span class="form-control-error-text">
+                    @Html.ValidationMessageFor(m => m.TotalWorkingDays)
+                </span>
+            </div>
+        </div>
+
+        <div class="col-lg-2 col-sm-3 col-6">
+            <div class="form-group">
+                @Html.Label("Days Present", htmlAttributes: new { @id = "lblNoOfDaysWorked", @class = "form-label" })
+
+                @Html.TextBoxFor(m => m.NoOfDaysWorked, "{0:G29}", new { @class = "input-control form-control form-control-sm", @readonly = true, @onClick = "this.setSelectionRange(0, this.value.length)", @oninput = "CalculateSalary();" })
+                <span class="form-control-error-text">
+                    @Html.ValidationMessageFor(m => m.NoOfDaysWorked)
+                </span>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+    <div style="display:@displayNone" class="form-row">
+        <div class="col-lg-2 col-sm-3 col-6">
+            <div class="form-group">
+                @Html.Label("Base Working Days", htmlAttributes: new { @class = "form-label" })
+                @Html.TextBoxFor(m => m.BaseWorkingDays, "{0:G29}", new { @class = "input-control form-control form-control-sm", @readonly = true, @onClick = "this.setSelectionRange(0, this.value.length)" })
+                <span class="form-control-error-text">
+                    @Html.ValidationMessageFor(m => m.BaseWorkingDays)
+                </span>
+            </div>
+        </div>
+        <div class="col-lg-2 col-sm-3 col-6">
+            <div class="form-group">
+                @Html.Label("Absent Days", htmlAttributes: new { @class = "form-label" })
+
+                @Html.TextBoxFor(m => m.AbsentDays, "{0:G29}", new { @class = "input-control form-control form-control-sm", @onClick = "this.setSelectionRange(0, this.value.length)", @oninput = "CalculateSalary();" })
+                <span class="form-control-error-text">
+                    @Html.ValidationMessageFor(m => m.AbsentDays)
+                </span>
+            </div>
+        </div>
+        <div class="col-lg-2 col-sm-3 col-6">
+            <div class="form-group">
+                @Html.Label("Total Leaves", htmlAttributes: new { @class = "form-label" })
+
+                @Html.TextBox("txtTotalLeaves", Model.LeaveTypes.Select(row => row.LeaveTypeCount).DefaultIfEmpty().Sum(), "{0:G29}", new { @class = "input-control form-control form-control-sm dropdown-toggle", @data_toggle = "dropdown", @readonly = true, @onClick = "this.setSelectionRange(0, this.value.length)" })
+                <span class="form-control-error-text">
+                    @Html.ValidationMessageFor(m => m.LeaveTypes)
+                </span>
+                <ul class="dropdown-menu">
+                    @for (int i = 0; i < Model.LeaveTypes.Count; i++)
+                    {
+                        if ((Model.LeaveTypes[i].LeaveTypeCount ?? 0) > 0)
+                        {
+                            <li class="p-1">
+                                <a href="#">@Model.LeaveTypes[i].LeaveTypeName <span class="badge  badge-info float-right">@((Model.LeaveTypes[i].LeaveTypeCount ?? 0).ToString())@EduSuiteUIResources.Sla@((Model.LeaveTypes[i].LeaveAvailableCount ?? 0).ToString())</span></a>
+                                @Html.HiddenFor(m => m.LeaveTypes[i].LeaveTypeCount)
+                                @Html.HiddenFor(m => m.LeaveTypes[i].LeaveAvailableCount)
+                                @Html.HiddenFor(m => m.LeaveTypes[i].SalaryDeductionForAdditional)
+                            </li>
+                        }
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div style=" display:@displayNone" class="col-lg-3 col-6 ">
+            <div class="form-group">
+                @if (Model.SalaryTypeKey == 3)
+                {
+                    @Html.Label(" Days", new { @class = "form-label" })
+                }
+                else
+                {
+                    @Html.Label("Days", new { @class = "form-label" })
+                }
+                @*@Html.Label("Overtime Days", htmlAttributes: new { @class = "form-label" })*@
+
+
+                <div class="input-group input-group-sm">
+                    @Html.TextBoxFor(m => m.AdditionalDayAmount, "{0:F2}", new { @class = "input-control form-control form-control-sm", @onClick = "this.setSelectionRange(0, this.value.length)", @oninput = "EmployeeSalary.CalculateOverTimeDayAmount()" })
+                    <div class="input-group-append"> <div class="input-group-text form-control form-control-sm"> ₹ / Day</div></div>
+                    @Html.TextBoxFor(m => m.AdditionalDayCount, "{0:G29}", new { @class = "input-control form-control form-control-sm", @onClick = "this.setSelectionRange(0, this.value.length)" })
+                    <div class="input-group-append"> <div class="input-group-text  form-control form-control-sm">Days</div></div>
+                </div>
+                <span class="form-control-error-text">
+                    @Html.ValidationMessageFor(m => m.AdditionalDayCount)
+                    @Html.ValidationMessageFor(m => m.AdditionalDayAmount)
+                </span>
+            </div>
+            @Html.HiddenFor(m => m.AdditionalDayTotalAmount)
+        </div>
+
+        <div class="col-lg-4 col-6 ">
+            <div class="form-group">
+
+                @if (Model.SalaryTypeKey == 3)
+                {
+                    @Html.Label("Hours", new { @class = "form-label" })
+                }
+                else
+                {
+                    @Html.Label("Overtime Hours", new { @class = "form-label" })
+                }
+                @*@Html.Label("Overtime Hours", htmlAttributes: new { @class = "form-label" })*@
+                <div class="input-group  input-group-sm">
+                    @Html.TextBoxFor(m => m.OvertimePerAHour, "{0:F2}", new { @class = "input-control form-control form-control-sm", @onClick = "this.setSelectionRange(0, this.value.length)" })
+                    <div class="input-group-append"> <div class="input-group-text form-control form-control-sm"> ₹ / Hr</div></div>
+                    @Html.TextBoxFor(m => m.OverTimeHours, "{0:G29}", new { @class = "input-control form-control form-control-sm", @onClick = "this.setSelectionRange(0, this.value.length)" })
+                    <div class="input-group-append"> <div class="input-group-text form-control form-control-sm">Hrs</div></div>
+                    @Html.TextBoxFor(m => m.OverTimeMinutes, "{0:G29}", new { @class = "input-control form-control form-control-sm", @onClick = "this.setSelectionRange(0, this.value.length)" })
+                    <div class="input-group-append"> <div class="input-group-text form-control form-control-sm">Mins</div></div>
+                </div>
+                <span class="form-control-error-text">
+                    @Html.ValidationMessageFor(m => m.OvertimePerAHour)
+                    @Html.ValidationMessageFor(m => m.OverTimeHours)
+                    @Html.ValidationMessageFor(m => m.OverTimeMinutes)
+                </span>
+                @*@Html.HiddenFor(m => m.TotalOverTime)
+                    @Html.HiddenFor(m => m.OverTimeHours)*@
+            </div>
+        </div>
+
+        <div class="col-lg-2 col-sm-3 col-6" data-code="TSLR">
+            <div style=" display:@displayNone" class="form-group">
+                @Html.Label(EduSuiteUIResources.MonthlySalary, htmlAttributes: new { @id = "lblLoan", @class = "form-label" })
+                @Html.TextBox("MonthlySalary", Model.MonthlySalary, "{0:G29}", new { @class = "input-control form-control form-control-sm", @readonly = true, @fixedsalary = true })
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card-body  p-0">
+
+    <table id="tblSalaryDetails" class="table table-bordered tbSalaryAdvance">
+        <thead>
+            <tr>
+                <th>Earning</th>
+                <th>Deductions</th>
+
+            </tr>
+
+        </thead>
+        <tbody>
+            <tr>
+                <td class="p-0 align-top">
+
+                    <ul class="list-group">
+                        @for (var i = 0; i < Model.EmployeeSalaryEarnings.Count; i++)
+                        {
+                            <li class="list-group-item d-flex justify-content-between align-items-center border-0 p-1" data-code="@Model.EmployeeSalaryEarnings[i].SalaryHeadCode" data-fixed="@Model.EmployeeSalaryEarnings[i].IsFixed" data-include="@(Model.EmployeeSalaryEarnings[i].IsInclude.ToString().ToLower())">
+                                <div class="col-6">
+                                    @Model.EmployeeSalaryEarnings[i].SalaryHeadName
+                                    @Html.HiddenFor(m => m.EmployeeSalaryEarnings[i].SalaryHeadKey)
+                                    @Html.HiddenFor(m => m.EmployeeSalaryEarnings[i].Formula)
+                                    @Html.HiddenFor(m => m.EmployeeSalaryEarnings[i].Applicable)
+                                </div>
+                                <div class="col-6">
+                                    @Html.TextBoxFor(m => m.EmployeeSalaryEarnings[i].Amount, "{0:G29}", new { @class = "input-control form-control form-control-sm text-success bg-transparent border-0 font-weight-bold float-right text-right", @data_earnings = "true", @readonly = true })
+
+                                </div>
+                            </li>
+                        }
+                        <li class="list-group-item d-flex justify-content-between align-items-center border-0 p-1 d-none" id="dvOvertime">
+                            <div class="col-6">
+                                @Html.Label(EduSuiteUIResources.Overtime, htmlAttributes: new { @id = "lblOvertime", @class = " " })
+                            </div>
+                            <div class="col-6">
+                                @Html.TextBoxFor(m => m.OverTimeTotalAmount, "{0:G29}", new { @class = "input-control form-control form-control-sm text-success bg-transparent border-0 font-weight-bold float-right text-right", @data_earnings = "true", @readonly = true })
+                            </div>
+
+                        </li>
+
+                    </ul>
+                    <div id="repeaterEarning">
+                        <ul class="list-group" data-repeater-list>
+                            @for (var i = 0; i < Model.EmployeeSalaryOtherEarnings.Count; i++)
+                            {
+                                <li class="list-group-item d-flex justify-content-between align-items-center border-0 p-1" data-repeater-item>
+                                    <div class="col-1">
+                                        <span data-repeater-delete="" class=" fa fa-remove w3-text-red"></span>
+                                    </div>
+                                    <div class="col-sm-8 col-6">
+                                        @Html.DropDownListFor(m => m.EmployeeSalaryOtherEarnings[i].OtherAmountTypeKey, new SelectList(Model.EmployeeSalaryOtherEarnings[i].SalaryOtherAmountTypes, "RowKey", "Text"), EduSuiteUIResources.Select, new { @class = "input-control form-control form-control-sm form-control-sm" })
+
+
+                                        @Html.HiddenFor(m => m.EmployeeSalaryOtherEarnings[i].RowKey)
+                                        @Html.HiddenFor(m => m.EmployeeSalaryOtherEarnings[i].IsAddition)
+                                    </div>
+
+                                    <div class="col-sm-3 col-5">
+                                        @Html.TextBoxFor(m => m.EmployeeSalaryOtherEarnings[i].Amount, new { @class = "input-control form-control form-control-sm text-right text-success", @data_earnings = "true", @oninput = "CalculateSalary();" })
+                                    </div>
+
+
+                                </li>
+                            }
+
+                        </ul>
+                        <ul class="list-group">
+
+                            <li class="list-group-item d-flex justify-content-between align-items-center border-0 p-1">
+                                <div class="col-1">
+                                    <span data-repeater-create="" class=" fa fa-plus w3-text-green"></span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </td>
+                <td class="p-0 align-top">
+                    <ul class="list-group">
+                        @for (var i = 0; i < Model.EmployeeSalaryDeductions.Count; i++)
+                        {
+
+
+                            <li class="list-group-item d-flex justify-content-between align-items-center border-0 p-1" data-code="@Model.EmployeeSalaryDeductions[i].SalaryHeadCode" data-fixed="@Model.EmployeeSalaryDeductions[i].IsFixed" data-include="@(Model.EmployeeSalaryDeductions[i].IsInclude.ToString().ToLower())">
+                                <div class="col-6">
+                                    @Model.EmployeeSalaryDeductions[i].SalaryHeadName
+                                    @Html.HiddenFor(m => m.EmployeeSalaryDeductions[i].SalaryHeadKey)
+                                    @Html.HiddenFor(m => m.EmployeeSalaryDeductions[i].Formula)
+                                    @Html.HiddenFor(m => m.EmployeeSalaryDeductions[i].Applicable)
+                                </div>
+                                <div class="col-6">
+                                    @Html.TextBoxFor(m => m.EmployeeSalaryDeductions[i].Amount, "{0:G29}", new { @class = "input-control form-control form-control-sm text-danger bg-transparent border-0 font-weight-bold float-right text-right", @data_deductions = "true", @readonly = true })
+                                </div>
+
+                            </li>
+                        }
+                        <li class="list-group-item d-flex justify-content-between align-items-center border-0 p-1" id="dvLOP">
+                            <div class="col-6">
+                                @Html.Label(EduSuiteUIResources.LOP, htmlAttributes: new { @id = "lblOvertime", @class = "text-red" })
+                            </div>
+                            <div class="col-6">
+                                @Html.TextBoxFor(m => m.LOP, new { @class = "input-control form-control form-control-sm text-danger bg-transparent border-0 font-weight-bold float-right text-right", @data_deductions = "true", @readonly = true })
+                            </div>
+
+                        </li>
+
+                        <li class="list-group-item d-flex justify-content-between align-items-center border-0 p-1">
+                            <div class="col-6">
+                                @Html.Label(EduSuiteUIResources.Salary + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Advance, htmlAttributes: new { @id = "lblOvertime", @class = "text-red" })
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    @Html.TextBox("SalaryAdvance", Model.EmployeeSalaryAdvances.Select(x => x.PaidAmount).DefaultIfEmpty().Sum(), new { @class = "input-control form-control form-control-sm text-danger bg-transparent border-0 font-weight-bold float-right text-right", @data_toggle = "modal", @data_target = "#salaryAdvanceModal", @data_deductions = "true", @readonly = true })
+                                    <div class="input-group-transparent">
+                                        <span class="input-group-addon-end" style="cursor:pointer;right:-6px;color:blue" title="Click to Salary Advance" data-gap="18"><i class="fa fa-question-circle "></i></span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </li>
+                        @if ((Model.LoanAmount ?? 0) > 0)
+                        {
+                            <li class="list-group-item d-flex justify-content-between align-items-center border-0 p-1" id="dvLoan">
+                                <div class="col-6">
+                                    @Html.Label(EduSuiteUIResources.Loan, htmlAttributes: new { @id = "lblLoan", @class = "" })
+
+                                    @Html.HiddenFor(m => m.LoanPaymentKeys)
+                                </div>
+                                <div class="col-6">
+                                    @Html.TextBoxFor(m => m.LoanAmount, "{0:G29}", new { @class = "input-control form-control form-control-sm text-danger bg-transparent border-0 font-weight-bold float-right text-right", @data_deductions = "true", @readonly = true })
+                                </div>
+
+                            </li>
+                        }
+                    </ul>
+                    <div id="repeaterDeduction">
+                        <ul class="list-group" data-repeater-list>
+                            @for (var i = 0; i < Model.EmployeeSalaryOtherDeductions.Count; i++)
+                            {
+
+
+
+                                <li class="list-group-item d-flex justify-content-between align-items-center  border-0 p-1" data-repeater-item>
+                                    <div class="col-1">
+                                        <span data-repeater-delete="" class=" fa fa-remove w3-text-red"></span>
+                                    </div>
+                                    <div class="col-sm-8 col-6">
+                                        @Html.DropDownListFor(m => m.EmployeeSalaryOtherDeductions[i].OtherAmountTypeKey, new SelectList(Model.EmployeeSalaryOtherDeductions[i].SalaryOtherAmountTypes, "RowKey", "Text"), EduSuiteUIResources.Select, new { @class = "input-control form-control form-control-sm form-control-sm" })
+
+
+                                        @Html.HiddenFor(m => m.EmployeeSalaryOtherDeductions[i].RowKey)
+                                        @Html.HiddenFor(m => m.EmployeeSalaryOtherDeductions[i].IsAddition)
+                                    </div>
+
+                                    <div class="col-sm-3 col-5">
+                                        @Html.TextBoxFor(m => m.EmployeeSalaryOtherDeductions[i].Amount, new { @class = "input-control form-control form-control-sm text-right  text-danger", @data_deductions = "true", @oninput = "CalculateSalary();" })
+
+                                    </div>
+                                </li>
+                            }
+
+                        </ul>
+                        <ul class="list-group">
+                            <li class="list-group-item d-flex justify-content-between align-items-center border-0 p-1">
+                                <div class="col-1">
+
+                                    <span data-repeater-create="" class=" fa fa-plus w3-text-green"></span>
+                                </div>
+                            </li>
+
+                        </ul>
+                    </div>
+                </td>
+
+            </tr>
+            <tr>
+                <th class="p-0 align-top">
+                    <ul class="list-group">
+                        <li class="list-group-item d-flex justify-content-between align-items-center border-0 p-1">
+                            <div class="col-6">
+                                @Html.Label("Total Earnings", htmlAttributes: new { @id = "lblOvertime", @class = "form-label" })
+                            </div>
+                            <div class="col-6">
+                                @Html.TextBox("TotalEarnings", "0", new { @class = "input-control form-control  text-success bg-transparent border-0 font-weight-bold float-right text-right p-1", @readonly = true })
+                            </div>
+                        </li>
+                    </ul>
+
+                </th>
+                <th class="p-0 align-top">
+                    <ul class="list-group">
+                        <li class="list-group-item d-flex justify-content-between align-items-center border-0 p-1">
+                            <div class="col-6">
+                                @Html.Label("Total Deductions", htmlAttributes: new { @id = "lblOvertime", @class = "form-label" })
+                            </div>
+                            <div class="col-6">
+                                @Html.TextBox("TotalDeductions", "0", new { @class = "input-control form-control text-danger bg-transparent border-0 font-weight-bold float-right text-right p-1", @readonly = true })
+                            </div>
+                        </li>
+                    </ul>
+
+                </th>
+
+            </tr>
+        </tbody>
+        <tfoot id="dvSalaryDetails">
+
+            @if (Model.SalaryTypeKey == DbConstants.SalaryType.Monthly)
+            {
+                if (!(Model.IsFixed ?? true))
+                {
+                    <tr>
+                        <th>
+                            @Html.Label(EduSuiteUIResources.LOP, htmlAttributes: new { @id = "lblOvertime", @class = "text-red" })
+                        </th>
+                        <th>
+                            @Html.TextBoxFor(m => m.LOP, "{0:G29}", new { @class = "form-control text-right", @disabled = true })
+                        </th>
+                    </tr>
+                }
+                <tr>
+                    <th>
+                        @Html.Label(EduSuiteUIResources.GrossSalary, htmlAttributes: new { @id = "lblTotalAmount", @class = "text-blue" })
+                    </th>
+                    <th>
+                        @Html.TextBox("GrossSalary", "", new { @class = "form-control text-right", @disabled = true, @dynamicsalary = true })
+                    </th>
+                </tr>
+
+            }
+            <tr>
+                <th>
+                    @Html.Label(EduSuiteUIResources.TotalSalary, htmlAttributes: new { @id = "lblTotalAmount", @class = "text-violet" })
+                </th>
+                <th>
+                    @Html.TextBoxFor(m => m.TotalSalary, "{0:G29}", new { @class = "form-control text-right", @disabled = true })
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    @Html.Label(EduSuiteUIResources.Remarks, htmlAttributes: new { @id = "lblRemarks" })
+                </th>
+                <th>
+                    @Html.TextAreaFor(m => m.Remarks, new { @class = "form-control input-control  text-right full-width", @InputFor = "lblRemarks" })
+                    <span class="red">
+                        @Html.ValidationMessageFor(m => m.Remarks)
+                    </span>
+                </th>
+            </tr>
+        </tfoot>
+    </table>
+    @if (Model.EmployeeSalaryAdvances.Count > 0)
+    {
+        <div id='salaryAdvanceModal' class='modal fade in'>
+            <div class="modal-dialog" style="max-width:700px">
+                <div class="modal-content">
+                    <div class="modal-header">
+
+                        <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+                        <h4 class="modal-title">@EduSuiteUIResources.Salary@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Advance</h4>
+
+                    </div>
+                    <div class="modal-body">
+                        <table class="tbSalaryAdvance table table-bordered">
+                            <tr>
+                                <th colspan="5" class="text-center">
+                                    Salary Advances
+                                </th>
+                            </tr>
+                            <tr class="white-bg">
+                                <th class="text-center">
+                                    Date
+                                </th>
+                                <th class="text-center">
+                                    Purpose
+                                </th>
+                                <th class="text-center">
+                                    Deduct Amount
+                                </th>
+                                <th class="text-center">
+                                    Balance
+                                </th>
+                                <th class="text-center">
+                                    Is Deduct?
+                                </th>
+                            </tr>
+                            @for (int i = 0; i < Model.EmployeeSalaryAdvances.Count; i++)
+                            {
+                                <tr advancerepeater="">
+                                    <td class="text-center">
+                                        @Html.HiddenFor(m => m.EmployeeSalaryAdvances[i].RowKey)
+                                        @Html.HiddenFor(m => m.EmployeeSalaryAdvances[i].PaymentKey)
+                                        @Html.HiddenFor(m => m.EmployeeSalaryAdvances[i].PaymentDate)
+                                        @string.Format("{0:dd/MM/yyyy}", Model.EmployeeSalaryAdvances[i].PaymentDate)
+                                    </td>
+                                    <td class="text-center">
+                                        @Model.EmployeeSalaryAdvances[i].Purpose
+                                    </td>
+                                    <td class="text-center">
+                                        @Html.HiddenFor(m => m.EmployeeSalaryAdvances[i].BeforeTakenAdvance)
+                                        @Html.TextBoxFor(m => m.EmployeeSalaryAdvances[i].PaidAmount, "{0:G29}", new { @class = "input-control full-width", @onClick = "this.setSelectionRange(0, this.value.length)" })
+                                    </td>
+                                    <td advancebalance class="text-center">
+                                        @string.Format("{0:G29}", Model.EmployeeSalaryAdvances[i].AdvanceBalance)
+                                    </td>
+                                    <td>
+                                        <div class="switch-check">
+                                            @Html.CheckBoxFor(m => m.EmployeeSalaryAdvances[i].IsDeduct, new { @class = "switch-input" })
+                                            <div class="switch-label" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                                            <div class="switch-handle"></div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                            <tr>
+                                <th class="text-center" colspan="2">
+                                    Total
+                                </th>
+                                <th totaladvance class="text-center">
+                                    @Model.EmployeeSalaryAdvances.Select(x => x.PaidAmount).DefaultIfEmpty().Sum()
+                                </th>
+                                <th totalbalance class="text-center">
+                                    @Model.EmployeeSalaryAdvances.Select(x => x.AdvanceBalance).DefaultIfEmpty().Sum()
+                                </th>
+                                <th class="text-center">
+                                </th>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="modal-footer justify-content-start">
+
+                        <button type="button" data-dismiss="modal" class="btn btn-sm btn-danger mx-1">@EduSuiteUIResources.Cancel</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<script>
+
+
+    $(document).ready(function () {
+        var jsonData=@(Html.Raw(Json.Encode(Model)));
+
+
+        if(jsonData["LoanAmount"]==null)
+        {
+            $("#dvLoan").hide();
+        }
+        else
+        {
+            $("#dvLoan").show();
+        }
+
+        var IsAttendance = ('@Model.IsAttendance').toLowerCase();
+        IsAttendance = IsAttendance ? JSON.parse(IsAttendance) : false;
+        if (!IsAttendance) {
+            $("#TotalWorkingDays,#NoOfDaysWorked,#AdditionalDayCount,#OverTimeHours,#OverTimeMinutes").removeAttr("disabled").removeClass("Border_None").addClass("border-grey")
+        }
+
+        EmployeeSalary.GetOtherAmounts(jsonData);
+        $("#OtherAmountType").change(function(){
+            EmployeeSalary.ChangeOtherAmountStyle($(this)[0]);
+        })
+        $("#BaseWorkingDays,#NoOfDaysWorked,#TotalWorkingDays,#AbsentDays").on("input",function(){
+
+            EmployeeSalary.CalculateGrossSalary();
+            //EmployeeSalary.CalculateOverTimeAmount();
+            EmployeeSalary.CalculateRowSum();
+            EmployeeSalary.CalculateNetSalary();
+        })
+        $("#BaseWorkingDays,#NoOfDaysWorked,#TotalWorkingDays,#AbsentDays").on("input",function(){
+                EmployeeSalary.DaysValidation()
+            CalculateSalary();
+        })
+
+        $("#OtherAmount").on("input",function(){
+            EmployeeSalary.CalculateGrossSalary();
+        })
+        $("[id*=IsDeduct]").on("change",function(){
+            var item=$(this).closest("[advanceRepeater]")
+            var paid=$("[id*=PaidAmount]",item)
+            var beforechangePaid=$("[id*=BeforeTakenAdvance]",item).val()
+            var advanceBalance=$("[advanceBalance]",item)
+            beforechangePaid=parseFloat(beforechangePaid)?parseFloat(beforechangePaid):0
+            if ($(this)[0].checked)
+            {
+                $(advanceBalance).html(0)
+                $(paid).val(beforechangePaid)
+                $(paid).removeAttr('readonly')
+            }
+            else
+            {
+                $(advanceBalance).html(beforechangePaid)
+                $(paid).val(0)
+                $(paid).attr('readonly',true)
+            }
+            EmployeeSalary.DeductAdvance();
+            CalculateSalary();
+        })
+
+        //var height = (parseInt($("#dvSalaryDetails").height())+113)+"px";
+        //$("#dvPaymentWindow").css("top",height);
+
+        AppCommon.CustomRepeaterRemoteMethod();
+
+        //$("#btnPaymentWindow").on("click", function () {
+        //    AppCommon.PaymentPopupWindow($("#SalaryMasterKey").val());
+        //})
+
+        var employeekey = $("#EmployeeKey").val();
+        var MonthlySalary = $("#MonthlySalary").val();
+        MonthlySalary = parseInt(MonthlySalary) ? parseInt(MonthlySalary) : 0;
+        employeekey = parseInt(employeekey) ? parseInt(employeekey) : 0;
+        if (employeekey != 0 && MonthlySalary == 0) {
+            EduSuite.AlertMessage({ title: Resources.Warning, content: "Please set Salary !.", type: 'orange' })
+            $('#btnSave', $("#frmEmployeeSalary")).hide();
+            $('#salarywarning', $("#frmEmployeeSalary")).show();
+        }
+        else {
+            EmployeeSalary.DeductAdvance();
+            $('#btnSave', $("#frmEmployeeSalary")).show();
+            $('#salarywarning', $("#frmEmployeeSalary")).hide();
+        }
+
+        $("[id*=PaidAmount]").on("input",function(){
+            var item=$(this).closest("[advanceRepeater]")
+            var paid=$(this).val()
+            var beforechangePaid=$("[id*=BeforeTakenAdvance]",item).val()
+            var advanceBalance=$("[advanceBalance]",item)
+            paid=parseFloat(paid)?parseFloat(paid):0
+            beforechangePaid=parseFloat(beforechangePaid)?parseFloat(beforechangePaid):0
+            $(advanceBalance).html(beforechangePaid-paid)
+            if(beforechangePaid<paid)
+            {
+                $(this).val(beforechangePaid)
+                $(advanceBalance).html(0)
+            }
+            EmployeeSalary.DeductAdvance();
+            CalculateSalary();
+        })
+
+
+        $("#OverTimeHours,#OverTimeMinutes").on("input",function(){
+
+            var OverTimeHours = $("#OverTimeHours").val();
+            var OverTimeMinutes = $("#OverTimeMinutes").val();
+
+            OverTimeHours = OverTimeHours != "" ? parseFloat(OverTimeHours) : 0;
+            OverTimeMinutes = OverTimeMinutes != "" ? parseFloat(OverTimeMinutes) : 0;
+            if (OverTimeMinutes>60)
+            {
+                $("#OverTimeMinutes").val(60)
+                OverTimeMinutes=60;
+            }
+            CalculateSalary();
+        })
+        $("#AdditionalDayCount").on("input", function () {
+            var AdditionalDayCount = $("#AdditionalDayCount").val();
+            var DaysInMonth = $("#DaysInMonth").val();
+            var TotalWorkingDays = $("#TotalWorkingDays").val();
+
+            AdditionalDayCount = AdditionalDayCount != "" ? parseFloat(AdditionalDayCount) : 0;
+            DaysInMonth = DaysInMonth != "" ? parseFloat(DaysInMonth) : 0;
+            TotalWorkingDays = TotalWorkingDays != "" ? parseFloat(TotalWorkingDays) : 0;
+            var nonworkingdays = DaysInMonth - TotalWorkingDays;
+            if (AdditionalDayCount > nonworkingdays) {
+                $("#AdditionalDayCount").val(nonworkingdays)
+            }
+            CalculateSalary();
+        })
+        $("#OvertimePerAHour").on("input",function(){
+            CalculateSalary();
+        })
+
+        $(".input-group-addon-end").each(function () {
+            AppCommon.SetInputAddOn(this);
+        });
+
+        CalculateSalary();
+    });
+
+    function CalculateSalary(){
+        EmployeeSalary.CalculateGrossSalary();
+        EmployeeSalary.CalculateRowSum();
+        EmployeeSalary.CalculateNetSalary();
+    }
+
+</script>

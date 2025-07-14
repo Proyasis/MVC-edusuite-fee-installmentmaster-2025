@@ -1,0 +1,450 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C84AC6F0-E7F7-4358-98E3-D0740B890EEF}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CITS.EduSuite.Business</RootNamespace>
+    <AssemblyName>CITS.EduSuite.Business</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Serialization" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Common\AccountManagement.cs" />
+    <Compile Include="Common\ActivityLog.cs" />
+    <Compile Include="Common\AppConstants.cs" />
+    <Compile Include="Common\Configurations.cs" />
+    <Compile Include="Common\EfExtensions.cs" />
+    <Compile Include="Common\LogHelper.cs" />
+    <Compile Include="Common\SecurityManagement.cs" />
+    <Compile Include="Common\StringExtension.cs" />
+    <Compile Include="Interfaces\IApplicationScheduleCallStatusService.cs" />
+    <Compile Include="Interfaces\IApplicationScheduleService.cs" />
+    <Compile Include="Interfaces\IApplicationScheduleTypeService.cs" />
+    <Compile Include="Interfaces\ICompanyService.cs" />
+    <Compile Include="Interfaces\IESSLAttendanceService.cs" />
+    <Compile Include="Interfaces\IFeeFollowUpService.cs" />
+    <Compile Include="Interfaces\ITCReasonMasterService.cs" />
+    <Compile Include="Interfaces\IFieldValidationService.cs" />
+    <Compile Include="Interfaces\ISalaryOtherAmountTypeService.cs" />
+    <Compile Include="Interfaces\IAcademicTermService.cs" />
+    <Compile Include="Interfaces\IAccountFlowService.cs" />
+    <Compile Include="Interfaces\IAccountHeadOpeningBalanceService.cs" />
+    <Compile Include="Interfaces\IAccountHeadService.cs" />
+    <Compile Include="Interfaces\IAccountTransactionService.cs" />
+    <Compile Include="Interfaces\IApplicationDocumentService.cs" />
+    <Compile Include="Interfaces\IApplicationEducationalDetailsService.cs" />
+    <Compile Include="Interfaces\IApplicationElectivePaperService.cs" />
+    <Compile Include="Interfaces\IApplicationFamilyDetailsService.cs" />
+    <Compile Include="Interfaces\IApplicationFeeInstallmentService.cs" />
+    <Compile Include="Interfaces\IApplicationFeePaymentService.cs" />
+    <Compile Include="Interfaces\IApplicationPersonalService.cs" />
+    <Compile Include="Interfaces\IApplicationService.cs" />
+    <Compile Include="Interfaces\IApplicationWebFormService.cs" />
+    <Compile Include="Interfaces\IAssetPurchaseService.cs" />
+    <Compile Include="Interfaces\IAssetService.cs" />
+    <Compile Include="Interfaces\IAssetTypeService.cs" />
+    <Compile Include="Interfaces\IAttendance.cs" />
+    <Compile Include="Interfaces\IAttendanceCategoryService.cs" />
+    <Compile Include="Interfaces\IAttendanceConfigurationService.cs" />
+    <Compile Include="Interfaces\IAttendanceTypeMasterService.cs" />
+    <Compile Include="Interfaces\IAttendanceTypeService.cs" />
+    <Compile Include="Interfaces\IAuthorService.cs" />
+    <Compile Include="Interfaces\IBankAccountService.cs" />
+    <Compile Include="Interfaces\IBankReconciliationService.cs" />
+    <Compile Include="Interfaces\IBankService.cs" />
+    <Compile Include="Interfaces\IBankStatementService.cs" />
+    <Compile Include="Interfaces\IBonafiedCertificateService.cs" />
+    <Compile Include="Interfaces\ICashTransactionService.cs" />
+    <Compile Include="Interfaces\IBankTransactionService.cs" />
+    <Compile Include="Interfaces\IBaseActivityLogSearchService.cs" />
+    <Compile Include="Interfaces\IBaseStudentSearchService.cs" />
+    <Compile Include="Interfaces\IBatchService.cs" />
+    <Compile Include="Interfaces\IBookCategoryService.cs" />
+    <Compile Include="Interfaces\IBookCopyService.cs" />
+    <Compile Include="Interfaces\IBookIssueReturnService.cs" />
+    <Compile Include="Interfaces\IBookIssueTypeService.cs" />
+    <Compile Include="Interfaces\IBookService.cs" />
+    <Compile Include="Interfaces\IBookStatusService.cs" />
+    <Compile Include="Interfaces\IBorrowerTypeService.cs" />
+    <Compile Include="Interfaces\IBranchService.cs" />
+    <Compile Include="Interfaces\IBuildingService.cs" />
+    <Compile Include="Interfaces\IBulkEmailSmsService.cs" />
+    <Compile Include="Interfaces\ICashFlowService.cs" />
+    <Compile Include="Interfaces\ICasteService.cs" />
+    <Compile Include="Interfaces\ICertificateTypeService.cs" />
+    <Compile Include="Interfaces\IChequeClearanceService.cs" />
+    <Compile Include="Interfaces\IClassModeService.cs" />
+    <Compile Include="Interfaces\ICommonSubjectService.cs" />
+    <Compile Include="Interfaces\ICounsellingTimeService.cs" />
+    <Compile Include="Interfaces\ICourseCompletionCertificateService.cs" />
+    <Compile Include="Interfaces\ICourseService.cs" />
+    <Compile Include="Interfaces\ICourseSubjectService.cs" />
+    <Compile Include="Interfaces\IAgentService.cs" />
+    <Compile Include="Interfaces\ICourseTransferService.cs" />
+    <Compile Include="Interfaces\ICourseTypeService.cs" />
+    <Compile Include="Interfaces\IDashBoardContentService.cs" />
+    <Compile Include="Interfaces\IDashBoardService.cs" />
+    <Compile Include="Interfaces\IDashBoardTypeService.cs" />
+    <Compile Include="Interfaces\IDepartmentMasterService.cs" />
+    <Compile Include="Interfaces\IDepartmentShiftService.cs" />
+    <Compile Include="Interfaces\IDepreciationService.cs" />
+    <Compile Include="Interfaces\IDesignationGradeService.cs" />
+    <Compile Include="Interfaces\IDesignationService.cs" />
+    <Compile Include="Interfaces\IDivisionAllocationService.cs" />
+    <Compile Include="Interfaces\IDivisionService.cs" />
+    <Compile Include="Interfaces\IDocumentTrackService.cs" />
+    <Compile Include="Interfaces\IEmployeeAccountService.cs" />
+    <Compile Include="Interfaces\IEmployeeAttendanceService.cs" />
+    <Compile Include="Interfaces\IEmployeeClassAllocationService.cs" />
+    <Compile Include="Interfaces\IEmployeeContactService.cs" />
+    <Compile Include="Interfaces\IEmployeeEducationService.cs" />
+    <Compile Include="Interfaces\IEmployeeEnquiryTargetService.cs" />
+    <Compile Include="Interfaces\IEmployeeExperienceService.cs" />
+    <Compile Include="Interfaces\IEmployeeHeirarchyService.cs" />
+    <Compile Include="Interfaces\IEmployeeIdentityService.cs" />
+    <Compile Include="Interfaces\IEmployeeLanguageSkillService.cs" />
+    <Compile Include="Interfaces\IEmployeeLoanService.cs" />
+    <Compile Include="Interfaces\IEmployeePersonalService.cs" />
+    <Compile Include="Interfaces\IEmployeeSalaryService.cs" />
+    <Compile Include="Interfaces\IEmployeeSalarySettingsService.cs" />
+    <Compile Include="Interfaces\IEmployeeService.cs" />
+    <Compile Include="Interfaces\IEmployeeShiftService.cs" />
+    <Compile Include="Interfaces\IEmployeeSubjectModuleService.cs" />
+    <Compile Include="Interfaces\IEmployeeTaskService.cs" />
+    <Compile Include="Interfaces\IEmployeeUserAccountService.cs" />
+    <Compile Include="Interfaces\IEmployeeUserPermissionService.cs" />
+    <Compile Include="Interfaces\IEnquiryCallStatusService.cs" />
+    <Compile Include="Interfaces\IEnquiryLeadService.cs" />
+    <Compile Include="Interfaces\IEnquiryScheduleService.cs" />
+    <Compile Include="Interfaces\IEnquiryService.cs" />
+    <Compile Include="Interfaces\IExamCentreService.cs" />
+    <Compile Include="Interfaces\IExamResultService.cs" />
+    <Compile Include="Interfaces\IExamScheduleService.cs" />
+    <Compile Include="Interfaces\IExamTermService.cs" />
+    <Compile Include="Interfaces\IExamTestService.cs" />
+    <Compile Include="Interfaces\IFeeRefundService.cs" />
+    <Compile Include="Interfaces\IFeeTypeService.cs" />
+    <Compile Include="Interfaces\IFutureTransactionService.cs" />
+    <Compile Include="Interfaces\IGSTMasterService.cs" />
+    <Compile Include="Interfaces\IHolidayService.cs" />
+    <Compile Include="Interfaces\IInternalExamResultService.cs" />
+    <Compile Include="Interfaces\IInternalExamScheduleService.cs" />
+    <Compile Include="Interfaces\IInternalExamTermService.cs" />
+    <Compile Include="Interfaces\IJournalService.cs" />
+    <Compile Include="Interfaces\ILanguageService.cs" />
+    <Compile Include="Interfaces\ILeaveApplicationService.cs" />
+    <Compile Include="Interfaces\ILibraryBookService.cs" />
+    <Compile Include="Interfaces\ILibraryReportService.cs" />
+    <Compile Include="Interfaces\ILoginService.cs" />
+    <Compile Include="Interfaces\IMarkGroupService.cs" />
+    <Compile Include="Interfaces\IMediumService.cs" />
+    <Compile Include="Interfaces\IMemberPlanDetailsService.cs" />
+    <Compile Include="Interfaces\IMemberRegistrationService.cs" />
+    <Compile Include="Interfaces\IMemberTypeService.cs" />
+    <Compile Include="Interfaces\IMenuDetailViewService.cs" />
+    <Compile Include="Interfaces\IMenuTypeService.cs" />
+    <Compile Include="Interfaces\INatureOfEnquiryService.cs" />
+    <Compile Include="Interfaces\INotificationDataService.cs" />
+    <Compile Include="Interfaces\INotificationTemplateService.cs" />
+    <Compile Include="Interfaces\IPartyService.cs" />
+    <Compile Include="Interfaces\IPrintInvoiceService.cs" />
+    <Compile Include="Interfaces\IPublisherService.cs" />
+    <Compile Include="Interfaces\IRackService.cs" />
+    <Compile Include="Interfaces\IReligionService.cs" />
+    <Compile Include="Interfaces\IRoleService.cs" />
+    <Compile Include="Interfaces\ISalaryComponentService.cs" />
+    <Compile Include="Interfaces\IScholarshipExamScheduleService.cs" />
+    <Compile Include="Interfaces\IScholarshipService.cs" />
+    <Compile Include="Interfaces\IScholarshipTypeService.cs" />
+    <Compile Include="Interfaces\ISecondLanguageService.cs" />
+    <Compile Include="Interfaces\ISelectListService.cs" />
+    <Compile Include="Interfaces\ISettingsService.cs" />
+    <Compile Include="Interfaces\IShiftService.cs" />
+    <Compile Include="Interfaces\ISMSHelperService.cs" />
+    <Compile Include="Interfaces\IStatusService.cs" />
+    <Compile Include="Interfaces\IStudentAbscondersService.cs" />
+    <Compile Include="Interfaces\IStudentDiaryService.cs" />
+    <Compile Include="Interfaces\IStudentEarlyDepartureService.cs" />
+    <Compile Include="Interfaces\IStudentLateService.cs" />
+    <Compile Include="Interfaces\IStudentLeaveService.cs" />
+    <Compile Include="Interfaces\IStudentPortalService.cs" />
+    <Compile Include="Interfaces\IStudentsCertificateReturnService.cs" />
+    <Compile Include="Interfaces\IStudentsPromotionService.cs" />
+    <Compile Include="Interfaces\ISharedService.cs" />
+    <Compile Include="Interfaces\IStudentIDCardService.cs" />
+    <Compile Include="Interfaces\IReportService.cs" />
+    <Compile Include="Interfaces\IStudentStatusService.cs" />
+    <Compile Include="Interfaces\IStudentStudyMaterialService.cs" />
+    <Compile Include="Interfaces\IStudentTCService.cs" />
+    <Compile Include="Interfaces\IStudentTimeTableService.cs" />
+    <Compile Include="Interfaces\IStudyMaterialService.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Interfaces\ISyllabusAndStudyMaterialService.cs" />
+    <Compile Include="Interfaces\ITestPaperService.cs" />
+    <Compile Include="Interfaces\ITimeTableTempService.cs" />
+    <Compile Include="Interfaces\ITransactionTypeService.cs" />
+    <Compile Include="Interfaces\IUnitTestScheduleService.cs" />
+    <Compile Include="Interfaces\IUniversityCancelationService.cs" />
+    <Compile Include="Interfaces\IUniversityCertificateService.cs" />
+    <Compile Include="Interfaces\IUniversityCourseService.cs" />
+    <Compile Include="Interfaces\IUniversityMasterService.cs" />
+    <Compile Include="Interfaces\IUniversityPaymentService.cs" />
+    <Compile Include="Interfaces\IUserManualService.cs" />
+    <Compile Include="Interfaces\IVideoService.cs" />
+    <Compile Include="Interfaces\IWorkScheduleService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Provider\CookieProvider.cs" />
+    <Compile Include="Provider\ICookieAuthentationProvider.cs" />
+    <Compile Include="Services\ApplicationScheduleTypeService.cs" />
+    <Compile Include="Services\ApplicationScheduleService.cs" />
+    <Compile Include="Services\CompanyService.cs" />
+    <Compile Include="Services\ApplicationScheduleCallStatusService.cs" />
+    <Compile Include="Services\ESSLAttendanceService.cs" />
+    <Compile Include="Services\FeeFollowUpService.cs" />
+    <Compile Include="Services\TCReasonMasterService.cs" />
+    <Compile Include="Services\FieldValidationService.cs" />
+    <Compile Include="Services\SalaryOtherAmountTypeService.cs" />
+    <Compile Include="Services\DashBoardContentService.cs" />
+    <Compile Include="Services\DashBoardTypeService.cs" />
+    <Compile Include="Services\AcademicTermService.cs" />
+    <Compile Include="Services\AccountFlowService.cs" />
+    <Compile Include="Services\AccountHeadOpeningBalanceService.cs" />
+    <Compile Include="Services\AccountHeadService.cs" />
+    <Compile Include="Services\AccountTransactionService.cs" />
+    <Compile Include="Services\ApplicationDocumentService.cs" />
+    <Compile Include="Services\ApplicationEducationalDetailsService.cs" />
+    <Compile Include="Services\ApplicationElectivePaperService.cs" />
+    <Compile Include="Services\ApplicationFamilyDetailsService.cs" />
+    <Compile Include="Services\ApplicationFeeInstallmentService.cs" />
+    <Compile Include="Services\ApplicationFeePaymentService.cs" />
+    <Compile Include="Services\ApplicationPersonalService.cs" />
+    <Compile Include="Services\ApplicationService.cs" />
+    <Compile Include="Services\ApplicationWebFormService.cs" />
+    <Compile Include="Services\AssetPurchaseService.cs" />
+    <Compile Include="Services\AssetService.cs" />
+    <Compile Include="Services\AssetTypeService.cs" />
+    <Compile Include="Services\AttendanceCategoryService.cs" />
+    <Compile Include="Services\AttendanceConfigurationService.cs" />
+    <Compile Include="Services\AttendanceService.cs" />
+    <Compile Include="Services\AttendanceTypeMasterService.cs" />
+    <Compile Include="Services\AttendanceTypeService.cs" />
+    <Compile Include="Services\AuthorService.cs" />
+    <Compile Include="Services\BankAccountService.cs" />
+    <Compile Include="Services\BankReconciliationService.cs" />
+    <Compile Include="Services\BankService.cs" />
+    <Compile Include="Services\BankStatementService.cs" />
+    <Compile Include="Services\BonafiedCertificateService.cs" />
+    <Compile Include="Services\CashTransactionService.cs" />
+    <Compile Include="Services\BankTransactionService.cs" />
+    <Compile Include="Services\BaseActivityLogSearchService.cs" />
+    <Compile Include="Services\BaseStudentSearchService.cs" />
+    <Compile Include="Services\BatchService.cs" />
+    <Compile Include="Services\BookCategoryService.cs" />
+    <Compile Include="Services\BookCopyService.cs" />
+    <Compile Include="Services\BookIssueReturnService.cs" />
+    <Compile Include="Services\BookIssueTypeService.cs" />
+    <Compile Include="Services\BookService.cs" />
+    <Compile Include="Services\BookStatusService.cs" />
+    <Compile Include="Services\BorrowerTypeService.cs" />
+    <Compile Include="Services\BranchService.cs" />
+    <Compile Include="Services\BuildingService.cs" />
+    <Compile Include="Services\BulkEmailSmsService.cs" />
+    <Compile Include="Services\CashFlowService.cs" />
+    <Compile Include="Services\CasteService.cs" />
+    <Compile Include="Services\CertificateTypeService.cs" />
+    <Compile Include="Services\ChequeClearanceService.cs" />
+    <Compile Include="Services\ClassModeService.cs" />
+    <Compile Include="Services\CommonSubjectService.cs" />
+    <Compile Include="Services\CounsellingTimeService.cs" />
+    <Compile Include="Services\CourseCompletionCertificateService.cs" />
+    <Compile Include="Services\CourseService.cs" />
+    <Compile Include="Services\CourseSubjectService.cs" />
+    <Compile Include="Services\AgentService.cs" />
+    <Compile Include="Services\CourseTransferService.cs" />
+    <Compile Include="Services\CourseTypeService.cs" />
+    <Compile Include="Services\DashBoardService.cs" />
+    <Compile Include="Services\DepartmentMasterService.cs" />
+    <Compile Include="Services\DepartmentShiftService.cs" />
+    <Compile Include="Services\DepreciationService.cs" />
+    <Compile Include="Services\DesignationGradeService.cs" />
+    <Compile Include="Services\DesignationService.cs" />
+    <Compile Include="Services\DivisionAllocationService.cs" />
+    <Compile Include="Services\DivisionService.cs" />
+    <Compile Include="Services\DocumentTrackService.cs" />
+    <Compile Include="Services\EmployeeAccountService.cs" />
+    <Compile Include="Services\EmployeeAttendanceService.cs" />
+    <Compile Include="Services\EmployeeClassAllocationService.cs" />
+    <Compile Include="Services\EmployeeContactService.cs" />
+    <Compile Include="Services\EmployeeEducationService.cs" />
+    <Compile Include="Services\EmployeeEnquiryTargetService.cs" />
+    <Compile Include="Services\EmployeeExperienceService.cs" />
+    <Compile Include="Services\EmployeeHeirarchyService.cs" />
+    <Compile Include="Services\EmployeeIdentityService.cs" />
+    <Compile Include="Services\EmployeeLanguageSkillService.cs" />
+    <Compile Include="Services\EmployeeLoanService.cs" />
+    <Compile Include="Services\EmployeePersonalService.cs" />
+    <Compile Include="Services\EmployeeSalaryService.cs" />
+    <Compile Include="Services\EmployeeSalarySettingsService.cs" />
+    <Compile Include="Services\EmployeeService.cs" />
+    <Compile Include="Services\EmployeeShiftService.cs" />
+    <Compile Include="Services\EmployeeSubjectModuleService.cs" />
+    <Compile Include="Services\EmployeeTaskService.cs" />
+    <Compile Include="Services\EmployeeUserAccountService.cs" />
+    <Compile Include="Services\EmployeeUserPermissionService.cs" />
+    <Compile Include="Services\EnquiryCallStatusService.cs" />
+    <Compile Include="Services\EnquiryLeadService.cs" />
+    <Compile Include="Services\EnquiryScheduleService.cs" />
+    <Compile Include="Services\EnquiryService.cs" />
+    <Compile Include="Services\ExamCentreService.cs" />
+    <Compile Include="Services\ExamResultService.cs" />
+    <Compile Include="Services\ExamScheduleService.cs" />
+    <Compile Include="Services\ExamTermService.cs" />
+    <Compile Include="Services\ExamTestService.cs" />
+    <Compile Include="Services\FeeCarryForwordService.cs" />
+    <Compile Include="Services\FeeRefundService.cs" />
+    <Compile Include="Services\FeeTypeService.cs" />
+    <Compile Include="Services\FutureTransactionService.cs" />
+    <Compile Include="Services\GSTMasterService.cs" />
+    <Compile Include="Services\HolidayService.cs" />
+    <Compile Include="Services\InternalExamResultService.cs" />
+    <Compile Include="Services\InternalExamService.cs" />
+    <Compile Include="Services\InternalExamTermService.cs" />
+    <Compile Include="Services\JournalService.cs" />
+    <Compile Include="Services\LanguageService.cs" />
+    <Compile Include="Services\LeaveApplicationService.cs" />
+    <Compile Include="Services\LibraryBookService.cs" />
+    <Compile Include="Services\LibraryReportService.cs" />
+    <Compile Include="Services\LoginService.cs" />
+    <Compile Include="Services\MarkGroupService.cs" />
+    <Compile Include="Services\MediumService.cs" />
+    <Compile Include="Services\MemberPlanDetailsService.cs" />
+    <Compile Include="Services\MemberRegistrationService.cs" />
+    <Compile Include="Services\MemberTypeService.cs" />
+    <Compile Include="Services\MenuDetailViewService.cs" />
+    <Compile Include="Services\MenuTypeService.cs" />
+    <Compile Include="Services\NatureOfEnquiryService.cs" />
+    <Compile Include="Services\NotificationDataService.cs" />
+    <Compile Include="Services\NotificationTemplateService.cs" />
+    <Compile Include="Services\PartyService.cs" />
+    <Compile Include="Services\PrintInvoiceService.cs" />
+    <Compile Include="Services\PublisherService.cs" />
+    <Compile Include="Services\RackService.cs" />
+    <Compile Include="Services\ReligionService.cs" />
+    <Compile Include="Services\RoleService.cs" />
+    <Compile Include="Services\SalaryComponentService.cs" />
+    <Compile Include="Services\ScholarshipExamScheduleService.cs" />
+    <Compile Include="Services\ScholarshipService.cs" />
+    <Compile Include="Services\ScholarshipTypeService.cs" />
+    <Compile Include="Services\SecondLanguageService.cs" />
+    <Compile Include="Services\SelectListService.cs" />
+    <Compile Include="Services\SettingsService.cs" />
+    <Compile Include="Services\ShiftService.cs" />
+    <Compile Include="Services\SMSHelperService.cs" />
+    <Compile Include="Services\StatusService.cs" />
+    <Compile Include="Services\StudentAbscondersService.cs" />
+    <Compile Include="Services\StudentDiaryService.cs" />
+    <Compile Include="Services\StudentEarlyDepartureService.cs" />
+    <Compile Include="Services\StudentLateService.cs" />
+    <Compile Include="Services\StudentLeaveService.cs" />
+    <Compile Include="Services\StudentPortalService.cs" />
+    <Compile Include="Services\StudentsCertificateReturnService.cs" />
+    <Compile Include="Services\StudentsPromotionService.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Services\SharedService.cs" />
+    <Compile Include="Services\StudentIDCardService.cs" />
+    <Compile Include="Services\ReportService.cs" />
+    <Compile Include="Services\StudentStatusService.cs" />
+    <Compile Include="Services\StudentStudyMaterialService.cs" />
+    <Compile Include="Services\StudentTCService.cs" />
+    <Compile Include="Services\StudentTimeTableService.cs" />
+    <Compile Include="Services\StudyMaterialService.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Services\SyllabusAndStudyMaterialService.cs" />
+    <Compile Include="Services\TestPaperService.cs" />
+    <Compile Include="Services\TimeTableTempService.cs" />
+    <Compile Include="Services\TransactionTypeService.cs" />
+    <Compile Include="Services\UnitTestScheduleService.cs" />
+    <Compile Include="Services\UniversityCancelationService.cs" />
+    <Compile Include="Services\UniversityCertificateService.cs" />
+    <Compile Include="Services\UniversityCourseService.cs" />
+    <Compile Include="Services\UniversityMasterService.cs" />
+    <Compile Include="Services\UniversityPaymentService.cs" />
+    <Compile Include="Services\UserManualService.cs" />
+    <Compile Include="Services\VideoService.cs" />
+    <Compile Include="Services\WorkScheduleService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CITS.EduSuite.Business.Models\CITS.EduSuite.Business.Models.csproj">
+      <Project>{cf2ceebf-278a-4d25-b43d-d14a7e47bf25}</Project>
+      <Name>CITS.EduSuite.Business.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CITS.EduSuite.Data\CITS.EduSuite.Data.csproj">
+      <Project>{50939764-c5bf-4b3b-ab35-abf9f23b35b2}</Project>
+      <Name>CITS.EduSuite.Data</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

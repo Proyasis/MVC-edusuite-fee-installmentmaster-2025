@@ -1,0 +1,167 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.EmployeeAttendanceViewModel
+@using System.Web.Mvc
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/CitsValidation")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Content/TimePickerJS")
+    @Scripts.Render("~/Content/momentJS")
+    @Scripts.Render("~/Scripts/EmployeeAttendance")
+    @Scripts.Render("~/Scripts/Common")
+}
+
+
+<input type="hidden" id="hdnEmployeeAttendanceList" value="@Url.Action("EmployeeAttendanceList", "EmployeeAttendance")" />
+<input type="hidden" id="hdnGetEmployeeAttendanceList" value="@Url.Action("GetEmployeeAttendanceList", "EmployeeAttendance")" />
+<input type="hidden" id="hdnDeleteEmployeeAttendance" value="@Url.Action("DeleteEmployeeAttendance", "EmployeeAttendance")" />
+<input type="hidden" id="hdnGetDepartments" value="@Url.Action("getDepartmentsByID", "EmployeeAttendance")" />
+<input type="hidden" id="hdnGetEmployeeByDepartment_Branch" value="@Url.Action("GetEmployeeByDepartments_BranchID", "EmployeeAttendance")" />
+<input type="hidden" id="hdnGetEmployeesByBranchId" value="@Url.Action("GetEmployeesByBranchId", "EmployeeAttendance")" />
+<input type="hidden" id="hdnAddEditEmployeeAttendance" value="@Url.Action("AddEditEmployeeMultipleAttendance", "EmployeeAttendance")" />
+<input type="hidden" id="hdnGetEmployeesAttendanceLog" value="@Url.Action("GetEmployeesAttendanceLog", "EmployeeAttendance")" />
+<input type="hidden" id="hdnDeleteEmployeeAttendanceBulk" value="@Url.Action("DeleteEmployeeAttendanceBulk", "EmployeeAttendance")" />
+
+<div class="card-header">
+    <header class="section-header">
+        <div class="row justify-content-between px-1">
+            <div class="col-lg-6 col-6">
+                <div class="tbl">
+                    <div class="tbl-row">
+                        <div class="tbl-cell">
+                            <h3>@EduSuiteUIResources.EmployeeAttendance</h3>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 text-right">
+                <a id="addEditEmployeeAttendance" href="@Url.Action("EmployeeAttendance", "Import")" class=" btn btn-primary btn-sm">
+                    <i class="fa fa-file-excel-o" aria-hidden="true"></i>  @EduSuiteUIResources.AttendanceSheet
+                </a>
+                <a class="btn btn-primary btn-sm" id="lnkBulkDelete">
+                    @EduSuiteUIResources.Bulk@EduSuiteUIResources.Delete
+                </a>
+                <a id="addEditEmployeeAttendance" href="@Url.Action("AddEditEmployeeMultipleAttendance", "EmployeeAttendance")" class="btn btn-success btn-sm d-none">
+                    <i class="fa fa-plus-square-o" aria-hidden="true"></i><span> @EduSuiteUIResources.New@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Attendance</span>
+                </a>
+            </div>
+        </div>
+    </header>
+</div>
+<div class="card-body">
+    <section class="section-content mx-sm-3 mx-0">
+        <div class="GridBody">
+            <div class="grid-nav-bar form-row justify-content-between">
+
+                @if (Model.Branches.Count > 1)
+                {
+                    <div class="col-lg-2 col-sm-4 col-6">
+                        <div class="form-group">
+                            @Html.DropDownListFor(m => m.BranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Branch, new { @class = "form-control SearchDropDown", @data_live_search = "true" })
+
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.BranchKey)
+                            </span>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    @Html.HiddenFor(m => m.BranchKey)
+
+                }
+                <div class="col-lg-2 col-sm-4 col-6">
+                    <div class="form-group ">
+                        @Html.DropDownListFor(m => m.EmployeeKey, new SelectList(Model.Employees, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Employee, new { @class = "input-control form-control form-control-sm", @InputFor = "lblEmployee" })
+                    </div>
+                </div>
+                <div class="col-lg-2 col-sm-4 col-6">
+                    <div class="form-group">
+                        @Html.DropDownListFor(m => m.AttendanceStatusKey, new SelectList(Model.EmployeeAttendanceStatus, "RowKey", "ValueText"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.AttendanceStatus, new { @class = "form-control input-control autohide-select", @data_plugin_type = "select2" })
+                    </div>
+                </div>
+                <div class="col-lg-2 col-sm-4 col-6">
+                    <div class="form-group ">
+                        @Html.TextBoxFor(m => m.SearchFromDate, "{0:dd/MM/yyyy}", new { @class = "input-control form-control form-control-sm", @data_inputmask = "'alias': 'dd/mm/yyyy'", @data_input_type = "date", @placeholder = EduSuiteUIResources.Search + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.FromDate })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.SearchFromDate)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-sm-4 col-6">
+                    <div class="form-group ">
+                        @Html.TextBoxFor(m => m.SearchToDate, "{0:dd/MM/yyyy}", new { @class = "input-control form-control form-control-sm", @data_inputmask = "'alias': 'dd/mm/yyyy'", @data_input_type = "date", @placeholder = EduSuiteUIResources.Search + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.ToDate })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.SearchToDate)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-lg-1 col-sm-4 col-6">
+                    <a class="btn btn-info btn-sm float-right " onclick='window.location.reload()'>
+                        <i class="fa fa-search"></i>   @EduSuiteUIResources.Refresh
+                    </a>
+                </div>
+                <div class="col-lg-1 col-sm-3 col-4">
+                    <div class="button-group float-right">
+                        <button id="btnPrint" type="button" onclick="EmployeeAttendance.GetExportPrintData('P','#hdnGetEmployeeAttendanceList','AttendanceSummary','Attendance Summary',false)" class="btn btn-primary btn-sm"><i class="fa fa-print btn-blue" aria-hidden="true"></i></button>
+                        <button id="btnExport" type="button" onclick="EmployeeAttendance.GetExportPrintData('E','#hdnGetEmployeeAttendanceList','AttendanceSummary','Attendance Summary',false)" class="btn btn-success btn-sm"><i class="fa fa-file-excel-o fa-align-right" aria-hidden="true"></i></button>
+
+                    </div>
+                </div>
+
+
+
+            </div>
+
+            <div class="table-wrapper">
+
+                <div class="jqGrid_wrapper overflow-auto">
+                    <table id="grid"></table>
+                    <div id="pager"></div>
+                </div>
+            </div>
+
+
+
+        </div>
+    </section>
+</div>
+
+<script>
+    $(document).ready(function () {
+        var jsonData=@(Html.Raw(Json.Encode(Model)));
+        AppCommon.FormatInputCase();
+        AppCommon.FormatDateInput();
+       EmployeeAttendance.GetEmployeeAttendances(jsonData);
+        $("#EmployeeKey").on("change", function () {
+            EmployeeAttendance.GetEmployeeAttendances(jsonData);
+            //EmployeeAttendance.SetUrlParam($("#addEditEmployeeAttendance"));
+            //setURL();
+        });
+        EmployeeAttendance.GetEmployeesByBranchId($("#BranchKey").val(), $("#EmployeeKey"));
+        $("#BranchKey").on("change", function () {
+            EmployeeAttendance.GetEmployeesByBranchId($(this).val(), $("#EmployeeKey"));
+            EmployeeAttendance.GetEmployeeAttendances(jsonData);
+            //setURL();
+        });
+        $("#SearchFromDate,#SearchToDate").on("changeDate change", function () {
+            EmployeeAttendance.GetEmployeeAttendances(jsonData);
+        });
+
+        $("#AttendanceStatusKey").change(function () {
+            EmployeeAttendance.GetEmployeeAttendances(jsonData);
+        });
+        $(window).on("resize", function () {
+            var $grid = $("#grid"),
+            newWidth = $grid.closest(".ui-jqgrid").parent().width();
+            $grid.jqGrid("setGridWidth", newWidth, true);
+        });
+        $("#lnkBulkDelete").on("click", function () {
+            deleteBulkEmployeeAttendance(1);
+        });
+
+    });
+
+</script>

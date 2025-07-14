@@ -1,0 +1,128 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.ReportViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+@using System.Web.Mvc
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/StudentsSummary")
+    @Scripts.Render("~/Content/DatePickerJS")
+
+    @Scripts.Render("~/Content/ExcelExportJS")
+    @Scripts.Render("~/Content/momentJS")
+    @Scripts.Render("~/Scripts/BaseStudentsSearch")
+}
+
+
+
+
+<input type="hidden" id="hdnGetStudyMaterialIssueReport" value="@Url.Action("GetStudyMaterialIssueReport", "Report")" />
+
+<input type="hidden" id="hdnGetStudyMaterialById" value="@Url.Action("GetStudyMaterialById", "Report")" />
+
+
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-12">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.StudyMaterial@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Issue@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Summary</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</header>
+<section class="section-content mx-sm-3 mx-0">
+
+    <div class="GridBody">
+        <div class="grid-nav-bar">
+            <form>
+
+                <div class="form-row">
+                    @Html.HiddenFor(m => m.RowKey)
+                    @Html.Action("Index", "BaseStudentSearch")
+
+                    <div class="col-lg-2 col-sm-3 col-4">
+
+                        <fieldset class="form-group">
+                            @Html.DropDownList("StudyMaterialIssueStatus", new List<SelectListItem>
+                            {
+                              new SelectListItem{ Text=EduSuiteUIResources.AvailableBooks, Value = "1" },
+                              new SelectListItem{ Text=EduSuiteUIResources.IssuedBooks, Value = "2" },
+                              new SelectListItem{ Text=EduSuiteUIResources.NotAvailable, Value = "3" },
+
+                            }, EduSuiteUIResources.BookStatus, new { @class = "form-control input-control " })
+                        </fieldset>
+                    </div>
+                    <div class="col-lg-1 col-sm-3 col-4">
+                        <fieldset class="form-group">
+                            <button type="button" id="btnSearch" class="btnForm btnSubmit btn btn-sm btn-success">@EduSuiteUIResources.Search</button>
+                        </fieldset>
+                    </div>
+                    <div class="col-lg-1 col-sm-3 col-2 ">
+                        <a class="btn btn-info btn-sm float-right " onclick='window.location.reload()'>
+                            <i class="fa fa-refresh"></i>   Refresh
+                        </a>
+                    </div>
+                </div>
+
+            </form>
+            <div class="form-row justify-content-between">
+
+                <div class="col-lg-2 col-sm-3 col-4">
+                    <div class="form-group">
+                        @Html.ListBox("ShowHideColumns", new SelectList(Model.Columns, "RowKey", "Text"), new { @class = "form-control input-control selectpicker", @multiple = "multiple", @data_live_search = "true", @onchange = "StudentSummary.GetCustomizedColumns(this)", @data_title = "Columns" })
+                    </div>
+
+                </div>
+                <div class="col-lg-2 col-sm-3 col-4">
+                    <div class="button-group float-right">
+                        <button id="btnPrint" type="button" onclick="StudentSummary.GetExportPrintData('P','#hdnGetStudyMaterialIssueReport','StudentStudyMaterialReport','Student Study Material Report',true)" class="btn btn-primary btn-sm"><i class="fa fa-print btn-blue" aria-hidden="true"></i></button>
+                        <button id="btnExport" type="button" onclick="StudentSummary.GetExportPrintData('E','#hdnGetStudyMaterialIssueReport','StudentStudyMaterialReport','Student Study Material Report',true)" class="btn btn-success btn-sm"><i class="fa fa-file-excel-o fa-align-right" aria-hidden="true"></i></button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-wrapper">
+
+            <div class="jqGrid_wrapper overflow-auto">
+                <table id="grid" class="table table-striped"></table>
+                <div id="pager"></div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<script type="text/javascript">
+    var jsonDataList=@(Html.Raw(Json.Encode(Model)));
+    jsonDataList["DefaultColumns"] = ["RowNumber","AdmissionNo", "Name", "CourseType", "Course", "Affiliations","CurrentYearText","TotalBooks","AvailableBookCount","IssuedBookCount"]
+    $(document).ready(function ()
+    {
+        //var doc = new jsPDF();
+
+        AppCommon.FormatDateInput();
+        AppCommon.FormatSelect2();
+
+        StudentSummary.GetStudyMaterialIssueSummary(jsonDataList);
+
+        $('#btnSearch').on("click", function ()
+        {
+            StudentSummary.GetStudyMaterialIssueSummary(jsonDataList);
+        });
+        $('#SearchAnyText').on("input", function ()
+        {
+            StudentSummary.GetStudyMaterialIssueSummary(jsonDataList);
+        });
+
+
+
+    });
+</script>

@@ -1,0 +1,233 @@
+﻿@model List<CITS.EduSuite.Business.Models.ViewModels.DivisionAllocationDetailsModel>
+
+
+<div id="dynamicRepeater" class="repeater">
+    <table class="table table-striped">
+        <thead class="w3-indigo">
+            <tr>
+                <th></th>
+                <th class="">
+                    <div class="switch-check my-2">
+                        <input type="checkbox" id="chekAll" onchange="CheckboxAllChange(this, 'IsActive')" class="switch-input chkIsActive" />
+                        <div class="switch-label redgreen" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                        <div class="switch-handle"></div>
+                        <label for="IsTax">Check</label>
+                    </div>
+                </th>
+                <th>@Html.Label(EduSuiteUIResources.RollNo, htmlAttributes: new { @class = "form-label" })</th>
+                <th id="thAdmissionNo">
+                    @Html.Label(EduSuiteUIResources.Admission + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.No, htmlAttributes: new { @class = "form-label" })
+                </th>
+                <th id="thName">
+                    @Html.Label(EduSuiteUIResources.Name, htmlAttributes: new { @class = "form-label" })
+                </th>
+                <th id="thName">
+                    @Html.Label(EduSuiteUIResources.CurrentYear, htmlAttributes: new { @class = "form-label" })
+                </th>
+                <th id="thGender">
+                    @Html.Label(EduSuiteUIResources.Gender, htmlAttributes: new { @class = "form-label" })
+                </th>
+
+            </tr>
+        </thead>
+        <tbody data-repeater-list id="DivstudentDetails">
+            @for (int i = 0; i < Model.Count(); i++)
+            {
+                <tr data-repeater-item>
+                    <td class="px-1">
+                        @if (Model[i].StudentDivisionAllocationKey != null && Model[i].StudentDivisionAllocationKey != 0)
+                        {
+                            <span onclick="DivisionAllocation.ResetDivisionAllocation(@Model[i].StudentDivisionAllocationKey)" class="btn btn-danger btn-sm">
+                                <span class="fa fa-remove"></span>
+                            </span>
+                        }
+                    </td>
+                    <td class="px-1">
+                        @if (Model[i].StudentDivisionAllocationKey != null && Model[i].StudentDivisionAllocationKey != 0)
+                        {
+                            <div class="switch-check my-2">
+                                @Html.CheckBoxFor(m => m[i].IsActive, new { @class = "switch-input chkIsActive", @data_exclude = "true", @disabled = "true" })
+                                <div class="switch-label redgreen" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                                <div class="switch-handle"></div>
+                            </div>
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m[i].IsActive)
+                            </span>
+                        }
+                        else
+                        {
+                            <div class="switch-check my-2">
+                                @Html.CheckBoxFor(m => m[i].IsActive, new { @class = "switch-input chkIsActive", @onclick = "DivisionAllocation.SetRollNumber(this,true)", @data_exclude = "true" })
+                                <div class="switch-label redgreen" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                                <div class="switch-handle"></div>
+                            </div>
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m[i].IsActive)
+                            </span>
+                        }
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(m => m[i].RollNumber, new { @class = "form-control input-control", @onchange = "DivisionAllocation.SetRollNumber(this)" })
+                    </td>
+                    <td class="px-1">
+                        @Html.DisplayFor(m => m[i].AdmissionNo, new { @class = "form-control input-control" })
+                        @Html.HiddenFor(m => m[i].ApplicationKey)
+                        @Html.HiddenFor(m => m[i].StudentDivisionAllocationKey)
+                        @Html.HiddenFor(m => m[i].AdmissionNo)
+                        @Html.HiddenFor(m => m[i].Name)
+                        @Html.HiddenFor(m => m[i].RollNoCode)
+
+                    </td>
+
+                    <td class="px-1">
+                        @Html.DisplayFor(m => m[i].Name, new { @class = "form-control input-control" })
+                    </td>
+
+                    <td class="px-1">
+                        @Html.DisplayFor(m => m[i].StudentYearText, new { @class = "form-control input-control" })
+                        @Html.HiddenFor(m => m[i].StudentYear)
+                    </td>
+                    <td class="px-1">
+                        @Html.DisplayFor(m => m[i].Gender, new { @class = "form-control input-control" })
+                        @Html.HiddenFor(m => m[i].GenderKey)
+                    </td>
+
+                </tr>
+            }
+
+        </tbody>
+    </table>
+
+</div>
+<script>
+    $(document).ready(function () {
+        AppCommon.FormatInputCase();
+        AppCommon.EnterKeyToTab($("[data-repeater-list]"))
+        $("[data-repeater-list]").find("input,select,textarea").each(function () {
+            $(this).attr("name", "DivisionAllocationDetails" + $(this).attr("name"));
+        })
+
+        $("[data-repeater-item]").each(function (Index) {
+            
+            var CheckedList = $("input[type=checkbox][name*=IsActive]:checked");
+
+            var roll = $("input[name*=RollNumber]", $(this)).val();
+            var chk = $("input[type=checkbox][name*=IsActive]", $(this)).is(":checked");
+            if (chk == true) {
+                $("input[type=checkbox][name*=IsActive]", $(this)).prop("disabled", true);
+
+            }
+
+            $(CheckedList).each(function () {
+                $(this).prop("disabled", true);
+
+            });
+
+
+            var RowKey = $("input[name*=StudentDivisionAllocationKey]", $(this)).val();
+            RowKey = parseInt(RowKey) ? parseInt(RowKey) : 0;
+            if (RowKey != 0) {
+                $("input[name*=RollNumber]", $(this)).prop("readonly", true);
+            }
+
+
+        });
+
+        $(".chkIsActive").change(function () {
+            StudentsCheckedCount();
+        });
+
+        //var table = $('#dynamicRepeater table');
+
+        //$('#thAdmissionNo, #thName,#thGender')
+        //    .wrapInner('<span title="sort this column"/>')
+        //    .each(function(){
+
+        //        var th = $(this),
+        //            thIndex = th.index(),
+        //            inverse = false;
+
+        //        th.click(function(){
+
+        //            table.find('td').filter(function(){
+
+        //                return $(this).index() === thIndex;
+
+        //            }).sortElements(function(a, b){
+
+        //                return $.text([a]) > $.text([b]) ?
+        //                    inverse ? -1 : 1
+        //                    : inverse ? 1 : -1;
+
+        //            }, function(){
+
+        //                // parentNode is the element we want to move
+        //                return this.parentNode;
+
+        //            });
+
+        //            inverse = !inverse;
+
+        //            $('input[name*=RollNumber]:not([readonly])').val("");
+        //            $("[data-repeater-item]").each(function (index) {
+
+        //                var Object = $('input[type=checkbox][name*=IsActive]', $(this))[0];
+        //                if (Object != undefined) {
+        //                    if (!Object.disabled&& Object.checked) {
+
+        //                        DivisionAllocation.SetRollNumber(Object,true);
+
+        //                    }
+        //                }
+        //            });
+
+        //        });
+
+        //    });
+    });
+
+    function CheckboxAllChange(chk, name) {
+        debugger
+        $('input[name*=RollNumber]:not([readonly])').val("");
+        $("[data-repeater-item]").each(function (index) {
+
+            var RowKey = $("input[name*=StudentDivisionAllocationKey]", $(this)).val();
+            RowKey = parseInt(RowKey) ? parseInt(RowKey) : 0;
+           
+            var Object = $('input[name*=' + name + ']', $(this))[0];
+            if (Object != undefined) {
+                if (!Object.disabled && RowKey == 0) {
+                    Object.checked = chk.checked;
+                    DivisionAllocation.SetRollNumber(Object, true);
+
+                }
+            }
+        });
+        StudentsCheckedCount();
+    }
+
+
+    function StudentsCheckedCount() {
+
+        var CheckedCount = $("input[type=checkbox][name*=IsActive]:checked").length;
+        var CheckboxCount = $("input[type=checkbox][name*=IsActive]").length;
+        var CheckedAll = false;
+        if (parseInt(CheckboxCount) == parseInt(CheckedCount)) {
+            CheckedAll = true;
+        }
+        $("#CheckedAllCount").html("");
+        $("#NoOfStudents").val("");
+        if (CheckedCount != 0) {
+            $("#CheckedAllCount").html("(" + CheckedCount + ")");
+            $("#NoOfStudents").val(CheckedCount);
+
+            if (CheckedAll == true) {
+                $("#chekAll").prop("checked", true);
+            }
+            else {
+                $("#chekAll").prop("checked", false);
+            }
+        }
+    }
+</script>
+

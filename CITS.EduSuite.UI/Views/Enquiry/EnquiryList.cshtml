@@ -1,0 +1,276 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.EnquiryViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+@using System.Web.Mvc
+
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/CitsValidation")
+    @Scripts.Render("~/Content/DatePickerJS")
+
+    @Scripts.Render("~/Scripts/Enquiry")
+
+}
+<input type="hidden" id="hdnGetEnquiries" value="@Url.Action("GetEnquiries", "Enquiry")" />
+<input type="hidden" id="hdnDeleteEnquiry" value="@Url.Action("DeleteEnquiry", "Enquiry")" />
+<input type="hidden" id="hdnGetEmployeesByBranchId" value="@Url.Action("GetEmployeesByBranchId", "Enquiry")" />
+<input type="hidden" id="hdnGetCallStatusByEnquiryStatus" value="@Url.Action("GetCallStatusByEnquiryStatus", "Enquiry")" />
+<input type="hidden" id="hdnGetEnquiry" value="@Url.Action("GetEnquiry", "Enquiry")" />
+<input type="hidden" id="hdnLogin" value="@Url.Action("LogOut","Login")" />
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-sm-6 col-12">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.Enquiry</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 text-right">
+            <a id="addEditEnquiry" href="@Url.Action("AddEditEnquiry", "Enquiry")" class="btn btn-success btn-sm">
+                <i class="fa fa-plus-square-o" aria-hidden="true"></i><span> @EduSuiteUIResources.New@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Enquiry</span>  @*Change Add new button Here *@
+            </a>
+        </div>
+    </div>
+</header>
+<section class="section-content mx-sm-3 mx-0">
+    <div class="GridBody">
+        @Html.HiddenFor(m => m.PageIndex)
+        @Html.HiddenFor(m => m.PageSize)
+        <div class="grid-nav-bar">
+            <div class="form-row">
+                <div class="col-lg-2 col-sm-4 col-6">
+                    <fieldset class="form-group">
+                        @Html.TextBoxFor(m => m.SearchName, new
+                   {
+                       @class = "form-control input-control",
+                       @placeholder = EduSuiteUIResources.Name,
+                       @onkeyup = "Enquiry.GetEnquiryByText(this)",
+                       @onclick = "Enquiry.GetEnquiryByText(this)",
+                       @autocomplete = "off"
+                   })
+                    </fieldset>
+                </div>
+                <div class="col-lg-2 col-sm-4 col-6" style="display:none">
+                    <fieldset class="form-group">
+                        @Html.TextBoxFor(m => m.SearchPhone, new { @class = "form-control input-control", @placeholder = EduSuiteUIResources.Phone })
+                    </fieldset>
+                </div>
+                <div class="col-lg-2 col-sm-4 col-6" style="display:none">
+                    <fieldset class="form-group">
+                        @Html.TextBoxFor(m => m.SearchEmail, new { @class = "form-control input-control", @placeholder = EduSuiteUIResources.Email })
+                    </fieldset>
+                </div>
+                <div class="col-lg-1 col-sm-4 col-6">
+                    <fieldset class="form-group">
+                        @Html.TextBoxFor(m => m.SearchFromDate, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_input_type = "date", @data_inputmask = "'alias': 'dd/mm/yyyy'", @placeholder = EduSuiteUIResources.FromDate })
+                    </fieldset>
+                </div>
+                <div class="col-lg-1 col-sm-4 col-6">
+                    <fieldset class="form-group">
+                        @Html.TextBoxFor(m => m.SearchToDate, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_input_type = "date", @data_inputmask = "'alias': 'dd/mm/yyyy'", @placeholder = EduSuiteUIResources.ToDate })
+                    </fieldset>
+                </div>
+
+
+                @if (Model.Branches.Count == 1)
+                {
+                    {
+                        Model.SearchBranchKey = (Model.SearchBranchKey == 0 || Model.SearchBranchKey == null) ? (short)Model.Branches.Select(x => x.RowKey).FirstOrDefault() : Model.SearchBranchKey;
+                    }
+                    @Html.HiddenFor(m => m.SearchBranchKey)
+                }
+                else
+                {
+                    <div class="col-lg-2 col-sm-4 col-6">
+                        <fieldset class="form-group">
+                            @Html.DropDownListFor(m => m.SearchBranchKey, new SelectList(Model.Branches, "RowKey", "Text"), EduSuiteUIResources.Branch, new { @class = "form-control input-control ", @data_live_search = "true" })
+                        </fieldset>
+                    </div>
+                }
+
+                <div class="col-lg-2 col-sm-3 col-4">
+                    <fieldset class="form-group">
+                        @Html.DropDownListFor(m => m.SearchEmployeeKey, new SelectList(Model.Employees, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Employee, new { @class = "form-control input-control  selectpicker", @data_live_search = "true", @InputFor = "lblEmployee" })
+                    </fieldset>
+                </div>
+
+                <div class="col-lg-2 col-sm-4 col-6">
+                    <fieldset class="form-group">
+                        @Html.DropDownListFor(m => m.SearchEnquiryStatusKey, new SelectList(Model.EnquiryStatuses, "RowKey", "Text"), EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Enquiry + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Status, new { @class = "form-control input-control " })
+                    </fieldset>
+                </div>
+
+                <div class="col-lg-2 col-sm-4 col-6">
+                    <fieldset class="form-group">
+                        @Html.DropDownListFor(m => m.SearchCallStatusKey, new SelectList(Model.LastEnquiryCallStatuses, "RowKey", "Text"), EduSuiteUIResources.CallStatus, new { @class = "form-control input-control" })
+                    </fieldset>
+                </div>
+                @*@if ((bool)ViewBag.ShowAcademicTerm)
+                {*@
+                    <div class="col-lg-2 col-sm-4 col-6">
+                        <fieldset class="form-group">
+                            @Html.DropDownListFor(m => m.SearchAcademicTermKey, new SelectList(Model.AcademicTerms, "RowKey", "Text"), EduSuiteUIResources.BlankSpace + EduSuiteUIResources.AcademicTerm, new { @class = "form-control input-control" })
+                        </fieldset>
+                    </div>
+                @*}
+                else
+                {
+                    {
+                        Model.SearchAcademicTermKey = (byte)Model.AcademicTerms.Select(row => row.RowKey).FirstOrDefault();
+                    }
+                    @Html.HiddenFor(m => m.SearchAcademicTermKey)
+                }*@
+                <div class="col-lg-2 col-sm-4 col-6">
+                    <fieldset class="form-group">
+                        @Html.DropDownListFor(m => m.NatureOfEnquiryKey, new SelectList(Model.NatureOfEnquiries, "RowKey", "Text"), EduSuiteUIResources.Search + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.NatureOfEnquiry, new { @class = "form-control input-control" })
+                    </fieldset>
+                </div>
+
+            </div>
+        </div>
+        <br />
+
+        @*@if (!DbConstants.Role.AdminUserTypes.Contains((User as CITS.EduSuite.Business.Models.Security.CITSEduSuitePrincipal).RoleKey))
+        { <div class="tabs-section-nav">
+            <ul id="ScheduleTab" class="nav" role="tablist">
+                <li class="nav-item">
+                    <a value="0" aria-controls="discover" role="tab" class="nav-link active" data-toggle="tab" data-href="@Url.Action("AddEditApplicationPersonal", "ApplicationPersonal", new { id = Model.RowKey })">
+                        <span class="nav-link-in">
+                            <i class="font-icon font-icon-user"></i>
+                            Proccessing
+                            <span class="badge font-16 w3-green">0</span>
+                        </span>
+
+                    </a>
+                </li>
+               <li class="nav-item">
+                    <a value="1" aria-controls="discover" role="tab" class="nav-link" data-toggle="tab" data-href="@Url.Action("AddEditApplicationPersonal", "ApplicationPersonal", new { id = Model.RowKey })">
+                        <span class="nav-link-in">
+                            <i class="fa fa-arrow-row"></i>
+                            Inbox
+                            <span class="badge font-16 w3-orange">0</span>
+                        </span>
+
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a value="2" aria-controls="discover" role="tab" class="nav-link" data-toggle="tab" data-href="@Url.Action("AddEditApplicationPersonal", "ApplicationPersonal", new { id = Model.RowKey })">
+                        <span class="nav-link-in">
+                            <i class="fa fa-arrow-up"></i>
+                            OutBox
+                            <span class="badge font-16 w3-blue">0</span>
+                        </span>
+
+                    </a>
+                </li>
+
+            </ul>
+        </div>
+        }*@
+        <div class="form-row">
+            <div class="col-md-5">
+                <h6>
+                    @EduSuiteUIResources.TotalRecords  <span id="TotalRecords" class="label label-info"></span>
+
+                </h6>
+            </div>
+            <div class="col-md-7 float-right">
+                <div id="page-selection-up" class="float-right m-0"></div>
+            </div>
+        </div>
+        <div id="dvScheduleContainer">
+            <div id="dvRepeaterList" class="row"></div>
+        </div>
+       
+    </div>
+
+</section>
+<script type="text/javascript">
+    var jsonData=@(Html.Raw(Json.Encode(Model)));
+
+    $(document).ready(function () {
+        AppCommon.FormatDateInput();
+        //AppCommon.FormatSelect2();
+        // Enquiry.GetDepartmentsByBranchId( $("select#SearchBranchKey").val(), $("select#SearchDepartmentKey"));
+        Enquiry.GetEnquiries(jsonData,1,true);
+
+        //BindEmployee();
+
+        //$("#SearchName,#SearchPhone,#SearchEmail").on("input",function()
+        //{
+        //    Enquiry.GetEnquiries(jsonData);
+        //});
+
+        $("#SearchFromDate,#SearchToDate").on("changeDate",function(){
+            Enquiry.GetEnquiries(jsonData,1,true);
+        });
+
+        $("#SearchName,#SearchCallStatusKey,#SearchPhone,#SearchEmail,#SearchBranchKey,#SearchDepartmentKey,#SearchAcademicTermKey,#SearchEmployeeKey,#SearchEnquiryStatusKey,#SearchFromDate,#SearchToDate,#NatureOfEnquiryKey").on("change",function(){
+            Enquiry.GetEnquiries(jsonData,1,true);
+        })
+
+        $("#ScheduleTab li a").click(function () {
+            setTimeout(function () { Enquiry.GetEnquiries(jsonData, 1, true); }, 100);
+        });
+
+        $("#SearchBranchKey").on("change", function ()
+        {
+            Enquiry.GetEmployeesByBranchId($(this).val(), $("#SearchEmployeeKey"));
+            Enquiry.GetDepartmentsByBranchId($(this).val(), $("select#SearchDepartmentKey"));
+            Enquiry.GetEnquiries(jsonData,1,true);
+        });
+        $("#SearchEnquiryStatusKey").on("change", function () {
+            var obj = {};
+            obj.EnquiryStatusKey = $(this).val();
+            Enquiry.GetCallStatusByEnquiryStatus(obj, $("#SearchCallStatusKey"));
+        });
+    });
+
+
+    var BindEmployee = function () {
+        var obj = {};
+        obj.id = $("#SearchBranchKey").val() != "" ? $("#SearchBranchKey").val() : 0;
+        AppCommon.BindDropDownbyId(obj, $("#hdnGetEmployeesByBranchId").val(), $("#SearchEmployeeKey"), Resources.Employee);        
+    }
+
+
+</script>
+
+
+  @if (!DbConstants.Role.AdminUserTypes.Contains(DbConstants.User.RoleKey))
+  {
+    <script>
+        var DefaultBranchKey = jsonData["SearchBranchKey"];
+        var DefaultEmployeeKey = jsonData["SearchEmployeeKey"];
+    </script>
+
+}
+else
+{
+    <script>
+        var DefaultBranchKey = false;
+        var DefaultEmployeeKey = false;
+    </script>
+}
+
+
+
+<script>
+
+    function LoadHistory(obj)
+    {
+        
+        $("#ClosedFeedbackList").empty();
+        $("#txtMobileNumber").val(obj.id);
+
+        var Obj = {};
+        Obj.TelephoneCodeKey = $("#SearchHistoryTelephoneCodeKey").val();
+        Obj.MobileNumber = $("#txtMobileNumber").val();
+        EnquiryScheduleHistory.GetAllHistoryByMobileNumber(Obj);
+    }
+</script>

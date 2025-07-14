@@ -1,0 +1,155 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.MemberPlanDetailsViewModel
+
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+
+    @Scripts.Render("~/Scripts/MemberPlanDetails")
+    @Scripts.Render("~/bundles/CitsValidation")
+}
+
+<div class="modal-header">
+    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+    <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.Add @EduSuiteUIResources.Sla @EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace @EduSuiteUIResources.MemberPlanDetails</h4>
+</div>
+
+
+
+
+@using (Html.BeginForm("AddEditMemberPlanDetails", "MemberPlanDetails", FormMethod.Post, htmlAttributes: new { @id = "frmMemberPlanDetails" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.RowKey)
+    @Html.HiddenFor(m => m.ApplicationTypeKey)
+    @Html.HiddenFor(m => m.ApplicationKey)
+    @Html.HiddenFor(m => m.CardId)
+    @Html.HiddenFor(m => m.CardSerialNo)
+    @Html.ValidationSummary(true)
+
+    <input type="hidden" id="hdnGetFeesById" value="@Url.Action("GetFeesById", "MemberRegistration")" />
+    <input type="hidden" id="hdnFillCourse" value="@Url.Action("FillCourse", "MemberPlanDetails")" />
+    <input type="hidden" id="hdnFillApplication" value="@Url.Action("FillApplication", "MemberPlanDetails")" />
+
+    <div class="modal-body">
+        <div class="form-master">
+            <div class="form-row">
+                <div class="paddingNone">
+                    <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+                </div>
+            </div>
+            <div class="form-row">
+
+
+                <div class="col-lg-4 col-sm-4 col-6">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.ApplicationType, htmlAttributes: new { @id = "lblRegistrationFee", @class = "form-label" })
+                        @Html.TextBoxFor(m => m.ApplicationTypeName, new { @class = "form-control input-control", @InputFor = "lblRegistrationFee", @readonly = "readonly" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.ApplicationTypeName)
+                        </span>
+                    </fieldset>
+                </div>
+                <div class="col-lg-4 col-sm-4 col-6">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.Member, htmlAttributes: new { @id = "lblRegistrationFee", @class = "form-label" })
+                        @Html.TextBoxFor(m => m.MemberFullName, new { @class = "form-control input-control", @InputFor = "lblRegistrationFee", @readonly = "readonly" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.MemberFullName)
+                        </span>
+                    </fieldset>
+                </div>
+
+                <div class="col-lg-4 col-sm-4 col-6">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.BorrowerType, new { @id = "lblBorrowerType", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                        @Html.DropDownListFor(m => m.BorrowerTypeKey, new SelectList(Model.BorrowerType, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.BorrowerType, new { @class = "form-control border-radius input-control", @InputFor = "lblBorrowerType" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.BorrowerTypeKey)
+                        </span>
+                    </fieldset>
+                </div>
+                <div class="col-lg-4 col-sm-4 col-6">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.MemberType, new { @id = "lblMemberType", @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                        @Html.DropDownListFor(m => m.MemberTypeKey, new SelectList(Model.MemberType, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.MemberType, new { @class = "form-control border-radius input-control", @InputFor = "lblMemberType" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.MemberTypeKey)
+                        </span>
+                    </fieldset>
+                </div>
+                <div class="col-lg-4 col-sm-4 col-6">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.RegistrationFee, htmlAttributes: new { @id = "lblRegistrationFee", @class = "form-label" })
+                        @Html.TextBoxFor(m => m.RegistrationFee, new { @class = "form-control input-control", @InputFor = "lblRegistrationFee", @readonly = "readonly" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.RegistrationFee)
+                        </span>
+                    </fieldset>
+                </div>
+                <div class="col-lg-4 col-sm-4 col-6">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.MembershipFee, htmlAttributes: new { @id = "lblMembershipFee", @class = "form-label" })
+                        @Html.TextBoxFor(m => m.MemberShipFee, new { @class = "form-control input-control", @InputFor = "lblMembershipFee", @readonly = "readonly" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.MemberShipFee)
+                        </span>
+                    </fieldset>
+                </div>
+                <div class="col-lg-4 col-sm-4 col-6 text-center">
+                    <fieldset class="form-group">
+                        @Html.Label(EduSuiteUIResources.IsBlockMember, htmlAttributes: new { @id = "lbIsBlockMember", @class = "form-label" })
+                        <div class="switch-check my-2">
+                            @Html.CheckBoxFor(m => m.IsBlockMember, new { @class = "switch-input" })
+                            <div class="switch-label redgreen" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                            <div class="switch-handle"></div>
+                        </div>
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.IsBlockMember)
+                        </span>
+
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer justify-content-start">
+        <div class="form-group">
+            <input type="submit" value="@EduSuiteUIResources.Submit" id="btnSave" class="btn btn-sm btn-success mx-1" />
+            <button type="button" data-dismiss="modal" class="btn btn-sm btn-danger mx-1">@EduSuiteUIResources.Cancel</button>
+
+        </div>
+    </div>
+
+
+
+}
+
+<script>
+    $(document).ready(function () {
+
+        var response = AjaxHelper.ajax("GET", $("#hdnGetFeesById").val() + "?memberTypeKey=" + $("#MemberTypeKey").val())
+        $("#RegistrationFee").val(response["RegistrationFee"])
+        $("#MemberShipFee").val(response["MemberShipFee"])
+
+        $("#MemberTypeKey").on("change", function () {
+            var response = AjaxHelper.ajax("GET", $("#hdnGetFeesById").val() + "?memberTypeKey=" + $(this).val())
+            $("#RegistrationFee").val(response["RegistrationFee"])
+            $("#MemberShipFee").val(response["MemberShipFee"])
+        });
+
+
+
+        var applicationTypeKey = $("[id*=ApplicationTypeKey]:checked").val()
+        if (applicationTypeKey == 2) {
+            $(".dvStudent").show();
+
+            $(".dvEmployee").hide();
+        }
+        else {
+            $(".dvStudent").hide();
+            $(".dvEmployee").show();
+        }
+
+
+    });
+</script>

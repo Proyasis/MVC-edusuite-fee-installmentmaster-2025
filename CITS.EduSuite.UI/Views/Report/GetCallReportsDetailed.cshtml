@@ -1,0 +1,103 @@
+﻿
+
+
+@*<input type="hidden" id="hdnTotalRecords" value="200" />*@
+<div class="modal-header">
+    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+    <h4 class="modal-title" id="myModalLabel">Call History Report</h4>
+</div>
+
+<div class="modal-body bottomLine">
+    <div class="topMarginSpace  fnone">
+        <div class="paddingNone">
+            <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+        </div>
+        <div class="formMaster paddingNone">
+         
+
+        </div>
+    </div>
+
+
+
+    <div id="CallReportContentDiv" class="form-row panel-footer  transparent-bg Border_None">
+        <div class="form-row">
+            <div class="col-lg-2 col-sm-3 col-4">
+                <div class="col-sm-2 pull-left">
+                    <div class="TotalCount"><span> Total Records: </span><span class="Count"></span></div>
+                </div>
+
+            </div>
+
+            <div class="col-lg-6 col-sm-6 col-4">
+                <span id="ReportPathPopup"></span>
+            </div>
+
+
+
+           
+            <div class="col-lg-2 col-sm-3 col-4 pull-right CustomizeCol">
+                <select onchange="ManageColumns(this)" class="form-control border-radius input-control selectpicker  CustomizeColumn" data-placeholder="Show Column" id="CustomizeColumn" multiple="multiple" name="CustomizeColumn">
+                    <option selected="selected" value="Service">Service</option>
+                    <option selected="selected" value="name">Name</option>
+                    <option selected="selected" value="mobile">Mobile</option>
+                    <option selected="selected" value="currentstatus"> Status</option>
+                    <option disabled="disabled" value="applicationstatusname"> Application Status</option>
+                    <option selected="selected" value="calltypename">Call Type</option>
+                    <option disabled="disabled" value="feedback">Feedback</option>
+                    <option disabled="disabled" value="statusoncall">Status on Call</option>
+                    <option selected="selected" value="nextcallschedule">Next Schedule </option>
+                    <option disabled="disabled" value="department">Department</option>
+                    <option selected="selected" value="callstatusname">Call Status</option>
+                    <option selected="selected" value="callduration">Duration</option>
+                    <option selected="selected" value="calleddate">Called Date</option>
+                    <option disabled="disabled" value="counsellingbranch">Counselling Branch</option>
+                    <option disabled="disabled" value="counsellingtime">Counselling Time</option>
+                    <option disabled="disabled" value="counsellingdate">Counselling Date</option>
+                    <option disabled="disabled" value="counselleddate">Counselled Date</option>
+                    <option disabled="disabled" value="counsellingcalleddate">Counselling Called Date</option>
+                    <option selected="selected" value="branch"> Branch</option>
+                    <option selected="selected" value="employee"> Counselling By</option>
+                    <option disabled="disabled" value="scheduledemployee">Scheduled Employee</option>
+                    <option disabled="disabled" value="postedby">Posted by</option>
+                    @*<option disabled="disabled" value="lastcalled">Last Called on</option>
+            <option disabled="disabled" value="lastscheduledto">Last Scheduled to</option>*@
+                </select>
+            </div>
+
+            </div>
+        <div class="form-row">
+            <div id="reportData">
+
+            </div>
+
+            <div class="col-md-12 pull-right">
+                <div id="page-selection-down" class="pull-right"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+    
+
+        $("#ReportPathPopup").html($("#ReportPath").clone());
+        //$("#ReportPathPopup #ReportPath").append(" <span class='lblDate'> Date from " + $("#SearchFromDate").val() + " to " + $("#SearchToDate").val()+"</span>");
+
+        $('#CustomizeColumn').each(function () {
+            $(this).multiselect({
+                includeSelectAllOption: true,
+                includeSelectAllIfMoreThan: 10,
+                buttonWidth: '100%',
+                buttonClass: $(this).attr("class"),
+                enableFiltering: $(this).find("option").length > 10 ? true : false,
+                nonSelectedText: $(this).data("placeholder")
+            })
+        });
+       
+    });
+</script>
+
+

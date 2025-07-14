@@ -1,0 +1,63 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.StudyMaterialViewModel
+
+
+<div class="modal-header">
+    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+    <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.Add @EduSuiteUIResources.Sla @EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace @EduSuiteUIResources.StudyMaterial</h4>
+</div>
+@using (Html.BeginForm("BookList", "StudyMaterial", FormMethod.Post, new { @id = "frmBindAllBooks" }))
+{
+
+    <input type="hidden" id="hdnGetAllBooks" value="@Url.Action("GetAllBooks", "StudyMaterial")" />
+    <input type="hidden" id="hdnAddEditApplicationFeePayment" value="@Url.Action("AddEditStudyMaterial", "StudyMaterial")" />
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(m => m.ApplicationKey)
+    @Html.HiddenFor(m => m.StudyMaterialKeys)
+    @Html.ValidationSummary(true)
+
+    <div class="modal-body">
+        <div class="GridBody" style="float:none">
+
+            <div class="grid-nav-bar form-row justify-content-between">
+
+                <div class="col">
+                    <input id="txtSearchBookName" type="text" name="focus" class="form-control gridSearchTextBox" placeholder="@EduSuiteUIResources.Search" /> @* Change Search TextBox Placeholder*@
+                    <span id="iconSpan" class="iconSpan"><i class="fa fa-times-circle" aria-hidden="true"></i></span>
+                </div>
+                <div class="col">
+                    @*@Html.Label(EduSuiteUIResources.Year, htmlAttributes: new { @id = "lblFeeDate", @class = "form-label" })*@
+                    @Html.DropDownListFor(m => m.SubjectYear, new SelectList(Model.SubjectYears, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Year, new { @class = "form-control input-control" })
+
+                </div>
+
+                @*<div class="col-6 float-right">
+                    <a class="btn btn-info btn-sm float-right " onclick='Application.GetAllBooks()'>
+                        <i class="fa fa-refresh"></i>   @EduSuiteUIResources.Refresh
+                    </a>
+                </div>*@
+
+            </div>
+
+            <br /><br />
+            <div class="form-master">
+                <div class="portlet-body" id="portletBody">
+                    <div class='table-scrollable'>
+                        <table id="gridBooks"></table>
+                        <div id="pagerBooks"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="col-12">
+            <div class="form-group">
+                <input type="submit" value="@EduSuiteUIResources.Save" id="btnSave" class="btn btn-sm btn-success mx-1" />
+                <button type="button" data-dismiss="modal" class="btn btn-sm btn-danger mx-1">@EduSuiteUIResources.Cancel</button>
+
+            </div>
+        </div>
+    </div>
+}
+

@@ -1,0 +1,67 @@
+﻿
+<table id="ledgerTable" class="table table-bordered">
+
+    <thead>
+        <tr class="ledgerSubHead">
+            <th>
+                Date
+            </th>
+            <th>
+                Particulars
+            </th>
+
+            <th>
+                Debit
+            </th>
+            <th>
+                Credit
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        {{#DayBookMaster}}
+
+        {{#DayBookDetails}}
+        <tr style="text-transform:uppercase">
+            {{#if TransactionDate}}
+            <td class="align-top semibold" rowspan="{{RowSpan}}">{{dateformat TransactionDate 'DD/MM/YYYY'}}</td>
+            {{/if}}
+            {{#ifCond CashFlowTypeKey '==' 1}}
+        <td>
+            Received {{#if TransactionFrom}} from {{{TransactionFrom}}}{{/if}} {{#if Purpose}} for {{{Purpose}}}{{/if}}{{#if PaymentModeName}} by {{{PaymentModeName}}} <span style="font-weight: 600;"> Ref.No({{{ReferenceNo}}})</span> {{/if}}
+        </td>
+            {{else}}
+            {{#ifCond CashFlowTypeKey '==' 2}}
+        <td>
+            Paid {{#if TransactionTo}} to {{{TransactionTo}}}{{/if}}  {{#if Purpose}} for {{{Purpose}}}{{/if}}{{#if TransactionFrom}} of {{{TransactionFrom}}}{{/if}}{{#if PaymentModeName}} by {{{PaymentModeName}}} <span style="font-weight: 600;"> Ref.No({{{ReferenceNo}}})</span>{{/if}}
+        </td>
+            {{else}}
+        <td>
+            {{#if TransactionTo}} to {{{TransactionTo}}}{{/if}}  {{#if Purpose}}  {{{Purpose}}}{{/if}}{{#if TransactionFrom}} of {{{TransactionFrom}}}{{/if}}{{#if PaymentModeName}} <span style="font-weight: 600;"> Ref.No({{{ReferenceNo}}})</span> {{/if}}
+        </td>
+            {{/ifCond}}
+            {{/ifCond}}
+            <td class="text-right">{{currency DebitAmount}}</td>
+            <td class="text-right">{{currency CreditAmount}}</td>
+
+        </tr>
+        {{/DayBookDetails}}
+        <tr class='w3-sand'>
+            <th></th>
+            <th>Total</th>
+            <th class="text-right">{{sum DayBookDetails 'DebitAmount'}}</th>
+            <th class="text-right">{{sum DayBookDetails 'CreditAmount'}}</th>
+
+        </tr>
+        {{/DayBookMaster}}
+    </tbody>
+    <tfoot>
+        <tr class='w3-grey'>
+           
+            <th colspan="2" class="text-right w3-text-white">Grand Total</th>
+            <th class="text-right  w3-text-white">{{sum DayBook 'DebitAmount'}}</th>
+            <th class="text-right  w3-text-white">{{sum DayBook 'CreditAmount'}}</th>
+        </tr>
+    </tfoot>
+</table>

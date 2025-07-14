@@ -1,0 +1,49 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.ExamTestViewModel
+
+<div class="modal-header">
+    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+    <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.Add @EduSuiteUIResources.Sla @EduSuiteUIResources.Edit @EduSuiteUIResources.TestValuation</h4>
+</div>
+@using (Html.BeginForm("AddEditTestValuation", "TestPaper", FormMethod.Post, new { @id = "frmTestValuation" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.RowKey)
+    @Html.HiddenFor(m => m.TestPaperKey)
+    @Html.HiddenFor(m => m.ModuleKey)
+    @Html.HiddenFor(m => m.ApplicationKey)
+    @Html.HiddenFor(m => m.ApplicationUserKey)
+    @Html.HiddenFor(m => m.MaximumScore)
+    @Html.ValidationSummary(true)
+    <div class="modal-body">
+        <div class="form-master">
+            <div class="row">
+                <div class="">
+                    <div class="col-sm-12 w3-yellow w3-text-red py-2">
+                        <span>Please enter the mark in the right side box.</span>
+
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-12 exam-paper">
+                    <div id="dvExamPaper">
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="modal-footer justify-content-start">
+        <div class="form-group">
+            <button type="submit" id="btnSaveValuation" class="btn btn-sm btn-success mx-1"><i class="fa fa-save"></i> @EduSuiteUIResources.Save</button>
+            <button type="button" data-dismiss="modal" class="btn btn-sm btn-danger mx-1"><i class="fa fa-close"></i>@EduSuiteUIResources.Cancel</button>
+
+        </div>
+    </div>
+
+}
+
+<script>
+    var valuationPopupData=@(Html.Raw(Json.Encode(Model)));
+</script>

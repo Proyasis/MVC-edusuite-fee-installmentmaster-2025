@@ -1,0 +1,800 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.EmployeeViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Content/momentJS")
+    @Scripts.Render("~/Scripts/Employee")
+    @Scripts.Render("~/Scripts/EmployeeAttendanceReport")
+}
+<input type="hidden" id="hdnViewEmployeeCallHistory" value="@Url.Action("ViewEmployeeCallHistory", "Employee")" />
+<input type="hidden" id="hdnViewEmployeeCallHistoryDetails" value="@Url.Action("ViewEmployeeCallHistoryDetails", "Employee")" />
+<input type="hidden" id="hdnGetIncentiveByEmployee" value="@Url.Action("GetIncentiveByEmployee", "Employee")" />
+<input type="hidden" id="hdnGetIncentiveDetailsById" value="@Url.Action("GetIncentiveDetailsById", "Employee")" />
+<input type="hidden" id="hdnGetEmployeeAttendance" value="@Url.Action("GetEmployeeAttendance", "Report")" />
+<input type="hidden" id="hdnGetEmployeeAttendanceReport" value="@Url.Action("GetEmployeeAttendanceReport", "Report")" />
+
+
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-12">
+            <div class="tbl">
+                <div class="tbl-row  px-1">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.View@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Employee</h3>
+                        <ol class="breadcrumb breadcrumb-simple mb-2 float-sm-right">
+                            <li><a href="#" onclick="location.href='@Url.Action("EmployeeList","Employee")' ">@EduSuiteUIResources.Employee</a></li>
+                            <li class="active">@EduSuiteUIResources.Backto@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Employee</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+@Html.HiddenFor(m => m.EmployeeKey)
+<section class="section-content mx-sm-3 mx-0">
+
+    <div class="container-fluid main-section pt-20">
+        <div class="row">
+            <div class="col-lg-4 col-sm-12 col-12 text-center detail-part">
+                <div class="row image-part m-0 Employee_div">
+                    <div class="col-lg-12 col-sm-12 col-12 user-img">
+                        <div class="">
+
+                            @if (Model.EmployeePersonalDetails.EmployeePhoto != null)
+                            {
+                               
+                                <a href=@Url.Action("DownloadFilePhoto", "Employee", new { filename = Model.EmployeePersonalDetails.EmployeePhotoPath,Studentname=Model.EmployeePersonalDetails.FullName,AdmissionNo=Model.EmployeePersonalDetails.EmployeeCode})>
+                                    <img class="img-thumbnail" src="@Url.Content(Model.EmployeePersonalDetails.EmployeePhotoPath)" alt="User profile picture">
+                                </a>
+                            }
+                            else
+                            {
+                                <img class="img-thumbnail" src="~/images/no-photo.png" alt="User profile picture">
+                            }
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-sm-12 col-12 user-name">
+                        <h2>@Model.EmployeePersonalDetails.FirstName @Model.EmployeePersonalDetails.MiddleName @Model.EmployeePersonalDetails.LastName</h2>
+                        <p class="title">@Model.EmployeePersonalDetails.DesignationName</p>
+                    </div>
+                    <div class="col-lg-12 col-sm-12 col-12 information-button d-none">
+                        <a href="#" class="btn btn-success w-25">Follow</a>
+                        <a href="#" class="btn btn-danger w-25">Message</a>
+                    </div>
+                    <div class="col-lg-12 col-sm-12 col-12 user-detail text-left p-2">
+                        <div class="details_div ">
+                            <div class=" form-row line_height"><div class="col-4">MobileNo</div> <div class="col-1">:</div><div class="col-7">@Model.EmployeePersonalDetails.MobileNumber</div></div>
+                            <div class=" form-row line_height"><div class="col-4">@EduSuiteUIResources.Email </div> <div class="col-1">:</div><div class="col-7">@Model.EmployeePersonalDetails.EmailAddress</div></div>
+                            <div class=" form-row line_height"><div class="col-4">@EduSuiteUIResources.Code </div> <div class="col-1">:</div><div class="col-7">@Model.EmployeePersonalDetails.EmployeeCode </div></div>
+                            <div class=" form-row line_height"><div class="col-4">@EduSuiteUIResources.DOB </div> <div class="col-1">:</div><div class="col-7">@string.Format("{0:dd/MM/yyyy}", Model.EmployeePersonalDetails.DateOfBirth) </div></div>
+
+                            <div class=" form-row line_height">
+                                <div class="col-4">
+                                    @EduSuiteUIResources.Gender
+                                </div> <div class="col-1">:</div><div class="col-7">
+                                    @if (@Model.EmployeePersonalDetails.Gender == 1)
+                                    {@EduSuiteUIResources.Male}
+                                else
+                                { @EduSuiteUIResources.Female}
+                                </div>
+                            </div>
+
+                            <div class=" form-row line_height"><div class="col-4">@EduSuiteUIResources.BloodGroup   </div> <div class="col-1">:</div><div class="col-7">@Model.EmployeePersonalDetails.BloodGroupName </div></div>
+                            <div class=" form-row line_height">
+                                <div class="col-4">@EduSuiteUIResources.Address   </div> <div class="col-1">:</div><div class="col-7" style="word-break:break-all"> @Model.EmployeePersonalDetails.EmailAddress</div>
+                            </div>
+                            <div class=" form-row line_height">
+                                <div class="col-4">@EduSuiteUIResources.Branch   </div> <div class="col-1">:</div><div class="col-7">@Model.EmployeePersonalDetails.BranchName </div>
+                            </div>
+
+                        </div>
+                        @*<p> <span></span></p>
+                            <p>@EduSuiteUIResources.Email : <span>@Model.EmployeePersonalDetails.EmailAddress</span></p>
+                            <p>@EduSuiteUIResources.Code : <span>@Model.EmployeePersonalDetails.EmployeeCode</span></p>
+                            <p>@EduSuiteUIResources.DOB : <span> @string.Format("{0:dd/MM/yyyy}", Model.EmployeePersonalDetails.DateOfBirth)</span></p>
+                            <p>
+                                @EduSuiteUIResources.Gender : <span>
+                                    @if (@Model.EmployeePersonalDetails.Gender == 1)
+                                    {@EduSuiteUIResources.Male}
+                                    else
+                                    { @EduSuiteUIResources.Female}
+                                </span>
+                            </p>
+                            <p>@EduSuiteUIResources.BloodGroup : <span>@Model.EmployeePersonalDetails.BloodGroupName</span></p>
+                            <p>@EduSuiteUIResources.Address : <span>@Model.EmployeePersonalDetails.Address</span></p>
+                            <p>@EduSuiteUIResources.Branch : <span>@Model.EmployeePersonalDetails.BranchName</span></p>*@
+                    </div>
+                    <div class="col-lg-12 col-sm-12 col-12 icon-section d-none">
+                        <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+                        <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+                        <a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8 detail-part">
+
+                <div class="row Employee_div_right">
+                    <div class="col-lg-12  col-12 bg-white rounded-top tab-head">
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#Salary" role="tab" aria-controls="home" aria-selected="true">@EduSuiteUIResources.Salary</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#SalaryAdvance" role="tab" aria-controls="profile" aria-selected="false">@EduSuiteUIResources.Salary@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Advance @EduSuiteUIResources.BlankSpace@EduSuiteUIResources.AndSymbol@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Return  </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#Attendance" role="tab" aria-controls="profile" aria-selected="false">@EduSuiteUIResources.Attendance</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#ClassAllocation" role="tab" aria-controls="profile" aria-selected="false">@EduSuiteUIResources.ClassAllocation</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#WorkSchedule" role="tab" aria-controls="profile" aria-selected="false">@EduSuiteUIResources.WorkSchedule</a>
+                            </li>
+
+
+                        </ul>
+                    </div>
+                    <div class="col-lg-12 bg-white">
+                        <div class="tab-content mt-1" id="myTabContent">
+                            <div class="tab-pane fade show active" id="Salary" role="tabpanel" aria-labelledby="Salary-tab">
+                                <p class="text-info p-o"><strong>Salary Details</strong></p>
+                                <table class="table table-bordered table-sm">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th>@EduSuiteUIResources.SlNo</th>
+                                            <th>
+                                                @EduSuiteUIResources.Month
+                                            </th>
+                                            <th>
+                                                @EduSuiteUIResources.MonthlySalary
+                                            </th>
+                                            <th>
+                                                @EduSuiteUIResources.TotalSalary
+                                            </th>
+                                            <th>
+                                                @EduSuiteUIResources.Paid
+                                            </th>
+                                            <th>
+                                                @EduSuiteUIResources.Balance
+                                            </th>
+
+
+                                        </tr>
+                                    </thead>
+                                    @for (var i = 0; i < Model.EmployeeSalaryDetails.Count; i++)
+                                    {
+                                        <tr>
+                                            <td><strong>@(i + 1)</strong></td>
+                                            <td>
+                                                <strong> @(new DateTime(Model.EmployeeSalaryDetails[i].SalaryYearKey, Model.EmployeeSalaryDetails[i].SalaryMonthKey, 1).ToString("MMM yyyy"))</strong>
+                                            </td>
+                                            <td>
+                                                <strong> @Model.EmployeeSalaryDetails[i].MonthlySalary</strong>
+                                            </td>
+                                            <td>
+                                                <strong>@Model.EmployeeSalaryDetails[i].TotalSalary</strong>
+                                            </td>
+                                            <td>
+                                                <strong> @Model.EmployeeSalaryDetails[i].PaidAmount</strong>
+                                            </td>
+                                            <td>
+                                                <strong> @(Model.EmployeeSalaryDetails[i].TotalSalary - Model.EmployeeSalaryDetails[i].PaidAmount)</strong>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            @if (Model.EmployeeSalaryPaymentDetails.Any(x => x.MasterKey == Model.EmployeeSalaryDetails[i].SalaryMasterKey))
+                                            {
+                                                <td colspan="10">
+                                                    <strong>Salary Payment Details</strong>
+                                                    <table style="width:100%">
+                                                        <thead class="thead-light">
+                                                            <tr>
+
+                                                                <th>
+                                                                    @EduSuiteUIResources.PaymentDate
+                                                                </th>
+                                                                <th>
+                                                                    @EduSuiteUIResources.VoucherNumber
+                                                                </th>
+                                                                <th>
+                                                                    @EduSuiteUIResources.PaymentMode
+                                                                </th>
+                                                                <th>
+                                                                    @EduSuiteUIResources.TotalPaid
+                                                                </th>
+                                                                <th>
+                                                                    @EduSuiteUIResources.Balance
+                                                                </th>
+
+                                                                <th>
+                                                                    @EduSuiteUIResources.Purpose
+                                                                </th>
+
+                                                            </tr>
+                                                        </thead>
+                                                        @for (var j = 0; j < Model.EmployeeSalaryPaymentDetails.Count; j++)
+                                                        {
+                                                            if (@Model.EmployeeSalaryPaymentDetails[j].MasterKey == @Model.EmployeeSalaryDetails[i].SalaryMasterKey)
+                                                            {
+                                                                <tr>
+
+                                                                    <td>
+                                                                        @string.Format("{0:dd MMM yyyy}", Model.EmployeeSalaryPaymentDetails[j].PaymentDate)
+                                                                    </td>
+                                                                    <td>
+                                                                        @Model.EmployeeSalaryPaymentDetails[j].ReceiptNumber
+                                                                    </td>
+                                                                    <td>
+                                                                        @Model.EmployeeSalaryPaymentDetails[j].PaymentModeName
+                                                                    </td>
+                                                                    <td>
+                                                                        @Model.EmployeeSalaryPaymentDetails[j].PaidAmount
+                                                                    </td>
+                                                                    <td>
+                                                                        @Model.EmployeeSalaryPaymentDetails[j].BalanceAmount
+                                                                    </td>
+
+                                                                    <td>
+                                                                        @Model.EmployeeSalaryPaymentDetails[j].Purpose
+                                                                    </td>
+                                                                </tr>
+
+                                                            }
+                                                        }
+                                                    </table>
+                                                </td>
+                                            }
+
+                                        </tr>
+                                    }
+                                </table>
+
+
+                            </div>
+                            <div class="tab-pane fade contact-detail" id="SalaryAdvance" role="tabpanel" aria-labelledby="SalaryAdvance-tab">
+                                <p class="text-info p-o"><strong>Salary Advance</strong></p>
+
+                                <div class="card-body p-2 overflow-auto">
+                                    <table class="table table-bordered table-sm" id="divInstallmentFeeDetails">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th>@EduSuiteUIResources.SlNo</th>
+                                                <th>
+                                                    @EduSuiteUIResources.Date
+                                                </th>
+                                                <th>
+                                                    @EduSuiteUIResources.VoucherNumber
+                                                </th>
+                                                <th>
+                                                    @EduSuiteUIResources.PaymentMode
+                                                </th>
+                                                <th>
+                                                    @EduSuiteUIResources.Paid
+                                                </th>
+                                                <th>
+                                                    @EduSuiteUIResources.ClearedAmount
+                                                </th>
+                                                <th>
+                                                    @EduSuiteUIResources.Balance
+                                                </th>
+                                                <th>
+                                                    @EduSuiteUIResources.Remarks
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @for (int i = 0; i < Model.EmployeeSalaryAdvanceDetails.Count; i++)
+                                            {
+
+                                                <tr data-repeater-item>
+                                                    <td>@(i + 1)</td>
+                                                    <td>
+                                                        @String.Format("{0:dd/MM/yyyy}", Model.EmployeeSalaryAdvanceDetails[i].PaymentDate)
+                                                        @Html.HiddenFor(m => m.EmployeeSalaryAdvanceDetails[i].PaymentKey)
+                                                        @Html.HiddenFor(m => m.EmployeeSalaryAdvanceDetails[i].PaymentDate)
+                                                    </td>
+
+                                                    <td>
+                                                        @Model.EmployeeSalaryAdvanceDetails[i].ReceiptNumber
+                                                    </td>
+                                                    <td>
+                                                        @Model.EmployeeSalaryAdvanceDetails[i].PaymentModeName
+                                                    </td>
+                                                    <td>
+                                                        @Model.EmployeeSalaryAdvanceDetails[i].PaidAmount
+                                                    </td>
+                                                    <td>
+                                                        @Model.EmployeeSalaryAdvanceDetails[i].ClearedAmount
+                                                    </td>
+                                                    <td>
+                                                        @Model.EmployeeSalaryAdvanceDetails[i].BalanceAmount
+                                                    </td>
+                                                    <td>
+                                                        @Model.EmployeeSalaryAdvanceDetails[i].Remarks
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <p class="text-info p-o"><strong>Salary Advance Return</strong></p>
+                                <div class="card-body p-2 overflow-auto">
+                                    <table class="table table-bordered table-sm" id="divInstallmentFeeDetails">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th>@EduSuiteUIResources.SlNo</th>
+                                                <th>
+                                                    @EduSuiteUIResources.Date
+                                                </th>
+                                                <th>
+                                                    @EduSuiteUIResources.Receipt
+                                                </th>
+                                                <th>
+                                                    @EduSuiteUIResources.PaymentMode
+                                                </th>
+                                                <th>
+                                                    @EduSuiteUIResources.Amount
+                                                </th>
+                                                <th>
+                                                    @EduSuiteUIResources.Remarks
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @for (int i = 0; i < Model.EmployeeSalaryAdvanceReturnDetails.Count; i++)
+                                            {
+
+                                                <tr data-repeater-item>
+                                                    <td>@(i + 1)</td>
+                                                    <td>
+                                                        @String.Format("{0:dd/MM/yyyy}", Model.EmployeeSalaryAdvanceReturnDetails[i].PaymentDate)
+                                                    </td>
+                                                    <td>
+                                                        @Model.EmployeeSalaryAdvanceReturnDetails[i].ReceiptNumber
+                                                    </td>
+                                                    <td>
+                                                        @Model.EmployeeSalaryAdvanceReturnDetails[i].PaymentModeName
+                                                    </td>
+                                                    <td>
+                                                        @Model.EmployeeSalaryAdvanceReturnDetails[i].PaidAmount
+                                                    </td>
+                                                    <td>
+                                                        @Model.EmployeeSalaryAdvanceReturnDetails[i].Remarks
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade contact-detail" id="ClassAllocation" role="tabpanel" aria-labelledby="ClassAllocation-tab">
+                                <p class="text-info p-o"><strong>Class Allocation</strong></p>
+
+                                <div class="card-body p-2 overflow-auto">
+                                    <table class="table table-bordered table-sm">
+
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th>
+                                                    @EduSuiteUIResources.Subject
+                                                </th>
+
+
+                                            </tr>
+                                        </thead>
+                                        <tbody data-repeater-list>
+                                            @for (int i = 0; i < Model.EmployeeSubjectAllocationDetails.Count(); i++)
+                                            {
+                                                if (i == 0 || (i != 0 && Model.EmployeeSubjectAllocationDetails[i].ClassDetailsKey != Model.EmployeeSubjectAllocationDetails[i - 1].ClassDetailsKey))
+                                                {
+                                                    <tr class="w3-light-grey">
+                                                        <th colspan="5">
+                                                            @Model.EmployeeSubjectAllocationDetails[i].ClassDetailsName - @EduSuiteUIResources.ClassCode 
+                                                        </th>
+                                                    </tr>
+
+                                                }
+                                                <tr data-repeater-item>
+                                                    <td class="px-1">
+                                                        <strong> @Html.DisplayFor(m => m.EmployeeSubjectAllocationDetails[i].SubjectName, new { @class = "form-control input-control smallFont", @readonly = "true" })</strong>
+                                                        <ol class="ml-4 mt-2">
+                                                            @foreach (var item in Model.EmployeeSubjectAllocationDetails[i].ModulesList)
+                                                            {
+
+                                                                <li><em>@item</em></li>
+
+                                                            }
+                                                        </ol>
+                                                    </td>
+
+
+
+                                                </tr>
+                                            }
+                                        </tbody>
+
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade contact-detail" id="WorkSchedule" role="tabpanel" aria-labelledby="WorkSchedule-tab">
+                                <p class="text-info p-o"><strong>Work Updates</strong></p>
+
+                                <div class="card-body p-2 overflow-auto">
+                                    <table class="table table-bordered table-sm">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th>
+                                                    @Html.Label(EduSuiteUIResources.Batch, htmlAttributes: new { @class = "form-label" })
+                                                </th>
+                                                <th>
+                                                    @Html.Label(EduSuiteUIResources.ClassCode, htmlAttributes: new { @class = "form-label" })
+                                                </th>
+                                                <th>
+                                                    @Html.Label(EduSuiteUIResources.Subject, htmlAttributes: new { @class = "form-label" })
+                                                </th>
+                                                <th>
+                                                    @Html.Label(EduSuiteUIResources.Module, htmlAttributes: new { @class = "form-label" })
+                                                </th>
+                                                <th>
+                                                    @Html.Label(EduSuiteUIResources.Topic, htmlAttributes: new { @class = "form-label" })
+                                                </th>
+                                                <th>
+                                                    @Html.Label(EduSuiteUIResources.Duration, htmlAttributes: new { @class = "form-label" })
+                                                </th>
+                                                <th>
+                                                    @Html.Label(EduSuiteUIResources.Status, htmlAttributes: new { @class = "form-label" })
+                                                </th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody data-repeater-list id="DivWorkScheduleDetails">
+                                            @for (int i = 0; i < Model.WorkScheduleDetails.Count; i++)
+                                            {
+
+                                                @*if (i == 0 || (i != 0 && Model.WorkScheduleDetails[i].ClassDetailsKey != Model.WorkScheduleDetails[i - 1].ClassDetailsKey && Model.WorkScheduleDetails[i].BatchKey != Model.WorkScheduleDetails[i - 1].BatchKey))
+                                                    {
+                                                        <tr class="w3-light-grey">
+                                                            <th colspan="5">
+                                                                @Model.WorkScheduleDetails[i].ClassDetailsName (@EduSuiteUIResources.ClassCode) -
+                                                                @Model.WorkScheduleDetails[i].BatchName (@EduSuiteUIResources.Batch)
+                                                            </th>
+                                                        </tr>
+
+                                                    }*@
+                                                <tr data-repeater-item>
+                                                    @*@if (i == 0 || (i != 0 && Model.WorkScheduleDetails[i].BatchKey != Model.WorkScheduleDetails[i - 1].BatchKey))
+                                                    {
+                                                        <td rowspan="@(Model.WorkScheduleDetails.Count(row => row.BatchKey == Model.WorkScheduleDetails[i].BatchKey )  )">
+                                                            <strong>   @Model.WorkScheduleDetails[i].BatchName </strong>
+                                                        </td>
+                                                    }
+                                                    @if (i == 0 || (i != 0 && Model.WorkScheduleDetails[i].ClassDetailsKey != Model.WorkScheduleDetails[i - 1].ClassDetailsKey))
+                                                    {
+                                                        <td rowspan="@(Model.WorkScheduleDetails.Count(row => row.ClassDetailsKey == Model.WorkScheduleDetails[i].ClassDetailsKey )  )">
+                                                            <strong>   @Model.WorkScheduleDetails[i].ClassDetailsName </strong>
+                                                        </td>
+                                                    }*@
+                                                    @*@if (i == 0 || (i != 0 && Model.WorkScheduleDetails[i].SubjectKey != Model.WorkScheduleDetails[i - 1].SubjectKey))
+                                                    {
+                                                        <td rowspan="@(Model.WorkScheduleDetails.Count(row => row.SubjectKey == Model.WorkScheduleDetails[i].SubjectKey))">
+                                                            <strong>   @Model.WorkScheduleDetails[i].SubjectName</strong>
+                                                        </td>
+                                                    }
+                                                    @if (i == 0 || (i != 0 && Model.WorkScheduleDetails[i].SubjectModuleKey != Model.WorkScheduleDetails[i - 1].SubjectModuleKey))
+                                                    {
+                                                        <td rowspan="@(Model.WorkScheduleDetails.Count(row => row.SubjectModuleKey == Model.WorkScheduleDetails[i].SubjectModuleKey))">
+                                                            <strong>   @Model.WorkScheduleDetails[i].ModuleName</strong>
+                                                        </td>
+                                                    }*@
+                                                    <td>
+                                                        @Model.WorkScheduleDetails[i].BatchName
+                                                    </td>
+                                                    <td>
+                                                        @Model.WorkScheduleDetails[i].ClassDetailsName
+                                                    </td>
+                                                    <td>
+                                                        @Model.WorkScheduleDetails[i].SubjectName
+                                                    </td>
+                                                    <td>
+                                                        @Model.WorkScheduleDetails[i].ModuleName
+                                                    </td>
+                                                    <td>
+                                                        @Model.WorkScheduleDetails[i].TopicName
+                                                    </td>
+
+                                                    <td>
+
+                                                        <span id="spnTotalWorkDuration"></span>
+                                                        @Html.HiddenFor(m => m.WorkScheduleDetails[i].TotalWorkDuration)
+                                                    </td>
+                                                    <td>
+                                                        <span id="spnTotalProgressStatus"></span>
+                                                        @Html.HiddenFor(m => m.WorkScheduleDetails[i].ProgressStatus)
+                                                        <div class="progress">
+                                                            <div id="dynamic" class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                                                                <span id="current-progress"></span>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="tab-pane fade contact-detail overflow-auto" id="Attendance" role="tabpanel" aria-labelledby="Attendance-tab">
+                                <p class="text-info p-o"><strong>Attendance Details</strong></p>
+
+
+                                @*@if (Model.EmployeeKey != 0)
+                                    {
+                                    @Html.Action("GetEmployeeAttendance", "Report", new { id = Model.EmployeeKey })
+                                    }*@
+
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+</section>
+<style>
+    body {
+        background-color: #eeeeee !important;
+        font-family: arial;
+    }
+
+    .main-section {
+        /*margin-top: 50px;*/
+    }
+
+    .detail-part {
+        margin-bottom: 10px;
+    }
+
+    .image-part {
+        background-color: #fff;
+    }
+
+        .image-part .user-img img {
+            width: 50%;
+            margin-top: 30px;
+        }
+
+    .user-name h2 {
+        margin-top: 10px;
+        font-size: 22px;
+        font-weight: bold;
+        letter-spacing: 2px;
+    }
+
+    .information-button {
+        margin-bottom: 5px;
+    }
+
+    .user-name p {
+        font-size: 20px;
+    }
+
+    .user-detail details_div {
+        color: black;
+        padding-left: 30px;
+        margin: 5px;
+    }
+
+    /*.user-detail details_div tr {
+            line-height: 29px;
+        }*/
+
+
+    .line_height {
+        line-height: 24px;
+    }
+
+
+
+
+    .icon-section {
+        margin: 5px 0px;
+        padding-bottom: 10px;
+    }
+
+        .icon-section i {
+            margin: 0px 5px;
+            background-color: #d2d2d2;
+            color: black;
+            border-radius: 50%;
+            height: 25px;
+            width: 25px;
+            padding-top: 4px;
+        }
+
+        .icon-section .fa-facebook:hover {
+            background-color: #425898;
+            color: #fff;
+        }
+
+        .icon-section .fa-twitter:hover {
+            background-color: #60A8ED;
+            color: #fff;
+        }
+
+        .icon-section .fa-instagram:hover {
+            background-color: #E73372;
+            color: #fff;
+        }
+
+    .user-detail span {
+        color: #b2b2b2;
+    }
+
+    .tab-head {
+        padding: 10px;
+    }
+
+    .tab-content {
+        padding-bottom: 10px;
+    }
+
+    .about-detail h5 {
+        margin-top: 10px;
+    }
+
+    .about-detail .website {
+        margin-top: 6px;
+    }
+
+    .contact-detail p {
+        color: black;
+        margin: 5px;
+    }
+
+    .Employee_div {
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        /*max-width: 300px;*/
+        margin: auto;
+        text-align: center;
+        font-family: arial;
+    }
+
+    .Employee_div_right {
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        margin: auto;
+        text-align: center;
+        font-family: arial;
+    }
+
+    .title {
+        color: grey;
+        font-size: 16px !important;
+    }
+
+    table table {
+        display: none;
+    }
+
+    tr:hover + tr td table {
+        display: block;
+    }
+
+    .progress {
+        margin: 10px;
+        width: 50%;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+
+
+        //Employee.GetCallHistoryNameByEmployee(1);
+        //Employee.GetIncentive();
+        $("#searchText").on("input", function () {
+            //Employee.GetCallHistoryNameByEmployee(1);
+        });
+        $("#iconSpan").click(function () {
+            $('#searchText').val('');
+            Employee.GetCallHistoryNameByEmployee(1);
+        });
+        $("[id*=lblMonth]").each(function () {
+            var d = new Date();
+            var NowYear = d.getFullYear();
+            d.setMonth(d.getMonth() - 1)
+            var currMonth = d.getMonth() + 1;
+            var currYear = d.getFullYear();
+
+
+            var label = $("[id*=MonthName]", this);
+            var monthNo = $("input[type=radio]", this).val();
+            label.html(AppCommon.GetMonthNameFromNumber(monthNo, 3, "U"));
+            if (parseInt(monthNo) === currMonth) {
+                $(this).addClass("active btn-success");
+                $("#liYearText").html(currYear);
+                if (currYear === NowYear) {
+                    $("#liYearText").closest("li").addClass("disabled");
+                }
+            }
+        })
+        $("#lnkYearPrev").on("click", function () {
+            prevButtonClick(this);
+        })
+        $("#lnkYearNext").on("click", function () {
+            nextButtonClick(this);
+        })
+        EmployeeworkUpdates();
+
+
+    });
+    function nextButtonClick(_this) {
+        var currYear = (new Date()).getFullYear()
+        var li = $(_this).closest("li").prev();
+        if (!$(_this).closest("li").hasClass("disabled")) {
+            var Year = $(li).html();
+            Year = parseInt(Year) ? parseInt(Year) : (new Date()).getFullYear();
+            Year = Year + 1
+            if (currYear === Year) {
+                $(_this).closest("li").addClass("disabled");
+            }
+            else {
+                $(_this).closest("li").removeClass("disabled");
+            }
+            $(li).html(Year);
+            Employee.GetIncentive(Year);
+        }
+    }
+    function prevButtonClick(_this) {
+        $("#lnkYearNext").closest("li").removeClass("disabled");
+        var li = $(_this).closest("li").next();
+        var Year = $(li).html();
+        Year = parseInt(Year) ? parseInt(Year) : (new Date()).getFullYear();
+        Year = Year - 1;
+        $(li).html(Year);
+
+        Employee.GetIncentive(Year);
+    }
+    function EmployeeworkUpdates() {
+        $("[data-repeater-item]", $("#DivWorkScheduleDetails")).each(function (Index) {
+
+            var TotalWorkDuration = $("input[id*=TotalWorkDuration]", $(this)).val();
+            TotalWorkDuration = parseInt(TotalWorkDuration) ? parseInt(TotalWorkDuration) : 0;
+            var num = TotalWorkDuration;
+            var hours = (num / 60);
+            var rhours = Math.floor(hours);
+            var minutes = (hours - rhours) * 60;
+            var rminutes = Math.round(minutes);
+            var TotalWorkDurationText = rhours + " HR : " + rminutes + " Min.";
+            $("#spnTotalWorkDuration", $(this)).html(TotalWorkDurationText).attr("style", "color:Green;");
+
+            var ProgressStatus = $("input[id*=ProgressStatus]", $(this)).val();
+
+            ProgressStatus = parseInt(ProgressStatus) ? parseInt(ProgressStatus) : 0;
+
+            if (ProgressStatus < 100) {
+                //$("#spnTotalProgressStatus", $(this)).html("Pending (" + ProgressStatus + " % )").attr("style", "color:Red;");
+                $("#dynamic", $(this)).css("width", ProgressStatus + "%").attr("aria-valuenow", ProgressStatus).text(ProgressStatus + "% Pending").css({ "background-color": "Red" });
+            }
+            else if (ProgressStatus == 0) {
+                //$("#spnTotalProgressStatus", $(this)).html("Completed (" + ProgressStatus + " % )").attr("style", "color:Red;");
+                $("#dynamic", $(this)).css("width", ProgressStatus + "%").attr("aria-valuenow", ProgressStatus).text(ProgressStatus + "% Complete");
+            }
+            else if (ProgressStatus >= 100) {
+                //$("#spnTotalProgressStatus", $(this)).html("Completed (" + ProgressStatus + " % )").attr("style", "color:Green;");
+
+                $("#dynamic", $(this)).css("width", ProgressStatus + "%").attr("aria-valuenow", ProgressStatus).text(ProgressStatus + "% Complete").css({ "background-color": "Green" });;
+            }
+
+        })
+    }
+</script>

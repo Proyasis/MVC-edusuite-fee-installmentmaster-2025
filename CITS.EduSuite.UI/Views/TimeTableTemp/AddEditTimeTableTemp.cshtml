@@ -1,0 +1,153 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.TimeTableTempMasterViewModel
+@using CITS.EduSuite.UI
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/Common")
+    @Scripts.Render("~/Scripts/TimeTableTemp")
+    @Scripts.Render("~/Content/DatePickerJS")
+}
+
+<input type="hidden" id="hdnUrl" value="@Url.Action("FillTimeTableDetails", "TimeTableTemp", new { id = "" })" />
+<input type="hidden" id="hdnAddEditStudyMaterialsDetails" value="@Url.Action("AddEditStudyMaterialsDetails", "CourseSubject")" />
+<input type="hidden" id="hdnDeleteStudyMaterial" value="@Url.Action("DeleteStudyMaterial", "CourseSubject")" />
+<input type="hidden" id="hdnFillAllTeachers" value="@Url.Action("FillAllTeachers", "SelectList")" />
+<input type="hidden" id="hdnTimeTableTempList" value="@Url.Action("TimeTableTempList", "TimeTableTemp")" />
+
+
+
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-12">
+            <div class="tbl">
+                <div class="tbl-row  px-1">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.Add@EduSuiteUIResources.Hyphen@EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.TimeTable@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Master</h3>
+                        <ol class="breadcrumb breadcrumb-simple mb-2 float-sm-right">
+                            <li><a href="#" onclick="location.href='@Url.Action("TimeTableTempList", "TimeTableTemp")' ">@EduSuiteUIResources.TimeTable@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Master</a></li>
+                            <li class="active">@EduSuiteUIResources.Add@EduSuiteUIResources.Hyphen@EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.TimeTable@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Master</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="section-content mx-sm-3 mx-0">
+
+    <div class="form-master">
+
+        @using (Html.BeginForm("AddEditTimeTableTemp", "TimeTableTemp", FormMethod.Post, new { @id = "frmAddEditTimeTableTemp" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            @Html.HiddenFor(m => m.RowKey)
+
+            <div class="form-row">
+
+
+
+                <div class="col-lg-2 col-sm-3 col-6 ">
+                    <div class="form-group ">
+                        @Html.Label(EduSuiteUIResources.Employee, htmlAttributes: new { @class = "form-label" })<div class="required-icon"><div class="text">*</div></div>
+                        @Html.DropDownListFor(m => m.EmployeeKey, new SelectList(Model.Employees, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Employee, new { @class = "form-control border-radius input-control autoselect-select" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.EmployeeKey)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-sm-3 col-6">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.FromDate, htmlAttributes: new { @id = "lblFeeDate", @class = "form-label" })
+                        @Html.TextBoxFor(m => m.FromDate, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_input_type = "date", @InputFor = "lblFeeDate", @data_inputmask = "'alias': 'dd/mm/yyyy'" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.FromDate)
+                        </span>
+                     </div>  
+                </div>
+
+                <div class="col-lg-2 col-sm-3 col-6 ">
+                    <div class="form-group">
+                        @Html.Label(EduSuiteUIResources.ToDate, htmlAttributes: new { @id = "lblFeeDate", @class = "form-label" })
+                        @Html.TextBoxFor(m => m.ToDate, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_input_type = "date", @InputFor = "lblFeeDate", @data_inputmask = "'alias': 'dd/mm/yyyy'" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.ToDate)
+                        </span>
+                     </div>    
+                </div>
+            </div>
+    <div class=" form-row ">
+
+        <div id="tab-day" class="form-row tabs-section mb-2">
+            <div class="tabs-section-nav">
+                <ul class="nav ScheduleTab1" role="tablist">
+                    @for (int i = 0; i < Model.WeekDays.Count; i++)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" href="#@Model.WeekDays[i].RowKey" data-val="@Model.WeekDays[i].RowKey" role="tab" data-toggle="tab">
+                                <span class="nav-link-in">
+                                    @Model.WeekDays[i].Text
+                                </span>
+                            </a>
+                        </li>
+                        @*@Html.HiddenFor(m => m.Day)*@
+                    }
+
+                </ul>
+            </div>
+        </div>
+    </div>
+
+            <div id="dvTimeTableDetails"></div>
+            <div class="row mt-2">
+                <div class="form-group">
+                    <div class="col-12">
+                        <fieldset class="form-group">
+                            <input type="button" value="@EduSuiteUIResources.Save" id="btnSave" class="btn btn-sm btn-success mx-1" />
+                            <input type="button" value="@EduSuiteUIResources.Cancel" onclick="location.href='@Url.Action("CourseSubjectList", "CourseSubject")' " class="btn btn-sm btn-danger mx-1" />
+                        </fieldset>
+                        <div class="col-12 paddingNone">
+                            <span class="ValidateDataMsg"> @Html.ValidationMessage("error_msg")  </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</section>
+<script>
+    var jsonData=@(Html.Raw(Json.Encode(Model)));
+
+    $(document).ready(function () {
+        AppCommon.FormatInputCase()
+        AppCommon.FormatDateInput();
+       
+        $('#FromDate').datepicker('setStartDate', new Date());
+        $('#FromDate').datepicker('setEndDate', '');
+
+        $('#ToDate').datepicker('setStartDate', new Date());
+        $('#ToDate').datepicker('setEndDate', '');
+
+        $("#tab-day li a").eq(0).addClass('active');
+
+        $('#tab-day a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            TimeTableTemp.GetTimeTableTemp();
+        });
+        TimeTableTemp.GetTimeTableTemp(jsonData);
+
+        $("#btnSave").on("click",function()
+        {
+            TimeTableTemp.FormSubmit(jsonData);
+        });
+
+        // AppCommon.CustomRepeaterRemoteMethod();
+
+        $("#EmployeeKey").on("change", function () {
+            TimeTableTemp.GetTimeTableTemp(jsonData);
+        });
+    });
+
+
+</script>
+

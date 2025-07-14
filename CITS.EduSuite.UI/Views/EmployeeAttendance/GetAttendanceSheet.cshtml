@@ -1,0 +1,95 @@
+﻿@model List<CITS.EduSuite.Business.Models.ViewModels.EmployeeAttendanceViewModel>
+@using CITS.EduSuite.Business.Models.ViewModels;
+
+
+<div data-repeater-list class="Margin_BottomNone">
+    @for (int i = 0; i < Model.Count(); i++)
+    {
+        <div data-repeater-item>
+            <div class="form-row">
+                <div class="col-3 p-0">
+                    <div class="form-group m-0">
+                        @Html.DropDownListFor(m => Model[i].EmployeeKey, new SelectList(Model[i].Employees, "RowKey", "Text", Model[i].EmployeeKey), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Employee, new { @class = "input-control form-control form-control-sm form-control-smrounded-0" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => Model[i].EmployeeKey)
+                        </span>
+                    </div>
+                    @Html.HiddenFor(m => m[i].RowKey)
+                    @Html.HiddenFor(m => m[i].AttendanceConfigType)
+                </div>
+
+                <div class="col-2 p-0">
+                    <div class="form-group m-0">
+                        @Html.TextBoxFor(m => Model[i].AttendanceDate, "{0:dd/MM/yyyy}", new { @class = "input-control form-control form-control-sm form-control-smrounded-0 ", @data_inputmask = "'alias': 'dd/mm/yyyy'", @data_input_type = "date" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => Model[i].AttendanceDate)
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-2 p-0">
+                    <div class="form-group m-0">
+                        @Html.DropDownListFor(m => Model[i].AttendanceStatusKey, new SelectList(Model[i].AttendanceStatuses.Where(x => x.RowKey != DbConstants.AttendanceStatus.Leave), "RowKey", "Text", Model[i].AttendanceStatusKey), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.AttendanceStatus, new { @class = "input-control form-control form-control-sm form-control-smrounded-0 " })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => Model[i].AttendanceStatusKey)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-2 p-0 d-none">
+                    <div class="form-group m-0">
+                        @*@Html.TextBoxFor(m => Model[i].InDateTime, "{0:dd/MM/yyyy HH:mm tt}", new { @class = "input-control form-control form-control-sm form-control-smrounded-0", @data_input_type = "datetime", @data_inputmask = "'alias': 'datetime12'", @InputFor = "lblInTime", @placeholder = "In Time" })*@
+                        @Html.TextBoxFor(m => Model[i].InTime, new { @class = "input-control form-control form-control-sm form-control-sm", @data_input_type = "time", @data_inputmask = "'alias':'hh:mm t','hourFormat': '12'", @InputFor = "lblInTime", @placeholder = "In Time" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => Model[i].InTime)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-2 p-0  d-none">
+                    <div class="form-group m-0">
+                        @*@Html.TextBoxFor(m => Model[i].OutDateTime, "{0:dd/MM/yyyy HH:mm tt}", new { @class = "input-control form-control form-control-sm form-control-smrounded-0", @data_input_type = "datetime", @data_inputmask = "'alias': 'datetime12'", @InputFor = "lblInTime", @placeholder = "In Time" })*@
+                        @Html.TextBoxFor(m => Model[i].OutTime, new { @class = "input-control form-control form-control-sm form-control-sm", @data_input_type = "time", @data_inputmask = "'alias':'hh:mm t','hourFormat': '12'", @InputFor = "lblOutTime", @placeholder = "Out Time" })
+
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => Model[i].OutTime)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-1 p-0 ">
+                    <button type="button" class="btn btn-sm form-control" data-repeater-delete="">
+                        <i class="fa fa-remove w3-text-red"></i>
+                    </button>
+                </div>
+
+
+            </div>
+        </div>
+    }
+
+</div>
+<div class="form-row">
+    <div class="col-7 p-0 form-control">
+    </div>
+    <div class="col-1 p-0">
+        <button type="button" class="btn  btn-sm form-control" data-repeater-create>
+            <i class="fa fa-plus w3-text-green"></i>
+        </button>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        var jsonData=@(Html.Raw(Json.Encode(Model)));
+        @*$("#RowKey").val(@Model.RowKey)*@
+        EmployeeAttendance.GetAttendanceDetail(jsonData);
+        AppCommon.FormatDateInput();
+        AppCommon.FormatTimeInput();
+        AppCommon.FormatMonthInput();
+        $("select", $("#dynamicRepeater")).selectpicker();
+    //    $("[data-input-type=datetime]").each(function () {
+    //
+    //        if ($(this).val() != "") {
+    //            $(this).val(moment($(this).val(), ["DD/MM/YYYY HH:mm:ss"]).format("DD/MM/YYYY hh:mm A"));
+    //        }
+    //    })
+    });
+
+</script>

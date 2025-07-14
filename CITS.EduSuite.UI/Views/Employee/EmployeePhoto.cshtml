@@ -1,0 +1,63 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.EmployeePersonalViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+@using CITS.EduSuite.UI
+
+<div class="col-12">
+    <input type="hidden" id="hdnDeleteEmployeePhoto" value="@Url.Action("DeleteEmployeePhoto", "Employee")" />
+    <input type="hidden" id="hdnEmployeeList" value="@Url.Action("EmployeeList", "Employee")" />
+    <div class="form-master">
+        <div class="form-row">
+            <div class="col-12">
+                @using (Html.BeginForm("UploadPhoto", "Employee", FormMethod.Post, htmlAttributes: new { @id = "frmUploadPhoto" }))
+                {
+                    @Html.HiddenFor(row => row.RowKey, new { @id = "EmployeeKey" });
+                    @Html.Partial("~/Views/Shared/PhotoUpload.cshtml")
+                    <div class="form-row mt-2">
+                        <div class="col-12">
+                            <fieldset class="form-group">
+                                <input type="button" value="Crop & Upload" id="btnPhotoUpload" class="btn btn-sm btn-success mx-1 mx-1" style="display:none" />
+                                <input type="button" id="btnPhotoCancel" value="@EduSuiteUIResources.Cancel" class="btn btn-sm btn-danger mx-1" style="display:none" />
+                                <input type="button" value="@EduSuiteUIResources.Delete" id="btnPhotoDelete" class="btn btn-sm btn-danger mx-1" style="display:none" />
+
+                            </fieldset>
+                        </div>
+                    </div>
+                }
+
+            </div>
+            @if (Model.EmployeePhotoPath != null)
+            {
+                <img id="imgDummyProfile" src="@Url.Content(Model.EmployeePhoto)?no-cache=@DateTimeUTC.Now" alt="Image" style="display:none" />
+            }
+            <div class="col-1">
+                <div class="form-group col-sm-12">
+                    <a id="btnFinish" class="btn btn-sm btn-success mx-1">@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Finish</a>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        var ApplicantPhoto = '@Model.EmployeePhotoPath';
+        if (ApplicantPhoto != "") {
+            PhotoUpload.SetBaseImage($("#imgDummyProfile")[0]);
+            $("#btnPhotoDelete").show();
+        }
+        $('#btnPhotoUpload').click(function () {
+            Employee.UploadPhoto($(this));
+        });
+        $('#btnPhotoDelete').click(function () {
+            Employee.DeleteEmployeePhoto('@Model.RowKey');
+        });
+        $('#btnPhotoCancel').click(function () {
+            Employee.ReloadData();
+        });
+        $("#btnFinish").click(function () {
+            window.location.href = '@Url.Action("EmployeeList", "Employee")';
+        })
+    })
+
+</script>

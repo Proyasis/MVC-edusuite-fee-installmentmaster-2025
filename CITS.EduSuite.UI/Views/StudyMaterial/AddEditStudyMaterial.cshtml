@@ -1,0 +1,147 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.StudyMaterialViewModel
+
+
+
+@section scripts{
+
+    @Scripts.Render("~/Scripts/StudyMaterial")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/CitsValidation")
+    @Scripts.Render("~/Content/DatePickerJS")
+    @Scripts.Render("~/Content/Select2JS")
+    @Scripts.Render("~/Content/JqueryRepeater")
+}
+
+<input type="hidden" id="hdnGetBookDetails" value="@Url.Action("GetBookDetails", "StudyMaterial")" />
+<input type="hidden" id="hdnDeleteStudyMaterial" value="@Url.Action("DeleteStudyMaterial", "StudyMaterial")" />
+<input type="hidden" id="hdnBookList" value="@Url.Action("BookList", "StudyMaterial")" />
+
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-lg-10 col-12">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.Issue@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.StudyMaterial</h3>
+                        <ol class="breadcrumb breadcrumb-simple mb-2 float-sm-right">
+                            <li><a href="#" onclick="location.href='@Url.Action("StudyMaterialList", "StudyMaterial")' ">@EduSuiteUIResources.StudyMaterial</a></li>
+                            <li class="active">@EduSuiteUIResources.Issue@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.StudyMaterial</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2 col-12 text-right">
+
+            @*<a id="bindAllbooks" data-href="@Url.Action("BookList", "StudyMaterial",new {id=Model.ApplicationKey})" class="btn btn-sm btn-info float-right  ">
+                    <i class="fa fa-plus" aria-hidden="true"></i> @EduSuiteUIResources.View@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.All@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.StudyMaterial
+                </a>*@
+
+            <a onclick="StudyMaterial.ViewAllBooks()" class="btn btn-sm btn-info float-right  ">
+                <i class="fa fa-plus" aria-hidden="true"></i> @EduSuiteUIResources.View@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.All@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.StudyMaterial
+            </a>
+        </div>
+    </div>
+</header>
+<section class="section-content mx-sm-3 mx-0">
+    <div class="GridBody">
+        @using (Html.BeginForm("AddEditStudyMaterial", "StudyMaterial", FormMethod.Post, new { @id = "frmStudyMaterials" }))
+        {
+            @Html.HiddenFor(m => m.ApplicationKey)
+            @Html.HiddenFor(m => m.StudyMaterialKeys)
+
+            @*if ((Model.ApplicationKey != 0))
+                {
+                    @Html.Action("StudentDetail", "Shared", new { id = (Model.ApplicationKey), AdmissionNo = "" })
+                }*@
+            <div id="dvProfileDetails" class="mb-2">
+
+            </div>
+            <div class="grid-nav-bar form-row justify-content-start">
+                <div class="col-6 col-lg-3 col-md-4">
+                    <input id="txtSearchBookName" type="text" name="focus" class="form-control gridSearchTextBox" placeholder="@EduSuiteUIResources.Search @EduSuiteUIResources.BlankSpace @EduSuiteUIResources.StudyMaterial @EduSuiteUIResources.Name" /> @* Change Search TextBox Placeholder*@
+                    <span id="iconSpan" class="iconSpan"><i class="fa fa-times-circle" aria-hidden="true"></i></span>
+                </div>
+                <div class="col-6 col-lg-3 col-md-4">
+                    @*@Html.Label(EduSuiteUIResources.Year, htmlAttributes: new { @id = "lblFeeDate", @class = "form-label" })*@
+                    @Html.DropDownListFor(m => m.SubjectYear, new SelectList(Model.SubjectYears, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Year, new { @class = "form-control input-control selectpicker" })
+
+                </div>
+            </div>
+            <div class="table-wrapper">
+                <div class="jqGrid_wrapper overflow-auto">
+                    <table id="grid"></table>
+                    <div id="pager"></div>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-12">
+                    <fieldset class="form-group">
+                        <input type="submit" value="@EduSuiteUIResources.Issue@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.StudyMaterial" id="btnSave" class="btn btn-inline btn-success" />
+                    </fieldset>
+                </div>
+            </div>
+        }
+    </div>
+</section>
+<script>
+    $(document).ready(function () {
+        Shared.GetProfileDetails('@Url.Action("StudentDetail", "Shared", new { id = (Model.ApplicationKey), AdmissionNo = "" })')
+
+    $("#txtSearchBookName").on("input", function () {
+
+        StudyMaterial.GetBookDetails();
+    });
+
+    $("#iconSpan").click(function () {
+        $('#txtSearchBookName').val('');
+        StudyMaterial.GetBookDetails();
+    });
+    $("#SubjectYear").on("change", function () {
+
+        StudyMaterial.GetBookDetails();
+    });
+
+    StudyMaterial.GetBookDetails();
+    AppCommon.EditGridPopup($("#bindAllbooks"), viewAllStudyMaterialLoad)
+    $("#btnSave", $("#frmStudyMaterials")).on("click", function () {
+
+        var ids = jQuery("#grid").jqGrid('getGridParam', 'selarrrow');
+
+        //for (var i = 0; i < ids.length; i++)
+        //{
+        //    var rowId = ids[i];
+        //    var rowData = jQuery('#grid').jqGrid ('getRowData', rowId);
+        //}
+
+        $(ids).each(function (i) {
+            var rowId = ids[i];
+            var rowData = jQuery('#grid').jqGrid('getRowData', rowId);
+
+            var key = rowData.RowKey;
+            var RowKey = $("<input type='hidden' id='StudyMaterialList[" + i + "].RowKey' name='StudyMaterialList[" + i + "].RowKey'/>")
+            $(RowKey).val(key);
+            var StudyMaterialKey = $("<input type='hidden' id='StudyMaterialList[" + i + "].StudyMaterialKey' name='StudyMaterialList[" + i + "].StudyMaterialKey'/>")
+            $(StudyMaterialKey).val(rowData.StudyMaterialKey);
+            $("#frmStudyMaterials").append(RowKey)
+            $("#frmStudyMaterials").append(StudyMaterialKey)
+        });
+
+        //$(ids).each(function (i) {
+        //    var obj = {};
+        //    var key = $('#grid').jqGrid('getCell', this[0], 'RowKey');
+        //    var RowKey = $("<input type='hidden' id='StudyMaterialList[" + i + "].RowKey' name='StudyMaterialList[" + i + "].RowKey'/>")
+        //    $(RowKey).val(key);
+        //    var StudyMaterialKey = $("<input type='hidden' id='StudyMaterialList[" + i + "].StudyMaterialKey' name='StudyMaterialList[" + i + "].StudyMaterialKey'/>")
+        //    $(StudyMaterialKey).val(this[0]);
+        //    $("#frmStudyMaterials").append(RowKey)
+        //    $("#frmStudyMaterials").append(StudyMaterialKey)
+        //});
+        //$("#BookKeys").val(s)
+    })
+
+});
+</script>
+
+
+

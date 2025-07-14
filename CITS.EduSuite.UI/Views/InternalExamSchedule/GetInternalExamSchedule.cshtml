@@ -1,0 +1,242 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.InternalExamViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+
+<div id="dynamicRepeater" class="repeater">
+    <table class="table table-stripped">
+        <thead class="thead-light">
+            <tr>
+                <th></th>
+                <th>
+                    @Html.Label(EduSuiteUIResources.Status, htmlAttributes: new { @class = "form-label" })
+                    <div class="checkbox-bird green inline-block mt-2">
+                        @Html.CheckBox("chekAll", new { @InputFor = "lblIsOriginal", @class = "custom-control-input", @onchange = "CheckboxAllChange(this, 'ExamStatus')" })
+                        <label for="chekAll" class="label-for-check form-label">
+                        </label>
+                    </div>
+                    <span id="CheckedAllCount"></span>
+                </th>
+                <th>
+                    @Html.Label(EduSuiteUIResources.SubjectName, htmlAttributes: new { @class = "form-label" })
+                </th>
+
+                <th>
+                    @Html.Label(EduSuiteUIResources.ExamDate, htmlAttributes: new { @class = "form-label" })
+
+                </th>
+                <th>
+                    @Html.Label(EduSuiteUIResources.StartTime, htmlAttributes: new { @class = "form-label" })
+
+                </th>
+                <th>
+                    @Html.Label(EduSuiteUIResources.EndTime, htmlAttributes: new { @class = "form-label" })
+
+                </th>
+                <th>
+                    @Html.Label(EduSuiteUIResources.MinimumMark, htmlAttributes: new { @class = "form-label" })
+                    @Html.TextBoxFor(m => m.MinimumMarkAll, new { @class = "form-control input-control", @oninput = "ChangeMinimumMarkAll(this)" })
+                </th>
+                <th>
+                    @Html.Label(EduSuiteUIResources.MaximumMark, htmlAttributes: new { @class = "form-label" })
+                    @Html.TextBoxFor(m => m.MaximumMarkAll, new { @class = "form-control input-control", @oninput = "ChangeMaximumMarkAll(this)" })
+                </th>
+
+            </tr>
+        </thead>
+        <tbody data-repeater-list>
+            @for (int i = 0; i < Model.InternalExamDetails.Count(); i++)
+            {
+                <tr data-repeater-item>
+                    <td class="px-1">
+                        @if (Model.InternalExamDetails[i].RowKey != null && Model.InternalExamDetails[i].RowKey != 0)
+                        {
+                            <span onclick="InternalExamSchedule.ResetInternalExamSchedule(@Model.InternalExamDetails[i].RowKey,@Model.InternalExamDetails[i].InternalExamKey)" class="btn btn-danger btn-sm btnDeleteRow">
+                                <span class="fa fa-remove"></span>
+                            </span>
+
+                        }
+                    </td>
+                    <td class="px-1">
+                        <div class="switch-check my-2">
+                            @Html.CheckBoxFor(m => m.InternalExamDetails[i].ExamStatus, new { @class = "switch-input chkIsActive", @onchange = "SetMinMaxMark(this)" })
+                            <div class="switch-label yesno" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                            <div class="switch-handle"></div>
+                        </div>
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.InternalExamDetails[i].ExamStatus)
+                        </span>
+                    </td>
+                    <td class="px-1">
+                        @Html.DisplayFor(m => m.InternalExamDetails[i].SubjectName, new { @class = "form-control input-control" })
+                        @Html.HiddenFor(m => m.InternalExamDetails[i].SubjectKey)
+                        @Html.HiddenFor(m => m.InternalExamDetails[i].RowKey)
+
+
+                    </td>
+
+                    <td class="px-1">
+                        @Html.TextBoxFor(m => m.InternalExamDetails[i].ExamDate, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_input_type = "date", @data_inputmask = "'alias': 'dd/mm/yyyy'" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.InternalExamDetails[i].ExamDate)
+                        </span>
+                    </td>
+
+                    <td class="px-1">
+                        @Html.TextBoxFor(m => m.InternalExamDetails[i].ExamStartTime, new { @class = "form-control input-control", @data_input_type = "time", @data_inputmask = "'alias':'hh:mm t','hourFormat': '12'", @InputFor = "lblCallDuration" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.InternalExamDetails[i].ExamStartTime)
+                        </span>
+                    </td>
+
+                    <td class="px-1">
+                        @Html.TextBoxFor(m => m.InternalExamDetails[i].ExamEndTime, new { @class = "form-control input-control", @data_input_type = "time", @data_inputmask = "'alias':'hh:mm t','hourFormat': '12'", @InputFor = "lblCallDuration" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.InternalExamDetails[i].ExamEndTime)
+                        </span>
+
+                    </td>
+
+                    <td class="px-1">
+                        @Html.TextBoxFor(m => m.InternalExamDetails[i].MinimumMark, new { @class = "form-control input-control" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.InternalExamDetails[i].MinimumMark)
+                        </span>
+                    </td>
+
+                    <td class="px-1">
+                        @Html.TextBoxFor(m => m.InternalExamDetails[i].MaximumMark, new { @class = "form-control input-control" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => m.InternalExamDetails[i].MaximumMark)
+                        </span>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $("#RowKey").val(@Model.RowKey)
+        $("[data-input-type=time]").each(function () {
+            
+            if ($(this).val() != "") {
+                $(this).val(moment($(this).val(), ["HH:mm:ss"]).format("hh:mm A"));
+            }
+        })
+        AppCommon.FormatDateInput();
+        AppCommon.FormatInputCase();
+        AppCommon.FormatTimeInput();
+        $("form").removeData("validator");
+        $("form").removeData("unobtrusiveValidation");
+        $.validator.unobtrusive.parse("form");
+
+
+        $(".chkIsActive").change(function () {
+            StudentsCheckedCount();
+        });
+
+
+
+        //$("[id*=ExamStartTime],[id*=ExamEndTime]").each(function () {
+        //    
+        //    if ($(this).val() != "") {
+        //        var time = $(this).val().split(":");
+        //        var date = new Date();
+        //        date.setHours(time[0])
+        //        date.setMinutes(time[1])
+        //        date.setSeconds(time[2])
+        //        $(this).val(AppCommon.TimeAMPMFromJavascriptDate(date))
+        //    }
+        //})
+    });
+
+    function SetMinMaxMark(_this)
+    {
+        var MinimumMarkAll = $("#MinimumMarkAll").val();
+        var MaximumMarkAll = $("#MaximumMarkAll").val();
+        MinimumMarkAll = parseFloat(MinimumMarkAll) ? parseFloat(MinimumMarkAll) : null;
+        MaximumMarkAll = parseFloat(MaximumMarkAll) ? parseFloat(MaximumMarkAll) : null;
+
+        var item = $(_this).closest("[data-repeater-item]");
+        if (_this.checked)
+        {
+            $("input[name*=MinimumMark]", $(item)).val(MinimumMarkAll)
+            $("input[name*=MaximumMark]", $(item)).val(MaximumMarkAll)
+        }
+        else
+        {
+            $("input[name*=MinimumMark]", $(item)).val("")
+            $("input[name*=MaximumMark]", $(item)).val("")
+        }     
+
+    }
+
+    function ChangeMinimumMarkAll(_this) {
+
+        var MinimumMark = $(_this).val() != "" ? $(_this).val() : 0;
+
+        $("#dvStudentsList [data-repeater-item]").each(function (i) {
+            var item = $(this).closest("[data-repeater-item]");           
+            var object = $("input[type=checkbox][name*=ExamStatus]", $(item))[0];            
+            if (object.checked)
+                $("input[name*=MinimumMark]", $(item)).val(MinimumMark)
+
+        });
+    };
+
+    function ChangeMaximumMarkAll(_this) {
+
+        var MaximumMark = $(_this).val() != "" ? $(_this).val() : 0;
+
+        $("#dvStudentsList [data-repeater-item]").each(function (i) {
+            var item = $(this).closest("[data-repeater-item]");
+            var object = $("input[type=checkbox][name*=ExamStatus]", $(item))[0];
+            if (object.checked)
+                $("input[name*=MaximumMark]", $(item)).val(MaximumMark)
+        });
+    };
+
+
+    function CheckboxAllChange(chk, name) {
+        
+        $("[data-repeater-item]").each(function (index) {
+
+            var Object = $('input[name*=' + name + ']', $(this))[0];
+            if (Object != undefined) {
+                if (!Object.disabled) {
+                    Object.checked = chk.checked
+                    SetMinMaxMark(Object);
+                }
+            }
+        });
+        StudentsCheckedCount();
+    }
+
+
+    function StudentsCheckedCount() {
+
+        var CheckedCount = $("input[type=checkbox][name*=ExamStatus]:checked").length;
+        var CheckboxCount = $("input[type=checkbox][name*=ExamStatus]").length;
+        var CheckedAll = false;
+        if (parseInt(CheckboxCount) == parseInt(CheckedCount)) {
+            CheckedAll = true;
+        }
+        $("#CheckedAllCount").html("");
+        $("#NoOfStudents").val("");
+        if (CheckedCount != 0) {
+            $("#CheckedAllCount").html("(" + CheckedCount + ")");
+            $("#NoOfStudents").val(CheckedCount);
+
+            if (CheckedAll == true) {
+                $("#chekAll").prop("checked", true);
+            }
+            else {
+                $("#chekAll").prop("checked", false);
+            }
+        }
+    }
+
+
+</script>

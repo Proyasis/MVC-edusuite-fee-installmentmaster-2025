@@ -1,0 +1,212 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.AttendanceViewModel
+
+@using CITS.EduSuite.Business.Models.ViewModels
+<script src="~/Scripts/tinymce/tiny_mce.js"></script>
+<div id="dynamicRepeater" class="repeater col-12 px-1">
+    @if (Model.AttendanceDetails.Count > 0)
+    {
+
+        <table id="tblAttendance" class="table table-stripped table-bordered table-attendance">
+            <thead class="thead-dark">
+                <tr>
+
+                    <th>
+                        @Html.Label(EduSuiteUIResources.Students, htmlAttributes: new { @class = "form-label" })
+                    </th>
+                    @{
+        List<DateTime> AttendanceDateList = Enumerable.Range(0, (Model.AttendanceDate - Model.AttendanceDate.AddDays(-3)).Days + 1).Select(d => Model.AttendanceDate.AddDays(-3).AddDays(d)).ToList();
+                    }
+                    @foreach (var date in AttendanceDateList)
+                    {
+
+
+                        if (Model.AttendanceDate.ToString("dd") == date.ToString("dd"))
+                        {
+                            <th class="active">
+                                @date.ToString("dd")
+                                <br />
+                                @date.ToString("ddd")
+                            </th>
+                        }
+
+                        else
+                        {
+                            <th>
+                                @date.ToString("dd")
+                                <br />
+                                @date.ToString("ddd")
+                            </th>
+                        }
+
+                    }
+                </tr>
+            </thead>
+            <tbody data-repeater-list>
+                @for (int i = 0; i < Model.AttendanceDetails.Count(); i++)
+                {
+                    <tr data-repeater-item>
+
+
+
+                        <td class="py-0" onclick="Attendance.SetCheckboxStatusColor($(this).closest('tr').find('input[type=checkbox][id*=AttendanceStatus]:not(:disabled)')[0]);">
+
+                            @Html.HiddenFor(m => m.AttendanceDetails[i].RowKey)
+                            @Html.HiddenFor(m => m.AttendanceDetails[i].RollNumber)
+                            @Html.HiddenFor(m => m.AttendanceDetails[i].ApplicationKey)
+                            @Html.HiddenFor(m => m.AttendanceDetails[i].StudentEmail)
+                            @Html.HiddenFor(m => m.AttendanceDetails[i].GuardianMobileNumber)
+                            @Html.HiddenFor(m => m.AttendanceDetails[i].MobileNumber)
+                            @Html.HiddenFor(m => m.AttendanceDetails[i].StudentName)
+                            @Html.HiddenFor(m => m.AttendanceDetails[i].AdmissionNo)
+                            @Html.HiddenFor(m => m.AttendanceDetails[i].AttendanceDate)
+                            @Html.HiddenFor(m => m.AttendanceDetails[i].RollNoCode)
+                            <div class="media">
+                                <div class="img-fluid img-thumbnail rounded-circle mr-2 overflow-hidden">
+                                    @if (Model.AttendanceDetails[i].ApplicantPhoto != null)
+                                    { <img height="20" width="20" src="@Url.Content(UrlConstants.ApplicationUrl + Model.AttendanceDetails[i].AdmissionNo + "/" + Model.AttendanceDetails[i].ApplicantPhoto)" alt="">
+                                    }
+                                    else
+                                    {
+                                        <img height="20" width="20" src="~/images/no-photo.png" alt="">
+
+                                    }
+                                </div>
+                                <div class="media-body">
+                                    <h5 class="m-1 w3-text-deep-purple">
+                                        <strong>@Model.AttendanceDetails[i].StudentName</strong>
+                                        <span class="badge badge-pill badge-success float-right">@Model.AttendanceDetails[i].RollNoCode </span>
+                                    </h5>
+
+                                </div>
+                            </div>
+
+
+
+
+
+                        </td>
+
+                        @foreach (var date in AttendanceDateList)
+                        {
+                            <td class="p-0">
+
+                                <div class="btn-group btn-group-toggle " data-toggle="buttons">
+                                    @for (int j = 0; j < Model.AttendanceDetails[i].AttendanceStatusDetailsViewModel.Count(); j++)
+                                    {
+                                        if (date.ToString("dd/MM") == Model.AttendanceDetails[i].AttendanceStatusDetailsViewModel[j].AttendanceDate.ToString("dd/MM"))
+                                        {
+
+                                            if (
+                                                ((Model.AttendanceDetails[i].AttendanceStatusDetailsViewModel[j].StartTime ?? Model.AttendanceDetails[i].AttendanceStatusDetailsViewModel[j].AttendanceDate) <= Model.AttendanceDetails[i].AttendanceStatusDetailsViewModel[j].AttendanceDate &&
+                                                 (Model.AttendanceDetails[i].AttendanceStatusDetailsViewModel[j].EndTime ?? Model.AttendanceDetails[i].AttendanceStatusDetailsViewModel[j].AttendanceDate) >= Model.AttendanceDetails[i].AttendanceStatusDetailsViewModel[j].AttendanceDate)
+                                                && (Model.AttendanceDate.ToString("dd/MM") == Model.AttendanceDetails[i].AttendanceStatusDetailsViewModel[j].AttendanceDate.ToString("dd/MM") && (Model.AttendanceDetails[i].AttendanceStatusDetailsViewModel[j].AttendanceStatusKey == 0
+                                                || (DateTimeUTC.Now.ToString("dd/MM") == Model.AttendanceDetails[i].AttendanceStatusDetailsViewModel[j].AttendanceDate.ToString("dd/MM") &&(new List<short>{DbConstants.AttendanceStatus.Present,DbConstants.AttendanceStatus.Absent}).Contains(Model.AttendanceDetails[i].AttendanceStatusDetailsViewModel[j].AttendanceStatusKey)))))
+                                            {
+
+                                                <label class="btn btn-attendance" onclick="Attendance.SetCheckboxStatusColor($(this).closest('tr').find('input[type=checkbox][id*=AttendanceStatus]:not(:disabled)')[0]);" style="background-color:@Model.AttendanceDetails[i].AttendanceStatusDetailsViewModel[j].AttendanceStatusColor">
+
+
+                                                    @Html.CheckBoxFor(m => m.AttendanceDetails[i].AttendanceStatusDetailsViewModel[j].AttendanceStatus, new { @class = "active" })
+                                                    <label>@Model.AttendanceDetails[i].AttendanceStatusDetailsViewModel[j].AttendanceStatusCode</label>
+                                                    @Html.HiddenFor(m => m.AttendanceDetails[i].AttendanceStatusDetailsViewModel[j].AttendanceDetailRowKey)
+                                                    @Html.HiddenFor(m => m.AttendanceDetails[i].AttendanceStatusDetailsViewModel[j].AttendanceDate)
+                                                    @Html.HiddenFor(m => m.AttendanceDetails[i].AttendanceStatusDetailsViewModel[j].AttendanceTypeKey)
+                                                    @Html.HiddenFor(m => m.AttendanceDetails[i].AttendanceStatusDetailsViewModel[j].AttendanceMasterKey)
+                                                    @Html.HiddenFor(m => m.AttendanceDetails[i].AttendanceStatusDetailsViewModel[j].AttendanceStatusKey)
+                                                    @Html.HiddenFor(m => m.AttendanceDetails[i].AttendanceStatusDetailsViewModel[j].Remarks)
+                                                </label>
+
+                                            }
+                                            else
+                                            {
+                                                <label class="btn btn-attendance" style="background-color:@Model.AttendanceDetails[i].AttendanceStatusDetailsViewModel[j].AttendanceStatusColor">
+                                                    @Model.AttendanceDetails[i].AttendanceStatusDetailsViewModel[j].AttendanceStatusCode
+
+                                                </label>
+                                            }
+
+
+                                        }
+                                        @*<div class="inline-block mt-4">
+
+                                                @Html.HiddenFor(m => m.AttendanceDetails[i].AttendanceStatusDetailsViewModel[j].RowKey)
+                                                <div class="inline-block mt-4 B">
+                                                    <div class="custom-control custom-checkbox">
+
+                                                        @Html.CheckBoxFor(m => m.AttendanceDetails[i].AttendanceStatusDetailsViewModel[j].AttendanceStatus, new { @class = "custom-control-input" })
+                                                        <label class="custom-control-label" for="AttendanceDetails[@i].AttendanceStatusDetailsViewModel[@j].AttendanceStatus"></label>
+                                                    </div>
+                                                </div>
+                                            </div>*@
+                                    }
+                                </div>
+
+                            </td>
+                        }
+
+                        @*<td class="px-1">
+                                @Html.TextBoxFor(m => m.AttendanceDetails[i].Remarks, new { @class = "form-control input-control" })
+
+                            </td>*@
+
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+
+    }
+
+
+</div>
+
+<div class="col-12">
+    <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+</div>
+<script>
+    $(document).ready(function () {
+        //AppCommon.SetScrollTableWidth($("#dynamicRepeater"));
+        $("#tblAttendance").tableHeadFixer({ "left": 1, "right": 1 });
+        @*$("#RowKey").val(@Model.RowKey)*@
+        AppCommon.FormatInputCase();
+        $("[data-repeater-list]").find("input,select,textarea").each(function () {
+            var name = $(this).attr("name");
+            $(this).attr("id", name);
+        })
+        //$(".chkIsActive").change(function () {
+        //    StudentsCheckedCount();
+        //});
+
+        //$("[khaleefa]").each(function (i) {
+        //    
+
+        //    var item = $(this).closest('[khaleefa]');
+        //    var AppliedStatus = $("[id*=AttendanceStatus]", $(this)).val();
+        //    var eachrowKey = $("[id*=RowKey]", this).val();
+        //    eachrowKey = parseInt(eachrowKey) ? parseInt(eachrowKey) : 0;
+
+        //    var html;
+        //    if (eachrowKey != 0 && AppliedStatus.toLowerCase() == "true") {
+        //        $(".B", $(item)).css("background-color", "green");
+        //        //$(".B", $(item)).html('');
+
+        //        html = "<span style=color:green>Applied</span>"
+        //    }
+        //    else if (eachrowKey != 0 && AppliedStatus.toLowerCase() == "false") {
+        //        $(".B", $(item)).css("background-color", "red");
+        //    }
+        //    else if (eachrowKey == 0 && AppliedStatus.toLowerCase() == "false") {
+        //        $(".B", $(item)).css("background-color", "white");
+        //    }
+        //})
+        $("#IfPresent").on("change", function () {
+
+        });
+        $(".btn-attendance").each(function () {
+            $(this).css("color", AppCommon.SetColorByBackgroundIntensity($(this).css("background-color")));
+        })
+        Attendance.SetCheckboxStatusColor();
+    });
+
+
+</script>

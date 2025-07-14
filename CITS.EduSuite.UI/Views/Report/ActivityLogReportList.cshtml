@@ -1,0 +1,131 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.ReportViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+
+@using System.Web.Mvc
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/ActivityLog")
+    @Scripts.Render("~/Content/DatePickerJS")
+
+    @Scripts.Render("~/Content/ExcelExportJS")
+    @Scripts.Render("~/Content/momentJS")
+    @*@Scripts.Render("~/Scripts/BaseStudentsSearch")*@
+}
+
+<input type="hidden" id="hdnGetActivityLogReport" value="@Url.Action("GetActivityLogReport", "Report")" />
+<input type="hidden" id="hdnGetExportStudentsSummaryReports" value="@Url.Action("GetExportActivityLogSummaryReport", "Report")" />
+<header class="section-header">
+    <div class="row justify-content-between px-1">
+        <div class="col-12">
+            <div class="tbl">
+                <div class="tbl-row">
+                    <div class="tbl-cell">
+                        <h3>@EduSuiteUIResources.ActivityLog@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Reports</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</header>
+<section class="section-content mx-sm-3 mx-0">
+
+    <div class="GridBody">
+        <div class="grid-nav-bar">
+            <form id="frmActivityLog">
+                
+                <div class="form-row">
+
+                    @Html.HiddenFor(m => m.RowKey)
+                    
+                    <div class="col-lg-2 col-sm-3 col-4">
+                        <fieldset class="form-group">
+                            @Html.ListBoxFor(m => m.MenuKeys, new SelectList(Model.Menus, "RowKey", "Text"), new { @class = "form-control input-control selectpicker", @multiple = "multiple", @data_live_search = "true", @data_title = EduSuiteUIResources.Menu })
+                        </fieldset>
+                    </div>
+                    <div class="col-lg-2 col-sm-3 col-4">
+                        <fieldset class="form-group">
+                            @Html.ListBoxFor(m => m.UserKeys, new SelectList(Model.AppUsers, "RowKey", "Text"), new { @class = "form-control input-control selectpicker", @multiple = "multiple", @data_live_search = "true", @data_title = EduSuiteUIResources.Employee })
+                        </fieldset>
+                    </div>
+                 
+                    <div class="col-lg-2 col-sm-2 col-3">
+                        <fieldset class="form-group">
+                            @Html.TextBoxFor(m => m.DateAddedFrom, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_input_type = "date", @InputFor = "lblEnquiryDateOfAdmission", @data_inputmask = "'alias': 'dd/mm/yyyy'", @placeholder = "" + @EduSuiteUIResources.FromDate + "" })
+                        </fieldset>
+                    </div>
+                    <div class="col-lg-2 col-sm-2 col-3">
+                        <fieldset class="form-group">
+                            @Html.TextBoxFor(m => m.DateAddedTo, "{0:dd/MM/yyyy}", new { @class = "form-control input-control", @data_input_type = "date", @InputFor = "lblEnquiryDateOfAdmission", @data_inputmask = "'alias': 'dd/mm/yyyy'", @placeholder = "" + @EduSuiteUIResources.ToDate + "" })
+                        </fieldset>
+                    </div>
+
+                    <div class="col-lg-2 col-sm-3 col-4 d-none">
+                        <fieldset class="form-group">
+                            @Html.TextBoxFor(m => m.SearchAnyText, new { @class = "form-control input-control", @placeholder = "" + EduSuiteUIResources.Menu + "" })
+                        </fieldset>
+                    </div>
+
+                    
+                    <div class="col-lg-2 col-sm-3 col-4">
+                        <div class="form-group">
+                            <input type="button" value="@EduSuiteUIResources.Search" id="btnSearch" class="btn btn-sm btn-success " />
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <div class="form-row justify-content-between">
+
+                <div class="col-lg-2 col-sm-3 col-4">
+                    <fieldset class="form-group">
+                        @Html.ListBox("ShowHideColumns", new SelectList(Model.Columns, "RowKey", "Text"), new { @class = "form-control input-control selectpicker", @multiple = "multiple", @data_live_search = "true", @onchange = "ActivityLogSummary.GetCustomizedColumns(this)", @data_title = "Columns" })
+                    </fieldset>
+
+                </div>
+                <div class="col-lg-2 col-sm-3 col-4">
+                    <div class="button-group float-right">
+                        <button id="btnPrint" type="button" onclick="ActivityLogSummary.GetExportPrintData('P','#hdnGetActivityLogReport','ActivityLogSummaryReport','Activity  Log Summary Report',true)" class="btn btn-primary btn-sm"><i class="fa fa-print btn-blue" aria-hidden="true"></i></button>
+                        <button id="btnExport" type="button" onclick="ActivityLogSummary.GetExportPrintData('E','#hdnGetActivityLogReport','ActivityLogSummaryReport','Activity Log Summary Report',true)" class="btn btn-success btn-sm"><i class="fa fa-file-excel-o fa-align-right" aria-hidden="true"></i></button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="table-wrapper">
+
+            <div class="jqGrid_wrapper overflow-auto">
+                <table id="grid" class="table table-striped"></table>
+                <div id="pager"></div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<script type="text/javascript">
+    var jsonDataList=@(Html.Raw(Json.Encode(Model)));
+    jsonDataList["DefaultColumns"] = ["ActivityDate","Status","HostName","UserID","MenuName","ActionDone"]
+    $(document).ready(function ()
+    {
+        //var doc = new jsPDF();
+
+        AppCommon.FormatDateInput();
+        AppCommon.FormatSelect2();
+
+        ActivityLogSummary.GetActivityLogSummary(jsonDataList);
+
+        $('#btnSearch').on("click", function ()
+        {  
+            ActivityLogSummary.GetActivityLogSummary(jsonDataList);
+
+        });
+    });
+</script>
+
+

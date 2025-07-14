@@ -1,0 +1,419 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.ApplicationFeeInstallmentViewModel
+
+
+<input type="hidden" id="hdnDeleteApplicationFeeInstallment" value="@Url.Action("deleteapplicationfeeinstallment", "ApplicationFeeInstallment" )" />
+@using (Html.BeginForm("AddEditApplicationFeeInstallment", "ApplicationFeeInstallment", FormMethod.Post, new AjaxOptions { UpdateTargetId = "Rules", OnBegin = "onBegin", OnComplete = "onComplete" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.ApplicationKey)
+    @Html.ValidationSummary(true)
+
+    <div class="form-row">
+        <div class="col-9">
+            <div class="form-row">
+               
+                <div id="tab-feeyear" class="form-row tabs-section mb-2">
+                    <div class="tabs-section-nav">
+                        <ul class="nav ScheduleTab1" role="tablist">
+                            @for (int i = 0; i < Model.FeeYears.Count; i++)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#@Model.FeeYears[i].RowKey" data-val="@Model.FeeYears[i].RowKey" role="tab" data-toggle="tab">
+                                        <span class="nav-link-in">
+                                            @Model.FeeYears[i].Text
+                                        </span>
+                                    </a>
+                                </li>
+                                @Html.HiddenFor(m => m.FeeYear)
+                                @Html.HiddenFor(m => m.FeeAmount)
+                            }
+
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <div class="repeater ">
+
+
+        <div class="form-row">
+            <div class="col-12">
+                @if (Model.ApplicationFeeInstallments.Count > 0)
+                {
+                @Html.HiddenFor(m => m.ApplicationFeeInstallments[0].IsInitialPayment)
+                if (Model.ApplicationFeeInstallments[0].IsInitialPayment)
+                {
+                <div class="row bottomLine" id="dvCalculate">
+                    <div class="col-4 col-md-3 col-lg-2">
+                        <div class="form-group">
+                            @Html.Label(EduSuiteUIResources.FeeAmount, htmlAttributes: new { @id = "lblFeeDate", @class = "form-label" })
+                            @Html.TextBoxFor(m => m.FeeAmount, new { @class = "form-control input-control", @InputFor = "lblCourseName", @readonly = "readonly" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => m.FeeAmount)
+                            </span>
+                            @Html.HiddenFor(m => m.FeeYear)
+
+
+                        </div>
+                    </div>
+                    <div class="col-4 col-md-3 col-lg-2" id="div_InitialPayment">
+                        <div class="form-group">
+                            @Html.Label(EduSuiteUIResources.Initial + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Payment, htmlAttributes: new { @id = "lblFeeDate", @class = "form-label" })
+                            @Html.TextBoxFor(m => Model.ApplicationFeeInstallments[0].InitialPayment, new { @class = "form-control input-control", @InputFor = "lblCourseName" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => Model.ApplicationFeeInstallments[0].InitialPayment)
+                            </span>
+
+                        </div>
+                    </div>
+                    <div class="col-4 col-md-3 col-lg-2">
+                        <div class="form-group">
+                            @Html.Label(EduSuiteUIResources.Balance + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Payment, htmlAttributes: new { @id = "lblFeeDate", @class = "form-label" })
+                            @Html.TextBoxFor(m => Model.ApplicationFeeInstallments[0].BalancePayment, new { @class = "form-control input-control", @InputFor = "lblCourseName", @readonly = "readonly" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => Model.ApplicationFeeInstallments[0].BalancePayment)
+                            </span>
+                            @Html.HiddenFor(m => Model.ApplicationFeeInstallments[0].BalancePayment)
+
+
+                        </div>
+                    </div>
+                </div>
+                }
+
+                }
+            </div>
+        </div>
+
+        <table class="table table-stripped">
+            <thead class="thead-light">
+                <tr>
+                    <th>@EduSuiteUIResources.Action</th>
+                    <th>@EduSuiteUIResources.InstallmentMonth</th>
+                    <th>@EduSuiteUIResources.FeePaymentDay</th>
+                    <th>@EduSuiteUIResources.DueDuration</th>
+                    <th>@EduSuiteUIResources.Amount</th>
+                    <th class="d-none">@EduSuiteUIResources.DueFineAmount</th>
+                    <th class="d-none">@EduSuiteUIResources.SuperFineAmount</th>
+                    <th class="d-none">@EduSuiteUIResources.AutoSMS</th>
+                    <th class="d-none">@EduSuiteUIResources.AutoEmail</th>
+                    <th class="d-none">@EduSuiteUIResources.AutoNotificationBeforeDue</th>
+                    <th class="d-none">@EduSuiteUIResources.AutoNotificationAfterDue</th>
+
+
+                </tr>
+            </thead>
+            <tbody id="dvRepeaterList" data-repeater-list>
+                @for (int i = 0; i < Model.ApplicationFeeInstallments.Count; i++)
+                    {
+                    <tr data-repeater-item>
+
+                        <td class="p-1">
+                            <span data-repeater-delete="" class="btn btn-danger btn-sm btnDeleteRow">
+                                <span class=" fa fa-remove"></span>
+                            </span>
+                        </td>
+                        <td class="p-1">
+
+                            @Html.DropDownListFor(m => m.ApplicationFeeInstallments[i].InstallmentYearMonth, new SelectList(Model.InstallMentMonth, "ValueText", "Text", Model.ApplicationFeeInstallments[i].InstallmentYearMonth), EduSuiteUIResources.Select, new { @onchange = "monthOrYearChanged(this)", @class = "form-control input-control" })
+
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => Model.ApplicationFeeInstallments[i].InstallmentYearMonth)
+                            </span>
+                            @Html.HiddenFor(m => Model.ApplicationFeeInstallments[i].RowKey)
+                            @Html.HiddenFor(m => Model.ApplicationFeeInstallments[i].InstallmentYear)
+                            @Html.HiddenFor(m => Model.ApplicationFeeInstallments[i].InstallmentMonth)
+
+                        </td>
+                        <td class="p-1">
+
+                            @Html.DropDownListFor(m => m.ApplicationFeeInstallments[i].FeePaymentDay, Enumerable.Range(1, 31).Select(row => new SelectListItem
+                        {
+                            Value = row.ToString(),
+                            Text = row.ToString(),
+                            Selected = row == Model.ApplicationFeeInstallments[i].FeePaymentDay
+                        }), new { @class = "form-control input-control" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => Model.ApplicationFeeInstallments[i].FeePaymentDay)
+                            </span>
+
+                        </td>
+                        <td class="p-1">
+
+                            @Html.TextBoxFor(m => Model.ApplicationFeeInstallments[i].DueDuration, new { @class = "form-control input-control", @InputFor = "lblCompletedYear" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => Model.ApplicationFeeInstallments[i].DueDuration)
+                            </span>
+
+                        </td>
+                        <td class="p-1">
+                            @Html.TextBoxFor(m => Model.ApplicationFeeInstallments[i].InstallmentAmount, new { @class = "form-control input-control", @InputFor = "lblmark" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => Model.ApplicationFeeInstallments[i].InstallmentAmount)
+                            </span>
+
+                        </td>
+                        <td class="p-1 d-none">
+
+                            @Html.TextBoxFor(m => Model.ApplicationFeeInstallments[i].DueFineAmount, new { @class = "form-control input-control" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => Model.ApplicationFeeInstallments[i].DueFineAmount)
+                            </span>
+
+                        </td>
+                        <td class="p-1 d-none">
+
+                            @Html.TextBoxFor(m => Model.ApplicationFeeInstallments[i].SuperFineAmount, new { @class = "form-control input-control" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => Model.ApplicationFeeInstallments[i].SuperFineAmount)
+                            </span>
+
+                        </td>
+                        <td class="p-1 d-none">
+
+                            <div class="switch-check my-2">
+                                @Html.CheckBoxFor(m => m.ApplicationFeeInstallments[i].AutoSMS, new { @InputFor = "lblIsOriginal", @class = "switch-input" })
+                                <div class="switch-label redgreen" data-on="@EduSuiteUIResources.On" data-off="@EduSuiteUIResources.Off"></div>
+                                <div class="switch-handle"></div>
+                            </div>
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => Model.ApplicationFeeInstallments[i].AutoSMS)
+                            </span>
+
+                        </td>
+                        <td class="p-1 d-none">
+
+                            <div class="switch-check my-2">
+                                @Html.CheckBoxFor(m => m.ApplicationFeeInstallments[i].AutoEmail, new { @InputFor = "lblIsOriginal", @class = "switch-input" })
+                                <div class="switch-label redgreen" data-on="@EduSuiteUIResources.On" data-off="@EduSuiteUIResources.Off"></div>
+                                <div class="switch-handle"></div>
+                            </div>
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => Model.ApplicationFeeInstallments[i].AutoEmail)
+                            </span>
+
+                        </td>
+                        <td class="p-1 d-none">
+
+                            @Html.TextBoxFor(m => Model.ApplicationFeeInstallments[i].AutoNotificationBeforeDue, new { @class = "form-control input-control", @InputFor = "lblCompletedYear" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => Model.ApplicationFeeInstallments[i].AutoNotificationBeforeDue)
+                            </span>
+
+                        </td>
+                        <td class="p-1 d-none">
+
+                            @Html.TextBoxFor(m => Model.ApplicationFeeInstallments[i].AutoNotificationAfterDue, new { @class = "form-control input-control", @InputFor = "lblCompletedYear" })
+                            <span class="form-control-error-text">
+                                @Html.ValidationMessageFor(m => Model.ApplicationFeeInstallments[i].AutoNotificationAfterDue)
+                            </span>
+
+                        </td>
+
+                    </tr>
+                    }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th class="px-1">
+                        <span data-repeater-create class="btn btn-info btn-sm">
+                            <span class="fa fa-plus"></span>
+                        </span>
+                    </th>
+                    <td class="p-1">
+                        <span id="spnTotalFeeAmount">
+
+                        </span>
+                        @Html.HiddenFor(m => Model.TotalFeeAmount)
+
+                    </td>
+                    <td class="p-1"></td>
+                    <td class="p-1"></td>
+                    <td class="p-1">
+                        @*<span id="spnTotalInstallmentFee">
+                            </span>*@
+
+                        @Html.TextBoxFor(m => Model.TotalInstallmentFee, new { @class = "form-control input-control", @readonly = "readonly" })
+                        <span class="form-control-error-text">
+                            @Html.ValidationMessageFor(m => Model.TotalInstallmentFee)
+                        </span>
+
+                    </td>
+                    <td class="p-1"></td>
+                    <td class="p-1"></td>
+                    <td class="p-1"></td>
+                    <td class="p-1"></td>
+                    <td class="p-1"></td>
+                    <td class="p-1"></td>
+
+
+                </tr>
+            </tfoot>
+        </table>
+
+
+
+        <div class="row  mt-2">
+            <div class=" col-10">
+                <fieldset class="form-group">
+                    <input type="button" value="@EduSuiteUIResources.Save" id="btnSave" class="btn btn-sm btn-success mx-1" />
+                    <input type="button" value="@EduSuiteUIResources.Skip" id="btnSkip" onclick="  $('#tab-application  li a.active').parent().nextAll('li:visible').first().find('a').trigger('click');" class="btnForm btnSubmit btn btn-sm btn-danger " />
+                    <a id="btnFinish" class="btn btn-sm btn-success mx-1" onclick="location.href='@Url.Action("ApplicationList", "Application")'">@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Finish</a>
+
+                 </fieldset>
+                <div class="col-12 paddingNone">
+                    <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+                </div>
+            </div>
+            <div class="col-2">
+
+
+            </div>
+        </div>
+
+
+    </div>
+
+}
+
+<script>
+    var jsonData=@(Html.Raw(Json.Encode(Model)));
+
+
+    $(document).ready(function () {
+
+        ApplicationFeeInstallment.GetApplicationFeeInstallments(jsonData);
+        AppCommon.CustomRepeaterRemoteMethod();
+       
+
+        var FeeYear = '@Model.FeeYear.ToString()'
+        if (FeeYear != '') {
+            $("#tab-feeyear li a[data-val=" + FeeYear + "]").addClass('active');
+        }
+        else {
+
+            $("#tab-feeyear li:first-child a").addClass('active');
+        }
+
+
+        $('#tab-feeyear a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+
+            var obj = {};
+            obj.ApplicationKey = $("#ApplicationKey").val();
+            obj.FeeYear =$("#tab-feeyear li a.active").data('val');
+            $(".tab-content").load('@Url.Action("GetFeeAmount", "ApplicationFeeInstallment")'+"?"+$.param(obj), function (result) {
+                ContentLoad();
+            });
+        });
+
+
+
+
+        @*$("#FeeYear").on("change", function () {
+            var obj = {};
+            obj.ApplicationKey = $("#ApplicationKey").val();
+            obj.FeeYear = $("#FeeYear").val();
+            $(".tab-content").load('@Url.Action("GetFeeAmount", "ApplicationFeeInstallment")'+"?"+$.param(obj), function (result) {
+                ContentLoad();
+            });
+        });*@
+
+        if($("[id*=BalancePayment]").val())
+        {
+            var BalanceAmount="Total Fee ="+ $("[id*=BalancePayment]").val()
+            $("span#spnTotalFeeAmount").html(BalanceAmount);
+            $("input#TotalFeeAmount").val($("[id*=BalancePayment]").val());
+            $("span#spnTotalFeeAmount").css("font-size", "12px");
+        }
+        else
+        {
+            var TotalFeeByYear ="Total Fee ="+ $("#FeeAmount").val()
+            $("span#spnTotalFeeAmount").html(TotalFeeByYear);
+            $("input#TotalFeeAmount").val($("#FeeAmount").val());
+            $("span#spnTotalFeeAmount").css("font-size", "12px");
+
+        }
+
+        $("input[id*=InitialPayment]",$("#div_InitialPayment")).on('input', function () {
+
+            var TotalAdmissionFeeAmount = 0;
+
+            var FeeAmount = $("#FeeAmount").val();
+            var InitialPayment = $("input[id*=InitialPayment]",$("#div_InitialPayment")).val();
+
+            FeeAmount = FeeAmount != "" ? parseFloat(FeeAmount) : 0;
+            InitialPayment = InitialPayment != "" ? parseFloat(InitialPayment) : 0;
+
+            TotalAdmissionFeeAmount =  FeeAmount - InitialPayment;
+
+            $("[id*=BalancePayment]").val(TotalAdmissionFeeAmount);
+
+
+            $("span#spnTotalFeeAmount").html("Total Fee ="+TotalAdmissionFeeAmount);
+            $("input#TotalFeeAmount").val(TotalAdmissionFeeAmount);
+
+        });
+
+        $("input[id*=InstallmentAmount]").on("input",function (i) {
+            ApplicationFeeInstallment.CalculateInstallmentFeeTotal();
+        })
+
+        $("select[id*=InstallmentMonthYear]").each(function () {
+            monthOrYearChanged($(this))
+        });
+        ApplicationFeeInstallment.CalculateInstallmentFeeTotal();
+
+
+
+    });
+
+
+    function monthOrYearChanged(ddlMonth) {
+
+        var item=$(ddlMonth).closest("[data-repeater-item]")
+        var MonthValue = $(ddlMonth).val();
+        var SelectDate=new Date(MonthValue+"-01");
+
+        var ddlDay= $("select[id*=FeePaymentDay]",$(item))
+        var currentDay = $(ddlDay).val();
+        var  currentMonth=SelectDate.getMonth()+1;
+        var  currentYear=SelectDate.getFullYear();
+        // Set the numbers of days in the day dropdown
+        changeDayCount = function (numDays) {
+            $(ddlDay).empty();
+            for (i = 1; i <= numDays; i++) {
+                $(ddlDay).append($('<option />').val(i).html(i));
+            }
+        };
+
+        // Adjust number of days based on month and year
+        switch (currentMonth) {
+            case 4:
+            case 6:
+            case 9:
+            case 11:
+                changeDayCount(30);
+                break;
+            case 2:
+                // Check for leap year
+                if (currentYear % 400 == 0 ||
+                   (currentYear % 100 != 0 && currentYear % 4 == 0))
+                    changeDayCount(28);
+                else
+                    changeDayCount(29);
+                break;
+            default:
+                changeDayCount(31);
+        }
+        $(ddlDay).val(currentDay);
+        $("input[id*=InstallmentYear]",item).val(currentYear)
+        $("input[id*=InstallmentMonth]",item).val(currentMonth)
+    }
+
+
+
+
+</script>

@@ -1,0 +1,101 @@
+
+
+<div id="stockLabelPrint" class="page">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        * {
+            box-sizing: border-box;
+            -moz-box-sizing: border-box;
+        }
+
+        .page {
+            padding: 0cm;
+            margin: auto;
+            background: white;
+            display: flex;
+            -webkit-flex-wrap: wrap;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            float: left;
+            border-right: 0.5px dotted #888;
+            border-bottom: 0.5px dotted #888;
+            width: 25%;
+        }
+
+            .card .card-block-big {
+                border-radius: 2px;
+                border: 1px dotted;
+                border-top: none;
+                margin: 5px;
+                background: #Fff;
+            }
+
+
+            .card h5 {
+                margin: 0;
+                color: #fff;
+                font-size: 16px;
+                font-weight: 600;
+                text-transform: uppercase;
+                /* display: inline-block; */
+                width: 100%;
+                /* margin-right: 10px */
+                background-color: black;
+                text-align: center;
+                padding: 2px 0;
+                height: 20px;
+                -webkit-print-color-adjust: exact;
+                -webkit-print-background-adjust: exact;
+            }
+
+            .card h6 {
+                text-align: center;
+                font-size: 12px;
+                margin: 0;
+            }
+
+
+        .card-block {
+            padding: 5px;
+        }
+
+
+
+        @page {
+            size: A4;
+            margin: 4mm 0 4mm 0;
+        }
+
+        @media print {
+            .card h5 {
+                background: #000 !important;
+                color: #fff !important;
+                -webkit-print-color-adjust: exact;
+            }
+        }
+    </style>
+    <!-- {{#rows}}-->
+    <div class="card">
+        <div class="card-block-big card-status">
+            <h5>{{StockCode}}</h5>
+            <div class="card-block text-center">
+                <h6>{{RawMaterialName}}</h6>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <p class="f-16 text-muted m-0" style="font-size: 11px;text-align: center;margin: 3px;">
+                        Stock : {{G29 CurrentStock}} {{StockMeasurementOfUnitName}}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- {{/rows}}-->
+</div>

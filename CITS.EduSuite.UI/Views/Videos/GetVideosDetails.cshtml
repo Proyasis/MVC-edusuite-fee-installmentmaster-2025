@@ -1,0 +1,89 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.VideoViewModel
+@using CITS.EduSuite.Business.Models.ViewModels
+<div style="display:none" class="form-row largeVideo">
+    <video oncontextmenu="return false;" id="VidePlay" width="100%" controlsList="nodownload" controls>
+        <source src="" type="video/mp4">
+    </video>
+</div>
+
+<div class="form-row">
+
+    @foreach (var item in Model.VideoList)
+    {
+
+
+        <div class="col-12 col-sm-5 col-lg-5 VideoItem">
+            @if (item.VideoTypeKey == DbConstants.VideoType.UploadFile)
+            {
+                <video oncontextmenu="return false;" width="100%" controlsList="nodownload" controls style="max-height:200px !important">
+                    <source src="~/UploadFiles/Videos/@item.RowKey/@item.VideoFileName" type="video/mp4">
+                </video>
+                <a class="VideoClick" videoUrl="~/UploadFiles/Videos/@item.RowKey/@item.VideoFileName" style="display:block" href="#"
+                   onclick="Shared.FileViewPopUp('@DbConstants.DocumentType.Video','@item.RowKey','false','@item.VideoFileName')">
+                    <div class="videoLabel">
+                        <div class="col-12 col-sm-12 col-lg-12 videoTitle">
+                            <span>    @item.VideoTitle </span>
+                        </div>
+                        <div class="col-12 col-sm-12 col-lg-12">
+                            <span>    @item.VideoDecription </span>
+                        </div>
+                        @*<span class="PlayIcon"><i class="fa fa-play" aria-hidden="true"></i></span>*@
+                        <span class="watchVideo">Play Video</span>
+                        @if (item.IsAllowDownload)
+                        {
+                            <a class="btnDownload" download href="~/UploadFiles/Videos/@item.RowKey/@item.VideoFileName">Download</a>
+                        }
+                    </div>
+
+                </a>
+            }
+            else
+            {
+                <div class="col-12 col-sm-12 col-lg-12" >
+                    <div class="iframe-container" style="max-height:200px !important">
+                        @Html.Raw(item.YouTubeLinks)
+                    </div>
+                </div>
+                <div class="videoLabel">
+                    <div class="col-12 col-sm-12 col-lg-12 videoTitle">
+                        <span>    @item.VideoTitle </span>
+                    </div>
+                    <div class="col-12 col-sm-12 col-lg-12">
+                        <span>    @item.VideoDecription </span>
+                    </div>
+                    @*<span class="PlayIcon"><i class="fa fa-play" aria-hidden="true"></i></span>*@
+
+                </div>
+            }
+
+        </div>
+
+    }
+</div>
+
+
+
+<script>
+
+
+
+
+
+    $(document).ready(function () {
+
+
+        $(".VideoClick").click(function () {
+
+
+            $("#VidePlay source").attr("src", $(this).attr("videoUrl"))
+            $("#VidePlay")[0].load();
+            $("#VidePlay")[0].play();
+            $(".largeVideo").show();
+
+
+        });
+
+    });
+
+</script>
+

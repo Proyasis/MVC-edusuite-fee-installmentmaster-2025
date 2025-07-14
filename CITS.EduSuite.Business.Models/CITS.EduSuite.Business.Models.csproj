@@ -1,0 +1,339 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{CF2CEEBF-278A-4D25-B43D-D14A7E47BF25}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CITS.EduSuite.Business.Models</RootNamespace>
+    <AssemblyName>CITS.EduSuite.Business.Models</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CITS.Validations, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\1234\CITS.Validations.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Common\ActionConstants.cs" />
+    <Compile Include="Common\CommonUtilities.cs" />
+    <Compile Include="Common\CustomValidations.cs" />
+    <Compile Include="Common\DateTimeUTC.cs" />
+    <Compile Include="Common\DbConstants.cs" />
+    <Compile Include="Common\GlobalVariables.cs" />
+    <Compile Include="Common\SettingModel.cs" />
+    <Compile Include="Common\UrlConstants.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\EduSuiteUIResources.Designer.cs">
+      <DependentUpon>EduSuiteUIResources.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Resources\ModelResources1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelResources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Security\CITSEduSuitePrincipal.cs" />
+    <Compile Include="Security\CITSEduSuitePrincipalData.cs" />
+    <Compile Include="Security\ICITSEduSuitePrincipal.cs" />
+    <Compile Include="ViewModels\AcademicTermViewModel.cs" />
+    <Compile Include="ViewModels\AccountFlowViewModel.cs" />
+    <Compile Include="ViewModels\AccountHeadOpeningBalanceViewModel.cs" />
+    <Compile Include="ViewModels\AccountHeadViewModel.cs" />
+    <Compile Include="ViewModels\AccountTransactionViewModel.cs" />
+    <Compile Include="ViewModels\ActivityLogReportViewModel.cs" />
+    <Compile Include="ViewModels\AdditionalSalaryComponentViewModel.cs" />
+    <Compile Include="ViewModels\ApplicationDocumentViewModel.cs" />
+    <Compile Include="ViewModels\ApplicationEducationDetailsViewModel.cs" />
+    <Compile Include="ViewModels\ApplicationElectivePaperViewModel.cs" />
+    <Compile Include="ViewModels\ApplicationEnRollmentNoViewModel.cs" />
+    <Compile Include="ViewModels\ApplicationFamilyDetailsViewModel.cs" />
+    <Compile Include="ViewModels\ApplicationFeeFollowupViewModel.cs" />
+    <Compile Include="ViewModels\ApplicationFeeInstallmentViewModel.cs" />
+    <Compile Include="ViewModels\ApplicationFeePaymentViewModel.cs" />
+    <Compile Include="ViewModels\ApplicationPersonalViewModel.cs" />
+    <Compile Include="ViewModels\ApplicationScheduleTypeViewModel.cs" />
+    <Compile Include="ViewModels\ApplicationScheduleViewModel.cs" />
+    <Compile Include="ViewModels\ApplicationViewModel.cs" />
+    <Compile Include="ViewModels\ApplicationWebFormViewModel.cs" />
+    <Compile Include="ViewModels\AppUserViewModel.cs" />
+    <Compile Include="ViewModels\AssetPurchaseViewModel.cs" />
+    <Compile Include="ViewModels\AssetTypeViewModel.cs" />
+    <Compile Include="ViewModels\AssetViewModel.cs" />
+    <Compile Include="ViewModels\AttendanceCategoryViewModel.cs" />
+    <Compile Include="ViewModels\AttendanceConfigurationViewModel.cs" />
+    <Compile Include="ViewModels\AttendanceTypeMasterViewModel.cs" />
+    <Compile Include="ViewModels\AttendanceTypeViewModel.cs" />
+    <Compile Include="ViewModels\AttendanceViewModel.cs" />
+    <Compile Include="ViewModels\AuthorViewModel.cs" />
+    <Compile Include="ViewModels\AutoCompleteModel.cs" />
+    <Compile Include="ViewModels\BankAccountViewModel.cs" />
+    <Compile Include="ViewModels\BankReconciliationViewModel.cs" />
+    <Compile Include="ViewModels\BankStatementViewModel.cs" />
+    <Compile Include="ViewModels\BankViewModel.cs" />
+    <Compile Include="ViewModels\BonafiedCertificateViewModel.cs" />
+    <Compile Include="ViewModels\CashTransactionViewModel.cs" />
+    <Compile Include="ViewModels\BankTransactionViewModel.cs" />
+    <Compile Include="ViewModels\BaseModel.cs" />
+    <Compile Include="ViewModels\BaseSearchActivityLogViewModel.cs" />
+    <Compile Include="ViewModels\BaseSearchStudentsViewModel.cs" />
+    <Compile Include="ViewModels\BatchViewModel.cs" />
+    <Compile Include="ViewModels\BookCategoryViewModel.cs" />
+    <Compile Include="ViewModels\BookCopyViewModel.cs" />
+    <Compile Include="ViewModels\BookIssueReturnViewModel.cs" />
+    <Compile Include="ViewModels\BookIssueSummaryReportViewModel.cs" />
+    <Compile Include="ViewModels\BookIssueTypeViewModel.cs" />
+    <Compile Include="ViewModels\BookStatusViewModel.cs" />
+    <Compile Include="ViewModels\BookViewModel.cs" />
+    <Compile Include="ViewModels\BorrowerTypeViewModel.cs" />
+    <Compile Include="ViewModels\BranchViewModel.cs" />
+    <Compile Include="ViewModels\BuildingViewModel.cs" />
+    <Compile Include="ViewModels\BulkEmailSmsViewModel.cs" />
+    <Compile Include="ViewModels\CashFlowViewModel.cs" />
+    <Compile Include="ViewModels\CasteViewModel.cs" />
+    <Compile Include="ViewModels\CertificateTypeViewModel.cs" />
+    <Compile Include="ViewModels\ChequeClearanceViewModel.cs" />
+    <Compile Include="ViewModels\ClassModeViewModel.cs" />
+    <Compile Include="ViewModels\CommonSubjectMasterViewModel.cs" />
+    <Compile Include="ViewModels\CompanyViewModel.cs" />
+    <Compile Include="ViewModels\ConfigurationViewModel.cs" />
+    <Compile Include="ViewModels\ContactVerificationViewModel.cs" />
+    <Compile Include="ViewModels\CounsellingTimeViewModel.cs" />
+    <Compile Include="ViewModels\CountryViewModel.cs" />
+    <Compile Include="ViewModels\CourseCompletionCertificateViewModel.cs" />
+    <Compile Include="ViewModels\CourseSubjectMasterViewModel.cs" />
+    <Compile Include="ViewModels\AgentViewModel.cs" />
+    <Compile Include="ViewModels\CourseTransferViewModel.cs" />
+    <Compile Include="ViewModels\ApplicationScheduleCallStatusViewModel.cs" />
+    <Compile Include="ViewModels\ESSLStudentsViewModel.cs" />
+    <Compile Include="ViewModels\TCReasonMasterViewModel.cs" />
+    <Compile Include="ViewModels\CourseTypeViewModel.cs" />
+    <Compile Include="ViewModels\CourseViewModel.cs" />
+    <Compile Include="ViewModels\DashBoardContentViewModel.cs" />
+    <Compile Include="ViewModels\DashBoardTypeViewModel.cs" />
+    <Compile Include="ViewModels\DashBoardViewModel.cs" />
+    <Compile Include="ViewModels\DataTablePostViewModel.cs" />
+    <Compile Include="ViewModels\DepartmentShiftViewModel.cs" />
+    <Compile Include="ViewModels\DepartmentViewModel.cs" />
+    <Compile Include="ViewModels\DepreciationViewModel.cs" />
+    <Compile Include="ViewModels\DesignationGradeViewModel.cs" />
+    <Compile Include="ViewModels\DesignationViewModel.cs" />
+    <Compile Include="ViewModels\DivisionAllocationViewModel.cs" />
+    <Compile Include="ViewModels\DivisionViewModel.cs" />
+    <Compile Include="ViewModels\DocumentTrackViewModel.cs" />
+    <Compile Include="ViewModels\EmailViewModel.cs" />
+    <Compile Include="ViewModels\EmployeeAccountViewModel.cs" />
+    <Compile Include="ViewModels\EmployeeAttendanceViewModel.cs" />
+    <Compile Include="ViewModels\EmployeeClassAllocationViewModel.cs" />
+    <Compile Include="ViewModels\EmployeeContactViewModel.cs" />
+    <Compile Include="ViewModels\EmployeeEducationViewModel.cs" />
+    <Compile Include="ViewModels\EmployeeEnquiryTargetViewModel.cs" />
+    <Compile Include="ViewModels\EmployeeExperienceViewModel.cs" />
+    <Compile Include="ViewModels\EmployeeFileHandOverViewModel.cs" />
+    <Compile Include="ViewModels\EmployeeHierarchyViewModel.cs" />
+    <Compile Include="ViewModels\EmployeeIdentityViewModel.cs" />
+    <Compile Include="ViewModels\EmployeeLanguageSkillViewModel.cs" />
+    <Compile Include="ViewModels\EmployeeLoanViewModel.cs" />
+    <Compile Include="ViewModels\EmployeePersonalViewModel.cs" />
+    <Compile Include="ViewModels\EmployeeSalaryAdvanceReturnViewModel.cs" />
+    <Compile Include="ViewModels\EmployeeSalaryAdvanceViewModel.cs" />
+    <Compile Include="ViewModels\EmployeeSalarySettingsViewModel.cs" />
+    <Compile Include="ViewModels\EmployeeSalaryViewModel.cs" />
+    <Compile Include="ViewModels\EmployeeShiftViewModel.cs" />
+    <Compile Include="ViewModels\EmployeeSubjectModuleViewModel.cs" />
+    <Compile Include="ViewModels\EmployeeTaskViewModel.cs" />
+    <Compile Include="ViewModels\EmployeeUserAccountViewModel.cs" />
+    <Compile Include="ViewModels\EmployeeViewModel.cs" />
+    <Compile Include="ViewModels\EnquiryCallStatusViewModel.cs" />
+    <Compile Include="ViewModels\EnquiryLeadViewModel.cs" />
+    <Compile Include="ViewModels\EnquiryReportViewModel.cs" />
+    <Compile Include="ViewModels\EnquiryScheduleViewModel.cs" />
+    <Compile Include="ViewModels\EnquiryViewModel.cs" />
+    <Compile Include="ViewModels\ExamCentreViewModel.cs" />
+    <Compile Include="ViewModels\ExamResultViewModel.cs" />
+    <Compile Include="ViewModels\ExamScheduleViewModel.cs" />
+    <Compile Include="ViewModels\ExamTermViewModel.cs" />
+    <Compile Include="ViewModels\ExamTestViewModel.cs" />
+    <Compile Include="ViewModels\FeeCarryForwordViewModel.cs" />
+    <Compile Include="ViewModels\FeeRefundViewModel.cs" />
+    <Compile Include="ViewModels\FeeTypeViewModel.cs" />
+    <Compile Include="ViewModels\FieldValidationViewModel.cs" />
+    <Compile Include="ViewModels\FutureTransactionPaymentViewModel.cs" />
+    <Compile Include="ViewModels\FutureTransactionViewModel.cs" />
+    <Compile Include="ViewModels\GroupSelectListModel.cs" />
+    <Compile Include="ViewModels\GSTMasterViewModel.cs" />
+    <Compile Include="ViewModels\HolidayViewModel.cs" />
+    <Compile Include="ViewModels\HSNCodeMasterViewModel.cs" />
+    <Compile Include="ViewModels\InternalExamResultViewModel.cs" />
+    <Compile Include="ViewModels\InternalExamTermViewModel.cs" />
+    <Compile Include="ViewModels\InternalExamViewModel.cs" />
+    <Compile Include="ViewModels\LeadManagementViewModel.cs" />
+    <Compile Include="ViewModels\LeaveApplicationViewModel.cs" />
+    <Compile Include="ViewModels\MenuTypeViewModel.cs" />
+    <Compile Include="ViewModels\PartyViewModel.cs" />
+    <Compile Include="ViewModels\ProvinceViewModel.cs" />
+    <Compile Include="ViewModels\SalaryOtherAmountTypeViewModel.cs" />
+    <Compile Include="ViewModels\ShiftViewModel.cs" />
+    <Compile Include="ViewModels\StudentStudyMaterialViewModel.cs" />
+    <Compile Include="ViewModels\JournalViewModel.cs" />
+    <Compile Include="ViewModels\LanguageViewModel.cs" />
+    <Compile Include="ViewModels\LibraryBookViewModel.cs" />
+    <Compile Include="ViewModels\LibraryReportViewModel.cs" />
+    <Compile Include="ViewModels\LoginModel.cs" />
+    <Compile Include="ViewModels\MarkGroupViewModel.cs" />
+    <Compile Include="ViewModels\MediumViewModel.cs" />
+    <Compile Include="ViewModels\MemberPlanDetailsViewModel.cs" />
+    <Compile Include="ViewModels\MemberRegistrationViewModel.cs" />
+    <Compile Include="ViewModels\MemberTypeViewModel.cs" />
+    <Compile Include="ViewModels\MenuViewModel.cs" />
+    <Compile Include="ViewModels\NatureOfEnquiryViewModel.cs" />
+    <Compile Include="ViewModels\NotificationDataViewModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ViewModels\NotificationTemplateViewModel.cs" />
+    <Compile Include="ViewModels\PaymentWindowViewModel.cs" />
+    <Compile Include="ViewModels\PublisherViewModel.cs" />
+    <Compile Include="ViewModels\RackViewModel.cs" />
+    <Compile Include="ViewModels\ReligionViewModel.cs" />
+    <Compile Include="ViewModels\RolesViewModel.cs" />
+    <Compile Include="ViewModels\ScholarshipExamResultViewModel.cs" />
+    <Compile Include="ViewModels\ScholarshipExamScheduleViewModel.cs" />
+    <Compile Include="ViewModels\ScholarshipTypeViewModel.cs" />
+    <Compile Include="ViewModels\ScholarshipViewModel.cs" />
+    <Compile Include="ViewModels\SecondLanguageViewModel.cs" />
+    <Compile Include="ViewModels\SMSViewModel.cs" />
+    <Compile Include="ViewModels\StatusViewModel.cs" />
+    <Compile Include="ViewModels\StudentAbscondersViewModel.cs" />
+    <Compile Include="ViewModels\StudentDiaryViewModel.cs" />
+    <Compile Include="ViewModels\StudentEarlyDepartureViewModel.cs" />
+    <Compile Include="ViewModels\StudentLateViewModel.cs" />
+    <Compile Include="ViewModels\StudentLeaveViewModel.cs" />
+    <Compile Include="ViewModels\StudentsCertificateReturnViewModel.cs" />
+    <Compile Include="ViewModels\StudentsPromotionViewModel.cs" />
+    <Compile Include="ViewModels\SalaryComponentViewModel.cs" />
+    <Compile Include="ViewModels\SelectListModel.cs" />
+    <Compile Include="ViewModels\StudentIDCardViewModels.cs" />
+    <Compile Include="ViewModels\ReportViewModel.cs" />
+    <Compile Include="ViewModels\StudentStatusViewModel.cs" />
+    <Compile Include="ViewModels\StudentTCViewModel.cs" />
+    <Compile Include="ViewModels\StudentTimeTableViewModel.cs" />
+    <Compile Include="ViewModels\StudyMaterialViewModel.cs" />
+    <Compile Include="ViewModels\SubjectViewModel.cs" />
+    <Compile Include="ViewModels\SyllabusAndStudyMaterialViewModel.cs" />
+    <Compile Include="ViewModels\TestPaperViewModel.cs" />
+    <Compile Include="ViewModels\TimeTableTempMasterViewModel.cs" />
+    <Compile Include="ViewModels\TransactionTypeViewModel.cs" />
+    <Compile Include="ViewModels\UIResources.cs" />
+    <Compile Include="ViewModels\UnitTestScheduleViewModel.cs" />
+    <Compile Include="ViewModels\UniversityCancelationViewModel.cs" />
+    <Compile Include="ViewModels\UniversityCertificateViewModel.cs" />
+    <Compile Include="ViewModels\UniversityCourseViewModel.cs" />
+    <Compile Include="ViewModels\UniversityMasterViewModel.cs" />
+    <Compile Include="ViewModels\UniversityPaymentBulkViewmodel.cs" />
+    <Compile Include="ViewModels\UniversityPaymentViewmodel.cs" />
+    <Compile Include="ViewModels\UserManualViewModel.cs" />
+    <Compile Include="ViewModels\UserPermissionViewModel.cs" />
+    <Compile Include="ViewModels\VideoViewModel.cs" />
+    <Compile Include="ViewModels\WorkScheduleViewModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Client Scripts\mvcfoolproof.unobtrusive.js" />
+    <Content Include="Client Scripts\mvcfoolproof.unobtrusive.min.js" />
+    <Content Include="Client Scripts\MvcFoolproofJQueryValidation.js" />
+    <Content Include="Client Scripts\MvcFoolproofJQueryValidation.min.js" />
+    <Content Include="Client Scripts\MvcFoolproofValidation.js" />
+    <Content Include="Client Scripts\MvcFoolproofValidation.min.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\EduSuiteUIResources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>EduSuiteUIResources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\ModelResources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ModelResources1.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

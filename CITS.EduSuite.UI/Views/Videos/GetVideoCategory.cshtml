@@ -1,0 +1,20 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.VideoViewModel
+
+
+<input type="hidden" id="hdnVideoCategoryKey" value="@Model.SubjectKey" />
+
+<ul id="VideoCategories" class="list-group">
+
+    @foreach (var item in Model.SubjectList)
+    {
+        <li onclick="ViewVideoUpload.GetVideosList(jsonData, 1, true,@item.SubjectKey)" class="list-group-item videoCategory">
+            <a>@item.SubjectName</a>
+        </li>
+
+    }
+
+</ul>
+
+
+
+

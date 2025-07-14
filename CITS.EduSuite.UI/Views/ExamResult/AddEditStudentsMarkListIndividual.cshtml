@@ -1,0 +1,291 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.ExamResultViewModel
+
+
+<div class="modal-header">
+    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+    <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.Add @EduSuiteUIResources.Sla @EduSuiteUIResources.Edit@EduSuiteUIResources.BlankSpace @EduSuiteUIResources.ExamResult</h4>
+</div>
+@using (Html.BeginForm("AddEditStudentsMarkList", "ExamResult", FormMethod.Post, new { @id = "frmStudentsmarkList" }))
+{
+
+    <input type="hidden" id="hdnResetExamResult" value="@Url.Action("ResetExamResult", "ExamResult")" />
+
+    @Html.AntiForgeryToken()
+
+
+    @*@Html.HiddenFor(m => m.BranchKey)
+        @Html.HiddenFor(m => m.AcademicTermKey)
+        @Html.HiddenFor(m => m.CourseKey)
+        @Html.HiddenFor(m => m.UniversityMasterKey)
+        @Html.HiddenFor(m => m.BatchKey)
+        @Html.HiddenFor(m => m.ExamTermKey)
+        @Html.HiddenFor(m => m.ExamYear)*@
+    @Html.HiddenFor(m => m.ApplicationKey)
+
+
+    @Html.ValidationSummary(true)
+
+    <div class="modal-body">
+        <div class="form-master">
+            <div class="form-row">
+                <div class="paddingNone">
+                    <span class="text-danger"><strong> @Html.ValidationMessage("error_msg")</strong>  </span>
+                </div>
+            </div>
+            <div id="dynamicRepeater" class="repeater">
+                <table class="table table-responsive">
+                    <thead>
+                        <tr>
+                            <th>
+
+                            </th>
+
+                            <th>
+                                @Html.Label(EduSuiteUIResources.Subject, htmlAttributes: new { @class = "form-label" })
+                            </th>
+                            <th>
+                                @Html.Label(EduSuiteUIResources.ExamTerm, htmlAttributes: new { @class = "form-label" })
+                            </th>
+                            <th>
+                                @Html.Label(EduSuiteUIResources.Mark, htmlAttributes: new { @class = "form-label" })
+                            </th>
+                            <th>
+                                @Html.Label(EduSuiteUIResources.MinimumMark, htmlAttributes: new { @class = "form-label" })
+                            </th>
+                            <th>
+                                @Html.Label(EduSuiteUIResources.MaximumMark, htmlAttributes: new { @class = "form-label" })
+                            </th>
+
+                            <th>
+                                @Html.Label(EduSuiteUIResources.Status, htmlAttributes: new { @class = "form-label" })
+                            </th>
+                            <th>
+                                @Html.Label(EduSuiteUIResources.Absent, htmlAttributes: new { @class = "form-label" })
+                            </th>
+
+                            <th>
+                                @Html.Label(EduSuiteUIResources.Remarks, htmlAttributes: new { @class = "form-label" })
+                            </th>
+                            <th>
+                                @Html.Label(EduSuiteUIResources.Status, htmlAttributes: new { @class = "form-label" })
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody data-repeater-list id="DivExamResult">
+                        @for (int i = 0; i < Model.ExamResultDetail.Count(); i++)
+                        {
+                            if (i == 0 || (i != 0 && Model.ExamResultDetail[i].SubjectYear != Model.ExamResultDetail[i - 1].SubjectYear))
+                            {
+                                if (Model.ExamResultDetail[i].SubjectYearName != "")
+                                {
+                                    <tr class="w3-light-grey">
+                                        <th colspan="10">
+                                            @Model.ExamResultDetail[i].SubjectYearName
+                                        </th>
+                                    </tr>
+                                }
+                            }
+                            <tr data-repeater-item>
+                                <td class="px-1">
+                                    @if (Model.ExamResultDetail[i].RowKey != null && Model.ExamResultDetail[i].RowKey != 0)
+                                    {
+                                        <span onclick="ExamResult.ResetExamResult(@Model.ExamResultDetail[i].RowKey,@Model.ExamResultDetail[i].ApplicationKey,true)" class="btn btn-danger btn-sm">
+                                            <span class="fa fa-remove"></span>
+                                        </span>
+                                    }
+                                </td>
+                                @*<td class="px-1">
+                                        @Html.DisplayFor(m => m.ExamResultDetail[i].AdmissionNo, new { @class = "form-control input-control smallFont", @readonly = "true" })
+                                    </td>*@
+                                <td class="px-1">
+                                    &nbsp;&nbsp;   @Html.DisplayFor(m => m.ExamResultDetail[i].SubjectName, new { @class = "form-control input-control", @readonly = "true" })
+                                    @Html.HiddenFor(m => m.ExamResultDetail[i].SubjectName)
+                                    @Html.HiddenFor(m => m.ExamResultDetail[i].RowKey, new { @class = "rowKeyClass" })
+                                    @Html.HiddenFor(m => m.ExamResultDetail[i].ExamScheduleKey)
+                                    @Html.HiddenFor(m => m.ExamResultDetail[i].ApplicationKey)
+                                    @Html.HiddenFor(m => m.ExamResultDetail[i].SubjectKey)
+                                    @*@Html.HiddenFor(m => m.ExamResultDetail[i].ExamScheduleDetailsKey)*@
+                                    @Html.HiddenFor(m => m.ExamResultDetail[i].AdmissionNo)
+                                    @Html.HiddenFor(m => m.ExamResultDetail[i].AppearenceCount)
+
+
+
+                                </td>
+                                <td class="px-1">
+                                    @Html.DisplayFor(m => m.ExamResultDetail[i].ExamTermName, new { @class = "form-control input-control", @readonly = "true" })
+                                </td>
+                                <td class="px-1">
+                                    @Html.TextBoxFor(m => m.ExamResultDetail[i].Mark, new { @class = "form-control input-control", @placeholder = EduSuiteUIResources.Mark })
+                                    <span class="form-control-error-text">    @Html.ValidationMessageFor(m => m.ExamResultDetail[i].Mark)</span>
+                                </td>
+                                <td class="px-1">
+                                    @Html.TextBoxFor(m => m.ExamResultDetail[i].MinimumMark, new { @class = "form-control input-control", @readonly = "true" })
+                                </td>
+                                <td class="px-1">
+                                    @Html.TextBoxFor(m => m.ExamResultDetail[i].MaximumMark, new { @class = "form-control input-control", @readonly = "true" })
+                                </td>
+
+                                <td class="px-1">
+                                    <span id="spnResultStatus"></span>
+                                    @Html.HiddenFor(m => m.ExamResultDetail[i].ResultStatus)
+                                </td>
+                                <td class="px-1">
+                                    <div class="switch-check switch">
+                                        @Html.CheckBoxFor(m => m.ExamResultDetail[i].AbsentStatus, new { @class = "switch-input" })
+                                        <div class="switch-label redgreen" data-on="@EduSuiteUIResources.Yes" data-off="@EduSuiteUIResources.No"></div>
+                                        <div class="switch-handle"></div>
+                                    </div>
+                                </td>
+
+                                <td class="px-1">
+                                    @Html.TextBoxFor(m => m.ExamResultDetail[i].Remarks, new { @class = "form-control input-control", @placeholder = EduSuiteUIResources.Remarks })
+
+                                </td>
+                                <td class="px-1">
+                                    @Html.DropDownListFor(m => m.ExamResultDetail[i].ExamStatus, new SelectList(Model.ExamStatus, "RowKey", "Text", Model.ExamResultDetail[i].ExamStatus), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Status, new { @class = "form-control border-radius input-control autoselect-select" })
+                                    <span class="form-control-error-text">
+                                        @Html.ValidationMessageFor(m => m.ExamResultDetail[i].ExamStatus)
+                                    </span>
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+
+
+        </div>
+    </div>
+
+    <div class="modal-footer justify-content-start">
+        <div class="form-group">
+            <input type="button" value="@EduSuiteUIResources.Save" id="btnSave" onclick="ExamResult.FormSubmit(true)" class="btn btn-sm btn-success mx-1" />
+            <button type="button" data-dismiss="modal" class="btn btn-sm btn-danger mx-1">@EduSuiteUIResources.Cancel</button>
+
+        </div>
+    </div>
+}
+<script>
+    $(document).ready(function () {
+        AppCommon.FormatInputCase()
+        var jsonData =@(Html.Raw(Json.Encode(Model)));
+        SetExamResultStatus();
+
+        $("input[id*=Mark]",$("#DivExamResult")).on('input',function()
+        {
+
+            SetExamResultStatus();
+        });
+
+        $("input[id*=Mark]",$("#DivExamResult")).on('keydown',function(e)
+        {
+            if(e.keycode=='13')
+            {
+                var tr = $(this).closest(tr).next();
+                $("input[id*=Mark]",$(tr)).focus();
+            }
+            if(e.keycode=='38')
+            {
+                var tr = $(this).closest(tr).prev();
+                $("input[id*=Mark]",$(tr)).focus();
+            }
+
+        });
+
+        $("input[id*=AbsentStatus]",$("#DivExamResult")).change(function()
+        {
+            SetExamResultStatus($("#DivExamResult"));
+        });
+
+    });
+</script>
+<script>
+
+    function SetExamResultStatus() {
+        $("#DivExamResult [data-repeater-item]").each(function (i) {
+
+            
+           
+            var AbsentStatus = $("input[type=checkbox][id*=AbsentStatus]", $(this)).is(":checked");
+            var Mark = $("input[id*=Mark]", $(this))[0];
+            var MinimumMark = $("input[id*=MinimumMark]", $(this)).val();
+            var MaximumMark = $("input[id*=MaximumMark]", $(this)).val();
+            var ResultStatus = $("input[id*=ResultStatus]", $(this))[0];
+
+            var RowKey = $("input[id*=RowKey]", $(this)).val();
+            var AppearenceCount = $("input[id*=AppearenceCount]", $(this)).val();
+
+            if (AbsentStatus == true) {
+                
+                $("#spnResultStatus", $(this)).html("Absent").attr("style", "color:orange;");
+
+                ResultStatus.value = "A";
+                Mark.value = "";
+                Mark.disabled = true;
+
+
+
+                //$("select[id*=ExamStatus]", $(this)).val(Resources.ExamStatusSupplyValue);
+                //$("select[id*=ExamStatus]", $(this)).prop("disabled", true).selectpicker("refresh");
+
+            }
+            else {
+                Mark.disabled = false;
+
+                if (Mark.value == "") {
+                    $("#spnResultStatus", $(this)).html("No Result").attr("style", "color:black;");
+
+                    ResultStatus.value = "N";
+
+                    //$("select[id*=ExamStatus]", $(this)).val(Resources.ExamStatusRegulerValue);
+                    //$("select[id*=ExamStatus]", $(this)).prop("disabled", true).selectpicker("refresh");
+                }
+
+                else if (parseFloat(Mark.value) < parseFloat(MinimumMark)) {
+                    
+                    if (parseFloat(Mark.value) < parseFloat(0)) {
+                        Mark.value = 0;
+                    }
+                    $("#spnResultStatus", $(this)).html("Fail").attr("style", "color:red;");
+
+                    ResultStatus.value = "F";
+
+
+                    //$("input[id*=ExamStatus]", $(this)).val(Resources.ExamStatusSupplyValue);
+                    //$("select[id*=ExamStatus]", $(this)).prop("disabled", true).selectpicker("refresh");
+
+                }
+                else if (parseFloat(Mark.value) >= parseFloat(MinimumMark)) {
+                    
+                    if (parseFloat(Mark.value) > parseFloat(MaximumMark)) {
+                        Mark.value = MaximumMark;
+                    }
+                    $("#spnResultStatus", $(this)).html("Pass").attr("style", "color:green;");
+
+                    ResultStatus.value = "P";
+
+
+                    //$("input[id*=ExamStatus]", $(this)).val(Resources.ExamStatusRegulerValue);
+                    //$("select[id*=ExamStatus]", $(this)).prop("disabled", true).selectpicker("refresh");
+                }
+            }
+
+            if (RowKey != "0") {
+                $("input[id*=Mark]", $(this)).prop("disabled", true);
+                $("input[type=checkbox][id*=AbsentStatus]", $(this)).prop("disabled", true);
+                //$("input[id*=ExamStatus]", $(this)).prop("disabled", true)
+            }
+            ExamResult.BindExamStatus(this);
+
+        });
+    }
+</script>
+
+
+
+
+
+
+
