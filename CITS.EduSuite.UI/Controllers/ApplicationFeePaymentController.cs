@@ -288,6 +288,7 @@ namespace CITS.EduSuite.UI.Controllers
             ApplicationFeePaymentViewModel objViewModel = new ApplicationFeePaymentViewModel();
 
             objViewModel.ApplicationKey = id ?? 0;
+
             return View(objViewModel);
 
         }

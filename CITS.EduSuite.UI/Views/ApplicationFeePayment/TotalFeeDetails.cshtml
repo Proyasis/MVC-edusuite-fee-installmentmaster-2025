@@ -27,10 +27,11 @@
                 <th class="w3-cyan  text-center  border-right divTax">
                     @Html.Label(EduSuiteUIResources.GST + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Paid, htmlAttributes: new { @class = "form-label" })
                 </th>
-                <th class="w3-indigo  text-center  border-right  divTax cess">
+                @*<th class="w3-indigo  text-center  border-right  divTax cess">
                     @Html.Label(EduSuiteUIResources.Cess + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Paid, htmlAttributes: new { @class = "form-label" })
-                </th>
+                </th>*@
                 <th class="w3-brown  text-center  border-right  ">
+             
                     @Html.Label(EduSuiteUIResources.TotalPaid, htmlAttributes: new { @class = "form-label" })
                 </th>
 
@@ -90,68 +91,68 @@
 
 
                     </td>
-                    <td class="w3-text-indigo w3-white align-middle text-center font-weight-bold border-right divTax cess" cess-amount>
+                    <!--<td class="w3-text-indigo w3-white align-middle text-center font-weight-bold border-right divTax cess" cess-amount>-->
 
-                        @String.Format("{0:G29}", Model[i].TotalCessAmount)
+                        @*  @String.Format("{0:G29}", Model[i].TotalCessAmount) *@
 
 
-                    </td>
+                    <!--</td>-->
                     <td class="w3-text-brown w3-white align-middle text-center font-weight-bold border-right " totalpaid-amount>
                         @*@Html.HiddenFor(m => m[i].TotalPaid)
-                            @String.Format("{0:G29}", Model[i].TotalPaid)*@
-
-                        @Html.TextBoxFor(m => m[i].TotalPaid, "{0:G29}", new { @class = "form-label", @readonly = "readonly", @style = "text-align:right;border: none; width: 40px;font-size: 12px;color: #6f6f6f;font-weight: 500;" })
+        @String.Format("{0:G29}", Model[i].TotalPaid)*@
+                        @String.Format("{0:G29}", Model[i].TotalCessAmount)
+                        @*@   @Html.TextBoxFor(m => m[i].TotalPaid, "{0:G29}", new { @class = "form-label", @readonly = "readonly", @style = "text-align:right;border: none; width: 40px;font-size: 12px;color: #6f6f6f;font-weight: 500;" })*@
                     </td>
-                </tr>
+                        </tr>
 
 
-            }
-        </tbody>
-        <tfoot>
-            <tr>
-                <th class="bg-secondary text-white text-center">
-                    @Html.Label(EduSuiteUIResources.Total, htmlAttributes: new { @class = "form-label" })
-                </th>
-                <th class="bg-primary text-white text-center border-right  border-primary">
-                    @String.Format("{0:G29}", Model.Sum(row => row.TotalAmount ?? 0))
-                </th>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th class="bg-secondary text-white text-center">
+                            @Html.Label(EduSuiteUIResources.Total, htmlAttributes: new { @class = "form-label" })
+                        </th>
+                        <th class="bg-primary text-white text-center border-right  border-primary">
+                            @String.Format("{0:G29}", Model.Sum(row => row.TotalAmount ?? 0))
+                        </th>
 
-                <th class="bg-success text-white text-center border-right  border-success" net-feeamount>
-                    @String.Format("{0:G29}", Model.Sum(row => row.FeeAmount))
-                    @Html.Hidden("TotalPaid", Model.Sum(row => row.FeeAmount))
-                </th>
+                        <th class="bg-success text-white text-center border-right  border-success" net-feeamount>
+                            @String.Format("{0:G29}", Model.Sum(row => row.FeeAmount))
+                            @Html.Hidden("TotalPaid", Model.Sum(row => row.FeeAmount))
+                        </th>
 
-                <th class="bg-danger text-white text-center border-right  border-danger" net-balanceamount>
-                    @String.Format("{0:G29}", Model.Sum(row => row.BalanceAmount ?? 0))
-                </th>
-                <th class="w3-cyan text-white text-center border-right border-info divTax" net-gstamount>
-                    @String.Format("{0:G29}", Model.Sum(row => row.GSTAmount ?? 0))
-                </th>
-                <th class="w3-indigo text-white text-center border-right divTax cess" net-cessamount>
-                    @String.Format("{0:G29}", Model.Sum(row => row.TotalCessAmount ?? 0))
-                </th>
-                <th class="w3-brown text-white text-center border-right" net-totalamount>
-                    @Html.TextBox("TotalPaidFeeAmount", "{0:G29}", new { @class = "form-label", @readonly = "readonly", @style = "text-align:right;border: none; width: 45px;font-size: 12px;color: #fff;font-weight: 500;background: none;" })
+                        <th class="bg-danger text-white text-center border-right  border-danger" net-balanceamount>
+                            @String.Format("{0:G29}", Model.Sum(row => row.BalanceAmount ?? 0))
+                        </th>
+                        <th class="w3-cyan text-white text-center border-right border-info divTax" net-gstamount>
+                            @String.Format("{0:G29}", Model.Sum(row => row.GSTAmount ?? 0))
+                        </th>
+                        @*<th class="w3-indigo text-white text-center border-right divTax cess" net-cessamount>
+                            @String.Format("{0:G29}", Model.Sum(row => row.TotalCessAmount ?? 0))
+                        </th>*@
+                        <th class="w3-brown text-white text-center border-right" net-totalamount>
+                            @Html.TextBox("TotalPaidFeeAmount", "{0:G29}", new { @class = "form-label", @readonly = "readonly", @style = "text-align:right;border: none; width: 45px;font-size: 12px;color: #fff;font-weight: 500;background: none;" })
 
-                </th>
-            </tr>
-        </tfoot>
-    </table>
-</div>
-<script>
-    $(document).ready(function () {
+                        </th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <script>
+            $(document).ready(function () {
 
-        var IsTax = $("#IsTax").val();
-        IsTax = IsTax ? JSON.parse(IsTax.toLowerCase()) : false;
-        if (!IsTax) {
+                var IsTax = $("#IsTax").val();
+                IsTax = IsTax ? JSON.parse(IsTax.toLowerCase()) : false;
+                if (!IsTax) {
 
-            $(".divTax").hide();
-        }
-        ApplicationFeePayment.TotalFeeDetails();
+                    $(".divTax").hide();
+                }
+                ApplicationFeePayment.TotalFeeDetails();
 
-    })
+            })
 
-</script>
+        </script>
 
 
 

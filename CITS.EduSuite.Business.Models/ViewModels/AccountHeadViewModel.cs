@@ -14,6 +14,7 @@ namespace CITS.EduSuite.Business.Models.ViewModels
         {
             AccountHeadType = new List<SelectListModel>();
             AccountGroup = new List<SelectListModel>();
+            AccountHeads= new List<SelectListModel>();
             PaymentConfigs = new List<SelectListModel>();
             SearchAccountHeadType = new List<SelectListModel>();
             IsActive = true;

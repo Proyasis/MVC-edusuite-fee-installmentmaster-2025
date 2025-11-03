@@ -17,78 +17,79 @@
         Schedule = "Enquiry";
     }
 
-    <tr class="@Schedule">
-        <td class="px-0 checkboxColumn">
-            
-            <div class="custom-control custom-checkbox mx-2">
-                @*<input type="checkbox" class="custom-control-input AllocateMultipleLead" leadkey="@Model[i].RowKey" onchange="EnquirySchedule.CheckAllocatedCount()" id="checkmark_@Model[i].RowKey">
-        <label class="custom-control-label" for="checkmark_@Model[i].RowKey"></label>*@
+<tr class="@Schedule">
+    <td class="px-0 checkboxColumn">
 
-                <input type="checkbox" class="custom-control-input addLead" selection_value="@Model[i].RowKey" text="@Model[i].Name,@Model[i].MobileNumber" id="checkmark_@Model[i].RowKey" value="@Model[i].RowKey">
-                <label class="custom-control-label" for="checkmark_@Model[i].RowKey"></label>
+        <div class="custom-control custom-checkbox mx-2">
+            @*<input type="checkbox" class="custom-control-input AllocateMultipleLead" leadkey="@Model[i].RowKey" onchange="EnquirySchedule.CheckAllocatedCount()" id="checkmark_@Model[i].RowKey">
+                <label class="custom-control-label" for="checkmark_@Model[i].RowKey"></label>*@
 
-            </div>
-            
-            @Html.HiddenFor(m => m[i].ScheduleTypeKey)
-            @Html.HiddenFor(m => m[i].FeedbackKey)
-            @Html.HiddenFor(m => m[i].RowKey)
-            @Html.HiddenFor(m => m[i].MobileNumber)
-        </td>
-        <td class="px-1">@Model[i].RowNumber</td>
-        <td class="px-1">
-            @if ((Model[i].ScheduleStatusKey != DbConstants.ScheduleStatus.History && Model[i].ScheduleStatusKey != DbConstants.ScheduleStatus.Closed) && Model[i].IsEditable)
-            {
-                <div class="btn-group btn-group-sm">
-                    @if (Model[i].ScheduleTypeKey == 0)
+            <input type="checkbox" class="custom-control-input addLead" selection_value="@Model[i].RowKey" text="@Model[i].Name,@Model[i].MobileNumber" id="checkmark_@Model[i].RowKey" value="@Model[i].RowKey">
+            <label class="custom-control-label" for="checkmark_@Model[i].RowKey"></label>
+
+        </div>
+
+        @Html.HiddenFor(m => m[i].ScheduleTypeKey)
+        @Html.HiddenFor(m => m[i].FeedbackKey)
+        @Html.HiddenFor(m => m[i].RowKey)
+        @Html.HiddenFor(m => m[i].MobileNumber)
+    </td>
+    <td class="px-1">@Model[i].RowNumber</td>
+    <td class="px-1">
+        @if ((Model[i].ScheduleStatusKey != DbConstants.ScheduleStatus.History && Model[i].ScheduleStatusKey != DbConstants.ScheduleStatus.Closed) && Model[i].IsEditable)
+        {
+            <div class="btn-group btn-group-sm">
+                @if (Model[i].ScheduleTypeKey == 0)
+                {
+                    <button type="button" data-modal="1" data-url="@Url.Action("AddEditEnquiryLeadFeedback", "EnquiryLead", new { id = 0, LeadKey = Model[i].RowKey })" class="btn btn-success btn-sm mx-1 rounded-circle btn3d">
+                        <span class="glyphicon glyphicon-earphone"></span>
+                    </button>
+
+                    <button type="button" class="btn btn-primary btn-sm mx-1 rounded-circle btn3d" onclick="javascript:window.location.href='@Url.Action("AddEditEnquiry", "Enquiry", new { LeadId = Model[i].RowKey })'"><span class="glyphicon glyphicon-plus"></span></button>
+                }
+                else
+                {
+
+                    if (Model[i].ModuleKey == DbConstants.EnquiryModule.CounsellingSchedule || Model[i].ModuleKey == DbConstants.EnquiryModule.CounsellingCompleted)
                     {
-                        <button type="button" data-modal="1" data-url="@Url.Action("AddEditEnquiryLeadFeedback", "EnquiryLead", new { id = 0, LeadKey = Model[i].RowKey })" class="btn btn-success btn-sm mx-1 rounded-circle btn3d">
+
+                        <button type="button" data-modal="2" data-url="@Url.Action("AddEditEnquiryCounsellingCompletedFeedback", "Enquiry", new { id =0, EnquiryKey = Model[i].RowKey })" class="btn btn-success btn-sm mx-1 rounded-circle btn3d">
                             <span class="glyphicon glyphicon-earphone"></span>
                         </button>
-
-                        <button type="button" class="btn btn-primary btn-sm mx-1 rounded-circle btn3d" onclick="javascript:window.location.href='@Url.Action("AddEditEnquiry", "Enquiry", new { LeadId = Model[i].RowKey })'"><span class="glyphicon glyphicon-plus"></span></button>
                     }
                     else
                     {
-
-                        if (Model[i].ModuleKey == DbConstants.EnquiryModule.CounsellingSchedule || Model[i].ModuleKey == DbConstants.EnquiryModule.CounsellingCompleted)
-                        {
-
-                            <button type="button" data-modal="2" data-url="@Url.Action("AddEditEnquiryCounsellingCompletedFeedback", "Enquiry", new { id =0, EnquiryKey = Model[i].RowKey })" class="btn btn-success btn-sm mx-1 rounded-circle btn3d">
-                                <span class="glyphicon glyphicon-earphone"></span>
-                            </button>
-                        }
-                        else
-                        {
-                            <button type="button" data-modal="2" data-url="@Url.Action("AddEditEnquiryFeedback", "Enquiry", new { id =0, EnquiryKey = Model[i].RowKey })" class="btn btn-success btn-sm mx-1 rounded-circle btn3d">
-                                <span class="glyphicon glyphicon-earphone"></span>
-                            </button>
-                        }
-
-
-
+                        <button type="button" data-modal="2" data-url="@Url.Action("AddEditEnquiryFeedback", "Enquiry", new { id =0, EnquiryKey = Model[i].RowKey })" class="btn btn-success btn-sm mx-1 rounded-circle btn3d">
+                            <span class="glyphicon glyphicon-earphone"></span>
+                        </button>
                     }
-                    @*<a id="@Model[i].MobileNumber" onclick="LoadHistory(this)" data-target="#AllHistoryModal" data-toggle="modal" class="btn btn-primary btn-sm mx-1 btnShowAllHistory2">
-                            <span class="fa fa-history"></span>
-                        </a>*@
-                </div>
-            }
 
-        </td>
-        <td class="px-1">@Model[i].Name</td>
-        <td class="px-1">
-            <a href="tel:@Model[i].MobileNumber">@Model[i].MobileNumber</a>
-        </td>
-        <td class="px-1">@Model[i].CallTypeName</td>
-        <td class="px-1">@Model[i].CallStatusName</td>
-        <td class="px-1"> @Model[i].CallDuration</td>
-        <td class="px-1">@(string.Format("{0:dd/MM/yyyy hh:mm:ss tt }", Model[i].FeedbackCreatedDate))</td>
-        <td class="px-1">@(string.Format("{0:dd/MM/yyyy}", Model[i].NextCallScheduleDate))</td>
-        <td class="px-1">@Model[i].CouncellingTime</td>
-        <td class="px-1">@Model[i].Feedback</td>
-        <td class="px-1">@Model[i].EmployeeName</td>
-        <td class="px-1">@Model[i].CreatedBy</td>
 
-    </tr>
+
+                }
+                @*<a id="@Model[i].MobileNumber" onclick="LoadHistory(this)" data-target="#AllHistoryModal" data-toggle="modal" class="btn btn-primary btn-sm mx-1 btnShowAllHistory2">
+                        <span class="fa fa-history"></span>
+                    </a>*@
+            </div>
+        }
+
+    </td>
+    <td class="px-1">@Model[i].Name</td>
+    <td class="px-1">
+        <a href="tel:@Model[i].MobileNumber">@Model[i].MobileNumber</a>
+    </td>
+    <td class="px-1">@Model[i].CallTypeName</td>
+    <td class="px-1">@Model[i].CallStatusName</td>
+    <td class="px-1"> @Model[i].CallDuration</td>
+    <td class="px-1">@(string.Format("{0:dd/MM/yyyy hh:mm:ss tt }", Model[i].FeedbackCreatedDate))</td>
+    <td class="px-1">@(string.Format("{0:dd/MM/yyyy}", Model[i].NextCallScheduleDate))</td>
+    <td class="px-1">@Model[i].CouncellingTime</td>
+    <td class="px-1">@Model[i].Feedback</td>
+    <td class="px-1">@Model[i].EmployeeName</td>
+    <td class="px-1">@Model[i].CreatedBy</td>
+    <td class="px-1">@Model[i].LeadFrom</td>
+
+</tr>
 }
 
 

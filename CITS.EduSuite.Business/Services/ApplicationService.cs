@@ -35,7 +35,11 @@ namespace CITS.EduSuite.Business.Services
                                                                             select new ApplicationPersonalViewModel
                                                                             {
                                                                                 RowKey = a.RowKey,
-                                                                                AdmissionNo = a.AdmissionNo,
+                                                                                AdmissionNo =
+    (a.AdmissionNo.Length > 4)
+    ? a.AdmissionNo.Substring(4) + a.AdmissionNo.Substring(0, 4)
+    : a.AdmissionNo,
+
                                                                                 ApplicantName = a.StudentName,
                                                                                 AcademicTermName = a.AcademicTerm.AcademicTermName,
                                                                                 CourseName = a.Course.CourseName,
@@ -386,6 +390,7 @@ namespace CITS.EduSuite.Business.Services
                 HasInstallment = row.HasInstallment,
                 HasConcession = row.HasConcession,
                 HasOffer = row.HasOffer,
+                GuardianMobile = row.GuardianMobile,
 
                 ApplicantPhoto = (row.OldStudentPhotoPath != null && row.OldStudentPhotoPath != "") ? row.OldStudentPhotoPath : UrlConstants.ApplicationUrl + row.RowKey + "/" + row.StudentPhotoPath,
                 StudentPhotoPath = row.StudentPhotoPath,
@@ -971,6 +976,18 @@ namespace CITS.EduSuite.Business.Services
 
                                    });
                 }
+                var enquiryData = EnquiryList.ToList();
+
+            
+                Console.WriteLine("RowKey\tBranchKey\tBranchName\tEnquiryName\tPhoneNumber\tEmailAddress\tAcademicTermName\tCourseName\tUniversityName\tNextCallSchedule\tEmployeeName\tLocationName\tDistrictName\tIsCounsellingCompleted");
+
+               
+                foreach (var item in enquiryData)
+                {
+                    Console.WriteLine(
+                        $"{item.RowKey}\t{item.BranchKey}\t{item.BranchName}\t{item.EnquiryName}\t{item.PhoneNumber}\t{item.EmailAddress}\t{item.AcademicTermName}\t{item.CourseName}\t{item.UniversityName}\t{item.NextCallSchedule}\t{item.EmployeeName}\t{item.LocationName}\t{item.DistrictName}\t{item.isCounsellingCompleted}"
+                    );
+                }
                 EnquiryList = EnquiryList.Where(x => x.isCounsellingCompleted == true);
                 return EnquiryList;
 
@@ -1177,6 +1194,8 @@ namespace CITS.EduSuite.Business.Services
                                      Text = B.BatchName
                                  }).Distinct().ToList();
             }
+            
+
             return model;
         }
 
@@ -1208,6 +1227,7 @@ namespace CITS.EduSuite.Business.Services
             }
             return model;
         }
+     
         public ApplicationPersonalViewModel FillSearchUniversity(ApplicationPersonalViewModel model)
         {
 

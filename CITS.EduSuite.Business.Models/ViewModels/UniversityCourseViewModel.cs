@@ -82,7 +82,7 @@ namespace CITS.EduSuite.Business.Models.ViewModels
         public string SortOrder { get; set; }
         public short? DurationTypeKey { get; set; }
         public int? DurationCount { get; set; }
-
+        public bool ShowFeeInstallment { get; set; }
     }
 
     public class ClassDetailsModel

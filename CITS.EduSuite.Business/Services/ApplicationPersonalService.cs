@@ -10,6 +10,7 @@ using CITS.EduSuite.Data;
 using System.Configuration;
 using CITS.EduSuite.Business.Models.Resources;
 
+
 namespace CITS.EduSuite.Business.Services
 {
     public class ApplicationPersonalService : IApplicationPersonalService
@@ -20,6 +21,68 @@ namespace CITS.EduSuite.Business.Services
         {
             this.dbContext = objDB;
         }
+
+        public bool SaveInstallmentEntry(InsatallmentViewModel model)
+        {
+            // Add your logic here or temporarily throw:
+            throw new NotImplementedException();
+        }
+
+        public CourseFeeDurationViewModel GetCourseFeeAndDuration(int academicTermKey, long courseKey, long universityKey)
+        {
+            var uc = dbContext.UniversityCourses
+                .Include("UniversityCourseFees.FeeType") // Ensure FeeType is loaded
+                .FirstOrDefault(x =>
+                    x.IsActive &&
+                    x.CourseKey == courseKey &&
+                    x.UniversityMasterKey == universityKey &&
+                    x.AcademicTermKey == academicTermKey);
+
+            if (uc == null) return null;
+
+            var fees = uc.UniversityCourseFees.Where(f => f.IsActive).ToList();
+
+            return new CourseFeeDurationViewModel
+            {
+                TotalFee = fees.Sum(f => (decimal?)f.FeeAmount) ?? 0,
+                Duration = uc.AcademicTermKey == DbConstants.AcademicTerm.Semester
+                    ? (uc.Course.CourseDuration / 6) + " Semester"
+                    : (uc.Course.CourseDuration / 12) + " Year",
+                CourseDuration = uc.AcademicTermKey == DbConstants.AcademicTerm.Semester
+                    ? (uc.Course.CourseDuration / 6).ToString()
+                    : (uc.Course.CourseDuration / 12).ToString(),
+
+                RegistrationFee = fees
+                    .FirstOrDefault(f => f.FeeType.FeeTypeName == "REGISTRATION FEE")?.FeeAmount,
+                AdmissionFee = fees
+                    .FirstOrDefault(f => f.FeeType.FeeTypeName == "ADMISSION FEE")?.FeeAmount,
+                FirstYearFee = fees
+                    .FirstOrDefault(f => f.FeeType.FeeTypeName == "COURSE FEE" && f.FeeYear == 1)?.FeeAmount,
+                SecondYearFee = fees
+                    .FirstOrDefault(f => f.FeeType.FeeTypeName == "COURSE FEE" && f.FeeYear == 2)?.FeeAmount,
+                ThirdYearFee = fees
+                    .FirstOrDefault(f => f.FeeType.FeeTypeName == "COURSE FEE" && f.FeeYear == 3)?.FeeAmount
+            };
+        }
+
+
+        public class CourseFeeDurationViewModel
+        {
+            public decimal TotalFee { get; set; }
+            public string Duration { get; set; }
+            public string CourseDuration { get; set; }
+
+            public decimal? RegistrationFee { get; set; }
+            public decimal? AdmissionFee { get; set; }
+            public decimal? FirstYearFee { get; set; }
+            public decimal? SecondYearFee { get; set; }
+            public decimal? ThirdYearFee { get; set; }
+        }
+
+
+
+
+
         public ApplicationPersonalViewModel GetApplicationPersonalById(ApplicationPersonalViewModel model)
         {
             ApplicationPersonalViewModel objViewModel = new ApplicationPersonalViewModel();
@@ -140,6 +203,8 @@ namespace CITS.EduSuite.Business.Services
                 return new ApplicationPersonalViewModel();
             }
         }
+       
+
         public ApplicationPersonalViewModel CreateApplicationPersonal(ApplicationPersonalViewModel model)
         {
             Application applicationModel = new Application();
@@ -847,6 +912,41 @@ namespace CITS.EduSuite.Business.Services
             }
             return model;
         }
+
+        public ApplicationPersonalViewModel GetCourseType1(ApplicationPersonalViewModel model)
+        {
+            model.CourseTypes = dbContext.CourseTypes.Where(row => row.IsActive && row.Courses.Any(x => x.UniversityCourses.Any(y =>  y.IsActive))).Select(row => new SelectListModel
+            {
+                RowKey = row.RowKey,
+                Text = row.CourseTypeName
+            }).ToList();
+
+            return model; 
+        }
+        public ApplicationPersonalViewModel GetCourseByCourseType1(ApplicationPersonalViewModel model)
+        {
+
+            model.Courses = (from p in dbContext.Applications
+                             join B in dbContext.VwCourseSelectActiveOnlies on p.CourseKey equals B.RowKey
+                             orderby B.RowKey
+                           
+                             select new SelectListModel
+                             {
+                                 RowKey = B.RowKey,
+                                 Text = B.CourseName
+                             }).Distinct().ToList();
+            return model;
+        }
+        public ApplicationPersonalViewModel GetUniversity1(ApplicationPersonalViewModel model)
+        {
+            model.Universities = dbContext.UniversityCourses.Where(row => row.IsActive).Select(row => new SelectListModel
+            {
+                RowKey = row.UniversityMaster.RowKey,
+                Text = row.UniversityMaster.UniversityMasterName
+            }).Distinct().ToList();
+
+            return model;
+        }
         public void GetCourseType(ApplicationPersonalViewModel model)
         {
 
@@ -867,6 +967,8 @@ namespace CITS.EduSuite.Business.Services
             }).Distinct().ToList();
 
         }
+
+
         public void GetUniversity(ApplicationPersonalViewModel model)
         {
             model.Universities = dbContext.UniversityCourses.Where(row => row.CourseKey == model.CourseKey && row.AcademicTermKey == model.AcademicTermKey && row.IsActive).Select(row => new SelectListModel
@@ -1076,15 +1178,18 @@ namespace CITS.EduSuite.Business.Services
                 Text = row.AgentName
             }).ToList();
         }
-        private void FillAcademicTerm(ApplicationPersonalViewModel model)
+        public ApplicationPersonalViewModel FillAcademicTerm(ApplicationPersonalViewModel model)
         {
-            model.AcademicTerms = dbContext.VwAcadamicTermSelectActiveOnlies.Select(x => new SelectListModel
-            {
-                RowKey = x.RowKey,
-                Text = x.AcademicTermName,
-            }).ToList();
+            model.AcademicTerms = dbContext.VwAcadamicTermSelectActiveOnlies
+                .Select(x => new SelectListModel
+                {
+                    RowKey = x.RowKey,
+                    Text = x.AcademicTermName
+                }).ToList();
 
+            return model;
         }
+
         private void FillReligions(ApplicationPersonalViewModel model)
         {
             model.Religions = dbContext.Religions.Where(row => row.IsActive).Select(row => new SelectListModel
@@ -1110,14 +1215,17 @@ namespace CITS.EduSuite.Business.Services
                 Text = row.BloodGroupName
             }).ToList();
         }
-        private void FillBatches(ApplicationPersonalViewModel model)
-        {
-            model.Batches = dbContext.VwBatchSelectActiveOnlies.Select(row => new SelectListModel
-            {
-                RowKey = row.RowKey,
-                Text = row.BatchName
-            }).ToList();
-        }
+public ApplicationPersonalViewModel FillBatches(ApplicationPersonalViewModel model)
+{
+    model.Batches = dbContext.VwBatchSelectActiveOnlies.Select(row => new SelectListModel
+    {
+        RowKey = row.RowKey,
+        Text = row.BatchName
+    }).ToList();
+
+    return model;
+}
+
         private void FillMedium(ApplicationPersonalViewModel model)
         {
             model.Medium = dbContext.VwMediumSelectActiveOnlies.Select(row => new SelectListModel
@@ -1329,7 +1437,7 @@ namespace CITS.EduSuite.Business.Services
                     Gender = row.Gender ?? 1,
                     NatureOfEnquiryKey = row.NatureOfEnquiryKey,
                     BranchKey = row.BranchKey,
-                    //ScheduledEmployeeName = row.Employee.FirstName + " " + (row.Employee.MiddleName ?? "") + " " + row.Employee.LastName
+                   ScheduledEmployeeName = row.Employee.FirstName + " " + (row.Employee.MiddleName ?? "") + " " + row.Employee.LastName
                 }).FirstOrDefault();
                 if (objViewModel == null)
                 {
@@ -1523,5 +1631,18 @@ namespace CITS.EduSuite.Business.Services
             }).ToList();
 
         }
+    }
+
+    internal class Fee_Installment
+    {
+        public short BatchKey { get; set; }
+        public int AcademicTermKey { get; set; }
+        public short CourseTypeKey { get; set; }
+        public long CourseKey { get; set; }
+        public long UniversityKey { get; set; }
+        public decimal FeeAmount { get; set; }
+        public decimal InitialPayment { get; set; }
+        public decimal BalancePayment { get; set; }
+        public DateTime CreatedOn { get; set; }
     }
 }

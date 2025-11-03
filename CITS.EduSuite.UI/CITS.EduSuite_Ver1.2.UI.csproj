@@ -1816,10 +1816,12 @@
     <Compile Include="Controllers\ApplicationScheduleController.cs" />
     <Compile Include="Controllers\ApplicationScheduleTypeController.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
+    <Compile Include="Controllers\EduSuiteEntities.cs" />
     <Compile Include="Controllers\ESSLAttendanceController.cs" />
     <Compile Include="Controllers\ESSLController.cs" />
     <Compile Include="Controllers\ESSLStudentsController.cs" />
     <Compile Include="Controllers\FeeFollowupController.cs" />
+    <Compile Include="Controllers\InstallmentController.cs" />
     <Compile Include="Controllers\UserManualController.cs" />
     <Compile Include="Controllers\TCReasonMasterController.cs" />
     <Compile Include="Controllers\FieldValidationController.cs" />
@@ -2383,6 +2385,9 @@
     <Content Include="Views\UserManual\UserManualList.cshtml" />
     <Content Include="Views\UserManual\AddEditUserManual.cshtml" />
     <Content Include="Views\UserManual\UserManuaView.cshtml" />
+    <Content Include="Views\Installment\FeeInstallmentList.cshtml" />
+    <Content Include="Views\Installment\AddInstallmentEntry.cshtml" />
+    <Content Include="Views\Installment\_InstallmentRow.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

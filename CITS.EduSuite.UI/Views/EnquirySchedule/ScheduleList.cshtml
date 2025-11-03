@@ -32,6 +32,7 @@
 <input type="hidden" id="hdnGetCallStatusByEnquiryStatus" value="@Url.Action("GetCallStatusByEnquiryStatus", "Enquiry")" />
 <input type="hidden" id="hdnAddEditEnquiry" value="@Url.Action("AddEditEnquiry", "Enquiry")" />
 <input type="hidden" id="hdnAddEditEnquiryLead" value="@Url.Action("AddEditEnquiryLead", "EnquiryLead")" />
+<input type="hidden" id="hdnGetEnquiryLead" value="@Url.Action("GetEnquiryLead", "EnquirySchedule")" />
 <input type="hidden" id="hdnDateToday" value="@DateTimeUTC.Now.ToString("dd/MM/yyyy")" />
 <input type="hidden" id="hdnGetCallStatusByEnquiryStatus" value="@Url.Action("GetEnquiryCallStatusByEnquiryStatus", "Enquiry")" />
 <input type="hidden" id="hdnEnquiryLeadSchedulePrint" value="@Url.Action("EnquiryLeadSchedulePrint", "EnquirySchedule")" />
@@ -96,7 +97,7 @@
             </div>
 
             @*@if (DbConstants.Role.AdminUserTypes.Contains(DbConstants.User.RoleKey))
-                {*@
+        {*@
 
             @if (Model.Branches.Count == 1)
             {
@@ -120,21 +121,21 @@
             </div>
 
             @*}
-                else
+        else
+        {
+            if (Model.Branches.Count == 1)
+            {
                 {
-                    if (Model.Branches.Count == 1)
-                    {
-                        {
-                            Model.SearchBranchKey = (Model.SearchBranchKey == 0 || Model.SearchBranchKey == null) ? (short)Model.Branches.Select(x => x.RowKey).FirstOrDefault() : Model.SearchBranchKey;
-                        }
-                        @Html.HiddenFor(m => m.SearchBranchKey)
-                    }
-                    <div class="col-lg-2 col-sm-4 col-6">
-                        <fieldset class="form-group">
-                            @Html.DropDownListFor(m => m.SearchEmployeeKey, new SelectList(Model.Employees, "RowKey", "Text"), new { @class = "form-control input-control " })
-                        </fieldset>
-                    </div>
-                }*@
+                    Model.SearchBranchKey = (Model.SearchBranchKey == 0 || Model.SearchBranchKey == null) ? (short)Model.Branches.Select(x => x.RowKey).FirstOrDefault() : Model.SearchBranchKey;
+                }
+                @Html.HiddenFor(m => m.SearchBranchKey)
+            }
+            <div class="col-lg-2 col-sm-4 col-6">
+                <fieldset class="form-group">
+                    @Html.DropDownListFor(m => m.SearchEmployeeKey, new SelectList(Model.Employees, "RowKey", "Text"), new { @class = "form-control input-control " })
+                </fieldset>
+            </div>
+        }*@
 
 
 
@@ -161,6 +162,11 @@
             </div>
             <div class="col-lg-2 col-sm-3 col-4">
                 <fieldset class="form-group">
+                   @Html.DropDownListFor(m => m.NatureOfEnquiryKey, new SelectList(Model.NatureOfEnquiries, "RowKey", "Text"), EduSuiteUIResources.Search + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.NatureOfEnquiry, new { @class = "form-control input-control" })
+                </fieldset>
+            </div>
+            <div class="col-lg-2 col-sm-3 col-4">
+                <fieldset class="form-group">
                     @Html.CheckBox("IsShortListed2") <label for="IsShortListed2" style="display:inline;font-weight:bold">Is ShortListed</label>
                 </fieldset>
             </div>
@@ -172,15 +178,15 @@
 
             </div>
             @*<div class="col-1">
-                    <button onclick="SearchEnquiryLeads()" type="button" class="btn btn-default btn-sm">
-                        <span class="glyphicon glyphicon-search"></span>
-                    </button>
-                </div>
-                <div class="col-1">
-                    <button type="button" class="btn btn-default btn-sm" onclick='EnquiryLead.GetEnquirySchedules()'>
-                        <span class="glyphicon glyphicon-refresh"></span>
-                    </button>
-                </div>*@
+            <button onclick="SearchEnquiryLeads()" type="button" class="btn btn-default btn-sm">
+                <span class="glyphicon glyphicon-search"></span>
+            </button>
+        </div>
+        <div class="col-1">
+            <button type="button" class="btn btn-default btn-sm" onclick='EnquiryLead.GetEnquirySchedules()'>
+                <span class="glyphicon glyphicon-refresh"></span>
+            </button>
+        </div>*@
         </div>
 
 
@@ -378,6 +384,7 @@
                             <th>@EduSuiteUIResources.Feedback</th>
                             <th>@EduSuiteUIResources.CounsellingBy</th>
                             <th>@EduSuiteUIResources.PostedBy</th>
+                            <th>@EduSuiteUIResources.LeadFrom</th>
                         </tr>
                     </thead>
                     <tbody id="dvRepeaterList"></tbody>

@@ -10,6 +10,8 @@ using System.Text;
 using System.Threading.Tasks;
 using CITS.EduSuite.Business.Models.Resources;
 using System.Linq.Expressions;
+using System.IO;
+
 
 namespace CITS.EduSuite.Business.Services
 {
@@ -724,6 +726,11 @@ namespace CITS.EduSuite.Business.Services
                                                                           IsUniversity = FT.IsUniverisity,
                                                                           AllowCenterShare = DbConstants.GeneralConfiguration.AllowCenterShare,
                                                                       }).OrderBy(x => x.FeeYear).ToList();
+                    foreach (var fee in objviewmodel.UniversityCourseFeeModel)
+                    {
+                        LogToFile($"RowKey: {fee.RowKey}, FeeTypeKey: {fee.FeeTypeKey}, FeeTypeName: {fee.FeeTypeName}, FeeAmount: {fee.FeeAmount}, FeeYear: {fee.FeeYear}, FeeYearText: {fee.FeeYearText}");
+                    }
+
 
 
                     if (objviewmodel == null)
@@ -743,6 +750,10 @@ namespace CITS.EduSuite.Business.Services
                 {
                     objviewmodel.UniversityCourseFeeModel = new List<UniversityCourseFeeModel>();
                 }
+                bool isFeeInstallmentVisible = dbContext.Menus
+           .Any(x => x.RowKey == 186 && x.IsActive == true);
+
+                objviewmodel.ShowFeeInstallment = isFeeInstallmentVisible; 
                 FillFeeTypes(objviewmodel);
                 FillCourseYears(objviewmodel);
 
@@ -754,6 +765,26 @@ namespace CITS.EduSuite.Business.Services
                 return new UniversityCourseViewModel();
             }
         }
+        private void LogToFile(string content)
+        {
+            try
+            {
+                string logDirectory = @"D:\Proyasis_Project\Edusuiteupdatefiles17-07-25";
+                string logFilePath = Path.Combine(logDirectory, "UniversityCourseFeeLog.txt");
+
+                Directory.CreateDirectory(logDirectory); // Ensure directory exists
+
+                using (StreamWriter writer = new StreamWriter(logFilePath, true))
+                {
+                    writer.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - {content}");
+                }
+            }
+            catch (Exception ex)
+            {
+                // fallback logging can go here if needed
+            }
+        }
+
         private void FillFeeTypes(UniversityCourseViewModel model)
         {
             model.FeeTypes = dbContext.FeeTypes.Where(row => row.IsActive && row.AccountHead.AccountHeadType.AccountGroupKey != DbConstants.AccountGroup.Expenses).Select(row => new SelectListModel

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CITS.EduSuite.Business.Models.ViewModels;
+using static CITS.EduSuite.Business.Services.ApplicationPersonalService;
 
 namespace CITS.EduSuite.Business.Interfaces
 {
@@ -11,6 +12,19 @@ namespace CITS.EduSuite.Business.Interfaces
     {
         ApplicationPersonalViewModel GetApplicationPersonalById(ApplicationPersonalViewModel model);
         ApplicationPersonalViewModel CreateApplicationPersonal(ApplicationPersonalViewModel model);
+        ApplicationPersonalViewModel FillBatches(ApplicationPersonalViewModel model);
+        ApplicationPersonalViewModel FillAcademicTerm(ApplicationPersonalViewModel model);
+        CourseFeeDurationViewModel GetCourseFeeAndDuration(int academicTermKey, long courseKey, long universityKey);
+
+
+
+        bool SaveInstallmentEntry(InsatallmentViewModel model);
+
+        ApplicationPersonalViewModel GetCourseType1(ApplicationPersonalViewModel model);
+        ApplicationPersonalViewModel GetCourseByCourseType1(ApplicationPersonalViewModel model);
+        ApplicationPersonalViewModel GetUniversity1(ApplicationPersonalViewModel model);
+        
+
         ApplicationPersonalViewModel UpdateApplicationPersonal(ApplicationPersonalViewModel model);
         void GetCourseType(ApplicationPersonalViewModel model);
         void GetCourseByCourseType(ApplicationPersonalViewModel model);
@@ -26,5 +40,6 @@ namespace CITS.EduSuite.Business.Interfaces
         ApplicationPersonalViewModel GetCurrentYearByYear(ApplicationPersonalViewModel model);
         ApplicationPersonalViewModel GetEmployeesByBranchId(ApplicationPersonalViewModel model);
         bool CheckSecondLanguage(short? CourseTypekey);
+       
     }
 }

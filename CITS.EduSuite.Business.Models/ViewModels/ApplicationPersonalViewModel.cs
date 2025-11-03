@@ -13,6 +13,8 @@ namespace CITS.EduSuite.Business.Models.ViewModels
 {
     public class ApplicationPersonalViewModel : BaseModel
     {
+        public string ScheduledEmployeeName;
+
         public ApplicationPersonalViewModel()
         {
             Branches = new List<SelectListModel>();

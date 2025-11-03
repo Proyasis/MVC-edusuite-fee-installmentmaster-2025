@@ -129,6 +129,7 @@ namespace CITS.EduSuite.Business.Services
                         Qualification = row.Qualification,
                         EmployeeName = row.EmployeeName,
                         MobileNumber = row.Phone,
+                        LeadFrom = GetLeadFromByMobile(row.Phone),
                         EnquiryStatusKey = row.EnquiryStatusKey,
                         //DepartmentKey = row.DepartmentKey,
                         FeedbackCreatedDate = row.FeedbackCreatedDate,
@@ -233,6 +234,7 @@ namespace CITS.EduSuite.Business.Services
                                            Qualification = ESL.Qualification,
                                            EmployeeName = ESL.EmployeeName,
                                            MobileNumber = ESL.MobileNumber,
+                                           LeadFrom = ESL.LeadFrom,
                                            EnquiryStatusKey = ESL.EnquiryStatusKey,
                                            //DepartmentKey = ESL.DepartmentKey,
                                            FeedbackCreatedDate = ESL.FeedbackCreatedDate,
@@ -265,6 +267,15 @@ namespace CITS.EduSuite.Business.Services
                 return new List<EnquiryScheduleViewModel>();
             }
         }
+        public string GetLeadFromByMobile(string mobile)
+        {
+            var result = dbContext.Database.SqlQuery<string>(
+                "EXEC GetleadFrom @p0", mobile).FirstOrDefault();
+
+            return result;
+        }
+
+
         private IQueryable<EnquiryScheduleViewModel> EnquiryScheduleQuery(EnquiryScheduleViewModel model)
         {
             List<short> EnquiryLeadStatusKeys = new List<short>() { DbConstants.EnquiryStatus.FollowUp, 0 };
@@ -606,9 +617,20 @@ namespace CITS.EduSuite.Business.Services
                 RowKey = row.RowKey,
                 Text = row.EnquiryCallStatusName
             }).ToList();
-
+            model.NatureOfEnquiries = FillNatureOfEnquiry(model);
             return model;
         }
+        public List<SelectListModel> FillNatureOfEnquiry(EnquiryScheduleViewModel model)
+        {
+            return dbContext.NatureOfEnquiries
+                .Where(x => x.IsActive)
+                .Select(x => new SelectListModel
+                {
+                    RowKey = x.RowKey,
+                    Text = x.NatureOfEnquiryName
+                }).ToList();
+        }
+
         private void FillBranches(EnquiryScheduleViewModel model)
         {
 

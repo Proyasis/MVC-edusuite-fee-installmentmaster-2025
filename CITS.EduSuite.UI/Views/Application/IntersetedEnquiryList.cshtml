@@ -1,5 +1,4 @@
 ﻿
-
 <div class="modal-header">
     <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
     <h4 class="modal-title" id="myModalLabel">@EduSuiteUIResources.InterstedEnquiries</h4>
@@ -9,7 +8,7 @@
         <div class="col-12">
             <div class="GridBody paddingNone">
 
-                <div class="grid-nav-bar form-row justify-content-between">
+                 <div class="grid-nav-bar form-row justify-content-between">
                     <div class="col">
                         <input id="txtSearchInterestedName" type="text" name="focus" class="form-control gridSearchTextBox" placeholder="@EduSuiteUIResources.Search@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Name@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.BlankSpace@EduSuiteUIResources.Phone" /> @* Change Search TextBox Placeholder*@
                         <span id="iconInterestedSpan" class="iconSpan"><i class="fa fa-times-circle" aria-hidden="true"></i></span>
@@ -32,7 +31,18 @@
                     </div>
                 </div>
 
+                <style>
+                    .table-scrollable {
+                        width: 100%;
+                        overflow-x: auto; 
+                        -webkit-overflow-scrolling: touch; 
+                    }
 
+                    #gridInterested {
+                        width: 100% !important; 
+                        min-width: 600px;                     }
+
+                    </style>
 
             </div>
         </div>

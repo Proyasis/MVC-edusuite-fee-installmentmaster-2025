@@ -209,14 +209,65 @@
         }
 
             .Footer-sign .Footer-signright {
-                border-top: solid 2px;
+
                 text-align: center;
-                padding: 5px 29px 0px;
+              
             }
 
         span.Footer-signleft {
             text-align: left !important;
             float: left;
+        }
+        .Footer-sign, .Footer-sign1 {
+            font-size: 12px;
+            font-weight: normal;
+            margin-top: 35px;
+            clear: both;
+        }
+
+        .Footer-sign {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+            .Footer-sign .Footer-signleft,
+            .Footer-sign .Footer-signright {
+                flex: 1;
+                font-size: 12px;
+                font-weight: normal;
+            }
+
+            .Footer-sign .Footer-signright {
+                text-align: right;
+              
+               
+                margin-left: 20px;
+            }
+        .Footer-terms {
+            max-width: 700px;
+       
+        }
+        .Footer-sign1 {
+            margin-top: 20px;
+        }
+
+        .Footer-signleft1 {
+            display: block;
+            font-size: 9px;
+            font-weight: normal;
+            margin-bottom: 1px;
+        }
+
+        .Footer-signright1 {
+            float: right;
+            border-top: solid 2px #000;
+            text-align: center;
+            font-size: 12px;
+            font-weight: normal;
+            padding-top: 5px;
+            margin-top: -16px;
+            width: 150px;
         }
 
         .FBoldNone {
@@ -585,85 +636,87 @@
         </div>
 
     }
-    <div class="Contentfooter">
-        <div class="content-div">
-            <div class="content-divleft">Amount in Words</div><span>:</span>
-            <div class="content-divright" id="amountWords"></div>
-        </div>
-        <div class="content-div CasType">
-            <div class="CasType-left">
-                @foreach (var item in Model.ApplicationFeePaymentViewModel.PaymentModes)
+<div class="Contentfooter">
+    <div class="content-div">
+        <div class="content-divleft">Amount in Words</div><span>:</span>
+        <div class="content-divright" id="amountWords"></div>
+    </div>
+    <div class="content-div CasType">
+        <div class="CasType-left">
+            @foreach (var item in Model.ApplicationFeePaymentViewModel.PaymentModes)
+            {
+                if (item.RowKey == Model.ApplicationFeePaymentViewModel.PaymentModeKey)
                 {
-                    if (item.RowKey == Model.ApplicationFeePaymentViewModel.PaymentModeKey)
-                    {
-                        <div class="content-DivCheckbox">&#9745;</div>
-                        <div class="content-DivCheckboxleft">@item.Text</div>
+                    <div class="content-DivCheckbox">&#9745;</div>
+                    <div class="content-DivCheckboxleft">@item.Text</div>
 
-                    }
-                    else
-                    {
-                        <div class="content-DivCheckbox">&#x2610;</div>
-                        <div class="content-DivCheckboxleft">@item.Text</div>
-
-                    }
                 }
-
-
-            </div>
-            @if (Model.ApplicationFeePaymentViewModel.PaymentModeKey == DbConstants.PaymentMode.Cheque)
-            {
-
-                <div class="content-DivCheckboxright">Check No: <span class="FBoldNone"> @Model.ApplicationFeePaymentViewModel.ChequeOrDDNumber</span><span style="padding-right:11px">,</span>Check Date: <span class="FBoldNone"> @string.Format("{0:dd/MM/yyyy}", Model.ApplicationFeePaymentViewModel.ChequeClearanceDate)</span></div>
-
-            }
-            @*else if (Model.ApplicationFeePaymentViewModel.PaymentModeKey == DbConstants.PaymentMode.Card)
+                else
                 {
-                    <div class="content-DivCheckboxright">Card No: <span class="FBoldNone"> @Model.ApplicationFeePaymentViewModel.CardNumber</span></div>
-                }*@
-            else if (Model.ApplicationFeePaymentViewModel.PaymentModeKey == DbConstants.PaymentMode.Bank)
-            {
-                <div class="content-DivCheckboxright">Bank Account: <span class="FBoldNone"> @Model.ApplicationFeePaymentViewModel.BankAccountName</span></div>
+                    <div class="content-DivCheckbox">&#x2610;</div>
+                    <div class="content-DivCheckboxleft">@item.Text</div>
+
+                }
             }
+
 
         </div>
-
-        @if (!Model.AllowHideFeeBalance)
+        @if (Model.ApplicationFeePaymentViewModel.PaymentModeKey == DbConstants.PaymentMode.Cheque)
         {
-            if (Model.ApplicationFeePaymentViewModel.ApplicationFeePaymentDetails.Any(x => x.IsDeduct == false))
+
+            <div class="content-DivCheckboxright">Check No: <span class="FBoldNone"> @Model.ApplicationFeePaymentViewModel.ChequeOrDDNumber</span><span style="padding-right:11px">,</span>Check Date: <span class="FBoldNone"> @string.Format("{0:dd/MM/yyyy}", Model.ApplicationFeePaymentViewModel.ChequeClearanceDate)</span></div>
+
+        }
+        @*else if (Model.ApplicationFeePaymentViewModel.PaymentModeKey == DbConstants.PaymentMode.Card)
             {
-                if (Model.ApplicationFeePaymentViewModel.TotalFee > 0)
-                {
-                    <div class="row TotalFee">
-                        <div style=" width: 47%; font-size: 15px; float: left; position: relative;">
-                            <center>
-                                <table>
-                                    <tbody>
-                                        <tr>
-                                            <td>Course Fee</td>
-                                            <td>Paid</td>
-                                            <td>Balance </td>
-                                        </tr>
-                                        <tr>
-                                            <td>@string.Format("{0:G29}", Model.ApplicationFeePaymentViewModel.TotalFee)</td>
-                                            <td>@string.Format("{0:G29}", Model.ApplicationFeePaymentViewModel.TotalPaid)</td>
-                                            <td>@string.Format("{0:G29}", Model.ApplicationFeePaymentViewModel.BalanceFee)</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </center>
-                        </div>
-                        <div style="width:53%"></div>
-                    </div>
-                }
-            }
+                <div class="content-DivCheckboxright">Card No: <span class="FBoldNone"> @Model.ApplicationFeePaymentViewModel.CardNumber</span></div>
+            }*@
+        else if (Model.ApplicationFeePaymentViewModel.PaymentModeKey == DbConstants.PaymentMode.Bank)
+        {
+            <div class="content-DivCheckboxright">Bank Account: <span class="FBoldNone"> @Model.ApplicationFeePaymentViewModel.BankAccountName</span></div>
         }
 
-
-
-        <div class="Footer-sign">
-            <span class="Footer-signleft">Fee once paid is not refundable under any circumstances</span>   <span class="Footer-signright">Authorized signatory</span>
-        </div>
     </div>
+
+    @if (!Model.AllowHideFeeBalance)
+    {
+        if (Model.ApplicationFeePaymentViewModel.ApplicationFeePaymentDetails.Any(x => x.IsDeduct == false))
+        {
+            if (Model.ApplicationFeePaymentViewModel.TotalFee > 0)
+            {
+                <div class="row TotalFee">
+                    <div style=" width: 47%; font-size: 15px; float: left; position: relative;">
+                        <center>
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td>Course Fee</td>
+                                        <td>Paid</td>
+                                        <td>Balance </td>
+                                    </tr>
+                                    <tr>
+                                        <td>@string.Format("{0:G29}", Model.ApplicationFeePaymentViewModel.TotalFee)</td>
+                                        <td>@string.Format("{0:G29}", Model.ApplicationFeePaymentViewModel.TotalPaid)</td>
+                                        <td>@string.Format("{0:G29}", Model.ApplicationFeePaymentViewModel.BalanceFee)</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </center>
+                    </div>
+                    <div style="width:53%"></div>
+                </div>
+            }
+        }
+    }
+
+
+
+<div class="Footer-sign">
+    <span class="Footer-signleft">Fee once paid is not refundable under any circumstances</span> <img src="~/Images/Sign1.jpg" style="height: 50px; width: 100px; margin-bottom: 30px; margin-right: -600px;" />    <span class="Footer-signright"></span>
+</div>
+   
+
+</div>
 </div>
 
 <div id="cpydiv" style="margin-top:20px"></div>

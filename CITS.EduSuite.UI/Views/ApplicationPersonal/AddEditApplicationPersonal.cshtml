@@ -551,22 +551,33 @@
                 @if (Model.Employees.Count == 1)
                 {
                     {
-                        Model.EmployeeKey = (Model.EmployeeKey == 0 || Model.EmployeeKey == null) ? (short)Model.Employees.Select(x => x.RowKey).FirstOrDefault() : Model.EmployeeKey;
+                        Model.EmployeeKey = (Model.EmployeeKey == 0 || Model.EmployeeKey == null)
+                                   ? (short)Model.Employees.Select(x => x.RowKey).FirstOrDefault()
+                                   : Model.EmployeeKey;
+                     
                     }
                     @Html.HiddenFor(m => m.EmployeeKey)
                 }
+
                 else
                 {
+                    var isDisabled = !string.IsNullOrWhiteSpace(Model.ScheduledEmployeeName);
+
                     <div class="col-12 col-sm-3 col-lg-2">
                         <fieldset class="form-group">
-                            @Html.Label(EduSuiteUIResources.Employee, htmlAttributes: new { @id = "lblBranch", @class = "form-label" })
+                            @Html.Label("Scheduled Employee", htmlAttributes: new { @class = "form-label" })
 
-                            @Html.DropDownListFor(m => m.EmployeeKey, new SelectList(Model.Employees, "RowKey", "Text"), EduSuiteUIResources.Select + EduSuiteUIResources.BlankSpace + EduSuiteUIResources.Employee, new { @class = "form-control input-control", @data_live_search = "true" })
-                            <span class="form-control-error-text">
-                                @Html.ValidationMessageFor(m => m.EmployeeKey)
-                            </span>
+                            @Html.TextBoxFor(m => m.ScheduledEmployeeName, new
+                            {
+                                @class = "form-control input-control",
+                                @readonly = isDisabled ? "readonly" : null,
+                                @disabled = isDisabled ? "disabled" : null
+                            })
+
                         </fieldset>
                     </div>
+
+
                 }
 
                 <div class="col-12 col-sm-3 col-lg-2 " data-customise>

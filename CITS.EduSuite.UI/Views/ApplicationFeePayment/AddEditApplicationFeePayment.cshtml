@@ -38,16 +38,17 @@
                             <div class="btn-group btn-group-toggle " data-toggle="buttons">
                                 @foreach (var TaxRateType in Model.TaxRateTypes)
                                 {
-                                    if (TaxRateType.RowKey == Model.TaxRateTypeKey)
+
+                                    if (TaxRateType.RowKey == 2 || TaxRateType.RowKey == 3)
                                     {
-                                        <label class="btn btn-outline-info active">
-                                            @Html.RadioButtonFor(m => m.TaxRateTypeKey, TaxRateType.RowKey)@TaxRateType.Code
+                                        <label class="btn btn-outline-info ">
+                                            @Html.RadioButtonFor(m => m.TaxRateTypeKey, TaxRateType.RowKey) @TaxRateType.Code
                                         </label>
                                     }
                                     else
                                     {
-                                        <label class="btn btn-outline-info ">
-                                            @Html.RadioButtonFor(m => m.TaxRateTypeKey, TaxRateType.RowKey)@TaxRateType.Code
+                                        <label class="btn btn-outline-info active">
+                                            @Html.RadioButtonFor(m => m.TaxRateTypeKey, TaxRateType.RowKey) @TaxRateType.Code
                                         </label>
                                     }
                                 }

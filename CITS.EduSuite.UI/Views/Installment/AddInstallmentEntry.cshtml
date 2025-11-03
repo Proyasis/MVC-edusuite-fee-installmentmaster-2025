@@ -1,0 +1,1029 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.InsatallmentViewModel
+
+@using (Html.BeginForm("", "", FormMethod.Post, new { id = "installmentForm" }))
+{
+    <header class="section-header">
+        <div class="row px-1">
+            <div class="col-sm-6 col-12">
+                <div class="tbl">
+                    <div class="tbl-row">
+                        <div class="tbl-cell">
+                            <h3>ADD FEE INSTALLMENT CONFIG</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 text-right">
+                <a href="@Url.Action("FeeInstallmentList")" class="btn btn-success btn-sm">
+                    <i class="fa fa-plus-square-o"></i> <span>Back</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <section class="section-content mx-sm-3 mx-0">
+        <div class="GridBody">
+            <div class="grid-nav-bar form-row">
+
+
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <div class="alert alert-danger">
+                        <strong>Validation failed:</strong>
+                        <ul>
+                            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                            {
+                                <li>@error.ErrorMessage</li>
+                            }
+                        </ul>
+                    </div>
+                }
+                @Html.HiddenFor(model => model.InstallmentId)
+                <input type="hidden" name="InstallmentId" value="@Model.InstallmentId" />
+
+
+                <div class="col-lg-2 col-sm-4 col-6">
+                    <fieldset class="form-group">
+                        <label>Batch</label>
+                        @Html.DropDownListFor(m => m.SelectedBatchKey, new SelectList(Model.Batches, "RowKey", "Text"), "-- Select Batch --", new { @class = "form-control styled-input" })
+                        @Html.ValidationMessageFor(m => m.SelectedBatchKey)
+
+                    </fieldset>
+                </div>
+
+                <div class="col-lg-2 col-sm-4 col-6">
+                    <fieldset class="form-group">
+                        <label>Academic Term</label>
+                        @Html.DropDownListFor(m => m.SelectedAcademicTermKey, new SelectList(Model.AcademicTerms, "RowKey", "Text"), "-- Select Academic Term --", new { @class = "form-control styled-input", id = "ddlAcademicTerm" })
+                        @Html.ValidationMessageFor(m => m.SelectedAcademicTermKey)
+                    </fieldset>
+                </div>
+
+                <div class="col-lg-2 col-sm-4 col-6">
+                    <fieldset class="form-group">
+                        <label>Course Type</label>
+                        @Html.DropDownListFor(m => m.SelectedCourseTypeKey, new SelectList(Model.CourseTypes, "RowKey", "Text"), "-- Select Course Type --", new { @class = "form-control styled-input" })
+                        @Html.ValidationMessageFor(m => m.SelectedCourseTypeKey)
+                    </fieldset>
+                </div>
+
+
+                <div class="col-lg-2 col-sm-4 col-6">
+                    <fieldset class="form-group">
+                        <label>Course</label>
+                        @Html.DropDownListFor(m => m.SelectedCourseKey, new SelectList(Model.Courses, "RowKey", "Text"), "-- Select Course --", new { @class = "form-control styled-input", id = "ddlCourse" })
+                        @Html.ValidationMessageFor(m => m.SelectedCourseKey)
+                    </fieldset>
+                </div>
+
+                <div class="col-lg-2 col-sm-4 col-6">
+                    <fieldset class="form-group">
+                        <label>Affiliations / Tie-Ups</label>
+                        @Html.DropDownListFor(m => m.SelectedUniversityKey, new SelectList(Model.Universities, "RowKey", "Text"), "-- Select Affiliations/Tie-Ups --", new { @class = "form-control styled-input", id = "ddlUniversity" })
+                        @Html.ValidationMessageFor(m => m.SelectedUniversityKey)
+                    </fieldset>
+                </div>
+                <div class="col-lg-2 col-sm-4 col-6">
+                    <fieldset class="form-group">
+                        <label>Fee Amount</label>
+                        @Html.TextBoxFor(m => m.FeeAmount, new { @class = "form-control styled-input", @readonly = "readonly", id = "txtFeeAmount" })
+                        @Html.ValidationMessageFor(m => m.FeeAmount)
+                    </fieldset>
+                </div>
+            </div>
+            <input type="hidden" name="SelectedDurations" id="selectedDurations" />
+
+            <div class="col-lg-6 col-sm-12 col-12 d-flex align-items-center">
+                <fieldset class="form-group w-100">
+
+                    <div id="duration-options" class="d-flex flex-wrap gap-2">
+
+                    </div>
+                </fieldset>
+            </div>
+            <input type="hidden" id="hdnOriginalBalancePayment" />
+
+            <script>
+                let originalTotal = 0;
+
+                function renderDurationCheckboxes(durationStr) {
+
+                    const $container = $('#duration-options');
+                    $container.empty();
+
+                    let lower = durationStr.toLowerCase().trim();
+                    const yearNames = ["First Year", "Second Year", "Third Year"];
+
+                    if (lower.includes("year")) {
+                        let years = parseInt(lower);
+                        for (let i = 1; i <= years; i++) {
+                            const labelText = yearNames[i - 1] || `${i} Year`;
+                            $container.append(`
+                                                                                                                                                                                                                    <label class="custom-checkbox d-flex align-items-center gap-2">
+                                                                                                                                                                                                                        <input type="checkbox" class="duration-checkbox" value="${labelText}" onchange="handleSingleCheckbox(this)" />
+                                                                                                                                                                                                                        <span class="checkmark"></span>
+                                                                                                                                                                                                                        <span>${labelText}</span>
+                                                                                                                                                                                                                        <span class="duration-fee text-success font-weight-bold ml-2"></span>
+                                                                                                                                                                                                                    </label>
+                                                                                                                                                                                                                `);
+                        }
+                    } else if (lower.includes("semester")) {
+                        let sems = parseInt(lower);
+                        for (let i = 1; i <= sems; i++) {
+                            const labelText = `${i} Semester`;
+                            $container.append(`
+                                                                                                                                                                                                                    <label class="custom-checkbox d-flex align-items-center gap-2">
+                                                                                                                                                                                                                        <input type="checkbox" class="duration-checkbox" value="${labelText}" onchange="handleSingleCheckbox(this)" />
+                                                                                                                                                                                                                        <span class="checkmark"></span>
+                                                                                                                                                                                                                        <span>${labelText}</span>
+                                                                                                                                                                                                                    </label>
+                                                                                                                                                                                                                `);
+                        }
+                    } else if (lower.includes("month")) {
+                        const labelText = "6 Months";
+                        $container.append(`
+                                                                                                                                                                                                                <label class="custom-checkbox d-flex align-items-center gap-2">
+                                                                                                                                                                                                                    <input type="checkbox" class="duration-checkbox" value="${labelText}" onchange="handleSingleCheckbox(this)" />
+                                                                                                                                                                                                                    <span class="checkmark"></span>
+                                                                                                                                                                                                                    <span>${labelText}</span>
+                                                                                                                                                                                                                </label>
+                                                                                                                                                                                                            `);
+                    } else {
+                        $container.append(`<span>No recognizable duration</span>`);
+                    }
+                }
+
+                function handleSingleCheckbox(checkbox) {
+                    if (typeof isEditMode !== "undefined" && isEditMode) return;
+
+                    $('.duration-checkbox').not(checkbox).prop('checked', false);
+                    updateFeePerDuration();
+
+                    const anyChecked = $('.duration-checkbox:checked').length > 0;
+                    if (anyChecked) {
+                        $('[name="SelectedFeeTypeKey"]').closest('.form-group').show();
+                        $('#txtInitialPayment').closest('.form-group').show();
+                    } else {
+                        $('[name="SelectedFeeTypeKey"]').closest('.form-group').hide();
+                        $('#txtInitialPayment').closest('.form-group').hide();
+                    }
+
+                    $('#txtInitialPayment').prop('disabled', true);
+                }
+
+
+                function updateFeePerDuration() {
+                    const checkedValues = [];
+                    let total = 0;
+
+                    $('.duration-checkbox:checked').each(function () {
+                        checkedValues.push($(this).val());
+                    });
+
+                    if (checkedValues.includes("First Year")) {
+                        $('#registration-fee-group').show();
+                        $('#admission-fee-group').show();
+                        $('#first-year-fee-group').show();
+
+                        let regFee = parseFloat($('#txtRegistrationFee').val()) || 0;
+                        let admFee = parseFloat($('#txtAdmissionFee').val()) || 0;
+                        let firstFee = parseFloat($('#txtFirstYearFee').val()) || 0;
+
+                        total += regFee + admFee + firstFee;
+                    } else {
+                        $('#registration-fee-group').hide();
+                        $('#admission-fee-group').hide();
+                        $('#first-year-fee-group').hide();
+                    }
+
+                    if (checkedValues.includes("Second Year")) {
+                        $('#second-year-fee-group').show();
+                        let secondFee = parseFloat($('#txtSecondYearFee').val()) || 0;
+                        total += secondFee;
+                    } else {
+                        $('#second-year-fee-group').hide();
+                    }
+
+                    if (checkedValues.includes("Third Year")) {
+                        $('#third-year-fee-group').show();
+                        let thirdFee = parseFloat($('#txtThirdYearFee').val()) || 0;
+                        total += thirdFee;
+                    } else {
+                        $('#third-year-fee-group').hide();
+                    }
+
+                    originalTotal = total;
+                    $('#txtBalancePayment').val(total.toFixed(2));
+                    $('#txtInitialPayment').val('');
+                }
+
+                function calculateBalance() {
+                    var initialPayment = parseFloat($('#txtInitialPayment').val()) || 0;
+                    var balance = originalTotal - initialPayment;
+                    if (balance < 0) balance = 0;
+
+                    $('#txtBalancePayment').val(balance.toFixed(2));
+                }
+
+                $(document).ready(function () {
+
+                    $('[name="SelectedFeeTypeKey"]').closest('.form-group').hide();
+                    $('#txtInitialPayment').closest('.form-group').hide();
+
+                    $('#txtInitialPayment').prop('disabled', true);
+
+
+                    $('[name="SelectedFeeTypeKey"]').on('change', function () {
+                        const selected = $(this).val();
+                        if (selected && selected !== "-- Select Fee Type --") {
+                            $('#txtInitialPayment').prop('disabled', false);
+                        } else {
+                            $('#txtInitialPayment').prop('disabled', true).val('');
+                            calculateBalance();
+                        }
+                    });
+
+
+                    $('#txtInitialPayment').on('input', function () {
+                        calculateBalance();
+                    });
+                });
+
+            </script>
+            <input type="hidden" name="DurationJson" id="DurationJson" />
+            <script>
+                let feeDurationData = [];
+
+                function getCurrentYearLabel() {
+                    return $('.duration-checkbox:checked').val();
+                }
+
+                function collectCurrentYearData() {
+                    const label = getCurrentYearLabel();
+                    if (!label) return null;
+
+                    const selectedFeeType = $('[name="SelectedFeeTypeKey"]').val();
+                    const intialPayment = parseFloat($('#txtInitialPayment').val()) || 0;
+                    const balancePayment = parseFloat($('#txtBalancePayment').val()) || 0;
+
+                    if (label === "First Year") {
+                        return {
+                            YearLabel: label,
+                            RegistrationFee: parseFloat($('#txtRegistrationFee').val()) || 0,
+                            AdmissionFee: parseFloat($('#txtAdmissionFee').val()) || 0,
+                            TuitionFee: parseFloat($('#txtFirstYearFee').val()) || 0,
+                            SelectedFeeTypeKey: selectedFeeType,
+                            intialPayment: intialPayment,
+                            BalancePayment: balancePayment
+                        };
+                    } else if (label === "Second Year") {
+                        return {
+                            YearLabel: label,
+                            RegistrationFee: null,
+                            AdmissionFee: null,
+                            TuitionFee: parseFloat($('#txtSecondYearFee').val()) || 0,
+                            SelectedFeeTypeKey: selectedFeeType,
+                            intialPayment: intialPayment,
+                            BalancePayment: balancePayment
+                        };
+                    } else if (label === "Third Year") {
+                        return {
+                            YearLabel: label,
+                            RegistrationFee: null,
+                            AdmissionFee: null,
+                            TuitionFee: parseFloat($('#txtThirdYearFee').val()) || 0,
+                            SelectedFeeTypeKey: selectedFeeType,
+                            intialPayment: intialPayment,
+                            BalancePayment: balancePayment
+                        };
+                    }
+                    return null;
+                }
+
+
+                function handleSingleCheckbox(checkbox) {
+                    const selectedLabel = $(checkbox).val();
+
+                    const previousLabel = $('.duration-checkbox:checked').val();
+                    if (previousLabel && previousLabel !== selectedLabel) {
+                        const saved = collectCurrentYearData();
+                        if (saved && !feeDurationData.some(d => d.YearLabel === saved.YearLabel)) {
+                            feeDurationData.push(saved);
+                        }
+                    }
+
+                    $('.duration-checkbox').not(checkbox).prop('checked', false);
+                    updateFeePerDuration();
+
+                    const anyChecked = $('.duration-checkbox:checked').length > 0;
+                    if (anyChecked) {
+                        $('[name="SelectedFeeTypeKey"]').closest('.form-group').show();
+                        $('#txtInitialPayment').closest('.form-group').show();
+                        const yearLabel = $(checkbox).val();
+                        switchYear(yearLabel);
+                    } else {
+                        $('[name="SelectedFeeTypeKey"]').closest('.form-group').hide();
+                        $('#txtInitialPayment').closest('.form-group').hide();
+                    }
+
+                    $('#txtInitialPayment').prop('disabled', true);
+                    $('#txtInitialPayment').val('');
+                    $('#txtBalancePayment').val('');
+                }
+
+                $('form').submit(function () {
+                    const last = collectCurrentYearData();
+                    if (last && !feeDurationData.some(d => d.YearLabel === last.YearLabel)) {
+                        feeDurationData.push(last);
+                    }
+
+                    const uniqueDurations = [];
+                    const seen = new Set();
+                    for (let d of feeDurationData) {
+                        if (!seen.has(d.YearLabel)) {
+                            uniqueDurations.push(d);
+                            seen.add(d.YearLabel);
+                        }
+                    }
+
+                    $('#DurationJson').val(JSON.stringify(uniqueDurations));
+                });
+            </script>
+
+
+            <script>
+    const existingDurations = @Html.Raw(Json.Encode(Model.FeeDurations));
+    const isEditMode = existingDurations.length > 0;
+
+    $(document).ready(function () {
+        if (isEditMode) {
+            renderDurationCheckboxes(existingDurations.length + " year");
+
+            setTimeout(() => {
+                if (!window.durationMap) window.durationMap = {};
+
+                existingDurations.forEach(dur => {
+                    const year = dur.YearLabel;
+                    const $checkbox = $(`.duration-checkbox[value='${year}']`);
+                    $checkbox.prop('checked', true);
+
+                    window.durationMap[year] = {
+                        FeeTypeKey: dur.FeeTypeKey,
+                        IntialPayment: dur.IntialPayment,
+                        BalancePayment: dur.BalancePayment,
+                        RegistrationFee: dur.RegistrationFee,
+                        AdmissionFee: dur.AdmissionFee,
+                        TuitionFee: dur.TuitionFee
+                    };
+
+                    if (year === 'First Year') {
+                        $('#registration-fee-group').show();
+                        $('#admission-fee-group').show();
+                        $('#first-year-fee-group').show();
+                        $('#txtRegistrationFee').val(dur.RegistrationFee ?? '');
+                        $('#txtAdmissionFee').val(dur.AdmissionFee ?? '');
+                        $('#txtFirstYearFee').val(dur.TuitionFee ?? '');
+                    }
+
+                    if (year === 'Second Year') {
+                        $('#second-year-fee-group').show();
+                        $('#txtSecondYearFee').val(dur.TuitionFee ?? '');
+                    }
+
+                    if (year === 'Third Year') {
+                        $('#third-year-fee-group').show();
+                        $('#txtThirdYearFee').val(dur.TuitionFee ?? '');
+                    }
+                });
+
+
+                const firstYear = existingDurations[0].YearLabel;
+                loadPaymentFields(firstYear);
+                $(`.duration-checkbox[value='${firstYear}']`).trigger('click');
+            }, 100);
+        }
+
+        $('.duration-checkbox').on('change', function () {
+            const selected = $(this).val();
+
+            $('.duration-checkbox').not(this).prop('checked', false);
+
+
+            $('#registration-fee-group, #admission-fee-group, #first-year-fee-group, #second-year-fee-group, #third-year-fee-group').hide();
+
+            if (selected === 'First Year') {
+                $('#registration-fee-group').show();
+                $('#admission-fee-group').show();
+                $('#first-year-fee-group').show();
+                $('#txtRegistrationFee').val(window.durationMap[selected]?.RegistrationFee ?? '');
+                $('#txtAdmissionFee').val(window.durationMap[selected]?.AdmissionFee ?? '');
+                $('#txtFirstYearFee').val(window.durationMap[selected]?.TuitionFee ?? '');
+            }
+            else if (selected === 'Second Year') {
+                $('#second-year-fee-group').show();
+                $('#txtSecondYearFee').val(window.durationMap[selected]?.TuitionFee ?? '');
+            }
+            else if (selected === 'Third Year') {
+                $('#third-year-fee-group').show();
+                $('#txtThirdYearFee').val(window.durationMap[selected]?.TuitionFee ?? '');
+            }
+
+            loadPaymentFields(selected);
+        });
+
+        function loadPaymentFields(year) {
+            const data = window.durationMap?.[year];
+            if (data) {
+                $('[name="SelectedFeeTypeKey"]').val(data.FeeTypeKey ?? '');
+                $('#txtInitialPayment').val(data.IntialPayment ?? '');
+                $('#txtBalancePayment').val(data.BalancePayment ?? '');
+            } else {
+                $('[name="SelectedFeeTypeKey"]').val('');
+                $('#txtInitialPayment').val('');
+                $('#txtBalancePayment').val('');
+            }
+        }
+    });
+            </script>
+
+
+
+            <style>
+                .custom-checkbox {
+                    position: relative;
+                    cursor: pointer;
+                    user-select: none;
+                    font-size: 16px;
+                    font-weight: 500;
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 10px;
+                }
+
+                #duration-options {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 15px 30px;
+                    padding: 10px;
+                }
+
+
+                .custom-checkbox input {
+                    opacity: 0;
+                    position: absolute;
+                }
+
+
+                .custom-checkbox .checkmark {
+                    height: 20px;
+                    width: 20px;
+                    border-radius: 50%;
+                    border: 2px solid #999;
+                    display: inline-block;
+                    position: relative;
+                    transition: 0.2s ease-in-out;
+                }
+
+
+                .custom-checkbox input:checked ~ .checkmark {
+                    border-color: red;
+                    background-color: white;
+                }
+
+                .custom-checkbox .checkmark::after {
+                    content: "";
+                    position: absolute;
+                    display: none;
+                    top: 4px;
+                    left: 4px;
+                    width: 8px;
+                    height: 8px;
+                    border-radius: 50%;
+                    background: red;
+                }
+
+                .custom-checkbox input:checked ~ .checkmark::after {
+                    display: block;
+                }
+            </style>
+
+
+            <div class="grid-nav-bar form-row mt-3">
+
+                <div class="col-lg-2 col-sm-4 col-6">
+                    <fieldset class="form-group">
+                        <label>Fee Type</label>
+                        @Html.DropDownListFor(m => m.SelectedFeeTypeKey, Model.FeeTypes, "-- Select Fee Type --", new { @class = "form-control styled-input" })
+                        @Html.ValidationMessageFor(m => m.SelectedFeeTypeKey)
+                    </fieldset>
+                </div>
+
+
+                <div class="col-lg-2 col-sm-4 col-6">
+                    <fieldset class="form-group">
+                        <label>Initial Payment</label>
+                        @Html.TextBoxFor(m => m.InitialPayment, new { @class = "form-control styled-input", id = "txtInitialPayment" })
+                        @Html.ValidationMessageFor(m => m.InitialPayment)
+                    </fieldset>
+                </div>
+
+
+
+                <div id="registration-fee-group" class="col-lg-2 col-sm-4 col-6" style="display: none;">
+                    <fieldset class="form-group">
+                        <label>Registration Fee</label>
+                        <input type="text" id="txtRegistrationFee" class="form-control styled-input" />
+                    </fieldset>
+                </div>
+
+                <div id="admission-fee-group" class="col-lg-2 col-sm-4 col-6" style="display: none;">
+                    <fieldset class="form-group">
+                        <label>Admission Fee</label>
+                        <input type="text" id="txtAdmissionFee" class="form-control styled-input" />
+                    </fieldset>
+                </div>
+
+                <div id="first-year-fee-group" class="col-lg-2 col-sm-4 col-6" style="display: none;">
+                    <fieldset class="form-group">
+                        <label>First Year Fee</label>
+                        <input type="text" id="txtFirstYearFee" class="form-control styled-input" />
+                    </fieldset>
+                </div>
+
+                <div id="second-year-fee-group" class="col-lg-2 col-sm-4 col-6" style="display: none;">
+                    <fieldset class="form-group">
+                        <label>Second Year Fee</label>
+                        <input type="text" id="txtSecondYearFee" class="form-control styled-input" />
+                    </fieldset>
+                </div>
+
+                <div id="third-year-fee-group" class="col-lg-2 col-sm-4 col-6" style="display: none;">
+                    <fieldset class="form-group">
+                        <label>Third Year Fee</label>
+                        <input type="text" id="txtThirdYearFee" class="form-control styled-input" />
+                    </fieldset>
+                </div>
+
+                <div class="col-lg-2 col-sm-4 col-6">
+                    <fieldset class="form-group">
+                        <label>Balance Payment</label>
+                        @Html.TextBoxFor(m => m.BalancePayment, new { @class = "form-control styled-input", id = "txtBalancePayment" })
+                        @Html.ValidationMessageFor(m => m.BalancePayment)
+                    </fieldset>
+                </div>
+
+            </div>
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-success">Submit</button>
+            </div>
+            <div id="saveMessage"
+                 role="alert"
+                 style="
+        display: none;
+        position: fixed;
+        top: 125px;
+        right: 30px;
+        z-index: 1050;
+        min-width: 320px;
+        background-color: #28a745;
+        color: white;
+        border-left: 5px solid #218838;
+        border-radius: 10px;
+        padding: 15px 20px;
+        font-size: 16px;
+        font-weight: 500;
+        box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    ">
+                <i class="fa fa-check-circle mr-2" style="
+        font-size: 24px;
+        color: #ffffff;
+        text-shadow: 1px 1px 4px #0e6b2f;
+        transform: scale(1.1);
+    "></i>
+                <span id="saveMessageText">Saved successfully!</span>
+            </div>
+            <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
+
+            <script>
+
+                setTimeout(function () {
+                    $("#saveMessage").fadeOut("slow", function () {
+
+
+
+                    });
+                }, 2000);
+            </script>
+            @if (Model.InstallmentId > 0)
+            {
+                <input type="hidden" id="ScheduleListJson" name="ScheduleListJson" />
+                <hr />
+                <h5 class="mt-4 mb-2"><strong>Installment Schedule</strong></h5>
+
+                <table class="table table-bordered text-center" id="installmentTable">
+                    <thead class="thead-dark bg-info text-white">
+                        <tr>
+                            <th style="display:none;">Schedule Id</th>
+
+                            <th>Installment Month</th>
+                            <th>Fee Payment Day</th>
+                            <th>DueDuration</th>
+                            <th>Amount</th>
+                            <th>Due Fine Amount</th>
+                            <th>Super Fine Amount</th>
+                            <th>AutoSMS</th>
+                            <th>AutoEmail</th>
+                            <th>Auto SMS/Email Before Due</th>
+                            <th>Auto SMS/Email After Due</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="installmentBody">
+                        @foreach (var item in Model.ScheduleList)
+                        {
+                            <tr>
+                                @Html.Partial("_InstallmentRow", item)
+                            </tr>
+                        }
+                    </tbody>
+
+
+                    <tfoot>
+                        <tr>
+                            <td colspan="10"></td>
+                            <td>
+                                <button type="button" class="btn btn-primary btn-sm" onclick="addRow()">➕</button>
+                            </td>
+
+                        </tr>
+                        <tr>
+
+
+                            <td colspan="11">
+                                <button type="button"
+                                        class="btn btn-success"
+                                        onclick="saveSchedule();">
+                                    💾 Save
+                                </button>
+
+
+                        </tr>
+                    </tfoot>
+                </table>
+            }
+
+            <script>
+    $(document).ready(function () {
+        $("#installmentForm").submit(function (e) {
+            e.preventDefault();
+
+            var form = $(this);
+            var formData = new FormData(this);
+
+            $.ajax({
+                url: '@Url.Action("AddInstallmentEntry", "Installment")',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (result) {
+                    if (result.success) {
+                        $("#saveMessage").text(result.message).fadeIn().delay(3000).fadeOut();
+
+                        if (result.installmentId) {
+
+                        window.location.href = '@Url.Action("AddInstallmentEntry", "Installment")' + '?id=' + result.installmentId;
+                        }
+                    } else {
+                        alert("Something went wrong!");
+                    }
+                },
+                error: function () {
+                    alert("Error while saving.");
+                }
+            });
+        });
+    });
+            </script>
+         
+
+            <script>
+            // Global object to hold rows per year
+var rowsByYear = {};
+var currentYear = null;
+
+// When checkbox clicked
+function switchYear(yearLabel) {
+    // save current year rows in memory
+    if (currentYear) {
+        rowsByYear[currentYear] = $('#installmentBody').children().detach();
+    }
+
+    // clear current body
+    $('#installmentBody').empty();
+
+    // if already this year rows exists -> restore
+    if (rowsByYear[yearLabel]) {
+        $('#installmentBody').append(rowsByYear[yearLabel]);
+    }
+
+    // update current year
+    currentYear = yearLabel;
+}
+
+
+function addRow() {
+    var installmentId = $("#InstallmentId").val();
+    var yearLabel = getCurrentYearLabel(); // <-- get selected checkbox
+
+    if (!yearLabel) {
+        alert("Please select a year/semester before adding a row.");
+        return;
+    }
+
+    $.ajax({
+        url: '@Url.Action("GetInstallmentRow", "Installment")',
+        type: 'GET',
+        data: { id: installmentId, year: yearLabel },
+        success: function (html) {
+            $('#installmentBody').append(html);
+        },
+        error: function (xhr, status, error) {
+            console.error("AJAX error:", error);
+        }
+    });
+}
+                function buildScheduleJson() {
+                    if (currentYear) {
+                        // ❌ detach() --> removes from UI
+                        // ✅ clone() --> keeps in UI but also saves copy
+                        rowsByYear[currentYear] = $('#installmentBody').children().clone(true, true);
+                    }
+
+                    var allSchedules = [];
+                    for (var year in rowsByYear) {
+                        var rows = rowsByYear[year];
+                        rows.each(function () {
+                            var row = $(this);
+                            var schedule = {
+                                YearLabel: year,
+                                ScheduleId: row.find('.schedule-id').val(),
+                                InstallmentMonth: row.find('[name="InstallmentMonth"]').val(),
+                                PaymentDay: row.find('[name="PaymentDay"]').val(),
+                                DueDuration: row.find('[name="DueDuration"]').val(),
+                                Amount: row.find('[name="Amount"]').val(),
+                                DueFineAmount: row.find('[name="DueFineAmount"]').val(),
+                                SuperFineAmount: row.find('[name="SuperFineAmount"]').val(),
+                                AutoSMS: row.find('[name="AutoSMS"]').is(':checked'),
+                                AutoEmail: row.find('[name="AutoEmail"]').is(':checked'),
+                                BeforeDue: row.find('[name="BeforeDue"]').val(),
+                                AfterDue: row.find('[name="AfterDue"]').val()
+                            };
+                            allSchedules.push(schedule);
+                        });
+                    }
+                    $("#ScheduleListJson").val(JSON.stringify(allSchedules));
+                }
+                $(document).ready(function () {
+    rowsByYear = {};
+
+    // Take initial rows and bucket them by YearLabel
+    $("#installmentBody tr").each(function () {
+        var year = $(this).data("year"); 
+        if (!rowsByYear[year]) {
+            rowsByYear[year] = $();
+        }
+        rowsByYear[year] = rowsByYear[year].add($(this));
+    });
+
+    // Clear table, will fill only when checkbox clicked
+    $("#installmentBody").empty();
+});
+
+
+    // Save schedule separately
+    function saveSchedule() {
+        buildScheduleJson();
+
+        $.ajax({
+            url: '@Url.Action("AddFeeSchedule", "Installment")',
+            type: 'POST',
+            data: $("form").serialize(),
+            success: function (res) {
+                alert("Schedule Saved Successfully ✅");
+            },
+            error: function () {
+                alert("Error while saving schedule ❌");
+            }
+        });
+    }
+
+            </script>
+            <script>
+                function confirmDelete(button) {
+                    const row = $(button).closest('tr');
+                    const scheduleId = row.find('.schedule-id').val();
+
+                    if (confirm("Are you sure you want to delete this?")) {
+                        if (scheduleId > 0) {
+                            $.ajax({
+                                url: '/Installment/DeleteSchedule',
+                                type: 'POST',
+                                data: { id: scheduleId },
+                                success: function (response) {
+                                    if (response.success) {
+                                        row.remove();
+                                        showToast(response.message || "Deleted successfully.");
+                                    } else {
+                                        alert("Failed to delete schedule.");
+                                    }
+                                },
+                                error: function () {
+                                    alert("Error while deleting schedule.");
+                                }
+                            });
+                        } else {
+                            row.remove();
+                            showToast("Unsaved row removed.");
+                        }
+                    }
+                }
+
+            </script>
+            <script>
+                function showToast(message) {
+                    const toast = $(`
+                                                                                                                                                                                                                <div class="alert alert-success alert-dismissible fade show position-fixed shadow-lg"
+                                                                                                                                                                                                                    role="alert"
+                                                                                                                                                                                                                    style="
+                                                                                                                                                                                                                                                                                                                                                                                                            top: 125px;
+                                                                                                                                                                                                                                                                                                                                                                                                            right: 30px;
+                                                                                                                                                                                                                                                                                                                                                                                                            z-index: 1050;
+                                                                                                                                                                                                                                                                                                                                                                                                            min-width: 320px;
+                                                                                                                                                                                                                                                                                                                                                                                                            background-color: #28a745;
+                                                                                                                                                                                                                                                                                                                                                                                                            color: white;
+                                                                                                                                                                                                                                                                                                                                                                                                            border-left: 5px solid #218838;
+                                                                                                                                                                                                                                                                                                                                                                                                            border-radius: 10px;
+                                                                                                                                                                                                                                                                                                                                                                                                            padding: 15px 20px;
+                                                                                                                                                                                                                                                                                                                                                                                                            font-size: 16px;
+                                                                                                                                                                                                                                                                                                                                                                                                            font-weight: 500;
+                                                                                                                                                                                                                                                                                                                                                                                                            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+                                                                                                                                                                                                                                                                                                                                                                                                         ">
+                                                                                                                                                                                                                    <i class="fa fa-check-circle mr-2" style="font-size: 20px;"></i> ${message}
+                                                                                                                                                                                                                </div>
+                                                                                                                                                                                                                `);
+
+                    $("body").append(toast);
+                    setTimeout(() => {
+                        toast.fadeOut("slow", function () { $(this).remove(); });
+                    }, 2000);
+                }
+            </script>
+
+            @*<script>
+                $('form').submit(function () {
+                    var scheduleList = [];
+
+                    $('#installmentBody tr').each(function () {
+                        var row = $(this);
+                        var schedule = {
+                            ScheduleId: parseInt(row.find('.schedule-id').val()),
+
+                            InstallmentMonth: row.find('select[name="InstallmentMonth"]').val(),
+                            PaymentDay: parseInt(row.find('select[name="PaymentDay"]').val()),
+                            DueDuration: parseInt(row.find('input[name="DueDuration"]').val()),
+                            Amount: parseFloat(row.find('input[name="Amount"]').val()),
+                            DueFineAmount: parseFloat(row.find('input[name="DueFineAmount"]').val()),
+                            SuperFineAmount: parseFloat(row.find('input[name="SuperFineAmount"]').val()),
+                            AutoSMS: row.find('input[name="AutoSMS"]').is(':checked'),
+                            AutoEmail: row.find('input[name="AutoEmail"]').is(':checked'),
+                            BeforeDue: parseInt(row.find('input[name="BeforeDue"]').val()),
+                            AfterDue: parseInt(row.find('input[name="AfterDue"]').val()),
+                            YearLabel: getCurrentYearLabel()
+                        };
+                        scheduleList.push(schedule);
+                    });
+
+                    $('#ScheduleListJson').val(JSON.stringify(scheduleList));
+                });
+            </script>*@
+
+
+            @if (TempData["Success"] != null)
+            {
+                <div id="success-toast" class="alert alert-success alert-dismissible fade show position-fixed shadow-lg"
+                     role="alert"
+                     style="
+            top: 125px;
+            right: 30px;
+            z-index: 1050;
+            min-width: 320px;
+            background-color: #28a745;
+            color: white;
+            border-left: 5px solid #218838;
+            border-radius: 10px;
+            padding: 15px 20px;
+            font-size: 16px;
+            font-weight: 500;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        ">
+                    <i class="fa fa-check-circle mr-2" style="font-size: 20px;"></i>
+                    @TempData["Success"]
+                </div>
+
+                <script>
+                    setTimeout(function () {
+                        $("#success-toast").fadeOut("slow", function () {
+                            $(this).remove();
+                            $('form')[0].reset();
+
+                        });
+                    }, 2000);
+                </script>
+            }
+
+
+        </div>
+    </section>
+
+
+    <style>
+
+        thead th {
+            background-color: #1797b0 !important;
+            color: white !important;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        select.form-control option {
+            font-weight: bold !important;
+            color: black !important;
+        }
+    </style>
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+
+
+
+            function loadFeeAmount() {
+                var academicTerm = $('#ddlAcademicTerm').val();
+                var course = $('#ddlCourse').val();
+                var university = $('#ddlUniversity').val();
+
+                if (academicTerm && course && university) {
+                    $.ajax({
+                        url: '/Installment/GetTotalCourseFee',
+                        type: 'GET',
+                        data: {
+                            academicTermKey: academicTerm,
+                            courseKey: course,
+                            universityKey: university
+                        },
+                        success: function (response) {
+                            if (response.success) {
+                                $('#txtFeeAmount').val(response.totalFee);
+                                $('#txtCourseDuration').val(response.duration);
+
+                                $('#txtRegistrationFee').val(response.registrationFee);
+                                $('#txtAdmissionFee').val(response.admissionFee);
+                                $('#txtFirstYearFee').val(response.firstYearFee);
+                                $('#txtSecondYearFee').val(response.secondYearFee);
+                                $('#txtThirdYearFee').val(response.thirdYearFee);
+
+
+                                renderDurationCheckboxes(response.duration);
+                            } else {
+                                $('#txtFeeAmount').val('');
+                                $('#txtCourseDuration').val('');
+                                $('#txtRegistrationFee, #txtAdmissionFee, #txtFirstYearFee, #txtSecondYearFee, #txtThirdYearFee').val('');
+                                $('#duration-options').empty();
+
+                            }
+                        },
+                        error: function () {
+                            $('#txtFeeAmount').val('');
+                            alert("Error fetching fee amount.");
+
+                        }
+                    });
+                }
+            }
+
+            $('#ddlAcademicTerm, #ddlCourse, #ddlUniversity').on('change', loadFeeAmount);
+
+            $(".only-numeric").on("input", function () {
+                this.value = this.value.replace(/[^0-9]/g, '');
+            });
+        });
+
+
+    </script>
+  
+}

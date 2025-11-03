@@ -1,0 +1,43 @@
+﻿@model CITS.EduSuite.Business.Models.ViewModels.InstallmentScheduleViewModel
+
+<tr data-year="@Model.YearLabel">
+    <td style="display:none;">
+        <input type="hidden" class="schedule-id" value="@Model.ScheduleId" />
+    </td>
+    <td>
+        <select name="InstallmentMonth" class="form-control">
+            <option value="">-- Select Month --</option>
+            @{
+                var months = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.MonthNames;
+                for (int i = 0; i < 12; i++)
+                {
+                    var month = months[i];
+                    if (!string.IsNullOrEmpty(month))
+                    {
+                        <option value="@month" @(month == Model.InstallmentMonth ? "selected" : "")>@month</option>
+                    }
+                }
+            }
+        </select>
+    </td>
+    <td>
+        <select name="PaymentDay" class="form-control">
+            <option value="">-- Select Day --</option>
+            @for (int i = 1; i <= 31; i++)
+            {
+                <option value="@i" @(i == Model.PaymentDay ? "selected" : "")>@i</option>
+            }
+        </select>
+    </td>
+    <td><input type="number" name="DueDuration" class="form-control" value="@Model.DueDuration" /></td>
+    <td><input type="number" name="Amount" class="form-control" value="@Model.Amount" /></td>
+    <td><input type="number" name="DueFineAmount" class="form-control" value="@Model.DueFineAmount" /></td>
+    <td><input type="number" name="SuperFineAmount" class="form-control" value="@Model.SuperFineAmount" /></td>
+    <td><input type="checkbox" name="AutoSMS" @(Model.AutoSMS ? "checked" : "") /></td>
+    <td><input type="checkbox" name="AutoEmail" @(Model.AutoEmail ? "checked" : "") /></td>
+    <td><input type="number" name="BeforeDue" class="form-control" value="@Model.BeforeDue" /></td>
+    <td><input type="number" name="AfterDue" class="form-control" value="@Model.AfterDue" /></td>
+    <td>
+        <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete(this)">🗑️</button>
+    </td>
+</tr>

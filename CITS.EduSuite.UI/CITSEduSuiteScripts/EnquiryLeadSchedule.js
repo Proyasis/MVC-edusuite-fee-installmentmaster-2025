@@ -474,6 +474,7 @@ var EnquirySchedule = (function () {
                     { name: 'NextCallScheduleDate', index: 'NextCallScheduleDate', headertext: "Next Call Schedule" },
                     { name: 'Feedback', index: 'Feedback', headertext: "Feedback" },
                     { name: 'CreatedBy', index: 'CreatedBy', headertext: "Post By" },
+                    { name: 'LeadFrom', index: 'LeadFrom', headertext: "Lead From" },
 
                 ];
                 obj.JSONData = $(obj.JSONData).map(function (n, item) {

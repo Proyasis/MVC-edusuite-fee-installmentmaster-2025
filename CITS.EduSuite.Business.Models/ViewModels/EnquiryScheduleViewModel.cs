@@ -27,6 +27,7 @@ namespace CITS.EduSuite.Business.Models.ViewModels
             IfFeedback = false;
             FHCallStatuses = new List<SelectListModel>();
             FHEnquiryStatuses = new List<SelectListModel>();
+            NatureOfEnquiries = new List<SelectListModel>();
         }
         public List<Int64> UserKeys { get; set; }
         public long? RowNumber { get; set; }
@@ -40,12 +41,18 @@ namespace CITS.EduSuite.Business.Models.ViewModels
         public string Qualification { get; set; }
         public short BranchKey { get; set; }
         public short DepartmentKey { get; set; }
+        public short? NatureOfEnquiryKey { get; set; }
+
+        public string LeadFrom { get; set; }
+
 
         [Required(ErrorMessageResourceType = typeof(ModelResources), ErrorMessageResourceName = "RequiredErrorMessage")]
         [Display(Name = "Employee", ResourceType = typeof(EduSuiteUIResources))]
         public long EmployeeKey { get; set; }
         public string Feedback { get; set; }
         public string MobileNumber { get; set; }
+
+    
         public string Remarks { get; set; }
         public byte IsNewLead { get; set; }
         public DateTime? LeadDate { get; set; }
@@ -128,6 +135,7 @@ namespace CITS.EduSuite.Business.Models.ViewModels
         public List<SelectListModel> TelephoneCodes { get; set; }
         public List<EnquiryScheduleViewModel> EnquiryScheduleList { get; set; }
         public List<MobileNumberSearchViewModel> MobileNumberSearch { get; set; }
+        public List<SelectListModel> NatureOfEnquiries { get; set; }
         public int ModuleKey { get; set; }
         public long ClosedCount { get; set; }
         public List<long> EnquiryScheduleKeys { get; set; }

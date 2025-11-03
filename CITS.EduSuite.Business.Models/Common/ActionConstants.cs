@@ -82,6 +82,7 @@ namespace CITS.EduSuite.Business.Models.ViewModels
         public const string ExamTerm = "EXMT";
         public const string CertificateType = "CRTT";
         public const string SyllabusAndStudyMaterial = "SYSM";
+        public const string Installment = "VFC";
         public const string CourseSubject = "CS";
         public const string StudentStatus = "STSTS";
         public const string StudyMaterial = "SM";

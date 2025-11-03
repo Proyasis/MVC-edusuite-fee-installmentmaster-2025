@@ -579,7 +579,7 @@
     <comment>EnquiryLead</comment>
   </data>
   <data name="LeadFeedbackLengthErrorMessage" xml:space="preserve">
-    <value>Feedback cannot be longer than 200 characters.</value>
+    <value></value>
     <comment>EnquiryLead</comment>
   </data>
   <data name="LeadNameLengthErrorMessage" xml:space="preserve">

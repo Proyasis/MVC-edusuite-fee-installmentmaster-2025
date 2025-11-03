@@ -77,6 +77,16 @@ namespace CITS.EduSuite.UI.Controllers
 
 
             model.Message = EduSuiteUIResources.Failed;
+            foreach (var entry in ModelState)
+            {
+                if (entry.Value.Errors.Any())
+                {
+                    System.Diagnostics.Debug.WriteLine(
+                        $"{entry.Key}: {string.Join(", ", entry.Value.Errors.Select(e => e.ErrorMessage))}"
+                    );
+                }
+            }
+
 
             return PartialView(model);
         }

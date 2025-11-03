@@ -5128,7 +5128,7 @@ namespace CITS.EduSuite.Business.Models.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Feedback cannot be longer than 200 characters..
+        ///   Looks up a localized string similar to .
         /// </summary>
         public static string LeadFeedbackLengthErrorMessage {
             get {
